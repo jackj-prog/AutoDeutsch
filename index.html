@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="AutoDeutsch" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="description" content="AutoDeutsch — 1000+ German cards with spaced repetition, 9 study modes, hands-free audio" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png" />
+  <title>AutoDeutsch</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body {
+      background: #0A0A0A;
+      color: #F0EDE5;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      height: 6px;
+      background: linear-gradient(90deg, #1A1A1A 33%, #DD0000 33% 66%, #FFCC00 66%);
+      border-radius: 3px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #FFCC00;
+      border: 2px solid #0A0A0A;
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(255,204,0,0.4);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #FFCC00;
+      border: 2px solid #0A0A0A;
+      cursor: pointer;
+    }
+    button { font-family: inherit; transition: transform 0.1s, opacity 0.1s; }
+    button:active { transform: scale(0.96); opacity: 0.9; }
+    ::-webkit-scrollbar { width: 0; }
+    input:focus {
+      border-color: #FFCC00 !important;
+      box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="app.js" integrity="sha512-Aw5ZxDOaOpvYEoifWOWrfqromz94EUDDaF551bMHiLEf3d+wB3TiLOcEABINp4zrMip7EbXJ/DQvnGucMy4gMQ=="></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => {
+            console.log('SW registered:', reg.scope);
+            // Expose the registration globally so the React app can trigger manual checks
+            window.__SW_REG__ = reg;
+            // Watch for a new worker installing
+            reg.addEventListener('updatefound', () => {
+              const nw = reg.installing;
+              if (!nw) return;
+              nw.addEventListener('statechange', () => {
+                if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                  // A new version is waiting. Tell the app.
+                  window.__SW_WAITING__ = nw;
+                  window.dispatchEvent(new CustomEvent('sw-update-available'));
+                }
+              });
+            });
+            // Check immediately on load, then every 5 minutes, then whenever the tab regains focus
+            reg.update().catch(() => {});
+            setInterval(() => reg.update().catch(() => {}), 5 * 60 * 1000);
+            document.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'visible') reg.update().catch(() => {});
+            });
+          })
+          .catch(err => console.log('SW registration failed:', err));
+
+        // When the new SW takes control, reload so the user sees the new version.
+        let reloading = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (reloading) return;
+          reloading = true;
+          window.location.reload();
+        });
+      });
+    }
+  </script>
+</body>
+</html>

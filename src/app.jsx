@@ -580,7 +580,11 @@ function checkMatch(input, target) {
   if (ni === nt) return "exact";
   const parts = target.split("/").map(s => s.trim());
   for (const p of parts) if (normalize(p) === ni) return "exact";
-  if (within1Edit(ni, nt)) return "close";
+  // Typo tolerance ("close") only for longer answers. For short words a single edit
+  // usually yields a *different* valid word (neun↔neue, rot↔rat, Tee↔See), which must
+  // NOT be graded correct — so require an exact match at <5 chars. Checked per slash
+  // alternative so a typo in one option ("niemal" for "niemals") still counts as close.
+  for (const p of parts) { const np = normalize(p); if (np.length >= 5 && within1Edit(ni, np)) return "close"; }
   return "wrong";
 }
 
@@ -1796,6 +1800,10 @@ function App() {
       setCards(selected);
       setIdx(0);
       setScreen("audio"); setTStart(Date.now());
+      // iOS Safari only lets speechSynthesis start from inside a user gesture. startSession
+      // runs synchronously within the "Start session" tap, so prime a silent utterance here
+      // to unlock TTS for the deferred autostart below — otherwise the first card is silent.
+      try { if (window.speechSynthesis) { const warm = new SpeechSynthesisUtterance(" "); warm.volume = 0; window.speechSynthesis.speak(warm); } } catch (e) {}
       // Auto-start playback after screen mounts so user lands in "playing" state
       setTimeout(() => { audioPlayingRef.current = true; setAudioPlaying(true); acquireWakeLock(); }, 100);
     }
@@ -2787,7 +2795,7 @@ function App() {
             </button>
           </div>
         </div>
-        <ProgressHub />
+        {ProgressHub()}
 
         {/* Library */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
@@ -2888,7 +2896,7 @@ function App() {
 
       {/* ── FLIP CARD SCREEN (vocab/production) ── */}
       {screen === "cards" && card && <div style={{ padding: "0 20px", height: "100vh", display: "flex", flexDirection: "column" }}>
-        <Header extra={mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : ""} />
+        {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         {mode === "production" ? (
@@ -2900,8 +2908,8 @@ function App() {
                 <div style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
-                <SpeedBadge ms={lastElapsed} /><CardStats />
-                <HintBtn hint={card.hint} />
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                {HintBtn({ hint: card.hint })}
                 {showEx ? (
                   <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}`, textAlign: "center", maxWidth: "92%" }}>
                     <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, fontStyle: "italic" }}>
@@ -2940,8 +2948,8 @@ function App() {
                   <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.2, color: T, marginBottom: 18, letterSpacing: -0.3 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
-                  {answered && <><SpeedBadge ms={lastElapsed} /><CardStats /></>}
-                  <HintBtn hint={card.hint} />
+                  {answered && <>{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
+                  {HintBtn({ hint: card.hint })}
                   {showEx ? (
                     <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}`, textAlign: "center", maxWidth: "92%" }}>
                       <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, fontStyle: "italic" }}>
@@ -2986,7 +2994,7 @@ function App() {
 
       {/* ── DRILL SCREEN (article/cloze/verb) ── */}
       {screen === "drill" && card && <div style={{ padding: "0 20px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <Header extra={<span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span>} />
+        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         <div style={{ opacity: vis ? 1 : 0, transition: "opacity 0.15s", flex: 1, display: "flex", flexDirection: "column" }}>
@@ -2996,7 +3004,7 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
-              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} /><SpeedBadge ms={lastElapsed} /><CardStats /></>}
+              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
             </>}
             {mode === "cloze" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Fill the gap</div>
@@ -3004,7 +3012,7 @@ function App() {
               {answered && <div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
                 {inputResult === "wrong" ? <><span style={{ color: R }}>Your answer: {input}</span><br /><span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   <span style={{ color: G }}>Correct! ✓</span>}{" "}{card.h}
-                <SpeedBadge ms={lastElapsed} /><CardStats />
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </div>}
             </>}
             {mode === "verb" && <>
@@ -3014,7 +3022,7 @@ function App() {
                 : <div style={{ fontSize: 15, color: T, fontWeight: 600 }}>{card.pron} ___?</div>}
               <div style={{ fontSize: 12, color: TD, marginTop: 4 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontSize: 13, color: G, fontWeight: 700 }}>{card.pron} {card.correct}</div>
-                <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div><SpeakBtn text={`${card.pron} ${card.correct}`} /><SpeedBadge ms={lastElapsed} /><CardStats /></>}
+                <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div><SpeakBtn text={`${card.pron} ${card.correct}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
             </>}
             {mode === "imperativ" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Imperative — {card._person === "sie" ? "Sie" : card._person}</div>
@@ -3040,7 +3048,7 @@ function App() {
                 <div style={{ fontSize: 11, color: TD, marginTop: 8, fontStyle: "italic", textAlign: "center", padding: "0 6px" }}>„{card.ex}"</div>
                 <div style={{ fontSize: 11, color: BL, marginTop: 4, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}><Icon name="target" size={12} /> {card.hint}</div>
                 <SpeakBtn text={card[card._person]} />
-                <SpeedBadge ms={lastElapsed} /><CardStats />
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </>}
             </>}
             {mode === "listening" && card._dialogue && <>
@@ -3085,7 +3093,7 @@ function App() {
                 <div style={{ fontSize: 11, color: sel === card.correctIdx ? G : R, marginTop: 8, fontWeight: 700 }}>
                   {sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.opts[card.correctIdx]}`}
                 </div>
-                <SpeedBadge ms={lastElapsed} /><CardStats />
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </>}
             </>}
           </div>
@@ -3158,7 +3166,7 @@ function App() {
 
       {/* ── SENTENCE BUILDER ── */}
       {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <Header extra={<span style={{ color: BL, marginRight: 6 }}>Build</span>} />
+        {Header({ extra: <span style={{ color: BL, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
         <div style={{ opacity: vis ? 1 : 0, transition: "opacity 0.15s", flex: 1, display: "flex", flexDirection: "column" }}>
           <div style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16 }}>
@@ -3175,7 +3183,7 @@ function App() {
               {!sbCorrect && <div style={{ fontSize: 13, color: G, fontWeight: 600, marginBottom: 6 }}>Correct: {card.correct.join(" ")}</div>}
               <div style={{ fontSize: 12, color: TD, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, borderLeft: `3px solid ${BL}` }}>{card.rule}</div>
               <SpeakBtn text={card.correct.join(" ")} />
-              <SpeedBadge ms={lastElapsed} /><CardStats />
+              {SpeedBadge({ ms: lastElapsed })}{CardStats()}
             </div>}
           </div>
           <div style={{ marginTop: "auto", paddingTop: 8, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>

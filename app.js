@@ -9586,7 +9586,10 @@ function checkMatch(input, target) {
   if (ni === nt) return "exact";
   const parts = target.split("/").map(s => s.trim());
   for (const p of parts) if (normalize(p) === ni) return "exact";
-  if (within1Edit(ni, nt)) return "close";
+  for (const p of parts) {
+    const np = normalize(p);
+    if (np.length >= 5 && within1Edit(ni, np)) return "close";
+  }
   return "wrong";
 }
 const STEM_ALTS = {
@@ -11008,6 +11011,13 @@ function App() {
       setIdx(0);
       setScreen("audio");
       setTStart(Date.now());
+      try {
+        if (window.speechSynthesis) {
+          const warm = new SpeechSynthesisUtterance(" ");
+          warm.volume = 0;
+          window.speechSynthesis.speak(warm);
+        }
+      } catch (e) {}
       setTimeout(() => {
         audioPlayingRef.current = true;
         setAudioPlaying(true);
@@ -13837,7 +13847,7 @@ function App() {
       display: "block",
       fontSize: 12
     }
-  }, "Custom session"))))), React.createElement(ProgressHub, null), React.createElement("div", {
+  }, "Custom session"))))), ProgressHub(), React.createElement("div", {
     style: {
       display: "flex",
       justifyContent: "space-between",
@@ -14248,7 +14258,7 @@ function App() {
       display: "flex",
       flexDirection: "column"
     }
-  }, React.createElement(Header, {
+  }, Header({
     extra: mode === "production" ? React.createElement("span", {
       style: {
         color: A,
@@ -14336,9 +14346,9 @@ function App() {
   }, React.createElement(Icon, {
     name: "volume",
     size: 13
-  }), " H\xF6ren"), React.createElement(SpeedBadge, {
+  }), " H\xF6ren"), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null), React.createElement(HintBtn, {
+  }), CardStats(), HintBtn({
     hint: card.hint
   }), showEx ? React.createElement("div", {
     style: {
@@ -14583,9 +14593,9 @@ function App() {
   }, React.createElement(Icon, {
     name: "volume",
     size: 13
-  }), " H\xF6ren"), answered && React.createElement(React.Fragment, null, React.createElement(SpeedBadge, {
+  }), " H\xF6ren"), answered && React.createElement(React.Fragment, null, SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null)), React.createElement(HintBtn, {
+  }), CardStats()), HintBtn({
     hint: card.hint
   }), showEx ? React.createElement("div", {
     style: {
@@ -14697,7 +14707,7 @@ function App() {
       display: "flex",
       flexDirection: "column"
     }
-  }, React.createElement(Header, {
+  }, Header({
     extra: React.createElement("span", {
       style: {
         color: A,
@@ -14770,9 +14780,9 @@ function App() {
     }
   }, card.article, " ", card.noun), React.createElement(SpeakBtn, {
     text: `${card.article} ${card.noun}`
-  }), React.createElement(SpeedBadge, {
+  }), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null))), mode === "cloze" && React.createElement(React.Fragment, null, React.createElement("div", {
+  }), CardStats())), mode === "cloze" && React.createElement(React.Fragment, null, React.createElement("div", {
     style: {
       fontSize: 10,
       color: AD,
@@ -14812,9 +14822,9 @@ function App() {
     style: {
       color: G
     }
-  }, "Correct! \u2713"), " ", card.h, React.createElement(SpeedBadge, {
+  }, "Correct! \u2713"), " ", card.h, SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null))), mode === "verb" && React.createElement(React.Fragment, null, React.createElement("div", {
+  }), CardStats())), mode === "verb" && React.createElement(React.Fragment, null, React.createElement("div", {
     style: {
       fontSize: 10,
       color: AD,
@@ -14863,9 +14873,9 @@ function App() {
     }
   }, card.hint), React.createElement(SpeakBtn, {
     text: `${card.pron} ${card.correct}`
-  }), React.createElement(SpeedBadge, {
+  }), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null))), mode === "imperativ" && React.createElement(React.Fragment, null, React.createElement("div", {
+  }), CardStats())), mode === "imperativ" && React.createElement(React.Fragment, null, React.createElement("div", {
     style: {
       fontSize: 10,
       color: AD,
@@ -14983,9 +14993,9 @@ function App() {
     size: 12
   }), " ", card.hint), React.createElement(SpeakBtn, {
     text: card[card._person]
-  }), React.createElement(SpeedBadge, {
+  }), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null))), mode === "listening" && card._dialogue && React.createElement(React.Fragment, null, React.createElement("div", {
+  }), CardStats())), mode === "listening" && card._dialogue && React.createElement(React.Fragment, null, React.createElement("div", {
     style: {
       fontSize: 10,
       color: AD,
@@ -15108,9 +15118,9 @@ function App() {
       marginTop: 8,
       fontWeight: 700
     }
-  }, sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.opts[card.correctIdx]}`), React.createElement(SpeedBadge, {
+  }, sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.opts[card.correctIdx]}`), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null)))), mode === "cloze" && !answered && React.createElement("div", {
+  }), CardStats()))), mode === "cloze" && !answered && React.createElement("div", {
     style: {
       display: "flex",
       gap: 8,
@@ -15393,7 +15403,7 @@ function App() {
       display: "flex",
       flexDirection: "column"
     }
-  }, React.createElement(Header, {
+  }, Header({
     extra: React.createElement("span", {
       style: {
         color: BL,
@@ -15509,9 +15519,9 @@ function App() {
     }
   }, card.rule), React.createElement(SpeakBtn, {
     text: card.correct.join(" ")
-  }), React.createElement(SpeedBadge, {
+  }), SpeedBadge({
     ms: lastElapsed
-  }), React.createElement(CardStats, null))), React.createElement("div", {
+  }), CardStats())), React.createElement("div", {
     style: {
       marginTop: "auto",
       paddingTop: 8,

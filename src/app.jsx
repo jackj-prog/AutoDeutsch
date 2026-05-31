@@ -962,6 +962,42 @@ const ProgBar = React.memo(({ pct, color }) => (
 ));
 
 // ── MAIN APP ──
+// Animated count-up number — eases from `from` (default 0) to `value` on mount and whenever
+// value changes. Honors prefers-reduced-motion. Renders a number, or format(n) if provided.
+function CountUp({ value, duration = 700, from = 0, format }) {
+  const [d, setD] = useState(from);
+  const prev = useRef(from);
+  useEffect(() => {
+    const a = prev.current, b = value; prev.current = value;
+    const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || typeof b !== "number" || typeof a !== "number" || a === b) { setD(b); return; }
+    let raf, t0;
+    const ease = p => 1 - Math.pow(1 - p, 3);
+    const step = t => { if (!t0) t0 = t; const p = Math.min(1, (t - t0) / duration); setD(a + (b - a) * ease(p)); if (p < 1) raf = requestAnimationFrame(step); else setD(b); };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [value, duration]);
+  const shown = typeof d === "number" ? Math.round(d) : d;
+  return format ? format(shown) : shown;
+}
+
+// Tap-to-insert German special characters, pinned above a text input. Uses pointerdown +
+// preventDefault so the input keeps focus — the character lands at the caret, keyboard stays up.
+function UmlautBar({ onInsert }) {
+  const keys = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"];
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+      {keys.map(k => (
+        <button key={k} type="button" className="ad-uk" aria-label={`Insert ${k}`}
+          onPointerDown={e => { e.preventDefault(); onInsert(k); }}
+          style={{ flex: "1 1 0", minWidth: 34, padding: "9px 0", borderRadius: 9, background: PAL.SH, border: `1px solid ${PAL.B}`, color: PAL.A, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "transform .08s ease, background .15s ease, border-color .15s ease" }}>
+          {k}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function App() {
   const [screen, setScreen] = useState("home");
   const [mode, setMode] = useState("vocab");
@@ -977,6 +1013,7 @@ function App() {
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
+  const [feedback, setFeedback] = useState(null); // "correct" | "wrong" | null — drives answer-feedback animation
   const [showSetup, setShowSetup] = useState(false);
   const [setupCat, setSetupCat] = useState(null);
   const [setupMode, setSetupMode] = useState("vocab");
@@ -1041,6 +1078,8 @@ function App() {
   // Per-session snapshot of prior lastSeen values, keyed by storage key. Lets CardStats
   // show "Last seen Nd ago" without polluting the exportable prog object.
   const priorLastSeenRef = useRef({});
+  const typedInputRef = useRef(null);      // current typed-answer <input>, for the umlaut bar
+  const feedbackTimerRef = useRef(null);   // clears the answer-feedback class after it plays
   // Audio-mode playback control. audioTimer = setTimeout id for next step; wakeLockRef
   // holds the Screen Wake Lock so the phone doesn't dim/sleep during playback.
   const audioTimerRef = useRef(null);
@@ -1490,7 +1529,25 @@ function App() {
 
   const gk = (card, cat, m) => `${m}::${card._cat || card.cat || cat}::${cardId(card)}`;
 
+  // Flash the answer-feedback animation (shake on wrong, pop on correct) for ~600ms.
+  const triggerFeedback = (kind) => {
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    setFeedback(kind);
+    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 600);
+  };
+
+  // Insert a German special character into the focused typed-answer input at the caret.
+  const insertChar = (ch) => {
+    const el = typedInputRef.current;
+    if (!el) { setInput(v => v + ch); return; }
+    const s = el.selectionStart ?? el.value.length;
+    const e = el.selectionEnd ?? el.value.length;
+    setInput(el.value.slice(0, s) + ch + el.value.slice(e));
+    requestAnimationFrame(() => { try { el.focus(); el.setSelectionRange(s + ch.length, s + ch.length); } catch (err) {} });
+  };
+
   const record = (correct, card, elapsed) => {
+    triggerFeedback(correct ? "correct" : "wrong");
     const key = gk(card, category, mode);
     const prev = normalizeEntry(prog[key]);
     const now = Date.now();
@@ -1928,7 +1985,7 @@ function App() {
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
-    setVis(false);
+    setVis(false); setFeedback(null);
     setTimeout(() => {
       setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
       setIdx(i => Math.min(i + 1, Math.max(cards.length - 1, 0)));
@@ -1954,7 +2011,7 @@ function App() {
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
-    setVis(false);
+    setVis(false); setFeedback(null);
     setTimeout(() => {
       setAnswered(false); setSel(null); setInput(""); setInputResult(null); setShowHint(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
       setIdx(i => Math.min(i + 1, Math.max(cards.length - 1, 0)));
@@ -1971,7 +2028,7 @@ function App() {
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
-    setVis(false);
+    setVis(false); setFeedback(null);
     setTimeout(() => {
       const next = cards[Math.min(idx + 1, cards.length - 1)];
       if (next) setSbPool(sh([...next.correct]));
@@ -2101,6 +2158,9 @@ function App() {
   const FGRAD2 = "linear-gradient(145deg, #0A0A0A 0%, #180808 60%, #181200 100%)";
   const FLAG = `linear-gradient(90deg, #050505 0 33%, ${R} 33% 66%, ${A} 66%)`;
   const SOFT_PANEL = "linear-gradient(180deg, #171717 0%, #101010 100%)";
+  // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
+  // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
+  const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
   const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip" };
   const reviewQueueItems = [
     { key: "due", title: "Due", count: resolvedDue.total, detail: formatModeBreakdown(resolvedDue.byMode), icon: "calendarCheck", color: A, onClick: startDueReview },
@@ -2263,7 +2323,7 @@ function App() {
                   <>
                     <line x1="0" y1="7" x2="300" y2="7" stroke={`${A}22`} strokeDasharray="2,3" />
                     <line x1="0" y1="25" x2="300" y2="25" stroke={`${TD}22`} strokeDasharray="2,3" />
-                    {linePath && <path d={linePath} fill="none" stroke={A} strokeWidth="1.5" strokeLinejoin="round" />}
+                    {linePath && <path d={linePath} pathLength="1" className="ad-spark" fill="none" stroke={A} strokeWidth="1.5" strokeLinejoin="round" />}
                     {pts.map((p, i) => p.acc === null ? (
                       <circle key={i} cx={p.x} cy="43" r="1" fill={`${TD}55`} />
                     ) : (
@@ -2392,8 +2452,23 @@ function App() {
         .ad-mastery-pop { animation: ad-mastery-pop 560ms ease-out; }
         .ad-mastery-burst { animation: ad-mastery-burst 620ms ease-out; }
         .ad-category-mastered { animation: ad-category-mastered 1600ms ease-in-out 2; }
+        @keyframes ad-shake { 10%,90%{transform:translateX(-2px)} 20%,80%{transform:translateX(3px)} 30%,50%,70%{transform:translateX(-6px)} 40%,60%{transform:translateX(6px)} }
+        @keyframes ad-pop { 0%{transform:scale(1)} 35%{transform:scale(1.045)} 100%{transform:scale(1)} }
+        @keyframes ad-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+        .ad-shake { animation: ad-shake 460ms cubic-bezier(.36,.07,.19,.97); }
+        .ad-pop { animation: ad-pop 420ms ease-out; }
+        .ad-card-enter { opacity: 1; transform: translateX(0); transition: opacity .18s ease, transform .26s cubic-bezier(.22,.61,.36,1); }
+        .ad-card-enter.is-out { opacity: 0; transform: translateX(26px); }
+        .ad-spark { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ad-draw 950ms ease-out forwards; }
+        .ad-input { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+        .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
+        .ad-uk:active { transform: translateY(1px) scale(.95); border-color: #FFCC00; }
+        .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark { animation: none; }
+          .ad-card-enter { transition: opacity .12s ease; }
+          .ad-card-enter.is-out { transform: none; }
+          .ad-spark { stroke-dashoffset: 0; }
         }
       `}</style>
 
@@ -2724,7 +2799,7 @@ function App() {
         {/* Today metrics */}
         <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
           <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
-            <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}>{dailyStats.streak}</div>
+            <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}><CountUp value={dailyStats.streak} /></div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 600, letterSpacing: 0.4 }}>Day streak</div>
           </div>
           <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
@@ -2900,8 +2975,8 @@ function App() {
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         {mode === "production" ? (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
-            <div style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "32px 24px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: 320, position: "relative", overflow: "hidden" }}>
+          <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
+            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "32px 24px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: 320, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.25, color: T, letterSpacing: -0.3 }}>{card.en}</div>
               {answered && <>
@@ -2924,12 +2999,12 @@ function App() {
               </>}
             </div>
             <div style={{ paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
-              {!answered ? <div style={{ display: "flex", gap: 8 }}>
-                <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitTyped(); }}
+              {!answered ? <><UmlautBar onInsert={insertChar} /><div style={{ display: "flex", gap: 8 }}>
+                <input ref={typedInputRef} className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitTyped(); }}
                   placeholder="Type in German…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                   style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
                 <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitTyped} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-              </div>
+              </div></>
                 : <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
             </div>
           </div>
@@ -2937,13 +3012,13 @@ function App() {
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", maxHeight: 360, opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 30, fontWeight: 600, textAlign: "center", lineHeight: 1.2, color: T, letterSpacing: -0.3 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 14, right: 16, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
                 </div>
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.2, color: T, marginBottom: 18, letterSpacing: -0.3 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
@@ -2997,8 +3072,8 @@ function App() {
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
-        <div style={{ opacity: vis ? 1 : 0, transition: "opacity 0.15s", flex: 1, display: "flex", flexDirection: "column" }}>
-          <div style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+        <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
+          <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
             {mode === "article" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
@@ -3099,20 +3174,22 @@ function App() {
           </div>
 
           {mode === "cloze" && !answered && (
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitCloze(); }}
+              <input ref={typedInputRef} className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitCloze(); }}
                 placeholder="Type answer…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitCloze} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div>
+            </div></>
           )}
           {mode === "imperativ" && !answered && (
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); } }}
+              <input ref={typedInputRef} className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); } }}
                 placeholder={card._person === "sie" ? "e.g. kommen Sie" : "Type the imperative…"} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div>
+            </div></>
           )}
           {mode === "listening" && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
@@ -3151,12 +3228,13 @@ function App() {
             </div>
           )}
           {mode === "verb" && !answered && !card.opts && (
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8 }}>
-              <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); } }}
+              <input ref={typedInputRef} className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); } }}
                 placeholder={`${card.pron} …`} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div>
+            </div></>
           )}
           <div style={{ marginTop: "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextDrill}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
@@ -3168,8 +3246,8 @@ function App() {
       {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: BL, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
-        <div style={{ opacity: vis ? 1 : 0, transition: "opacity 0.15s", flex: 1, display: "flex", flexDirection: "column" }}>
-          <div style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16 }}>
+        <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
+          <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16 }}>
             <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Build the sentence</div>
             <div style={{ fontSize: 14, color: TD, marginBottom: 16, lineHeight: 1.4 }}>"{card.en}"</div>
             <div style={{ minHeight: 52, padding: "12px 14px", borderRadius: 12, border: `2px dashed ${sbChecked ? (sbCorrect ? G : R) : B}`, background: "#0A0A0A44", display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
@@ -3378,13 +3456,13 @@ function App() {
         {failed.length === 0 && <div style={{ height: 16 }} />}
 
         <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 28 }}>
-          <div><div style={{ fontFamily: FN, fontSize: 48, color: G, fontWeight: 800 }}>{stats.c}</div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Correct</div></div>
+          <div><div style={{ fontFamily: FN, fontSize: 48, color: G, fontWeight: 800 }}><CountUp value={stats.c} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Correct</div></div>
           <div style={{ width: 1, background: B }} />
-          <div><div style={{ fontFamily: FN, fontSize: 48, color: R, fontWeight: 800 }}>{stats.w}</div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Wrong</div></div>
+          <div><div style={{ fontFamily: FN, fontSize: 48, color: R, fontWeight: 800 }}><CountUp value={stats.w} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Wrong</div></div>
         </div>
 
         {(stats.c + stats.w > 0) && <div style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${failed.length > 0 ? R : A}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", background: SH }}>
-          <div style={{ fontFamily: FN, fontSize: 30, color: failed.length > 0 ? R : A, fontWeight: 800 }}>{Math.round((stats.c / (stats.c + stats.w)) * 100)}%</div>
+          <div style={{ fontFamily: FN, fontSize: 30, color: failed.length > 0 ? R : A, fontWeight: 800 }}><CountUp value={Math.round((stats.c / (stats.c + stats.w)) * 100)} format={n => `${n}%`} /></div>
           <div style={{ fontSize: 10, color: TD, fontWeight: 600 }}>accuracy</div>
         </div>}
 

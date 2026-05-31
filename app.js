@@ -10083,6 +10083,73 @@ const ProgBar = React.memo(({
     transition: "width 0.35s ease-out"
   }
 })));
+function CountUp({
+  value,
+  duration = 700,
+  from = 0,
+  format
+}) {
+  const [d, setD] = useState(from);
+  const prev = useRef(from);
+  useEffect(() => {
+    const a = prev.current,
+      b = value;
+    prev.current = value;
+    const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || typeof b !== "number" || typeof a !== "number" || a === b) {
+      setD(b);
+      return;
+    }
+    let raf, t0;
+    const ease = p => 1 - Math.pow(1 - p, 3);
+    const step = t => {
+      if (!t0) t0 = t;
+      const p = Math.min(1, (t - t0) / duration);
+      setD(a + (b - a) * ease(p));
+      if (p < 1) raf = requestAnimationFrame(step);else setD(b);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [value, duration]);
+  const shown = typeof d === "number" ? Math.round(d) : d;
+  return format ? format(shown) : shown;
+}
+function UmlautBar({
+  onInsert
+}) {
+  const keys = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"];
+  return React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 6,
+      marginBottom: 8
+    }
+  }, keys.map(k => React.createElement("button", {
+    key: k,
+    type: "button",
+    className: "ad-uk",
+    "aria-label": `Insert ${k}`,
+    onPointerDown: e => {
+      e.preventDefault();
+      onInsert(k);
+    },
+    style: {
+      flex: "1 1 0",
+      minWidth: 34,
+      padding: "9px 0",
+      borderRadius: 9,
+      background: PAL.SH,
+      border: `1px solid ${PAL.B}`,
+      color: PAL.A,
+      fontSize: 16,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontFamily: "inherit",
+      transition: "transform .08s ease, background .15s ease, border-color .15s ease"
+    }
+  }, k)));
+}
 function App() {
   const [screen, setScreen] = useState("home");
   const [mode, setMode] = useState("vocab");
@@ -10101,6 +10168,7 @@ function App() {
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [vis, setVis] = useState(true);
+  const [feedback, setFeedback] = useState(null);
   const [showSetup, setShowSetup] = useState(false);
   const [setupCat, setSetupCat] = useState(null);
   const [setupMode, setSetupMode] = useState("vocab");
@@ -10157,6 +10225,8 @@ function App() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const inputRef = useRef(null);
   const priorLastSeenRef = useRef({});
+  const typedInputRef = useRef(null);
+  const feedbackTimerRef = useRef(null);
   const audioTimerRef = useRef(null);
   const audioPlayingRef = useRef(false);
   const wakeLockRef = useRef(null);
@@ -10615,7 +10685,29 @@ function App() {
     return due;
   }, [prog]);
   const gk = (card, cat, m) => `${m}::${card._cat || card.cat || cat}::${cardId(card)}`;
+  const triggerFeedback = kind => {
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    setFeedback(kind);
+    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 600);
+  };
+  const insertChar = ch => {
+    const el = typedInputRef.current;
+    if (!el) {
+      setInput(v => v + ch);
+      return;
+    }
+    const s = el.selectionStart ?? el.value.length;
+    const e = el.selectionEnd ?? el.value.length;
+    setInput(el.value.slice(0, s) + ch + el.value.slice(e));
+    requestAnimationFrame(() => {
+      try {
+        el.focus();
+        el.setSelectionRange(s + ch.length, s + ch.length);
+      } catch (err) {}
+    });
+  };
   const record = (correct, card, elapsed) => {
+    triggerFeedback(correct ? "correct" : "wrong");
     const key = gk(card, category, mode);
     const prev = normalizeEntry(prog[key]);
     const now = Date.now();
@@ -11198,6 +11290,7 @@ function App() {
     }
     navLockRef.current = true;
     setVis(false);
+    setFeedback(null);
     setTimeout(() => {
       setFlipped(false);
       setAnswered(false);
@@ -11234,6 +11327,7 @@ function App() {
     }
     navLockRef.current = true;
     setVis(false);
+    setFeedback(null);
     setTimeout(() => {
       setAnswered(false);
       setSel(null);
@@ -11280,6 +11374,7 @@ function App() {
     }
     navLockRef.current = true;
     setVis(false);
+    setFeedback(null);
     setTimeout(() => {
       const next = cards[Math.min(idx + 1, cards.length - 1)];
       if (next) setSbPool(sh([...next.correct]));
@@ -11446,6 +11541,7 @@ function App() {
   const FGRAD2 = "linear-gradient(145deg, #0A0A0A 0%, #180808 60%, #181200 100%)";
   const FLAG = `linear-gradient(90deg, #050505 0 33%, ${R} 33% 66%, ${A} 66%)`;
   const SOFT_PANEL = "linear-gradient(180deg, #171717 0%, #101010 100%)";
+  const cardCls = "ad-card-enter" + (vis ? feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "" : " is-out");
   const categoryIcons = {
     "Greetings & Basics": "hand",
     "Numbers & Time": "clock",
@@ -11949,6 +12045,8 @@ function App() {
         strokeDasharray: "2,3"
       }), linePath && React.createElement("path", {
         d: linePath,
+        pathLength: "1",
+        className: "ad-spark",
         fill: "none",
         stroke: A,
         strokeWidth: "1.5",
@@ -12292,8 +12390,23 @@ function App() {
         .ad-mastery-pop { animation: ad-mastery-pop 560ms ease-out; }
         .ad-mastery-burst { animation: ad-mastery-burst 620ms ease-out; }
         .ad-category-mastered { animation: ad-category-mastered 1600ms ease-in-out 2; }
+        @keyframes ad-shake { 10%,90%{transform:translateX(-2px)} 20%,80%{transform:translateX(3px)} 30%,50%,70%{transform:translateX(-6px)} 40%,60%{transform:translateX(6px)} }
+        @keyframes ad-pop { 0%{transform:scale(1)} 35%{transform:scale(1.045)} 100%{transform:scale(1)} }
+        @keyframes ad-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+        .ad-shake { animation: ad-shake 460ms cubic-bezier(.36,.07,.19,.97); }
+        .ad-pop { animation: ad-pop 420ms ease-out; }
+        .ad-card-enter { opacity: 1; transform: translateX(0); transition: opacity .18s ease, transform .26s cubic-bezier(.22,.61,.36,1); }
+        .ad-card-enter.is-out { opacity: 0; transform: translateX(26px); }
+        .ad-spark { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ad-draw 950ms ease-out forwards; }
+        .ad-input { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+        .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
+        .ad-uk:active { transform: translateY(1px) scale(.95); border-color: #FFCC00; }
+        .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark { animation: none; }
+          .ad-card-enter { transition: opacity .12s ease; }
+          .ad-card-enter.is-out { transform: none; }
+          .ad-spark { stroke-dashoffset: 0; }
         }
       `), showOnboarding && React.createElement("div", {
     style: {
@@ -13565,7 +13678,9 @@ function App() {
       color: T,
       fontWeight: 800
     }
-  }, dailyStats.streak), React.createElement("div", {
+  }, React.createElement(CountUp, {
+    value: dailyStats.streak
+  })), React.createElement("div", {
     style: {
       fontSize: 10,
       color: TD,
@@ -14269,14 +14384,15 @@ function App() {
     pct: (idx + 1) / cards.length * 100,
     color: rpt > 0 ? R : A
   }), mode === "production" ? React.createElement("div", {
+    className: cardCls,
     style: {
       flex: 1,
       display: "flex",
       flexDirection: "column",
-      opacity: vis ? 1 : 0,
-      transition: "opacity 0.15s"
+      opacity: vis ? 1 : 0
     }
   }, React.createElement("div", {
+    className: "ad-elev",
     style: {
       background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)",
       border: `1px solid ${A}22`,
@@ -14400,12 +14516,16 @@ function App() {
       paddingTop: 16,
       paddingBottom: "max(28px, env(safe-area-inset-bottom))"
     }
-  }, !answered ? React.createElement("div", {
+  }, !answered ? React.createElement(React.Fragment, null, React.createElement(UmlautBar, {
+    onInsert: insertChar
+  }), React.createElement("div", {
     style: {
       display: "flex",
       gap: 8
     }
   }, React.createElement("input", {
+    ref: typedInputRef,
+    className: "ad-input",
     value: input,
     onChange: e => setInput(e.target.value),
     onKeyDown: e => {
@@ -14436,7 +14556,7 @@ function App() {
       width: "auto",
       padding: "14px 20px"
     }
-  }, "\u2192")) : React.createElement(Btn, {
+  }, "\u2192"))) : React.createElement(Btn, {
     bg: SH,
     border: `1px solid ${B}`,
     onClick: nextCard
@@ -14470,6 +14590,7 @@ function App() {
       position: "relative"
     }
   }, React.createElement("div", {
+    className: "ad-elev",
     style: {
       position: "absolute",
       inset: 0,
@@ -14525,6 +14646,7 @@ function App() {
       opacity: 0.65
     }
   }, "Tap to reveal")), React.createElement("div", {
+    className: "ad-elev",
     style: {
       position: "absolute",
       inset: 0,
@@ -14718,14 +14840,15 @@ function App() {
     pct: (idx + 1) / cards.length * 100,
     color: rpt > 0 ? R : A
   }), React.createElement("div", {
+    className: cardCls,
     style: {
       opacity: vis ? 1 : 0,
-      transition: "opacity 0.15s",
       flex: 1,
       display: "flex",
       flexDirection: "column"
     }
   }, React.createElement("div", {
+    className: "ad-elev",
     style: {
       background: FGRAD,
       border: `1px solid ${A}22`,
@@ -15120,13 +15243,17 @@ function App() {
     }
   }, sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.opts[card.correctIdx]}`), SpeedBadge({
     ms: lastElapsed
-  }), CardStats()))), mode === "cloze" && !answered && React.createElement("div", {
+  }), CardStats()))), mode === "cloze" && !answered && React.createElement(React.Fragment, null, React.createElement(UmlautBar, {
+    onInsert: insertChar
+  }), React.createElement("div", {
     style: {
       display: "flex",
       gap: 8,
       marginBottom: 16
     }
   }, React.createElement("input", {
+    ref: typedInputRef,
+    className: "ad-input",
     value: input,
     onChange: e => setInput(e.target.value),
     onKeyDown: e => {
@@ -15157,13 +15284,17 @@ function App() {
       width: "auto",
       padding: "14px 20px"
     }
-  }, "\u2192")), mode === "imperativ" && !answered && React.createElement("div", {
+  }, "\u2192"))), mode === "imperativ" && !answered && React.createElement(React.Fragment, null, React.createElement(UmlautBar, {
+    onInsert: insertChar
+  }), React.createElement("div", {
     style: {
       display: "flex",
       gap: 8,
       marginBottom: 16
     }
   }, React.createElement("input", {
+    ref: typedInputRef,
+    className: "ad-input",
     value: input,
     onChange: e => setInput(e.target.value),
     onKeyDown: e => {
@@ -15209,7 +15340,7 @@ function App() {
       width: "auto",
       padding: "14px 20px"
     }
-  }, "\u2192")), mode === "listening" && !answered && card.opts && React.createElement("div", {
+  }, "\u2192"))), mode === "listening" && !answered && card.opts && React.createElement("div", {
     style: {
       display: "grid",
       gridTemplateColumns: "1fr",
@@ -15339,12 +15470,16 @@ function App() {
         textAlign: "center"
       }
     }, opt, isC ? " ✓" : wasS ? " ✗" : "");
-  })), mode === "verb" && !answered && !card.opts && React.createElement("div", {
+  })), mode === "verb" && !answered && !card.opts && React.createElement(React.Fragment, null, React.createElement(UmlautBar, {
+    onInsert: insertChar
+  }), React.createElement("div", {
     style: {
       display: "flex",
       gap: 8
     }
   }, React.createElement("input", {
+    ref: typedInputRef,
+    className: "ad-input",
     value: input,
     onChange: e => setInput(e.target.value),
     onKeyDown: e => {
@@ -15386,7 +15521,7 @@ function App() {
       width: "auto",
       padding: "14px 20px"
     }
-  }, "\u2192")), React.createElement("div", {
+  }, "\u2192"))), React.createElement("div", {
     style: {
       marginTop: "auto",
       paddingTop: 16,
@@ -15414,14 +15549,15 @@ function App() {
     pct: (idx + 1) / cards.length * 100,
     color: rpt > 0 ? R : BL
   }), React.createElement("div", {
+    className: cardCls,
     style: {
       opacity: vis ? 1 : 0,
-      transition: "opacity 0.15s",
       flex: 1,
       display: "flex",
       flexDirection: "column"
     }
   }, React.createElement("div", {
+    className: "ad-elev",
     style: {
       background: FGRAD,
       border: `1px solid ${A}22`,
@@ -16086,7 +16222,9 @@ function App() {
       color: G,
       fontWeight: 800
     }
-  }, stats.c), React.createElement("div", {
+  }, React.createElement(CountUp, {
+    value: stats.c
+  })), React.createElement("div", {
     style: {
       fontSize: 10,
       color: TD,
@@ -16106,7 +16244,9 @@ function App() {
       color: R,
       fontWeight: 800
     }
-  }, stats.w), React.createElement("div", {
+  }, React.createElement(CountUp, {
+    value: stats.w
+  })), React.createElement("div", {
     style: {
       fontSize: 10,
       color: TD,
@@ -16134,7 +16274,10 @@ function App() {
       color: failed.length > 0 ? R : A,
       fontWeight: 800
     }
-  }, Math.round(stats.c / (stats.c + stats.w) * 100), "%"), React.createElement("div", {
+  }, React.createElement(CountUp, {
+    value: Math.round(stats.c / (stats.c + stats.w) * 100),
+    format: n => `${n}%`
+  })), React.createElement("div", {
     style: {
       fontSize: 10,
       color: TD,

@@ -122,6 +122,21 @@ test("sessionMultiplier stays within documented bounds", () => {
   assert.ok(sessionMultiplier(undefined, "easy") > 0);
 });
 
+test("buildUmlautTolerant matches both spellings without nested groups", () => {
+  const { buildUmlautTolerant } = vm.runInContext("({ buildUmlautTolerant })", ctx);
+  const pat = buildUmlautTolerant("über");
+  assert.ok(new RegExp(pat, "i").test("über"));
+  assert.ok(new RegExp(pat, "i").test("ueber"));
+  assert.ok(!pat.includes("(?:(?:"), `nested groups in: ${pat}`);
+});
+
+test("highlightExample covers umlaut tails (Universität fully highlighted)", () => {
+  const { highlightExample } = vm.runInContext("({ highlightExample })", ctx);
+  const parts = highlightExample("Die Universität ist groß.", "die Universität");
+  const hl = parts.filter(p => p.hl).map(p => p.text).join("");
+  assert.ok(hl.includes("Universität"), `highlighted: "${hl}"`);
+});
+
 test("seedDueFirst takes at most half the session from the due set", () => {
   const pool = Array.from({ length: 20 }, (_, i) => ({ de: `w${i}` }));
   const dueSet = new Set(["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7"]);

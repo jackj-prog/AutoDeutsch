@@ -216,16 +216,15 @@ const STEM_ALTS = {
 // German words (assumed safe). Used only for vocab where inputs are controlled.
 function buildUmlautTolerant(term) {
   const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return escape(term)
-    .replace(/ä/gi, "(?:ä|ae)")
-    .replace(/ö/gi, "(?:ö|oe)")
-    .replace(/ü/gi, "(?:ü|ue)")
-    .replace(/ß/gi, "(?:ß|ss)")
-    .replace(/ae/gi, "(?:ae|ä)")
-    .replace(/oe/gi, "(?:oe|ö)")
-    .replace(/ue/gi, "(?:ue|ü)")
-    .replace(/ss/gi, "(?:ss|ß)");
+  // Single pass, so a replacement is never re-processed by a later rule (the old
+  // sequential version turned "ä" into nested groups via the "ae" rule).
+  const MAP = { "ä": "(?:ä|ae)", "ö": "(?:ö|oe)", "ü": "(?:ü|ue)", "ß": "(?:ß|ss)", "ae": "(?:ae|ä)", "oe": "(?:oe|ö)", "ue": "(?:ue|ü)", "ss": "(?:ss|ß)" };
+  return escape(term).replace(/ä|ö|ü|ß|ae|oe|ue|ss/gi, m => MAP[m.toLowerCase()] || m);
 }
+
+// Word-character tail that includes German letters — bare \w* stops at ä/ö/ü/ß,
+// cutting highlights short (e.g. "Universit" matched but "…ät" left plain).
+const DE_WORD_TAIL = "[\\wäöüßÄÖÜ]*";
 
 // Highlighter for the example-sentence panel. Given a German target (card.de) and an
 // example string, return [{text, hl}, ...] parts where `hl=true` denotes highlighted.
@@ -255,12 +254,12 @@ function highlightExample(ex, de) {
     const lc = w.toLowerCase();
     const alts = STEM_ALTS[lc];
     if (alts) {
-      for (const a of alts) patterns.push("\\b" + buildUmlautTolerant(a) + "\\w*");
+      for (const a of alts) patterns.push("\\b" + buildUmlautTolerant(a) + DE_WORD_TAIL);
     } else {
       // Generic stem: first 4 chars + any word-char tail
       const stemLen = Math.min(w.length, 4);
       const stem = w.slice(0, stemLen);
-      patterns.push("\\b" + buildUmlautTolerant(stem) + "\\w*");
+      patterns.push("\\b" + buildUmlautTolerant(stem) + DE_WORD_TAIL);
     }
   }
   if (patterns.length === 0) return [{ text: ex, hl: false }];
@@ -390,7 +389,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.09.1";
+const APP_VERSION = "2026.06.09.2";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).

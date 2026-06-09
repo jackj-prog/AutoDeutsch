@@ -1798,7 +1798,7 @@ function App() {
   const HintBtn = ({ hint }) => {
     if (!hint) return null;
     if (showHint) return (<div style={{ marginTop: 6, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, fontSize: 11, color: BL, lineHeight: 1.4, borderLeft: `3px solid ${BL}`, display: "flex", gap: 6, alignItems: "flex-start" }}><Icon name="target" size={13} style={{ marginTop: 1 }} /> <span>{hint}</span></div>);
-    return (<button onClick={() => setShowHint(true)} style={{ marginTop: 6, background: "none", border: `1px solid ${BL}44`, borderRadius: 8, padding: "4px 10px", color: BL, fontSize: 11, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="target" size={13} /> Show hint</button>);
+    return (<button onClick={() => setShowHint(true)} style={{ marginTop: 6, background: "none", border: `1px solid ${BL}44`, borderRadius: 8, padding: "7px 12px", color: BL, fontSize: 11, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="target" size={13} /> Show hint</button>);
   };
 
   // Per-card stats shown after answering
@@ -2059,6 +2059,7 @@ function App() {
         .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
         .ad-uk:active { transform: translateY(1px) scale(.95); border-color: #FFCC00; }
         .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
+        button:focus-visible, [role="button"]:focus-visible, input:focus-visible { outline: 2px solid #FFCC00AA; outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
           .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
@@ -2102,7 +2103,7 @@ function App() {
             <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", marginBottom: 8 }}>Preferred practice</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
               {[["vocab", "Recognition", "German to English", "book"], ["production", "Production", "English to German", "keyboard"], ["audio", "Audio mode", "Hands-free review", "headphones"]].map(([m, title, sub, icon]) => (
-                <button key={m} type="button" onClick={() => setOnboardingMode(m)} style={{ padding: "12px 12px", borderRadius: 11, border: `1px solid ${onboardingMode === m ? A : B}`, background: onboardingMode === m ? `${A}14` : "#0D0D0D", color: T, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, textAlign: "left", fontFamily: "inherit" }}>
+                <button key={m} type="button" onClick={() => setOnboardingMode(m)} style={{ padding: "12px 12px", borderRadius: 10, border: `1px solid ${onboardingMode === m ? A : B}`, background: onboardingMode === m ? `${A}14` : "#0D0D0D", color: T, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, textAlign: "left", fontFamily: "inherit" }}>
                   <IconBadge name={icon} size={30} color={onboardingMode === m ? A : TD} />
                   <span style={{ flex: 1 }}>
                     <span style={{ display: "block", fontSize: 13, fontWeight: 800 }}>{title}</span>
@@ -2176,7 +2177,7 @@ function App() {
                   </div>
                 </div>
                 <button onClick={() => setAudioIncludeExample(x => !x)} style={{ width: "100%", padding: "11px 12px", borderRadius: 10, fontSize: 12, fontWeight: 800, cursor: "pointer", background: audioIncludeExample ? `${A}22` : "#0A0A0A", color: audioIncludeExample ? A : TD, border: `1px solid ${audioIncludeExample ? A : B}`, textAlign: "left", marginBottom: 14 }}>
-                  {audioIncludeExample ? "On" : "Off"} - include example sentence
+                  Example sentence: {audioIncludeExample ? "On" : "Off"}
                 </button>
               </>
             )}
@@ -2426,7 +2427,7 @@ function App() {
                   <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
                   <span style={{ fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title}</span>
                   <span style={{ fontSize: 14, color: item.color, fontWeight: 800, lineHeight: 1 }}>{item.count}</span>
-                  {item.count > 0 && item.next && <span style={{ fontSize: 8.5, color: TD, lineHeight: 1, letterSpacing: 0.2 }}>{item.next}</span>}
+                  {item.count > 0 && item.next && <span style={{ fontSize: 9.5, color: TD, lineHeight: 1, letterSpacing: 0.2 }}>{item.next}</span>}
                 </button>
               ))}
             </div>
@@ -2484,7 +2485,7 @@ function App() {
             return (
               <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? G : B}`, borderRadius: 10, padding: "12px 11px 10px", minHeight: 112, textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, height: 2, width: `${pct}%`, background: A, opacity: 0.18, transition: "width 0.5s" }} />
-                {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 8, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
+                {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8, minWidth: 0 }}>
                   <IconBadge name={categoryIcons[cat] || "book"} size={27} color={done ? G : A} bg="#0A0A0A66" />
                   <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.16, fontWeight: 800, minWidth: 0 }}>{cat}</span>
@@ -2591,7 +2592,7 @@ function App() {
                     </div>
                     {card.exEn && <div style={{ fontSize: 11, color: TD, lineHeight: 1.45, marginTop: 5, opacity: 0.7 }}>{card.exEn}</div>}
                   </div>
-                ) : <button onClick={() => setShowEx(true)} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 10, cursor: "pointer", fontWeight: 600, opacity: 0.55, letterSpacing: 1.5, }}>Show example</button>}
+                ) : <button onClick={() => setShowEx(true)} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 11, cursor: "pointer", fontWeight: 600, opacity: 0.7, letterSpacing: 1.2, padding: "6px 8px", }}>Show example</button>}
               </>}
             </div>
             <div style={{ paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
@@ -2631,7 +2632,7 @@ function App() {
                       </div>
                       {card.exEn && <div style={{ fontSize: 11, color: TD, lineHeight: 1.45, marginTop: 5, opacity: 0.7 }}>{card.exEn}</div>}
                     </div>
-                  ) : flipped && <button onClick={e => { e.stopPropagation(); setShowEx(true); }} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 10, cursor: "pointer", fontWeight: 600, opacity: 0.55, letterSpacing: 1.5, }}>Show example</button>}
+                  ) : flipped && <button onClick={e => { e.stopPropagation(); setShowEx(true); }} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 11, cursor: "pointer", fontWeight: 600, opacity: 0.7, letterSpacing: 1.2, padding: "6px 8px", }}>Show example</button>}
                 </div>
               </div>
             </div>
@@ -2789,7 +2790,7 @@ function App() {
           )}
           {mode === "listening" && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
-              {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px 16px", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer", background: SH, border: `1px solid ${B}`, color: T, fontFamily: BD, textAlign: "left" }}>{opt}</button>)}
+              {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px 16px", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: BD, textAlign: "left" }}>{opt}</button>)}
             </div>
           )}
           {mode === "listening" && answered && card.opts && (
@@ -2801,7 +2802,7 @@ function App() {
           )}
           {mode === "article" && !answered && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-              {["der", "die", "das"].map((art, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, cursor: "pointer", background: SH, border: `1px solid ${B}`, color: T, fontFamily: FN }}>{art}</button>)}
+              {["der", "die", "das"].map((art, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: FN }}>{art}</button>)}
             </div>
           )}
           {mode === "article" && answered && (
@@ -2813,7 +2814,7 @@ function App() {
           )}
           {mode === "verb" && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px", borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: "pointer", background: SH, border: `1px solid ${B}`, color: T, fontFamily: FN }}>{opt}</button>)}
+              {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px", borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: FN }}>{opt}</button>)}
             </div>
           )}
           {mode === "verb" && answered && card.opts && (
@@ -3072,9 +3073,10 @@ function App() {
         </div>}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {failed.length > 0 ? <Btn bg={R} color="#FFF" onClick={startRepeat} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>
-            : <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("home")} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Weiter</Btn>}
-          <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ fontWeight: 600 }}>Back to Home</Btn>
+          {failed.length > 0 ? <>
+            <Btn bg={R} color="#FFF" onClick={startRepeat} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>
+            <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ fontWeight: 600 }}>Back to home</Btn>
+          </> : <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("home")} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Weiter</Btn>}
         </div>
       </div>}
     </div>

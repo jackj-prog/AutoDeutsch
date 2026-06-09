@@ -310,7 +310,7 @@ const V = {
     ex: "Einverstanden, machen wir das so.",
     exEn: "Agreed, let's do it that way.",
     diff: "medium"
-  },, {
+  }, {
     de: "Grüß Gott",
     en: "hello (southern Germany / Austria)",
     ex: "Grüß Gott, Herr Müller!",
@@ -951,7 +951,7 @@ const V = {
     ex: "Sie hat eine starke Persönlichkeit.",
     exEn: "She has a strong personality.",
     diff: "hard"
-  },, {
+  }, {
     de: "der Partner",
     en: "partner",
     ex: "Mein Partner arbeitet im Krankenhaus.",
@@ -1316,7 +1316,7 @@ const V = {
     ex: "Eine Flasche Wasser, bitte.",
     exEn: "A bottle of water, please.",
     diff: "easy"
-  },, {
+  }, {
     de: "die Mahlzeit",
     en: "meal",
     ex: "Guten Appetit und eine schöne Mahlzeit!",
@@ -1629,7 +1629,7 @@ const V = {
     exEn: "I brush twice daily with my toothbrush.",
     diff: "hard",
     hint: "Zahn (tooth) + Bürste (brush)"
-  },, {
+  }, {
     de: "das Wohnzimmer",
     en: "living room",
     ex: "Wir sitzen im Wohnzimmer.",
@@ -1934,7 +1934,7 @@ const V = {
     ex: "Beim Joggen schwitze ich viel.",
     exEn: "I sweat a lot when jogging.",
     diff: "medium"
-  },, {
+  }, {
     de: "die Grippe",
     en: "flu",
     ex: "Ich habe die Grippe.",
@@ -2235,7 +2235,7 @@ const V = {
     ex: "Die Straße ist sehr breit.",
     exEn: "The street is very wide.",
     diff: "easy"
-  },, {
+  }, {
     de: "hübsch",
     en: "pretty",
     ex: "Sie hat ein hübsches Kleid.",
@@ -2970,7 +2970,7 @@ const V = {
     ex: "Das Blatt ist grün.",
     exEn: "The leaf is green.",
     diff: "easy"
-  },, {
+  }, {
     de: "die Temperatur",
     en: "temperature",
     ex: "Die Temperatur fällt schnell.",
@@ -3314,7 +3314,7 @@ const V = {
     ex: "Ich mache drei Wochen Urlaub.",
     exEn: "I'm taking three weeks of holiday.",
     diff: "easy"
-  },, {
+  }, {
     de: "der Stau",
     en: "traffic jam",
     ex: "Wir stehen im Stau.",
@@ -3620,7 +3620,7 @@ const V = {
     ex: "Ein Paket ist für dich angekommen.",
     exEn: "A parcel has arrived for you.",
     diff: "easy"
-  },, {
+  }, {
     de: "die Mehrwertsteuer",
     en: "VAT / sales tax",
     ex: "Die Mehrwertsteuer ist schon im Preis.",
@@ -3929,7 +3929,7 @@ const V = {
     ex: "Der Film war sehr lustig.",
     exEn: "The film was very funny.",
     diff: "easy"
-  },, {
+  }, {
     de: "meiner Meinung nach",
     en: "in my opinion",
     ex: "Meiner Meinung nach ist das falsch.",
@@ -4234,7 +4234,7 @@ const V = {
     ex: "Räum dein Zimmer auf!",
     exEn: "Tidy your room!",
     diff: "medium"
-  },, {
+  }, {
     de: "spazieren gehen",
     en: "to go for a walk",
     ex: "Wir gehen jeden Abend spazieren.",
@@ -4607,7 +4607,7 @@ const V = {
     ex: "Ich mache ein Praktikum bei einer Firma.",
     exEn: "I'm doing an internship at a company.",
     diff: "hard"
-  },, {
+  }, {
     de: "sich bewerben",
     en: "to apply (for a job)",
     ex: "Ich bewerbe mich um die Stelle.",
@@ -4885,7 +4885,7 @@ const V = {
     ex: "Ich mag Obst, zum Beispiel Äpfel.",
     exEn: "I like fruit, for example apples.",
     diff: "medium"
-  },, {
+  }, {
     de: "zum Schluss",
     en: "finally / in the end",
     ex: "Zum Schluss haben wir Kaffee getrunken.",
@@ -5454,7 +5454,7 @@ const V = {
     ex: "Die Zeitung berichtet darüber.",
     exEn: "The newspaper reports on it.",
     diff: "medium"
-  },, {
+  }, {
     de: "der Fernsehsender",
     en: "TV channel",
     ex: "Welchen Fernsehsender schaust du gern?",
@@ -5757,7 +5757,7 @@ const V = {
     ex: "Wir sitzen am Lagerfeuer.",
     exEn: "We're sitting by the campfire.",
     diff: "hard"
-  },, {
+  }, {
     de: "das Tennis",
     en: "tennis",
     ex: "Ich spiele gern Tennis.",
@@ -6058,7 +6058,7 @@ const V = {
     ex: "Die Verbindung ist schlecht.",
     exEn: "The connection is bad.",
     diff: "medium"
-  },, {
+  }, {
     de: "die Maus",
     en: "mouse (computer)",
     ex: "Meine Maus funktioniert nicht.",

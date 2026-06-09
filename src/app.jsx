@@ -611,6 +611,7 @@ function App() {
   const [setupLevel, setSetupLevel] = useState("all");    // session level filter: "all" | A1 | A2 | B1
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
+  const [exportNudge, setExportNudge] = useState(false);  // home banner: time to back up progress
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -712,11 +713,35 @@ function App() {
     } catch (e) {
       setStorageOK(false);
     }
+    // Ask the browser to protect this origin's storage from eviction (months of
+    // progress live only in localStorage). Silently ignored where unsupported.
+    try { navigator.storage?.persist?.(); } catch (e) {}
     (async () => {
       let hasProgress = false;
       try {
         const r = localStorage.getItem("gfc-v7");
-        if (r) { hasProgress = true; setProg(JSON.parse(r)); }
+        if (r) {
+          hasProgress = true;
+          const obj = JSON.parse(r);
+          setProg(obj);
+          // Backup nudge: meaningful progress that hasn't been exported (or snoozed) for 14+ days
+          try {
+            const sinceMark = Date.now() - Math.max(
+              parseInt(localStorage.getItem("gfc-meta-export") || "0", 10) || 0,
+              parseInt(localStorage.getItem("gfc-meta-export-snooze") || "0", 10) || 0
+            );
+            if (Object.keys(obj).length >= 40 && sinceMark > 14 * 86400000) setExportNudge(true);
+          } catch (e2) {}
+        }
+      } catch (e) {
+        // Main blob unreadable (corrupted write, quota kill mid-write) — fall back to
+        // the daily last-good snapshot rather than silently starting from zero.
+        try {
+          const b = localStorage.getItem("gfc-v7-backup");
+          if (b) { hasProgress = true; setProg(JSON.parse(b)); setSaveStatus("Restored from backup"); }
+        } catch (e2) {}
+      }
+      try {
         const kn = localStorage.getItem("gfc-known-v7");
         if (kn) { const arr = JSON.parse(kn); if (Array.isArray(arr)) setKnown(new Set(arr)); }
       } catch (e) {}
@@ -787,26 +812,42 @@ function App() {
   // can grow to ~200KB. Writes less often during active sessions, flushes on page leave.
   const saveTimer = useRef(null);
   const pendingProgRef = useRef(null);
+  // Once per day, before the first overwrite, copy the current (known-good) blob to a
+  // backup key. If a later write corrupts gfc-v7, load() falls back to this snapshot —
+  // worst case loses one day of progress instead of everything.
+  const snapshotProgOnce = useCallback(() => {
+    try {
+      const today = todayKey();
+      if (localStorage.getItem("gfc-v7-backup-date") === today) return;
+      const cur = localStorage.getItem("gfc-v7");
+      if (cur) {
+        localStorage.setItem("gfc-v7-backup", cur);
+        localStorage.setItem("gfc-v7-backup-date", today);
+      }
+    } catch (e) {}
+  }, []);
   const save = useCallback(p => {
     pendingProgRef.current = p;
     setSaveStatus("Saving locally...");
     if (saveTimer.current) return; // already scheduled
     saveTimer.current = setTimeout(() => {
+      snapshotProgOnce();
       try { localStorage.setItem("gfc-v7", JSON.stringify(pendingProgRef.current)); setSaveStatus("Saved locally"); } catch (e) { setSaveStatus("Storage blocked"); }
       saveTimer.current = null;
       pendingProgRef.current = null;
     }, 400);
-  }, []);
+  }, [snapshotProgOnce]);
   const flushProg = useCallback(() => {
     if (saveTimer.current) {
       clearTimeout(saveTimer.current);
       saveTimer.current = null;
     }
     if (pendingProgRef.current) {
+      snapshotProgOnce();
       try { localStorage.setItem("gfc-v7", JSON.stringify(pendingProgRef.current)); setSaveStatus("Saved locally"); } catch (e) { setSaveStatus("Storage blocked"); }
       pendingProgRef.current = null;
     }
-  }, []);
+  }, [snapshotProgOnce]);
   const saveDaily = useCallback(d => { try { localStorage.setItem("gfc-daily-v7", JSON.stringify(d)); setSaveStatus("Saved locally"); } catch (e) { setSaveStatus("Storage blocked"); } }, []);
   const saveLast = useCallback(ls => { try { localStorage.setItem("gfc-last-v7", JSON.stringify(ls)); } catch (e) {} }, []);
   // Mark/unmark a vocab word as known. Known words are kept out of session pools but their
@@ -935,6 +976,7 @@ function App() {
       schemaVersion: "v7",
       exportedAt: new Date().toISOString(),
       prog, dailyStats, lastSession, dailyGoal, trendStats,
+      known: [...known],
     };
     try {
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -944,10 +986,12 @@ function App() {
       a.download = `autodeutsch-${todayKey()}.json`;
       document.body.appendChild(a); a.click();
       setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+      try { localStorage.setItem("gfc-meta-export", String(Date.now())); } catch (e) {}
+      setExportNudge(false);
     } catch (e) {
       setImportError("Export failed: " + (e.message || "unknown error"));
     }
-  }, [prog, dailyStats, lastSession, dailyGoal, trendStats]);
+  }, [prog, dailyStats, lastSession, dailyGoal, trendStats, known]);
 
   // Import progress from a user-selected JSON file; merges by keeping the higher box / attempts
   const importData = useCallback((file) => {
@@ -966,6 +1010,14 @@ function App() {
           if (!existing || incoming.stats.attempts > existing.stats.attempts) merged[k] = v;
         });
         setProg(merged); save(merged); flushProg();
+        if (Array.isArray(data.known)) {
+          // Union: a word marked known on either device stays known
+          setKnown(prev => {
+            const next = new Set([...prev, ...data.known.filter(k => typeof k === "string")]);
+            try { localStorage.setItem("gfc-known-v7", JSON.stringify([...next])); } catch (e) {}
+            return next;
+          });
+        }
         if (data.dailyStats && data.dailyStats.date) {
           // Adopt the higher streak, keep today's count
           const today = todayKey();
@@ -2526,6 +2578,20 @@ function App() {
           </div>
         </div>
         {ProgressHub()}
+
+        {/* Backup nudge — progress lives only in this browser's storage */}
+        {exportNudge && (
+          <div style={{ background: SH, border: `1px solid ${A}44`, borderRadius: 12, padding: "12px 14px", marginTop: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 12, color: T, fontWeight: 800 }}>Back up your progress</div>
+              <div style={{ fontSize: 10.5, color: TD, marginTop: 2, lineHeight: 1.35 }}>Everything is stored only on this device. Save a copy.</div>
+            </div>
+            <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+              <button type="button" onClick={exportData} style={{ background: A, color: "#0A0A0A", border: "none", borderRadius: 9, padding: "8px 12px", fontSize: 11, fontWeight: 800, cursor: "pointer" }}>Export</button>
+              <button type="button" onClick={() => { try { localStorage.setItem("gfc-meta-export-snooze", String(Date.now())); } catch (e) {} setExportNudge(false); }} style={{ background: "transparent", color: TD, border: `1px solid ${B}`, borderRadius: 9, padding: "8px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Later</button>
+            </div>
+          </div>
+        )}
 
         {/* Library */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>

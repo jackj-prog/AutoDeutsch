@@ -389,7 +389,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.09.3";
+const APP_VERSION = "2026.06.09.4";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1831,7 +1831,7 @@ function App() {
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
-  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile" };
+  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "briefcase" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
   // Shown under the queue total so the badge number and the session size can't contradict.
   const nextBatchLabel = (resolved) => {

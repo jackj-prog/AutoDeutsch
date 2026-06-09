@@ -389,7 +389,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.09.2";
+const APP_VERSION = "2026.06.09.3";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -610,7 +610,6 @@ function App() {
   const [setupLevel, setSetupLevel] = useState("all");    // session level filter: "all" | A1 | A2 | B1
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
-  const [exportNudge, setExportNudge] = useState(false);  // home banner: time to back up progress
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -719,19 +718,7 @@ function App() {
       let hasProgress = false;
       try {
         const r = localStorage.getItem("gfc-v7");
-        if (r) {
-          hasProgress = true;
-          const obj = JSON.parse(r);
-          setProg(obj);
-          // Backup nudge: meaningful progress that hasn't been exported (or snoozed) for 14+ days
-          try {
-            const sinceMark = Date.now() - Math.max(
-              parseInt(localStorage.getItem("gfc-meta-export") || "0", 10) || 0,
-              parseInt(localStorage.getItem("gfc-meta-export-snooze") || "0", 10) || 0
-            );
-            if (Object.keys(obj).length >= 40 && sinceMark > 14 * 86400000) setExportNudge(true);
-          } catch (e2) {}
-        }
+        if (r) { hasProgress = true; setProg(JSON.parse(r)); }
       } catch (e) {
         // Main blob unreadable (corrupted write, quota kill mid-write) — fall back to
         // the daily last-good snapshot rather than silently starting from zero.
@@ -985,8 +972,6 @@ function App() {
       a.download = `autodeutsch-${todayKey()}.json`;
       document.body.appendChild(a); a.click();
       setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-      try { localStorage.setItem("gfc-meta-export", String(Date.now())); } catch (e) {}
-      setExportNudge(false);
     } catch (e) {
       setImportError("Export failed: " + (e.message || "unknown error"));
     }
@@ -1846,7 +1831,7 @@ function App() {
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
-  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Amt & Bürokratie": "briefcase", "Wohnen & Mieten": "sofa", "Bank & Geld": "cart", "Auto & Verkehr": "map", "Kochen & Küche": "utensils", "Redewendungen & Alltag": "smile" };
+  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
   // Shown under the queue total so the badge number and the session size can't contradict.
   const nextBatchLabel = (resolved) => {
@@ -2577,20 +2562,6 @@ function App() {
           </div>
         </div>
         {ProgressHub()}
-
-        {/* Backup nudge — progress lives only in this browser's storage */}
-        {exportNudge && (
-          <div style={{ background: SH, border: `1px solid ${A}44`, borderRadius: 12, padding: "12px 14px", marginTop: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 12, color: T, fontWeight: 800 }}>Back up your progress</div>
-              <div style={{ fontSize: 10.5, color: TD, marginTop: 2, lineHeight: 1.35 }}>Everything is stored only on this device. Save a copy.</div>
-            </div>
-            <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-              <button type="button" onClick={exportData} style={{ background: A, color: "#0A0A0A", border: "none", borderRadius: 9, padding: "8px 12px", fontSize: 11, fontWeight: 800, cursor: "pointer" }}>Export</button>
-              <button type="button" onClick={() => { try { localStorage.setItem("gfc-meta-export-snooze", String(Date.now())); } catch (e) {} setExportNudge(false); }} style={{ background: "transparent", color: TD, border: `1px solid ${B}`, borderRadius: 9, padding: "8px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Later</button>
-            </div>
-          </div>
-        )}
 
         {/* Library */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>

@@ -184,7 +184,7 @@ const V = {
       {de:"die Einstellung",en:"setting",ex:"Ändere die Einstellungen im Menü.",exEn:"Change the settings in the menu.",diff:"medium"},
       {de:"drahtlos",en:"wireless",ex:"Die Verbindung ist drahtlos.",exEn:"The connection is wireless.",diff:"medium"}
     ],
-  "Amt & Bürokratie": [
+  "Admin & Bureaucracy": [
     {de:"das Formular",en:"form",ex:"Füllen Sie bitte das Formular aus.",exEn:"Please fill out the form.",diff:"easy",level:"A2"},
     {de:"das Amt",en:"public office",ex:"Ich muss morgen zum Amt gehen.",exEn:"I have to go to the public office tomorrow.",diff:"easy",level:"A2"},
     {de:"die Behörde",en:"public authority",ex:"Die Behörde hat noch nicht geantwortet.",exEn:"The authority hasn't replied yet.",diff:"medium",level:"B1"},
@@ -222,7 +222,7 @@ const V = {
     {de:"ablaufen",en:"to expire",ex:"Mein Pass läuft nächsten Monat ab.",exEn:"My passport expires next month.",diff:"medium",level:"B1",hint:"separable: er läuft … ab"},
     {de:"der Nachweis",en:"proof / evidence",ex:"Als Nachweis reicht eine Kopie des Vertrags.",exEn:"A copy of the contract is sufficient as proof.",diff:"hard",level:"B1"}
   ],
-  "Wohnen & Mieten": [
+  "Housing & Renting": [
     {de:"die Miete",en:"rent",ex:"Die Miete ist am Ersten des Monats fällig.",exEn:"The rent is due on the first of the month.",diff:"easy",level:"A2"},
     {de:"mieten",en:"to rent",ex:"Wir mieten eine Wohnung in der Stadt.",exEn:"We're renting a flat in the city.",diff:"easy",level:"A2"},
     {de:"vermieten",en:"to rent out",ex:"Sie vermietet ihr Zimmer an Studenten.",exEn:"She rents her room out to students.",diff:"medium",level:"B1"},
@@ -262,7 +262,7 @@ const V = {
     {de:"die Einrichtung",en:"furnishings / interior",ex:"Die Einrichtung ist modern und hell.",exEn:"The furnishings are modern and bright.",diff:"hard",level:"B1"},
     {de:"gemütlich",en:"cosy",ex:"Das Wohnzimmer ist klein, aber gemütlich.",exEn:"The living room is small but cosy.",diff:"easy",level:"A2"}
   ],
-  "Bank & Geld": [
+  "Banking & Finance": [
     {de:"das Girokonto",en:"current account",ex:"Das Girokonto ist für Studenten kostenlos.",exEn:"The current account is free for students.",diff:"medium",level:"B1"},
     {de:"eröffnen",en:"to open (an account)",ex:"Sie hat letzte Woche ein Konto eröffnet.",exEn:"She opened an account last week.",diff:"medium",level:"B1"},
     {de:"überweisen",en:"to transfer (money)",ex:"Ich überweise dir das Geld heute Abend.",exEn:"I'll transfer you the money this evening.",diff:"medium",level:"A2"},
@@ -293,7 +293,7 @@ const V = {
     {de:"zurückzahlen",en:"to pay back",ex:"Ich zahle dir das Geld morgen zurück.",exEn:"I'll pay you back the money tomorrow.",diff:"medium",level:"A2",hint:"separable"},
     {de:"überziehen",en:"to overdraw",ex:"Ich habe mein Konto schon wieder überzogen.",exEn:"I've overdrawn my account again.",diff:"hard",level:"B1"}
   ],
-  "Auto & Verkehr": [
+  "Driving & Traffic": [
     {de:"der Kreisverkehr",en:"roundabout",ex:"Im Kreisverkehr hat man meistens Vorfahrt.",exEn:"In a roundabout you usually have right of way.",diff:"hard",level:"B1"},
     {de:"die Einbahnstraße",en:"one-way street",ex:"Achtung, das ist eine Einbahnstraße!",exEn:"Careful, that's a one-way street!",diff:"medium",level:"B1"},
     {de:"der Fußgänger",en:"pedestrian",ex:"Fußgänger haben hier Vorrang.",exEn:"Pedestrians have priority here.",diff:"medium",level:"A2"},
@@ -331,7 +331,7 @@ const V = {
     {de:"der Verkehrsunfall",en:"traffic accident",ex:"Der Verkehrsunfall passierte bei Regen.",exEn:"The traffic accident happened in the rain.",diff:"hard",level:"B1"},
     {de:"die Spur",en:"lane",ex:"Wechsle auf die linke Spur.",exEn:"Change to the left lane.",diff:"hard",level:"B1",hint:"die Spur wechseln = to change lanes"}
   ],
-  "Kochen & Küche": [
+  "Cooking & Kitchen": [
     {de:"braten",en:"to fry / roast",ex:"Ich brate das Fleisch in der Pfanne.",exEn:"I'm frying the meat in the pan.",diff:"medium",level:"A2",hint:"strong verb: brät, briet, hat gebraten"},
     {de:"der Backofen",en:"oven",ex:"Der Kuchen ist seit vierzig Minuten im Backofen.",exEn:"The cake has been in the oven for forty minutes.",diff:"easy",level:"A2"},
     {de:"die Zutat",en:"ingredient",ex:"Wir haben alle Zutaten für den Kuchen.",exEn:"We have all the ingredients for the cake.",diff:"medium",level:"A2"},
@@ -364,7 +364,7 @@ const V = {
     {de:"vegetarisch",en:"vegetarian",ex:"Gibt es auch ein vegetarisches Gericht?",exEn:"Is there a vegetarian dish too?",diff:"easy",level:"A2"},
     {de:"satt",en:"full (after eating)",ex:"Danke, ich bin wirklich satt.",exEn:"Thanks, I'm really full.",diff:"easy",level:"A2"}
   ],
-  "Redewendungen & Alltag": [
+  "Idioms & Slang": [
     {de:"Das ist mir egal",en:"I don't mind / I don't care",ex:"Pizza oder Pasta? Das ist mir egal.",exEn:"Pizza or pasta? I don't mind.",diff:"easy",level:"A2"},
     {de:"Das ist mir Wurst",en:"I couldn't care less",ex:"Was die Leute denken, ist mir Wurst.",exEn:"What people think — I couldn't care less.",diff:"medium",level:"B1",hint:"literally: 'that's sausage to me'"},
     {de:"die Nase voll haben",en:"to be fed up",ex:"Ich habe die Nase voll von dem Regen.",exEn:"I'm fed up with the rain.",diff:"medium",level:"B1",hint:"literally: 'to have the nose full'"},

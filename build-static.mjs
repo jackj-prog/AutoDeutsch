@@ -1,31 +1,27 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import vm from "node:vm";
+import { loadData, validateData } from "./scripts/validate-data.mjs";
 
 const BABEL_URL = "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js";
 const INDEX_FILE = "index.html";
 const SOURCE_FILE = "src/app.jsx";
+const DATA_SOURCE = "src/data.js";
 const OUTPUT_FILE = "app.js";
+const DATA_OUTPUT = "data.js";
 
-const index = await readFile(INDEX_FILE, "utf8");
-let source;
-
-const inlineAppRe = /\s*<script type="text\/babel">\r?\n([\s\S]*?)\r?\n\s*<\/script>/;
-const builtAppRe = /\r?\n\s*<script src="app\.js" integrity="sha512-[^"]+"><\/script>/;
-
-try {
-  source = await readFile(SOURCE_FILE, "utf8");
-} catch {
-  const match = index.match(inlineAppRe);
-  if (!match) throw new Error("Could not find inline Babel app source in index.html");
-  source = match[1];
-  await mkdir("src", { recursive: true });
-  await writeFile(SOURCE_FILE, source, "utf8");
+// ── 1. Validate content before anything ships ──
+const data = await loadData();
+const { errors, warnings, counts } = validateData(data);
+warnings.forEach(w => console.warn(`  warn: ${w}`));
+if (errors.length) {
+  errors.forEach(e => console.error(`  ERROR: ${e}`));
+  throw new Error(`Content validation failed with ${errors.length} error(s) — not building.`);
 }
+console.log(`Content OK: ${counts.vocab} vocab · ${counts.cloze} cloze · ${counts.verbs} verbs · ${counts.sentences} sentences · ${counts.dialogues} dialogues · ${counts.imperatives} imperatives`);
 
-// Babel: prefer the pinned local copy (npm install) so builds work offline;
-// fall back to the CDN only if node_modules is absent.
+// ── 2. Babel: prefer the pinned local copy (offline builds); fall back to CDN ──
 let Babel;
 try {
   const require = createRequire(import.meta.url);
@@ -33,39 +29,41 @@ try {
   console.log("Using local @babel/standalone");
 } catch {
   console.log("Local @babel/standalone not found, fetching from CDN…");
-  const babelResponse = await fetch(BABEL_URL);
-  if (!babelResponse.ok) throw new Error(`Could not download Babel: ${babelResponse.status}`);
-  const babelCode = await babelResponse.text();
-  const context = { console };
-  context.window = context;
-  context.self = context;
-  context.globalThis = context;
-  vm.createContext(context);
-  vm.runInContext(babelCode, context);
-  Babel = context.Babel;
+  const res = await fetch(BABEL_URL);
+  if (!res.ok) throw new Error(`Could not download Babel: ${res.status}`);
+  const ctx = { console };
+  ctx.window = ctx; ctx.self = ctx; ctx.globalThis = ctx;
+  vm.createContext(ctx);
+  vm.runInContext(await res.text(), ctx);
+  Babel = ctx.Babel;
 }
 
+// ── 3. Compile the engine (compact output ≈ one third smaller, names intact) ──
+const source = await readFile(SOURCE_FILE, "utf8");
 const output = Babel.transform(source, {
   presets: ["react"],
   comments: false,
-  compact: false,
+  compact: true,
 }).code + "\n";
-
 await writeFile(OUTPUT_FILE, output, "utf8");
 
-const appHash = createHash("sha512").update(output).digest("base64");
-const appScript = `\n  <script src="app.js" integrity="sha512-${appHash}"></script>`;
-const withoutBabelCdn = index.replace(/\r?\n\s*<script[^>]+babel-standalone\/7\.23\.9\/babel\.min\.js[^>]*><\/script>/, "");
-let nextIndex = withoutBabelCdn;
-if (inlineAppRe.test(nextIndex)) {
-  nextIndex = nextIndex.replace(inlineAppRe, appScript);
-} else if (builtAppRe.test(nextIndex)) {
-  nextIndex = nextIndex.replace(builtAppRe, appScript);
-} else {
-  throw new Error("Could not find app script tag in index.html");
-}
+// ── 4. Content ships verbatim (plain JS, no JSX) so it stays readable/diffable ──
+const dataJs = await readFile(DATA_SOURCE, "utf8");
+await writeFile(DATA_OUTPUT, dataJs, "utf8");
 
-await writeFile(INDEX_FILE, nextIndex, "utf8");
+// ── 5. Refresh both SRI hashes in index.html (data.js must load before app.js) ──
+const sri = (s) => createHash("sha512").update(s).digest("base64");
+const appTag = `  <script src="app.js" integrity="sha512-${sri(output)}"></script>`;
+const dataTag = `  <script src="data.js" integrity="sha512-${sri(dataJs)}"></script>`;
 
-console.log(`Wrote ${OUTPUT_FILE}`);
-console.log("Updated index.html to load precompiled app.js");
+let index = await readFile(INDEX_FILE, "utf8");
+const appRe = /[ \t]*<script src="app\.js" integrity="sha512-[^"]+"><\/script>/;
+const dataRe = /[ \t]*<script src="data\.js" integrity="sha512-[^"]+"><\/script>/;
+if (!appRe.test(index)) throw new Error("Could not find the app.js script tag in index.html");
+index = dataRe.test(index)
+  ? index.replace(dataRe, dataTag).replace(appRe, appTag)
+  : index.replace(appRe, `${dataTag}\n${appTag}`);
+await writeFile(INDEX_FILE, index, "utf8");
+
+console.log(`Wrote ${OUTPUT_FILE} (${(output.length / 1024).toFixed(0)} KB) and ${DATA_OUTPUT} (${(dataJs.length / 1024).toFixed(0)} KB)`);
+console.log("Updated index.html SRI hashes");

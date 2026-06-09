@@ -1,9 +1,10 @@
-const CACHE_NAME = 'autodeutsch-v33';
+const CACHE_NAME = 'autodeutsch-v34';
 
 const CORE_ASSETS = [
   './',
   './index.html',
   './app.js',
+  './data.js',
   './manifest.json',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png',

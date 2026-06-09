@@ -7,6 +7,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
+// Content loads first (separate classic script in the browser), engine second.
+const dataCode = await readFile(new URL("../data.js", import.meta.url), "utf8");
 const code = await readFile(new URL("../app.js", import.meta.url), "utf8");
 
 const noop = () => {};
@@ -26,6 +28,7 @@ const ctx = {
 ctx.window = ctx;
 ctx.self = ctx;
 vm.createContext(ctx);
+vm.runInContext(dataCode, ctx);
 vm.runInContext(code, ctx);
 
 // Top-level const/function bindings live in the context's global scope; a second

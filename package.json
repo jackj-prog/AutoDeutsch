@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node build-static.mjs",
     "validate": "node scripts/validate-data.mjs",
-    "test": "node --test tests/"
+    "test": "node --test"
   },
   "devDependencies": {
     "@babel/standalone": "7.23.9"

@@ -1,0 +1,133 @@
+// Unit tests for the pure engine functions that encode learning behavior.
+// The app ships as one compiled classic script (app.js) with no exports, so we
+// evaluate it in a vm sandbox with just enough browser/React surface stubbed for
+// top-level execution, then harvest the functions out of the context.
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import vm from "node:vm";
+
+const code = await readFile(new URL("../app.js", import.meta.url), "utf8");
+
+const noop = () => {};
+const ReactStub = new Proxy(
+  { Component: class {}, memo: f => f, createElement: () => null, Fragment: Symbol("Fragment") },
+  { get: (t, k) => (k in t ? t[k] : noop) }
+);
+const ctx = {
+  console,
+  React: ReactStub,
+  ReactDOM: { createRoot: () => ({ render: noop }) },
+  document: { getElementById: () => ({}), addEventListener: noop, createElement: () => ({}) },
+  localStorage: { getItem: () => null, setItem: noop, removeItem: noop },
+  navigator: { userAgent: "test" },
+  setTimeout, clearTimeout, setInterval, clearInterval,
+};
+ctx.window = ctx;
+ctx.self = ctx;
+vm.createContext(ctx);
+vm.runInContext(code, ctx);
+
+// Top-level const/function bindings live in the context's global scope; a second
+// script in the same context can read them even though they aren't on globalThis.
+const api = vm.runInContext(
+  "({ checkMatch, within1Edit, normalize, nextBox, todayKey, weightedSelect, sessionMultiplier, seedDueFirst, SRS_INTERVALS })",
+  ctx
+);
+const { checkMatch, within1Edit, normalize, nextBox, todayKey, weightedSelect, sessionMultiplier, seedDueFirst, SRS_INTERVALS } = api;
+
+const DAY = 86400000;
+
+test("normalize folds umlauts/ß and strips punctuation", () => {
+  assert.equal(normalize("Tschüss!"), "tschuess");
+  assert.equal(normalize("GROSS"), normalize("groß"));
+});
+
+test("within1Edit accepts one insertion/deletion/substitution, rejects two", () => {
+  assert.equal(within1Edit("hallo", "hallo"), true);
+  assert.equal(within1Edit("halo", "hallo"), true);   // insertion
+  assert.equal(within1Edit("halllo", "hallo"), true); // deletion
+  assert.equal(within1Edit("hallo", "hello"), true);  // substitution
+  assert.equal(within1Edit("hallo", "heLLo".toLowerCase()), true);
+  assert.equal(within1Edit("haus", "maus2"), false);  // sub + insert
+  assert.equal(within1Edit("ab", "abcd"), false);     // length diff 2
+});
+
+test("checkMatch: exact matches, including umlaut folding and / alternatives", () => {
+  assert.equal(checkMatch("neun", "neun"), "exact");
+  assert.equal(checkMatch("Tschuess", "Tschüss"), "exact"); // ü folds to "ue"
+  assert.equal(checkMatch("Tschuss", "Tschüss"), "close");  // missing the e = one edit
+  assert.equal(checkMatch("gerne", "gern / gerne"), "exact");
+});
+
+test("checkMatch: short-word near-misses are wrong, not close (different words)", () => {
+  assert.equal(checkMatch("neue", "neun"), "wrong");
+  assert.equal(checkMatch("rat", "rot"), "wrong");
+  assert.equal(checkMatch("vier", "Bier"), "wrong");
+  assert.equal(checkMatch("see", "Tee"), "wrong");
+});
+
+test("checkMatch: 5+ char targets tolerate one typo as close, per alternative", () => {
+  assert.equal(checkMatch("hallu", "Hallo"), "close");
+  assert.equal(checkMatch("niemal", "niemals / nie"), "close");
+  assert.equal(checkMatch("xyzzy", "Hallo"), "wrong");
+});
+
+test("nextBox: wrong always demotes one box, floored at 0", () => {
+  const now = Date.now();
+  assert.equal(nextBox(3, false, now - 10 * DAY, now), 2);
+  assert.equal(nextBox(0, false, now - 10 * DAY, now), 0);
+});
+
+test("nextBox: first-ever correct answer promotes", () => {
+  assert.equal(nextBox(0, true, null, Date.now()), 1);
+});
+
+test("nextBox: same-day correct repeat does NOT promote (cram guard)", () => {
+  const now = Date.now();
+  assert.equal(nextBox(2, true, now - 60_000, now), 2);        // a minute later
+  assert.equal(nextBox(2, true, now - 0.5 * DAY, now), 2);      // later the same day (interval 4d)
+});
+
+test("nextBox: correct on/after the due date promotes, capped at 5", () => {
+  const now = Date.now();
+  assert.equal(nextBox(1, true, now - SRS_INTERVALS[1] * DAY, now), 2);
+  assert.equal(nextBox(1, true, now - 3 * DAY, now), 2);
+  assert.equal(nextBox(5, true, now - 31 * DAY, now), 5);
+});
+
+test("todayKey formats as YYYY-MM-DD", () => {
+  assert.equal(todayKey(new Date(2026, 0, 5)), "2026-01-05");
+  assert.match(todayKey(), /^\d{4}-\d{2}-\d{2}$/);
+});
+
+test("weightedSelect returns unique cards from the pool, capped at count", () => {
+  const pool = Array.from({ length: 30 }, (_, i) => ({ de: `w${i}`, diff: i % 3 === 0 ? "hard" : "easy" }));
+  const out = weightedSelect(pool, 10, () => 1);
+  assert.equal(out.length, 10);
+  assert.equal(new Set(out.map(c => c.de)).size, 10);
+  out.forEach(c => assert.ok(pool.includes(c)));
+  assert.equal(weightedSelect(pool.slice(0, 4), 10, () => 1).length, 4);
+});
+
+test("sessionMultiplier stays within documented bounds", () => {
+  const entry = { stats: { attempts: 10, correct: 3, incorrect: 7, avgTime: 20000, timedAttempts: 3 }, srs: { box: 0 } };
+  for (const mode of ["easy", "hard", "mixed"]) {
+    const m = sessionMultiplier(entry, mode);
+    assert.ok(typeof m === "number" && m >= 0.3 && m <= 2.5, `${mode} → ${m}`);
+  }
+  assert.ok(sessionMultiplier(undefined, "easy") > 0);
+});
+
+test("seedDueFirst takes at most half the session from the due set", () => {
+  const pool = Array.from({ length: 20 }, (_, i) => ({ de: `w${i}` }));
+  const dueSet = new Set(["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7"]);
+  const { seeded, rest } = seedDueFirst(pool, 10, c => dueSet.has(c.de));
+  assert.equal(seeded.length, 5); // ceil(10/2), 8 available
+  seeded.forEach(c => assert.ok(dueSet.has(c.de)));
+  assert.equal(rest.length, 12);
+  rest.forEach(c => assert.ok(!dueSet.has(c.de)));
+  // Fewer due than half → take them all
+  const few = seedDueFirst(pool, 10, c => c.de === "w3");
+  assert.equal(few.seeded.length, 1);
+});

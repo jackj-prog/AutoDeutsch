@@ -762,6 +762,16 @@ function sessionMultiplier(entry, diffMode) {
   return Math.min(mult, 2.5);
 }
 
+// Partition a session pool into due / not-yet-due and pre-select up to half the session
+// from the due set. Ordinary practice then services the SRS queue automatically instead
+// of leaving reviews to the Due button alone; the other half stays fresh material.
+function seedDueFirst(pool, count, isDue) {
+  const due = [], rest = [];
+  pool.forEach(c => (isDue(c) ? due : rest).push(c));
+  const seeded = sh(due).slice(0, Math.min(due.length, Math.ceil(count / 2)));
+  return { seeded, rest };
+}
+
 function weightedSelect(pool, count, getMultiplier) {
   const weighted = [];
   pool.forEach(c => {
@@ -1805,12 +1815,20 @@ function App() {
       setCategory(isAll ? "All Categories" : cat);
       const pool = isAll ? Object.entries(V).flatMap(([c, ws]) => ws.map(w => ({ ...w, _cat: c }))) : V[cat].map(w => ({ ...w, _cat: cat }));
       const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
-      setCards(weightedSelect(pool, count, getMult)); setScreen("cards"); setTStart(Date.now());
+      const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
+      setCards(sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]));
+      setScreen("cards"); setTStart(Date.now());
     } else if (m === "article") {
       setCategory("Article Drill"); const pool = cat === "__all__" ? nouns : nouns.filter(n => n.cat === cat);
-      setCards(sh(pool).slice(0, Math.min(count, pool.length))); setScreen("drill"); setTStart(Date.now());
+      const take = Math.min(count, pool.length);
+      const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`article::${c.cat}::${c.article} ${c.noun}`));
+      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
+      setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
-      setCategory("Grammar Cloze"); setCards(sh([...CLOZE]).slice(0, Math.min(count, CLOZE.length)));
+      setCategory("Grammar Cloze");
+      const take = Math.min(count, CLOZE.length);
+      const { seeded, rest } = seedDueFirst([...CLOZE], take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
+      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "verb") {
       setCategory("Verb Trainer"); setCards(Array.from({ length: count }, () => makeVerbQ(verbTense)));
@@ -1828,7 +1846,9 @@ function App() {
       const selected = persons.length > 0 ? persons : ["du", "ihr", "sie"];
       // Expand: each IMPERATIVES row becomes one card per chosen person
       const pool = sh([...IMPERATIVES]).flatMap(card => selected.map(p => ({ ...card, _person: p, de: `${card.base}::${p}` })));
-      setCards(pool.slice(0, count));
+      const take = Math.min(count, pool.length);
+      const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`imperativ::Imperative::${c.de}`));
+      setCards(sh([...seeded, ...rest.slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "listening") {
       setCategory(listenMode === "questions" ? "Listening + Questions" : "Listening Practice");
@@ -2837,7 +2857,7 @@ function App() {
               {reviewQueueItems.map(item => (
                 <button key={item.key} type="button" onClick={item.onClick}
                   title={item.detail}
-                  style={{ minWidth: 0, background: "#0F0F0F", color: T, border: `1px solid ${item.color}38`, borderRadius: 10, padding: "9px 7px 8px", textAlign: "center", cursor: "pointer", display: "grid", justifyItems: "center", gap: 5, fontFamily: "inherit" }}>
+                  style={{ minWidth: 0, background: "#0F0F0F", color: T, border: item.key === "due" && item.count > 0 ? `1.5px solid ${item.color}66` : `1px solid ${item.color}38`, boxShadow: item.key === "due" && item.count > 0 ? `0 0 16px -6px ${item.color}66` : "none", borderRadius: 10, padding: "9px 7px 8px", textAlign: "center", cursor: "pointer", display: "grid", justifyItems: "center", gap: 5, fontFamily: "inherit" }}>
                   <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
                   <span style={{ fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title}</span>
                   <span style={{ fontSize: 14, color: item.color, fontWeight: 800, lineHeight: 1 }}>{item.count}</span>

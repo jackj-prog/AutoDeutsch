@@ -9755,6 +9755,16 @@ function sessionMultiplier(entry, diffMode) {
   if (avgTime > 15000) mult += 0.1;
   return Math.min(mult, 2.5);
 }
+function seedDueFirst(pool, count, isDue) {
+  const due = [],
+    rest = [];
+  pool.forEach(c => (isDue(c) ? due : rest).push(c));
+  const seeded = sh(due).slice(0, Math.min(due.length, Math.ceil(count / 2)));
+  return {
+    seeded,
+    rest
+  };
+}
 function weightedSelect(pool, count, getMultiplier) {
   const weighted = [];
   pool.forEach(c => {
@@ -11026,18 +11036,32 @@ function App() {
         _cat: cat
       }));
       const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
-      setCards(weightedSelect(pool, count, getMult));
+      const {
+        seeded,
+        rest
+      } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
+      setCards(sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]));
       setScreen("cards");
       setTStart(Date.now());
     } else if (m === "article") {
       setCategory("Article Drill");
       const pool = cat === "__all__" ? nouns : nouns.filter(n => n.cat === cat);
-      setCards(sh(pool).slice(0, Math.min(count, pool.length)));
+      const take = Math.min(count, pool.length);
+      const {
+        seeded,
+        rest
+      } = seedDueFirst(pool, take, c => dueCards.has(`article::${c.cat}::${c.article} ${c.noun}`));
+      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill");
       setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
-      setCards(sh([...CLOZE]).slice(0, Math.min(count, CLOZE.length)));
+      const take = Math.min(count, CLOZE.length);
+      const {
+        seeded,
+        rest
+      } = seedDueFirst([...CLOZE], take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
+      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill");
       setTStart(Date.now());
     } else if (m === "verb") {
@@ -11067,7 +11091,12 @@ function App() {
         _person: p,
         de: `${card.base}::${p}`
       })));
-      setCards(pool.slice(0, count));
+      const take = Math.min(count, pool.length);
+      const {
+        seeded,
+        rest
+      } = seedDueFirst(pool, take, c => dueCards.has(`imperativ::Imperative::${c.de}`));
+      setCards(sh([...seeded, ...rest.slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill");
       setTStart(Date.now());
     } else if (m === "listening") {
@@ -13813,7 +13842,8 @@ function App() {
       minWidth: 0,
       background: "#0F0F0F",
       color: T,
-      border: `1px solid ${item.color}38`,
+      border: item.key === "due" && item.count > 0 ? `1.5px solid ${item.color}66` : `1px solid ${item.color}38`,
+      boxShadow: item.key === "due" && item.count > 0 ? `0 0 16px -6px ${item.color}66` : "none",
       borderRadius: 10,
       padding: "9px 7px 8px",
       textAlign: "center",

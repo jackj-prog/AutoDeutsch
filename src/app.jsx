@@ -454,6 +454,22 @@ const PK = {ich:"ich",du:"du","er/sie/es":"er",wir:"wir",ihr:"ihr","sie/Sie":"si
 const CATS = Object.keys(V);
 const MASTERY_STREAK = 5;
 
+// SRS interval schedule — days after lastReviewed until a card is due again.
+// Box 0 = seen-but-not-learned (review daily until it graduates); box 5 = 30-day review.
+const SRS_INTERVALS = [1, 2, 4, 7, 14, 30];
+const SRS_DAY_MS = 86400000;
+
+// Leitner box transition for a single answer. Wrong always demotes one box. Correct only
+// promotes when the review happened on/after the card's due time — answering the same card
+// again minutes later (repeat round, cramming) carries no evidence of longer-term retention
+// and must not inflate the interval.
+function nextBox(prevBox, correct, lastReviewed, now) {
+  const box = Math.max(0, Math.min(5, Math.floor(prevBox || 0)));
+  if (!correct) return Math.max(0, box - 1);
+  if (lastReviewed && now < lastReviewed + SRS_INTERVALS[box] * SRS_DAY_MS) return box;
+  return Math.min(5, box + 1);
+}
+
 // Normalize a progress entry to {stats, srs} schema.
 // Accepts new shape, old flat {box, fails, hits, avgMs, n, ts}, or undefined.
 function normalizeEntry(p) {
@@ -781,7 +797,11 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.04.28.1";
+const APP_VERSION = "2026.06.09.1";
+
+// 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
+// fall back to 100vh where dvh is unsupported (pre-2022 browsers).
+const DVH = (typeof CSS !== "undefined" && CSS.supports && CSS.supports("height: 100dvh")) ? "100dvh" : "100vh";
 
 const ICONS = {
   settings: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.5 3.5a7.5 7.5 0 0 0-.08-1.1l2.08-1.6-2-3.46-2.45 1a8.2 8.2 0 0 0-1.9-1.1L15.8 3h-4l-.35 2.74a8.2 8.2 0 0 0-1.9 1.1l-2.45-1-2 3.46 2.08 1.6a7.5 7.5 0 0 0 0 2.2L5.1 14.7l2 3.46 2.45-1a8.2 8.2 0 0 0 1.9 1.1L11.8 21h4l.35-2.74a8.2 8.2 0 0 0 1.9-1.1l2.45 1 2-3.46-2.08-1.6c.05-.36.08-.73.08-1.1Z",
@@ -891,7 +911,7 @@ class RootErrorBoundary extends React.Component {
     if (!this.state.hasError) return this.props.children;
 
     return (
-      <div style={{ minHeight: "100vh", background: PAL.BG, color: PAL.T, padding: "40px 24px 24px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Montserrat',sans-serif" }}>
+      <div style={{ minHeight: DVH, background: PAL.BG, color: PAL.T, padding: "40px 24px 24px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Montserrat',sans-serif" }}>
         <div style={{ width: "100%", maxWidth: 360, background: "linear-gradient(180deg, #171717 0%, #101010 100%)", border: `1px solid ${PAL.B}`, borderRadius: 16, padding: "24px 22px", textAlign: "center", boxShadow: "0 20px 50px rgba(0,0,0,0.35)" }}>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
             <IconBadge name="refresh" size={38} color={PAL.A} />
@@ -1212,7 +1232,9 @@ function App() {
         const firstCardOfDay = prev.count === 0;
         d = { ...prev, count: prev.count + 1, streak: firstCardOfDay ? prev.streak + 1 : prev.streak };
       } else {
-        d = { date: today, count: 1, streak: prev.streak + 1 };
+        // Only continue the streak if the previous activity was actually yesterday —
+        // an app left open across 2+ idle midnights must not over-count.
+        d = { date: today, count: 1, streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1 };
       }
       saveDaily(d);
       return d;
@@ -1490,11 +1512,6 @@ function App() {
     return weak;
   }, [prog]);
 
-  // SRS interval schedule — days after lastReviewed until a card is due again.
-  // Box 0 = seen-but-not-learned (review daily until it graduates).
-  // Box 5 = long interval review; vocabulary mastery is stricter and production-only.
-  const SRS_INTERVALS = [1, 2, 4, 7, 14, 30];
-
   // Cards that are due for review based on SRS box + lastReviewed timestamp.
   // Only considers resolvable keys (vocab/production/cloze/imperativ — same subset as weak areas).
   const dueCards = useMemo(() => {
@@ -1538,7 +1555,6 @@ function App() {
     // Snapshot prior lastSeen for CardStats display (separate from prog to keep exports clean)
     if (prev.stats.lastSeen) priorLastSeenRef.current[key] = prev.stats.lastSeen;
 
-    const boxDelta = correct ? 1 : -1;
     const recallMs = correct ? Math.min(Math.max(elapsed || 0, 0), 60000) : 0;
     const attempts = prev.stats.attempts + 1;
     const timedAttempts = prev.stats.timedAttempts + (recallMs > 0 ? 1 : 0);
@@ -1569,7 +1585,7 @@ function App() {
           masteredAt,
         },
         srs: {
-          box: Math.max(0, Math.min(5, prev.srs.box + boxDelta)),
+          box: nextBox(prev.srs.box, correct, prev.srs.lastReviewed, now),
           lastReviewed: now,
         },
       },
@@ -1600,7 +1616,9 @@ function App() {
         d = { ...prev, count: prev.count + 1, streak: firstCardOfDay ? prev.streak + 1 : prev.streak };
       } else {
         // First activity on a new day (load effect didn't run, rare)
-        d = { date: today, count: 1, streak: prev.streak + 1 };
+        // Only continue the streak if the previous activity was actually yesterday —
+        // an app left open across 2+ idle midnights must not over-count.
+        d = { date: today, count: 1, streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1 };
       }
       saveDaily(d);
       return d;
@@ -2146,10 +2164,18 @@ function App() {
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
   const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip" };
+  // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
+  // Shown under the queue total so the badge number and the session size can't contradict.
+  const nextBatchLabel = (resolved) => {
+    const modes = Object.keys(resolved.byMode);
+    if (!modes.length) return "";
+    const top = modes.sort((a, b) => resolved.byMode[b].length - resolved.byMode[a].length)[0];
+    return `next: ${Math.min(20, resolved.byMode[top].length)} ${modeSummaryLabel(top)}`;
+  };
   const reviewQueueItems = [
-    { key: "due", title: "Due", count: resolvedDue.total, detail: formatModeBreakdown(resolvedDue.byMode), icon: "calendarCheck", color: A, onClick: startDueReview },
-    { key: "weak", title: "Weak", count: resolvedWeak.total, detail: formatModeBreakdown(resolvedWeak.byMode), icon: "alert", color: R, onClick: startWeakReview },
-    { key: "almost", title: "Almost", count: almostCards.total, detail: formatModeBreakdown(almostCards.byMode), icon: "trophy", color: G, onClick: startAlmostReview },
+    { key: "due", title: "Due", count: resolvedDue.total, next: nextBatchLabel(resolvedDue), detail: formatModeBreakdown(resolvedDue.byMode), icon: "calendarCheck", color: A, onClick: startDueReview },
+    { key: "weak", title: "Weak", count: resolvedWeak.total, next: nextBatchLabel(resolvedWeak), detail: formatModeBreakdown(resolvedWeak.byMode), icon: "alert", color: R, onClick: startWeakReview },
+    { key: "almost", title: "Almost", count: almostCards.total, next: nextBatchLabel(almostCards), detail: formatModeBreakdown(almostCards.byMode), icon: "trophy", color: G, onClick: startAlmostReview },
   ].filter(item => item.count > 0);
 
   const Header = ({ extra }) => (
@@ -2416,7 +2442,7 @@ function App() {
   };
 
   return (
-    <div style={{ fontFamily: BD, background: BG, color: T, minHeight: "100vh", maxWidth: 480, margin: "0 auto", position: "relative" }}>
+    <div style={{ fontFamily: BD, background: BG, color: T, minHeight: DVH, maxWidth: 480, margin: "0 auto", position: "relative" }}>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>{`
         @keyframes ad-mastery-pop {
@@ -2770,7 +2796,7 @@ function App() {
             style={{ position: "absolute", top: 10, right: 10, background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 9, color: TD, cursor: "pointer", padding: 7, lineHeight: 1 }}><Icon name="settings" size={16} /></button>
           <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, marginBottom: 6 }}>Learn German</div>
           <h1 style={{ fontFamily: FN, fontSize: 34, margin: "0 0 6px", fontWeight: 800, lineHeight: 1, color: T, display: "flex", alignItems: "center" }}>
-            <img src="icons/icon-192x192.png" alt="AutoDeutsch" style={{ width: 38, height: 38, mixBlendMode: "screen", marginLeft: -6, marginRight: -2 }} />
+            <img src="icons/icon-192x192.png" alt="" style={{ width: 38, height: 38, mixBlendMode: "screen", marginLeft: -6, marginRight: -2 }} />
             <span>utodeutsch</span>
           </h1>
           <p style={{ color: TD, fontSize: 13, margin: "0 0 14px" }}>Offline-first German trainer · {totalW} cards · {totalL} mastered</p>
@@ -2815,6 +2841,7 @@ function App() {
                   <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
                   <span style={{ fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title}</span>
                   <span style={{ fontSize: 14, color: item.color, fontWeight: 800, lineHeight: 1 }}>{item.count}</span>
+                  {item.count > 0 && item.next && <span style={{ fontSize: 8.5, color: TD, lineHeight: 1, letterSpacing: 0.2 }}>{item.next}</span>}
                 </button>
               ))}
             </div>
@@ -2944,7 +2971,7 @@ function App() {
 
       </div>}
 
-      {activeCardMissing && <div style={{ padding: "40px 24px 24px", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {activeCardMissing && <div style={{ padding: "40px 24px 24px", minHeight: DVH, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ width: "100%", maxWidth: 360, background: SOFT_PANEL, border: `1px solid ${B}`, borderRadius: 16, padding: "24px 22px", textAlign: "center" }}>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}><IconBadge name="refresh" size={38} color={A} /></div>
           <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, marginBottom: 6 }}>Session recovered</div>
@@ -2954,7 +2981,7 @@ function App() {
       </div>}
 
       {/* ── FLIP CARD SCREEN (vocab/production) ── */}
-      {screen === "cards" && card && <div style={{ padding: "0 20px", height: "100vh", display: "flex", flexDirection: "column" }}>
+      {screen === "cards" && card && <div style={{ padding: "0 20px", height: DVH, display: "flex", flexDirection: "column" }}>
         {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
@@ -3052,7 +3079,7 @@ function App() {
       </div>}
 
       {/* ── DRILL SCREEN (article/cloze/verb) ── */}
-      {screen === "drill" && card && <div style={{ padding: "0 20px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {screen === "drill" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
@@ -3227,7 +3254,7 @@ function App() {
       </div>}
 
       {/* ── SENTENCE BUILDER ── */}
-      {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: BL, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
@@ -3256,7 +3283,7 @@ function App() {
       </div>}
 
       {/* ── NEW: DIALOGUE SCREEN ── */}
-      {screen === "dialogues" && <div style={{ padding: "0 20px", minHeight: "100vh" }}>
+      {screen === "dialogues" && <div style={{ padding: "0 20px", minHeight: DVH }}>
         {(() => {
           const pool = (cards && cards.length) ? cards : DIALOGUES;
           const dlg = pool[dlgIdx];
@@ -3291,7 +3318,7 @@ function App() {
       </div>}
 
       {/* ── AUDIO PLAYER SCREEN ── */}
-      {screen === "audio" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 0", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {screen === "audio" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 0", minHeight: DVH, display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
           <button onClick={audioExit} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
           <div style={{ fontSize: 12, color: TD, fontWeight: 600 }}>{idx + 1} / {cards.length}</div>
@@ -3439,13 +3466,22 @@ function App() {
         </div>}
         {failed.length === 0 && <div style={{ height: 16 }} />}
 
+        {mode === "audio" ? (
+          /* Audio is passive listening — there are no graded answers, so showing a
+             correct/wrong split or "100% accuracy" here would be fiction. */
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ fontFamily: FN, fontSize: 48, color: A, fontWeight: 800 }}><CountUp value={stats.c} /></div>
+            <div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Phrases heard</div>
+          </div>
+        ) : (
         <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 28 }}>
           <div><div style={{ fontFamily: FN, fontSize: 48, color: G, fontWeight: 800 }}><CountUp value={stats.c} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Correct</div></div>
           <div style={{ width: 1, background: B }} />
           <div><div style={{ fontFamily: FN, fontSize: 48, color: R, fontWeight: 800 }}><CountUp value={stats.w} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Wrong</div></div>
         </div>
+        )}
 
-        {(stats.c + stats.w > 0) && <div style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${failed.length > 0 ? R : A}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", background: SH }}>
+        {(mode !== "audio" && stats.c + stats.w > 0) && <div style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${failed.length > 0 ? R : A}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", background: SH }}>
           <div style={{ fontFamily: FN, fontSize: 30, color: failed.length > 0 ? R : A, fontWeight: 800 }}><CountUp value={Math.round((stats.c / (stats.c + stats.w)) * 100)} format={n => `${n}%`} /></div>
           <div style={{ fontSize: 10, color: TD, fontWeight: 600 }}>accuracy</div>
         </div>}

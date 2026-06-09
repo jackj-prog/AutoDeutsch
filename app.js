@@ -9429,6 +9429,14 @@ const PK = {
 };
 const CATS = Object.keys(V);
 const MASTERY_STREAK = 5;
+const SRS_INTERVALS = [1, 2, 4, 7, 14, 30];
+const SRS_DAY_MS = 86400000;
+function nextBox(prevBox, correct, lastReviewed, now) {
+  const box = Math.max(0, Math.min(5, Math.floor(prevBox || 0)));
+  if (!correct) return Math.max(0, box - 1);
+  if (lastReviewed && now < lastReviewed + SRS_INTERVALS[box] * SRS_DAY_MS) return box;
+  return Math.min(5, box + 1);
+}
 function normalizeEntry(p) {
   const baseStats = {
     attempts: 0,
@@ -9788,7 +9796,8 @@ const PAL = {
   BL: "#60A5FA",
   CARD: "#151515"
 };
-const APP_VERSION = "2026.04.28.1";
+const APP_VERSION = "2026.06.09.1";
+const DVH = typeof CSS !== "undefined" && CSS.supports && CSS.supports("height: 100dvh") ? "100dvh" : "100vh";
 const ICONS = {
   settings: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.5 3.5a7.5 7.5 0 0 0-.08-1.1l2.08-1.6-2-3.46-2.45 1a8.2 8.2 0 0 0-1.9-1.1L15.8 3h-4l-.35 2.74a8.2 8.2 0 0 0-1.9 1.1l-2.45-1-2 3.46 2.08 1.6a7.5 7.5 0 0 0 0 2.2L5.1 14.7l2 3.46 2.45-1a8.2 8.2 0 0 0 1.9 1.1L11.8 21h4l.35-2.74a8.2 8.2 0 0 0 1.9-1.1l2.45 1 2-3.46-2.08-1.6c.05-.36.08-.73.08-1.1Z",
   play: "M8 5v14l11-7-11-7Z",
@@ -9929,7 +9938,7 @@ class RootErrorBoundary extends React.Component {
     if (!this.state.hasError) return this.props.children;
     return React.createElement("div", {
       style: {
-        minHeight: "100vh",
+        minHeight: DVH,
         background: PAL.BG,
         color: PAL.T,
         padding: "40px 24px 24px",
@@ -10393,7 +10402,7 @@ function App() {
         d = {
           date: today,
           count: 1,
-          streak: prev.streak + 1
+          streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1
         };
       }
       saveDaily(d);
@@ -10670,7 +10679,6 @@ function App() {
     });
     return weak;
   }, [prog]);
-  const SRS_INTERVALS = [1, 2, 4, 7, 14, 30];
   const dueCards = useMemo(() => {
     const due = new Set();
     const now = Date.now();
@@ -10712,7 +10720,6 @@ function App() {
     const prev = normalizeEntry(prog[key]);
     const now = Date.now();
     if (prev.stats.lastSeen) priorLastSeenRef.current[key] = prev.stats.lastSeen;
-    const boxDelta = correct ? 1 : -1;
     const recallMs = correct ? Math.min(Math.max(elapsed || 0, 0), 60000) : 0;
     const attempts = prev.stats.attempts + 1;
     const timedAttempts = prev.stats.timedAttempts + (recallMs > 0 ? 1 : 0);
@@ -10736,7 +10743,7 @@ function App() {
           masteredAt
         },
         srs: {
-          box: Math.max(0, Math.min(5, prev.srs.box + boxDelta)),
+          box: nextBox(prev.srs.box, correct, prev.srs.lastReviewed, now),
           lastReviewed: now
         }
       }
@@ -10778,7 +10785,7 @@ function App() {
         d = {
           date: today,
           count: 1,
-          streak: prev.streak + 1
+          streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1
         };
       }
       saveDaily(d);
@@ -11563,10 +11570,17 @@ function App() {
     "Sport & Leisure": "trophy",
     "Technology & Digital": "chip"
   };
+  const nextBatchLabel = resolved => {
+    const modes = Object.keys(resolved.byMode);
+    if (!modes.length) return "";
+    const top = modes.sort((a, b) => resolved.byMode[b].length - resolved.byMode[a].length)[0];
+    return `next: ${Math.min(20, resolved.byMode[top].length)} ${modeSummaryLabel(top)}`;
+  };
   const reviewQueueItems = [{
     key: "due",
     title: "Due",
     count: resolvedDue.total,
+    next: nextBatchLabel(resolvedDue),
     detail: formatModeBreakdown(resolvedDue.byMode),
     icon: "calendarCheck",
     color: A,
@@ -11575,6 +11589,7 @@ function App() {
     key: "weak",
     title: "Weak",
     count: resolvedWeak.total,
+    next: nextBatchLabel(resolvedWeak),
     detail: formatModeBreakdown(resolvedWeak.byMode),
     icon: "alert",
     color: R,
@@ -11583,6 +11598,7 @@ function App() {
     key: "almost",
     title: "Almost",
     count: almostCards.total,
+    next: nextBatchLabel(almostCards),
     detail: formatModeBreakdown(almostCards.byMode),
     icon: "trophy",
     color: G,
@@ -12364,7 +12380,7 @@ function App() {
       fontFamily: BD,
       background: BG,
       color: T,
-      minHeight: "100vh",
+      minHeight: DVH,
       maxWidth: 480,
       margin: "0 auto",
       position: "relative"
@@ -13619,7 +13635,7 @@ function App() {
     }
   }, React.createElement("img", {
     src: "icons/icon-192x192.png",
-    alt: "AutoDeutsch",
+    alt: "",
     style: {
       width: 38,
       height: 38,
@@ -13826,7 +13842,14 @@ function App() {
       fontWeight: 800,
       lineHeight: 1
     }
-  }, item.count))))), React.createElement("div", {
+  }, item.count), item.count > 0 && item.next && React.createElement("span", {
+    style: {
+      fontSize: 8.5,
+      color: TD,
+      lineHeight: 1,
+      letterSpacing: 0.2
+    }
+  }, item.next))))), React.createElement("div", {
     style: {
       display: "grid",
       gap: 10,
@@ -14320,7 +14343,7 @@ function App() {
   }))))), activeCardMissing && React.createElement("div", {
     style: {
       padding: "40px 24px 24px",
-      minHeight: "100vh",
+      minHeight: DVH,
       display: "flex",
       alignItems: "center",
       justifyContent: "center"
@@ -14369,7 +14392,7 @@ function App() {
   }, "Open Results"))), screen === "cards" && card && React.createElement("div", {
     style: {
       padding: "0 20px",
-      height: "100vh",
+      height: DVH,
       display: "flex",
       flexDirection: "column"
     }
@@ -14825,7 +14848,7 @@ function App() {
   }, "Think of the answer, then tap")))), screen === "drill" && card && React.createElement("div", {
     style: {
       padding: "0 20px",
-      minHeight: "100vh",
+      minHeight: DVH,
       display: "flex",
       flexDirection: "column"
     }
@@ -15534,7 +15557,7 @@ function App() {
   }, idx < cards.length - 1 ? "Next →" : "Results")))), screen === "sentence" && card && React.createElement("div", {
     style: {
       padding: "0 20px",
-      minHeight: "100vh",
+      minHeight: DVH,
       display: "flex",
       flexDirection: "column"
     }
@@ -15677,7 +15700,7 @@ function App() {
   }, idx < cards.length - 1 ? "Next →" : "Results")))), screen === "dialogues" && React.createElement("div", {
     style: {
       padding: "0 20px",
-      minHeight: "100vh"
+      minHeight: DVH
     }
   }, (() => {
     const pool = cards && cards.length ? cards : DIALOGUES;
@@ -15809,7 +15832,7 @@ function App() {
   })()), screen === "audio" && React.createElement("div", {
     style: {
       padding: "max(16px, env(safe-area-inset-top)) 20px 0",
-      minHeight: "100vh",
+      minHeight: DVH,
       display: "flex",
       flexDirection: "column"
     }
@@ -16208,7 +16231,28 @@ function App() {
     style: {
       height: 16
     }
-  }), React.createElement("div", {
+  }), mode === "audio" ? React.createElement("div", {
+    style: {
+      marginBottom: 28
+    }
+  }, React.createElement("div", {
+    style: {
+      fontFamily: FN,
+      fontSize: 48,
+      color: A,
+      fontWeight: 800
+    }
+  }, React.createElement(CountUp, {
+    value: stats.c
+  })), React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: TD,
+      fontWeight: 600,
+      textTransform: "uppercase",
+      letterSpacing: 1
+    }
+  }, "Phrases heard")) : React.createElement("div", {
     style: {
       display: "flex",
       justifyContent: "center",
@@ -16254,7 +16298,7 @@ function App() {
       textTransform: "uppercase",
       letterSpacing: 1
     }
-  }, "Wrong"))), stats.c + stats.w > 0 && React.createElement("div", {
+  }, "Wrong"))), mode !== "audio" && stats.c + stats.w > 0 && React.createElement("div", {
     style: {
       width: 110,
       height: 110,

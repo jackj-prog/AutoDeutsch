@@ -73,6 +73,19 @@ const MODE_SUMMARY_LABELS = {
 const modeSummaryLabel = (mode) => MODE_SUMMARY_LABELS[mode] || mode;
 const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) => `${arr.length} ${modeSummaryLabel(m)}`).join(" · ");
 
+// CEFR level of a vocab card. New content sets `level` explicitly; older cards derive a
+// v1 heuristic from difficulty so every card is filterable by level (A1/A2/B1).
+const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
+const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
+const LEVELS = ["A1", "A2", "B1"];
+
+// "Mark as known" identity for a vocab word — mode-agnostic (knowing "Hallo" suppresses it
+// in both recall and production). Kept separate from progress keys, which are per-mode.
+const knownKey = (cat, de) => `${cat}::${de}`;
+
+// Flat list of every vocab card tagged with its category — used by the word browser.
+const allVocab = () => Object.entries(V).flatMap(([c, ws]) => ws.map(w => ({ ...w, _cat: c })));
+
 // Nouns whose dictionary form is plural-only (die Eltern, die Unterlagen, …) —
 // excluded from der/die/das practice, which would otherwise teach the plural
 // article as if it were the noun's gender.
@@ -594,6 +607,10 @@ function App() {
   const [failedNames, setFailedNames] = useState([]);
   const [rpt, setRpt] = useState(0);
   const [prog, setProg] = useState({});
+  const [known, setKnown] = useState(() => new Set());   // vocab words the user marked as known (knownKey)
+  const [setupLevel, setSetupLevel] = useState("all");    // session level filter: "all" | A1 | A2 | B1
+  const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
+  const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -700,6 +717,8 @@ function App() {
       try {
         const r = localStorage.getItem("gfc-v7");
         if (r) { hasProgress = true; setProg(JSON.parse(r)); }
+        const kn = localStorage.getItem("gfc-known-v7");
+        if (kn) { const arr = JSON.parse(kn); if (Array.isArray(arr)) setKnown(new Set(arr)); }
       } catch (e) {}
       try {
         const d = localStorage.getItem("gfc-daily-v7");
@@ -790,6 +809,17 @@ function App() {
   }, []);
   const saveDaily = useCallback(d => { try { localStorage.setItem("gfc-daily-v7", JSON.stringify(d)); setSaveStatus("Saved locally"); } catch (e) { setSaveStatus("Storage blocked"); } }, []);
   const saveLast = useCallback(ls => { try { localStorage.setItem("gfc-last-v7", JSON.stringify(ls)); } catch (e) {} }, []);
+  // Mark/unmark a vocab word as known. Known words are kept out of session pools but their
+  // saved progress is untouched, so unmarking restores them exactly where they were.
+  const toggleKnown = useCallback((cat, de) => {
+    setKnown(prev => {
+      const next = new Set(prev);
+      const k = knownKey(cat, de);
+      next.has(k) ? next.delete(k) : next.add(k);
+      try { localStorage.setItem("gfc-known-v7", JSON.stringify([...next])); } catch (e) {}
+      return next;
+    });
+  }, []);
 
   // Update the daily goal and persist immediately. Clamped to [10, 200] range.
   const updateDailyGoal = useCallback(n => {
@@ -1373,6 +1403,17 @@ function App() {
     setSbPool([]); setSbPicked([]); setSbChecked(false); setSbCorrect(false);
   };
 
+  // Apply the "known" suppression and the CEFR level filter to a vocab pool. Both degrade
+  // gracefully: if the level filter would leave nothing, it's dropped so a session can still
+  // start; if every card is marked known, we fall back to the full pool rather than a dead end.
+  const filterPool = (pool) => {
+    const notKnown = pool.filter(c => !known.has(knownKey(c._cat, c.de)));
+    const base = notKnown.length ? notKnown : pool;
+    if (setupLevel === "all") return base;
+    const leveled = base.filter(c => cardLevel(c) === setupLevel);
+    return leveled.length ? leveled : base;
+  };
+
   const startSession = (cat, m, count) => {
     setMode(m); setShowSetup(false); resetSessionState();
     // Remember this session for one-tap resume
@@ -1383,7 +1424,8 @@ function App() {
     if (m === "vocab" || m === "production") {
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories" : cat);
-      const pool = isAll ? Object.entries(V).flatMap(([c, ws]) => ws.map(w => ({ ...w, _cat: c }))) : V[cat].map(w => ({ ...w, _cat: cat }));
+      const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
+      const pool = filterPool(rawPool);
       const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
       const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
       setCards(sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]));
@@ -1443,7 +1485,7 @@ function App() {
       // Does NOT touch SRS. Counts toward daily goal only.
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories (Audio)" : `${cat} (Audio)`);
-      const pool = isAll ? Object.entries(V).flatMap(([c, ws]) => ws.map(w => ({ ...w, _cat: c }))) : V[cat].map(w => ({ ...w, _cat: cat }));
+      const pool = filterPool(isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat })));
       const getMult = c => sessionMultiplier(prog[`vocab::${c._cat}::${c.de}`], sessDiff);
       const selected = weightedSelect(pool, count, getMult);
       setCards(selected);
@@ -2242,6 +2284,17 @@ function App() {
               </div>
             )}
 
+            {setupIsLibrary && (
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Level</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["all", "All"], ...LEVELS.map(l => [l, l])].map(([k, l]) => (
+                    <button key={k} onClick={() => setSetupLevel(k)} style={{ padding: "9px 6px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div style={{ marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 9 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8 }}>Cards</div>
@@ -2477,7 +2530,10 @@ function App() {
         {/* Library */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
           <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Library</div>
-          <div style={{ fontSize: 10, color: TD }}>Production / mastery</div>
+          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseKnownOnly(false); setScreen("browse"); }}
+            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <Icon name="book" size={12} /> Browse all words
+          </button>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           {CATS.map(cat => {
@@ -2570,6 +2626,62 @@ function App() {
           <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("results")} style={{ fontFamily: FN }}>Open Results</Btn>
         </div>
       </div>}
+
+      {/* ── WORD BROWSER ── */}
+      {screen === "browse" && (() => {
+        const q = normalize(browseQuery);
+        let list = allVocab();
+        if (browseKnownOnly) list = list.filter(w => known.has(knownKey(w._cat, w.de)));
+        if (q) list = list.filter(w => normalize(w.de).includes(q) || w.en.toLowerCase().includes(browseQuery.trim().toLowerCase()));
+        list.sort((a, b) => a.de.localeCompare(b.de, "de"));
+        const total = list.length;
+        const shown = list.slice(0, 80);
+        return (
+          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+            <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+              <div style={{ fontSize: 11, color: TD, fontWeight: 700 }}>{known.size} known · {allVocab().length} words</div>
+            </div>
+            <input className="ad-input" value={browseQuery} onChange={e => setBrowseQuery(e.target.value)} placeholder="Search German or English…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
+              style={{ width: "100%", boxSizing: "border-box", padding: "13px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none", marginBottom: 10 }} />
+            <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+              {[[false, "All words"], [true, "Known"]].map(([v, l]) => (
+                <button key={l} onClick={() => setBrowseKnownOnly(v)} style={{ padding: "6px 14px", borderRadius: 999, fontSize: 12, fontWeight: 800, cursor: "pointer", background: browseKnownOnly === v ? A : "#0A0A0A", color: browseKnownOnly === v ? "#0A0A0A" : TD, border: `1px solid ${browseKnownOnly === v ? A : B}` }}>{l}</button>
+              ))}
+            </div>
+            {shown.length === 0 && <div style={{ color: TD, fontSize: 13, textAlign: "center", marginTop: 40 }}>{browseKnownOnly ? "No words marked as known yet. Tap “Known” on any word you don’t need to practise." : "No matches. Try a shorter search."}</div>}
+            <div style={{ display: "grid", gap: 8 }}>
+              {shown.map(w => {
+                const isKnown = known.has(knownKey(w._cat, w.de));
+                const v = normalizeEntry(prog[`vocab::${w._cat}::${w.de}`]);
+                const pr = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
+                const att = v.stats.attempts + pr.stats.attempts;
+                const mastered = pr.stats.productionStreak >= MASTERY_STREAK;
+                return (
+                  <div key={`${w._cat}::${w.de}`} style={{ background: "#101010", border: `1px solid ${mastered ? `${G}44` : B}`, borderRadius: 12, padding: "11px 12px", opacity: isKnown && !browseKnownOnly ? 0.55 : 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
+                          <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.de}</span>
+                          <span style={{ fontSize: 9, color: A, fontWeight: 800, border: `1px solid ${A}44`, borderRadius: 999, padding: "1px 6px", flexShrink: 0 }}>{cardLevel(w)}</span>
+                          {mastered && <span style={{ fontSize: 9, color: G, fontWeight: 900, flexShrink: 0 }}>★</span>}
+                        </div>
+                        <div style={{ fontSize: 12, color: TD, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.en}</div>
+                        <div style={{ fontSize: 9.5, color: TD, marginTop: 3, opacity: 0.8 }}>{w._cat}{att > 0 ? ` · ${att} attempt${att !== 1 ? "s" : ""}` : " · not practised yet"}</div>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                        <button type="button" aria-label={`Hear ${w.de}`} onClick={() => speak(w.de)} style={{ background: "#FFCC0012", border: `1px solid ${A}33`, borderRadius: 10, width: 36, height: 36, color: A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icon name="volume" size={15} /></button>
+                        <button type="button" onClick={() => toggleKnown(w._cat, w.de)} style={{ background: isKnown ? `${G}18` : "#0A0A0A", border: `1px solid ${isKnown ? G : B}`, borderRadius: 10, height: 36, padding: "0 11px", color: isKnown ? G : TD, fontSize: 11, fontWeight: 800, cursor: "pointer" }}>{isKnown ? "Known ✓" : "Known"}</button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {total > shown.length && <div style={{ color: TD, fontSize: 11, textAlign: "center", marginTop: 12 }}>Showing {shown.length} of {total} — refine your search to see more.</div>}
+          </div>
+        );
+      })()}
 
       {/* ── FLIP CARD SCREEN (vocab/production) ── */}
       {screen === "cards" && card && <div style={{ padding: "0 20px", height: DVH, display: "flex", flexDirection: "column" }}>

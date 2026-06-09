@@ -29,6 +29,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
       if (!isStr(w.de)) err(`V["${cat}"][${i}] missing de`);
       if (!isStr(w.en)) err(`V["${cat}"][${i}] (${w.de || "?"}) missing en`);
       if (w.diff && !["easy", "medium", "hard"].includes(w.diff)) err(`V["${cat}"] "${w.de}": bad diff "${w.diff}"`);
+      if (w.level && !["A1", "A2", "B1", "B2"].includes(w.level)) err(`V["${cat}"] "${w.de}": bad level "${w.level}"`);
       if (w.ex && !isStr(w.exEn)) warn(`V["${cat}"] "${w.de}": ex without exEn`);
       const key = w.id || w.de;
       if (seenDe.has(key)) err(`V["${cat}"]: duplicate card key "${key}" (progress keys would collide — add a distinct id)`);

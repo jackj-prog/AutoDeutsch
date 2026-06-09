@@ -73,9 +73,14 @@ const MODE_SUMMARY_LABELS = {
 const modeSummaryLabel = (mode) => MODE_SUMMARY_LABELS[mode] || mode;
 const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) => `${arr.length} ${modeSummaryLabel(m)}`).join(" · ");
 
+// Nouns whose dictionary form is plural-only (die Eltern, die Unterlagen, …) —
+// excluded from der/die/das practice, which would otherwise teach the plural
+// article as if it were the noun's gender.
+const PLURAL_ONLY_NOUNS = new Set(["Eltern","Haare","Pilze","Leute","Geschwister","Möbel","Lebensmittel","Ferien","Nachrichten","Daten","Kopfhörer","Unterlagen","Nebenkosten","Schulden","Zinsen","Ausgaben","Raten"]);
+
 function getNouns() {
   const n = [];
-  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m) n.push({ article: m[1], noun: m[2], en: w.en, cat: c }); }); });
+  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ article: m[1], noun: m[2], en: w.en, cat: c }); }); });
   return n;
 }
 
@@ -1748,7 +1753,7 @@ function App() {
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
-  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip" };
+  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Amt & Bürokratie": "briefcase", "Wohnen & Mieten": "sofa", "Bank & Geld": "cart", "Auto & Verkehr": "map", "Kochen & Küche": "utensils", "Redewendungen & Alltag": "smile" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
   // Shown under the queue total so the badge number and the session size can't contradict.
   const nextBatchLabel = (resolved) => {

@@ -389,7 +389,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.1";
+const APP_VERSION = "2026.06.10.2";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -654,8 +654,6 @@ function App() {
   // Only the FIRST attempt on each card per session is counted (repeats don't reflect real recall).
   const [trendStats, setTrendStats] = useState({});
   const [showTrendBreakdown, setShowTrendBreakdown] = useState(false);
-  const [selectedProgressCat, setSelectedProgressCat] = useState(CATS[0] || "");
-  const [showMasteredList, setShowMasteredList] = useState(false);
   const [newlyMastered, setNewlyMastered] = useState([]);
   const [masteryBurst, setMasteryBurst] = useState(null);
   const [lastSession, setLastSession] = useState(null);
@@ -1753,7 +1751,6 @@ function App() {
     return out;
   }, [prog]);
   const getCatStats = cat => catStats[cat] || { total: 0, seen: 0, productionSeen: 0, mastered: 0, almost: 0, recognitionAccuracy: null, productionAccuracy: null, avgRecall: null, masteredCards: [] };
-  const selectedCatStats = getCatStats(selectedProgressCat);
   const newlyMasteredCats = useMemo(() => new Set(newlyMastered.map(x => x.cat).filter(cat => CATS.includes(cat))), [newlyMastered]);
 
   // Progress summaries per training mode. "Seen" counts an item as completed when
@@ -1939,9 +1936,6 @@ function App() {
   const stepSessionLength = delta => setSessLen(n => Math.max(setupMinC, Math.min(maxC, n + delta)));
 
   const ProgressHub = () => {
-    const productionPct = selectedCatStats.total ? (selectedCatStats.productionSeen / selectedCatStats.total) * 100 : 0;
-    const masteryPct = selectedCatStats.total ? (selectedCatStats.mastered / selectedCatStats.total) * 100 : 0;
-    const seenPct = selectedCatStats.total ? (selectedCatStats.seen / selectedCatStats.total) * 100 : 0;
     return (
       <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "16px 16px 15px", marginBottom: 20, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.8 }} />
@@ -2152,6 +2146,24 @@ function App() {
             <div style={{ fontSize: 11, color: TD, minHeight: 15 }}>
               {setupCat === "__imperativ__" ? "Imperativ" : setupCat === "__listening__" ? "Hör-Training" : setupMode === "production" ? "German recall and spelling" : "Choose the session shape"}
             </div>
+            {setupIsLibrary && (() => {
+              const cs = getCatStats(setupCat);
+              return cs.total > 0 && (
+                <div style={{ display: "flex", gap: 14, marginTop: 9, paddingTop: 9, borderTop: `1px solid ${B}66` }}>
+                  {[
+                    { label: "Seen", value: cs.seen, color: T },
+                    { label: "Production", value: cs.productionSeen, color: A },
+                    { label: "Mastered ★", value: cs.mastered, color: G },
+                  ].map(it => (
+                    <div key={it.label} style={{ minWidth: 0 }}>
+                      <span style={{ fontFamily: FN, fontSize: 15, color: it.color, fontWeight: 800 }}>{it.value}</span>
+                      <span style={{ fontSize: 10, color: TD, fontWeight: 700 }}> / {cs.total}</span>
+                      <div style={{ fontSize: 9, color: TD, fontWeight: 800, letterSpacing: 0.4, marginTop: 1 }}>{it.label}</div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
 
           <div style={{ padding: "0 18px 14px", overflowY: "auto" }}>
@@ -2564,11 +2576,13 @@ function App() {
                   <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.15, fontWeight: 800, minWidth: 0 }}>{cat}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${Math.max(productionPct, masteredPct)}%`, background: done ? G : A, borderRadius: 2, transition: "width 0.5s" }} />
+                  {/* Dual-layer bar: gold = production progress, green fill = mastered */}
+                  <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
+                    <div style={{ position: "absolute", inset: 0, width: `${productionPct}%`, background: `${A}66`, borderRadius: 2, transition: "width 0.5s" }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${masteredPct}%`, background: G, borderRadius: 2, transition: "width 0.5s" }} />
                   </div>
-                  <span style={{ fontSize: 10, color: st.productionSeen ? (done ? G : A) : TD, fontWeight: 800, flexShrink: 0 }}>
-                    {done ? "Done" : st.total ? `${st.productionSeen}/${st.total}` : ""}
+                  <span style={{ fontSize: 10, color: st.mastered ? G : st.productionSeen ? A : TD, fontWeight: 800, flexShrink: 0 }}>
+                    {st.total ? `★ ${st.mastered}/${st.total}` : ""}
                   </span>
                 </div>
               </button>

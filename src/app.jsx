@@ -411,7 +411,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.5";
+const APP_VERSION = "2026.06.10.6";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2047,8 +2047,7 @@ function App() {
 
   const ProgressHub = () => {
     return (
-      <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "16px 16px 15px", marginBottom: 20, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.8 }} />
+      <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 16, padding: "18px 18px 20px", marginBottom: 4, position: "relative", overflow: "hidden" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginTop: 4, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2 }}>Progress</div>
@@ -2536,7 +2535,7 @@ function App() {
       </div>}
 
       {/* ── HOME ── */}
-      {screen === "home" && <div style={{ padding: "12px 20px 24px" }}>
+      {screen === "home" && <div style={{ padding: "12px 20px max(40px, env(safe-area-inset-bottom))" }}>
         {/* Update available — appears when a new SW version is installed and waiting */}
         {updateAvailable && (
           <button onClick={applyUpdate}
@@ -2564,10 +2563,7 @@ function App() {
             <img src="icons/icon-192x192.png" alt="" style={{ width: 38, height: 38, mixBlendMode: "screen", marginLeft: -6, marginRight: -2 }} />
             <span>utodeutsch</span>
           </h1>
-          <p style={{ color: TD, fontSize: 13, margin: "0 0 14px" }}>Offline-first German trainer · {totalW} cards · {totalL} mastered</p>
-          <div style={{ height: 4, background: "#222", borderRadius: 2, overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${totalW > 0 ? (totalL / totalW) * 100 : 0}%`, background: A, borderRadius: 2, transition: "width 0.5s" }} />
-          </div>
+          <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
         </div>
 
         <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, margin: "2px 0 10px" }}>Today</div>
@@ -2592,8 +2588,7 @@ function App() {
 
         {/* Today's work */}
         {reviewQueueItems.length > 0 && (
-          <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "14px 14px 12px", marginBottom: 14, position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.8 }} />
+          <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 16, padding: "14px 14px 12px", marginBottom: 14, position: "relative", overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 10, paddingTop: 2 }}>
               <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
               <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
@@ -2661,8 +2656,7 @@ function App() {
             <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Training</div>
             <div style={{ fontSize: 10, color: TD }}>Targeted drills</div>
           </div>
-          <div style={{ background: "#0A0A0A", border: `1px solid ${A}22`, borderRadius: 14, padding: 10, position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.9 }} />
+          <div style={{ background: "#0A0A0A", border: `1px solid ${A}22`, borderRadius: 16, padding: 10, position: "relative", overflow: "hidden" }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
               {[
                 { l: "der / die / das", s: "Articles", meta: "Gender", icon: "book", c: "__all__", m: "article" },
@@ -2866,7 +2860,7 @@ function App() {
                   <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
                 </button>
               ) : (
-                <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.25, color: T, letterSpacing: -0.3 }}>{card.en}</div>
+                <div style={{ fontFamily: FN, fontSize: 33, fontWeight: 700, textAlign: "center", lineHeight: 1.18, color: T, letterSpacing: -0.4 }}>{card.en}</div>
               )}
               {answered && <>
                 {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
@@ -2904,13 +2898,13 @@ function App() {
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
-                  <div style={{ fontFamily: FN, fontSize: 30, fontWeight: 600, textAlign: "center", lineHeight: 1.2, color: T, letterSpacing: -0.3 }}>{card.de}</div>
+                  <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 14, right: 16, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
                 </div>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
-                  <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.2, color: T, marginBottom: 18, letterSpacing: -0.3 }}>{card.en}</div>
+                  <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                   {answered && <>{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}

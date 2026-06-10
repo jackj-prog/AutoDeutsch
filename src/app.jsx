@@ -389,7 +389,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.09.4";
+const APP_VERSION = "2026.06.10.1";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2042,69 +2042,6 @@ function App() {
           </div>
         )}
 
-          <div style={{ paddingTop: 14 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div>
-              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1.6 }}>Category mastery</div>
-              <div style={{ fontSize: 11, color: TD, marginTop: 3 }}>Seen, production, mastered</div>
-            </div>
-            <select aria-label="Progress category" value={selectedProgressCat} onChange={e => { setSelectedProgressCat(e.target.value); setShowMasteredList(false); }}
-              style={{ minWidth: 148, maxWidth: 190, background: "#0F0F0F", color: T, border: `1px solid ${B}`, borderRadius: 10, padding: "9px 10px", fontSize: 12, fontFamily: BD, outline: "none" }}>
-              {CATS.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 13 }}>
-            {[
-              { label: "Seen", value: `${selectedCatStats.seen}/${selectedCatStats.total}`, color: T },
-              { label: "Production", value: `${selectedCatStats.productionSeen}/${selectedCatStats.total}`, color: A },
-              { label: "Mastered", value: `${selectedCatStats.mastered}/${selectedCatStats.total}`, color: G },
-            ].map(item => (
-              <div key={item.label} style={{ minWidth: 0 }}>
-                <div style={{ fontFamily: FN, fontSize: 17, color: item.color, fontWeight: 800, whiteSpace: "nowrap" }}>{item.value}</div>
-                <div style={{ fontSize: 9, color: TD, fontWeight: 800, letterSpacing: 0.4 }}>{item.label}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: "grid", gap: 8, marginBottom: 13 }}>
-            {[
-              { label: "Seen", value: seenPct, color: TD },
-              { label: "Production", value: productionPct, color: A },
-              { label: "Mastered", value: masteryPct, color: G },
-            ].map(row => (
-              <div key={row.label}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: TD, marginBottom: 4 }}><span>{row.label}</span><span>{Math.round(row.value)}%</span></div>
-                <div style={{ height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden" }}><div style={{ height: "100%", width: `${row.value}%`, background: row.color, borderRadius: 2 }} /></div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <button type="button" onClick={() => openSetup(selectedProgressCat, "production")}
-              style={{ background: "#0F0F0F", color: A, border: `1px solid ${A}44`, borderRadius: 10, padding: "10px 12px", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
-              <Icon name="keyboard" size={14} /> Practice
-            </button>
-            <button type="button" onClick={() => setShowMasteredList(v => !v)}
-              style={{ background: "#0F0F0F", color: selectedCatStats.mastered ? G : TD, border: `1px solid ${selectedCatStats.mastered ? G : B}44`, borderRadius: 10, padding: "10px 12px", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
-              <Icon name="trophy" size={14} /> Mastered
-            </button>
-          </div>
-
-          {showMasteredList && (
-            <div style={{ marginTop: 12, borderTop: `1px solid ${B}`, paddingTop: 10, maxHeight: 220, overflowY: "auto" }}>
-              {selectedCatStats.masteredCards.length ? selectedCatStats.masteredCards.slice(0, 40).map(w => (
-                <div key={w.de} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "7px 0", borderBottom: `1px solid ${B}44`, fontSize: 12 }}>
-                  <span style={{ color: T, fontWeight: 800 }}>{w.de}</span>
-                  <span style={{ color: TD, textAlign: "right" }}>{w.en}</span>
-                </div>
-              )) : (
-                <div style={{ fontSize: 11, color: TD, textAlign: "center", padding: "10px 0" }}>No mastered cards yet.</div>
-              )}
-              {selectedCatStats.masteredCards.length > 40 && <div style={{ fontSize: 10, color: TD, textAlign: "center", paddingTop: 8 }}>+ {selectedCatStats.masteredCards.length - 40} more</div>}
-            </div>
-          )}
-        </div>
       </div>
     );
   };
@@ -2561,55 +2498,6 @@ function App() {
             </button>
           </div>
         </div>
-        {ProgressHub()}
-
-        {/* Library */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Library</div>
-          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseKnownOnly(false); setScreen("browse"); }}
-            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
-            <Icon name="book" size={12} /> Browse all words
-          </button>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          {CATS.map(cat => {
-            const st = getCatStats(cat);
-            const pct = st.total > 0 ? (st.seen / st.total) * 100 : 0;
-            const productionPct = st.total > 0 ? (st.productionSeen / st.total) * 100 : 0;
-            const masteredPct = st.total > 0 ? (st.mastered / st.total) * 100 : 0;
-            const done = st.mastered >= st.total && st.total > 0;
-            const justMastered = newlyMasteredCats.has(cat);
-            return (
-              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? G : B}`, borderRadius: 10, padding: "12px 11px 10px", minHeight: 112, textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, height: 2, width: `${pct}%`, background: A, opacity: 0.18, transition: "width 0.5s" }} />
-                {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, minWidth: 0 }}>
-                  <IconBadge name={categoryIcons[cat] || "book"} size={27} color={done ? G : A} bg="#0A0A0A66" />
-                  <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.16, fontWeight: 800, minWidth: 0 }}>{cat}</span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 9, marginBottom: 8 }}>
-                  <div>
-                    <div style={{ fontFamily: FN, fontSize: 15, color: A, fontWeight: 800 }}>{st.productionSeen}</div>
-                    <div style={{ fontSize: 9, color: TD, fontWeight: 800 }}>Production</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: FN, fontSize: 15, color: st.mastered ? G : TD, fontWeight: 800 }}>{st.mastered}</div>
-                    <div style={{ fontSize: 9, color: TD, fontWeight: 800 }}>Mastered</div>
-                  </div>
-                </div>
-                <div style={{ display: "grid", gap: 5 }}>
-                  <div style={{ height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${productionPct}%`, background: A, borderRadius: 2, opacity: 0.9, transition: "width 0.5s" }} />
-                  </div>
-                  <div style={{ height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${masteredPct}%`, background: G, borderRadius: 2, opacity: 0.95, transition: "width 0.5s" }} />
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
         {/* Training */}
         <div style={{ marginTop: 34 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
@@ -2651,6 +2539,44 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* Library */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Library</div>
+          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseKnownOnly(false); setScreen("browse"); }}
+            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <Icon name="book" size={12} /> Browse all words
+          </button>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          {CATS.map(cat => {
+            const st = getCatStats(cat);
+            const pct = st.total > 0 ? (st.seen / st.total) * 100 : 0;
+            const productionPct = st.total > 0 ? (st.productionSeen / st.total) * 100 : 0;
+            const masteredPct = st.total > 0 ? (st.mastered / st.total) * 100 : 0;
+            const done = st.mastered >= st.total && st.total > 0;
+            const justMastered = newlyMasteredCats.has(cat);
+            return (
+              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? `${G}66` : B}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
+                {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
+                <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
+                  <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />
+                  <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.15, fontWeight: 800, minWidth: 0 }}>{cat}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${Math.max(productionPct, masteredPct)}%`, background: done ? G : A, borderRadius: 2, transition: "width 0.5s" }} />
+                  </div>
+                  <span style={{ fontSize: 10, color: st.productionSeen ? (done ? G : A) : TD, fontWeight: 800, flexShrink: 0 }}>
+                    {done ? "Done" : st.total ? `${st.productionSeen}/${st.total}` : ""}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {ProgressHub()}
 
       </div>}
 
@@ -2726,7 +2652,7 @@ function App() {
 
         {mode === "production" ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
-            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "32px 24px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: 320, position: "relative", overflow: "hidden" }}>
+            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "32px 24px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.25, color: T, letterSpacing: -0.3 }}>{card.en}</div>
               {answered && <>
@@ -2760,7 +2686,7 @@ function App() {
           </div>
         ) : (
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", maxHeight: 360, opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
+            <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />

@@ -418,7 +418,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.9";
+const APP_VERSION = "2026.06.10.10";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -448,7 +448,6 @@ const ICONS = {
   upload: "M12 16V4M7 9l5-5 5 5M5 20h14",
   download: "M12 4v12M7 11l5 5 5-5M5 20h14",
   volume: "M4 10v4h4l5 4V6l-5 4H4Zm13-2a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14",
-  mic: "M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm6-3a6 6 0 0 1-12 0M12 18v3M9 21h6",
   home: "M4 11 12 4l8 7v9h-5v-6H9v6H4v-9Z",
   users: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8-1a3 3 0 1 0 0-6M2 20a6 6 0 0 1 12 0M14 20a5 5 0 0 1 8 0",
   heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z",
@@ -574,7 +573,7 @@ const SpeakBtn = React.memo(({ text }) => (
 ));
 
 const ProgBar = React.memo(({ pct, color }) => (
-  <div style={{ height: 3, background: PAL.B, borderRadius: 2, marginBottom: 18, overflow: "hidden" }}>
+  <div style={{ height: 3, background: "rgba(255,255,255,0.07)", borderRadius: 2, marginBottom: 18, overflow: "hidden" }}>
     <div style={{
       height: "100%",
       width: `${pct}%`,
@@ -609,7 +608,7 @@ function CountUp({ value, duration = 700, from = 0, format }) {
 
 // Tap-to-insert German special characters, pinned above a text input. Uses pointerdown +
 // preventDefault so the input keeps focus — the character lands at the caret, keyboard stays up.
-function UmlautBar({ onInsert, onMic }) {
+function UmlautBar({ onInsert }) {
   const keys = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"];
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
@@ -620,13 +619,6 @@ function UmlautBar({ onInsert, onMic }) {
           {k}
         </button>
       ))}
-      {onMic && (
-        <button type="button" className="ad-uk" aria-label="Speak the answer in German"
-          onPointerDown={e => { e.preventDefault(); onMic(); }}
-          style={{ flex: "1 1 0", minWidth: 34, padding: "9px 0", borderRadius: 9, background: `${PAL.A}1A`, border: `1px solid ${PAL.A}55`, color: PAL.A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-          <Icon name="mic" size={16} />
-        </button>
-      )}
     </div>
   );
 }
@@ -1296,19 +1288,6 @@ function App() {
     const c = cards[idx];
     if (c?.de) { const t = setTimeout(() => speak(c.de), 250); return () => clearTimeout(t); }
   }, [idx, screen, mode]);
-
-  const sttSupported = typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-  const startSTT = () => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-    try {
-      const r = new SR();
-      r.lang = "de-DE"; r.interimResults = false; r.maxAlternatives = 1;
-      r.onresult = e => { const t = e.results[0]?.[0]?.transcript; if (t) setInput(t.trim()); };
-      r.start();
-    } catch (e) {}
-  };
-  const micHandler = sttSupported ? startSTT : null;
 
   const insertChar = (ch) => {
     const el = typedInputRef.current;
@@ -2884,7 +2863,7 @@ function App() {
         {(mode === "production" || mode === "dictation") ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: answered ? 1 : "0 1 auto", maxHeight: answered ? undefined : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, opacity: 0.7 }} />
               {mode === "dictation" ? (
                 <button onClick={() => speak(card.de)} style={{ background: `${A}10`, border: `1.5px solid ${A}55`, borderRadius: 999, padding: "16px 26px", color: A, fontSize: 15, cursor: "pointer", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 10 }}>
                   <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
@@ -2913,7 +2892,7 @@ function App() {
               </>}
             </div>
             <div style={{ paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
-              {!answered ? <><UmlautBar onInsert={insertChar} onMic={micHandler} /><div style={{ display: "flex", gap: 8 }}>
+              {!answered ? <><UmlautBar onInsert={insertChar} /><div style={{ display: "flex", gap: 8 }}>
                 <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitTyped(); }}
                   placeholder="Type in German…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                   style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
@@ -2926,14 +2905,14 @@ function App() {
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
-                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
-                  {card.diff && <div style={{ position: "absolute", top: 14, right: 16, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{card.diff}</div>}
+                  {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
                 </div>
-                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #141414 0%, #0E0E0E 100%)", border: `1px solid ${A}33`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)` }} />
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
@@ -2988,7 +2967,7 @@ function App() {
 
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
           <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, opacity: 0.7 }} />
             {mode === "article" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
@@ -3088,7 +3067,7 @@ function App() {
           </div>
 
           {mode === "cloze" && !answered && (
-            <><UmlautBar onInsert={insertChar} onMic={micHandler} />
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitCloze(); }}
                 placeholder="Type answer…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -3097,7 +3076,7 @@ function App() {
             </div></>
           )}
           {mode === "imperativ" && !answered && (
-            <><UmlautBar onInsert={insertChar} onMic={micHandler} />
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); } }}
                 placeholder={card._person === "sie" ? "e.g. kommen Sie" : "Type the imperative…"} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -3142,7 +3121,7 @@ function App() {
             </div>
           )}
           {mode === "verb" && !answered && !card.opts && (
-            <><UmlautBar onInsert={insertChar} onMic={micHandler} />
+            <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); } }}
                 placeholder={`${card.pron} …`} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -3333,7 +3312,7 @@ function App() {
 
       {/* ── RESULTS ── */}
       {screen === "results" && <div style={{ padding: "40px 24px 24px", textAlign: "center" }}>
-        <div style={{ height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, borderRadius: 2, marginBottom: 24 }} />
+        <div style={{ height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, borderRadius: 2, marginBottom: 24 }} />
         <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>{failed.length > 0 ? "Keep Going" : "Complete"}</div>
         <h2 style={{ fontFamily: FN, fontSize: 28, margin: "0 0 6px", fontWeight: 800, color: T }}>{failed.length > 0 ? "Almost There" : "Session Complete"}</h2>
         <p style={{ color: TD, fontSize: 13, marginBottom: 8 }}>

@@ -408,10 +408,13 @@ const PAL = {
   A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
   G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#8A857D", BL: "#60A5FA", CARD: "#151515",
 };
+// Calmer, more premium surface tokens: hairline borders + soft elevation instead of hard grey boxes.
+const HAIR = "rgba(255,255,255,0.06)";
+const ELEV = "0 8px 30px -14px rgba(0,0,0,0.8)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.6";
+const APP_VERSION = "2026.06.10.7";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2047,7 +2050,7 @@ function App() {
 
   const ProgressHub = () => {
     return (
-      <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 16, padding: "18px 18px 20px", marginBottom: 4, position: "relative", overflow: "hidden" }}>
+      <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginBottom: 4, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginTop: 4, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2 }}>Progress</div>
@@ -2057,7 +2060,7 @@ function App() {
         </div>
 
         {trend30.totalAttempts < 3 ? (
-          <div style={{ paddingBottom: 14, borderBottom: `1px solid ${B}` }}>
+          <div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 14 }}>
               <div>
                 <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}>{trend30.totalAttempts}</div>
@@ -2076,7 +2079,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <div style={{ paddingBottom: 14, borderBottom: `1px solid ${B}` }}>
+          <div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
               <div>
                 <div style={{ fontFamily: FN, fontSize: 26, color: trend30.accuracy >= 80 ? G : trend30.accuracy >= 60 ? A : R, fontWeight: 800 }}>{trend30.accuracy}%</div>
@@ -2091,7 +2094,8 @@ function App() {
                 <div style={{ fontSize: 10, color: TD, fontWeight: 700, letterSpacing: 0.5 }}>Cards</div>
               </div>
             </div>
-            <svg viewBox="0 0 300 46" width="100%" height="38" style={{ display: "block" }}>
+            <div style={{ background: "#0F0F0F", borderRadius: 12, padding: "12px 10px 8px", marginTop: 4 }}>
+            <svg viewBox="0 0 300 46" width="100%" height="46" style={{ display: "block" }}>
               {(() => {
                 const pts = trend30.days.map((d, i) => {
                   const x = (i / 29) * 300;
@@ -2114,6 +2118,7 @@ function App() {
                 );
               })()}
             </svg>
+            </div>
             <button onClick={() => setShowTrendBreakdown(v => !v)}
               style={{ background: "none", border: "none", color: TD, fontSize: 11, fontWeight: 700, cursor: "pointer", padding: "6px 0 0", width: "100%", textAlign: "left" }}>
               {showTrendBreakdown ? "v" : ">"} Daily breakdown
@@ -2477,7 +2482,7 @@ function App() {
             <input type="password" value={aiKey} onChange={e => saveAiKey(e.target.value.trim())} placeholder="sk-ant-…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
               className="ad-input" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 14, fontFamily: "monospace", outline: "none", marginBottom: 8 }} />
             <select aria-label="Tutor model" value={aiModel} onChange={e => saveAiModel(e.target.value)}
-              style={{ width: "100%", boxSizing: "border-box", background: "#0F0F0F", color: T, border: `1px solid ${B}`, borderRadius: 10, padding: "10px 12px", fontSize: 12, fontFamily: BD, outline: "none" }}>
+              style={{ width: "100%", boxSizing: "border-box", background: "#0F0F0F", color: T, border: `1px solid ${HAIR}`, borderRadius: 10, padding: "10px 12px", fontSize: 12, fontFamily: BD, outline: "none" }}>
               {AI_MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
             </select>
             <div style={{ fontSize: 11, color: aiKey ? G : TD, marginTop: 8, fontWeight: 700 }}>{aiKey ? "✓ Key saved on this device" : "No key yet — the Tutor is locked until you add one."}</div>
@@ -2535,7 +2540,7 @@ function App() {
       </div>}
 
       {/* ── HOME ── */}
-      {screen === "home" && <div style={{ padding: "12px 20px max(40px, env(safe-area-inset-bottom))" }}>
+      {screen === "home" && <div style={{ padding: "12px 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
         {/* Update available — appears when a new SW version is installed and waiting */}
         {updateAvailable && (
           <button onClick={applyUpdate}
@@ -2554,7 +2559,7 @@ function App() {
         )}
 
         {/* Hero */}
-        <div style={{ background: SOFT_PANEL, border: `1px solid ${B}`, borderRadius: 14, padding: "24px 22px 20px", marginBottom: 16, position: "relative", overflow: "hidden" }}>
+        <div style={{ background: SOFT_PANEL, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "24px 22px 22px", marginBottom: 16, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG }} />
           <button onClick={() => { setShowSettings(true); setImportError(""); setUpdateCheckMsg(""); }} aria-label="Settings"
             style={{ position: "absolute", top: 10, right: 10, background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 9, color: TD, cursor: "pointer", padding: 7, lineHeight: 1 }}><Icon name="settings" size={16} /></button>
@@ -2569,11 +2574,11 @@ function App() {
         <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, margin: "2px 0 10px" }}>Today</div>
         {/* Today metrics */}
         <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
+          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
             <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}><CountUp value={dailyStats.streak} /></div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 600, letterSpacing: 0.4 }}>Day streak</div>
           </div>
-          <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
+          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
             <div style={{ fontFamily: FN, fontSize: 26, fontWeight: 800 }}>
               <span style={{ color: dailyStats.count >= dailyGoal ? G : T }}>{dailyStats.count}</span>
               <span style={{ color: TD, fontSize: 16 }}> / {dailyGoal}</span>
@@ -2588,7 +2593,7 @@ function App() {
 
         {/* Today's work */}
         {reviewQueueItems.length > 0 && (
-          <div style={{ background: SH, border: `1px solid ${B}`, borderRadius: 16, padding: "14px 14px 12px", marginBottom: 14, position: "relative", overflow: "hidden" }}>
+          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 10, paddingTop: 2 }}>
               <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
               <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
@@ -2611,7 +2616,7 @@ function App() {
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
           <button type="button" onClick={() => openSetup("__all__", "production")}
-            style={{ width: "100%", background: A, color: "#0A0A0A", border: "none", borderRadius: 12, padding: "16px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: `0 10px 24px ${A}16` }}>
+            style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 16, padding: "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -8px rgba(255,204,0,0.45)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
               <IconBadge name="keyboard" size={36} color="#0A0A0A" bg="#0A0A0A18" />
               <span>
@@ -2632,7 +2637,7 @@ function App() {
               </span>
             </button>}
             <button type="button" onClick={() => openSetup("__all__", setupMode)}
-              style={{ width: "100%", background: "#0F0F0F", color: T, border: `1px solid ${B}`, borderRadius: 12, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "inherit", fontWeight: 700 }}>
+              style={{ width: "100%", background: "#0F0F0F", color: T, border: `1px solid ${HAIR}`, borderRadius: 12, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "inherit", fontWeight: 700 }}>
               <IconBadge name="layers" size={30} color={TD} />
               <span>
                 <span style={{ display: "block", color: TD, fontSize: 10, fontWeight: 800 }}>All cards</span>
@@ -2708,7 +2713,7 @@ function App() {
             const done = st.mastered >= st.total && st.total > 0;
             const justMastered = newlyMasteredCats.has(cat);
             return (
-              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? `${G}66` : B}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
+              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
                 {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
                 <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
                   <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />
@@ -3267,7 +3272,7 @@ function App() {
                 }
               }}
               disabled={idx === 0}
-              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${B}`, color: idx === 0 ? B : T, fontSize: 22, cursor: idx === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${HAIR}`, color: idx === 0 ? B : T, fontSize: 22, cursor: idx === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name="skipBack" size={22} />
             </button>
             <button
@@ -3291,7 +3296,7 @@ function App() {
                   setStats({ c: cards.length, w: 0 });
                 }
               }}
-              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${B}`, color: T, fontSize: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${HAIR}`, color: T, fontSize: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name="skipForward" size={22} />
             </button>
           </div>

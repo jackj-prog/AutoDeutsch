@@ -411,10 +411,14 @@ const PAL = {
 // Calmer, more premium surface tokens: hairline borders + soft elevation instead of hard grey boxes.
 const HAIR = "rgba(255,255,255,0.06)";
 const ELEV = "0 8px 30px -14px rgba(0,0,0,0.8)";
+// Atmosphere: a warm glow behind the app top + lit-from-above panel surfaces.
+const APP_BG = "radial-gradient(125% 48% at 50% -6%, rgba(255,200,40,0.10) 0%, rgba(255,200,40,0.02) 28%, #090909 60%)";
+const HERO_GRAD = "linear-gradient(155deg, #2A210B 0%, #1A160E 42%, #100F0C 100%)";
+const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.7";
+const APP_VERSION = "2026.06.10.8";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2050,7 +2054,7 @@ function App() {
 
   const ProgressHub = () => {
     return (
-      <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginBottom: 4, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+      <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginBottom: 4, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginTop: 4, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2 }}>Progress</div>
@@ -2155,7 +2159,7 @@ function App() {
   };
 
   return (
-    <div style={{ fontFamily: BD, background: BG, color: T, minHeight: DVH, maxWidth: 480, margin: "0 auto", position: "relative" }}>
+    <div style={{ fontFamily: BD, background: APP_BG, color: T, minHeight: DVH, maxWidth: 480, margin: "0 auto", position: "relative" }}>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>{`
         @keyframes ad-mastery-pop {
@@ -2559,12 +2563,12 @@ function App() {
         )}
 
         {/* Hero */}
-        <div style={{ background: SOFT_PANEL, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "24px 22px 22px", marginBottom: 16, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+        <div style={{ background: HERO_GRAD, border: "1px solid rgba(255,204,0,0.14)", borderRadius: 20, padding: "26px 22px 24px", marginBottom: 18, position: "relative", overflow: "hidden", boxShadow: "0 16px 50px -16px rgba(255,200,40,0.22), 0 10px 30px -16px rgba(0,0,0,0.8)" }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG }} />
           <button onClick={() => { setShowSettings(true); setImportError(""); setUpdateCheckMsg(""); }} aria-label="Settings"
             style={{ position: "absolute", top: 10, right: 10, background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 9, color: TD, cursor: "pointer", padding: 7, lineHeight: 1 }}><Icon name="settings" size={16} /></button>
-          <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, marginBottom: 6 }}>Learn German</div>
-          <h1 style={{ fontFamily: FN, fontSize: 34, margin: "0 0 6px", fontWeight: 800, lineHeight: 1, color: T, display: "flex", alignItems: "center" }}>
+          <div style={{ fontSize: 10, color: A, fontWeight: 800, letterSpacing: 2.5, marginBottom: 8, textTransform: "uppercase" }}>Learn German</div>
+          <h1 style={{ fontFamily: FN, fontSize: 40, margin: "0 0 8px", fontWeight: 800, lineHeight: 1, color: T, display: "flex", alignItems: "center", letterSpacing: -0.5 }}>
             <img src="icons/icon-192x192.png" alt="" style={{ width: 38, height: 38, mixBlendMode: "screen", marginLeft: -6, marginRight: -2 }} />
             <span>utodeutsch</span>
           </h1>
@@ -2574,11 +2578,11 @@ function App() {
         <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, margin: "2px 0 10px" }}>Today</div>
         {/* Today metrics */}
         <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
+          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
             <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}><CountUp value={dailyStats.streak} /></div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 600, letterSpacing: 0.4 }}>Day streak</div>
           </div>
-          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
+          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
             <div style={{ fontFamily: FN, fontSize: 26, fontWeight: 800 }}>
               <span style={{ color: dailyStats.count >= dailyGoal ? G : T }}>{dailyStats.count}</span>
               <span style={{ color: TD, fontSize: 16 }}> / {dailyGoal}</span>
@@ -2593,7 +2597,7 @@ function App() {
 
         {/* Today's work */}
         {reviewQueueItems.length > 0 && (
-          <div style={{ background: SH, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 10, paddingTop: 2 }}>
               <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
               <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
@@ -2602,7 +2606,7 @@ function App() {
               {reviewQueueItems.map(item => (
                 <button key={item.key} type="button" onClick={item.onClick}
                   title={item.detail}
-                  style={{ minWidth: 0, background: "#0F0F0F", color: T, border: item.key === "due" && item.count > 0 ? `1.5px solid ${item.color}66` : `1px solid ${item.color}38`, boxShadow: item.key === "due" && item.count > 0 ? `0 0 16px -6px ${item.color}66` : "none", borderRadius: 10, padding: "9px 7px 8px", textAlign: "center", cursor: "pointer", display: "grid", justifyItems: "center", gap: 5, fontFamily: "inherit" }}>
+                  style={{ minWidth: 0, background: `linear-gradient(180deg, ${item.color}14 0%, #0D0D0D 75%)`, color: T, border: `1px solid ${item.color}${item.key === "due" && item.count > 0 ? "55" : "2E"}`, boxShadow: item.key === "due" && item.count > 0 ? `0 6px 20px -8px ${item.color}55` : "none", borderRadius: 14, padding: "11px 7px 10px", textAlign: "center", cursor: "pointer", display: "grid", justifyItems: "center", gap: 6, fontFamily: "inherit" }}>
                   <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
                   <span style={{ fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title}</span>
                   <span style={{ fontSize: 14, color: item.color, fontWeight: 800, lineHeight: 1 }}>{item.count}</span>
@@ -2713,7 +2717,7 @@ function App() {
             const done = st.mastered >= st.total && st.total > 0;
             const justMastered = newlyMasteredCats.has(cat);
             return (
-              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}10, #101010 42%)` : "#101010", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
+              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
                 {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
                 <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
                   <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />
@@ -3272,7 +3276,7 @@ function App() {
                 }
               }}
               disabled={idx === 0}
-              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${HAIR}`, color: idx === 0 ? B : T, fontSize: 22, cursor: idx === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              style={{ width: 56, height: 56, borderRadius: "50%", background: PANEL_GRAD, border: `1px solid ${HAIR}`, color: idx === 0 ? B : T, fontSize: 22, cursor: idx === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name="skipBack" size={22} />
             </button>
             <button
@@ -3296,7 +3300,7 @@ function App() {
                   setStats({ c: cards.length, w: 0 });
                 }
               }}
-              style={{ width: 56, height: 56, borderRadius: "50%", background: SH, border: `1px solid ${HAIR}`, color: T, fontSize: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              style={{ width: 56, height: 56, borderRadius: "50%", background: PANEL_GRAD, border: `1px solid ${HAIR}`, color: T, fontSize: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name="skipForward" size={22} />
             </button>
           </div>

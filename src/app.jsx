@@ -418,7 +418,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.10";
+const APP_VERSION = "2026.06.10.11";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2055,6 +2055,7 @@ function App() {
   const ProgressHub = () => {
     return (
       <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginTop: 30, marginBottom: 4, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.8 }} />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginTop: 4, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2 }}>Progress</div>
@@ -2598,6 +2599,7 @@ function App() {
         {/* Today's work */}
         {reviewQueueItems.length > 0 && (
           <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 10, paddingTop: 2 }}>
               <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
               <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
@@ -2666,6 +2668,7 @@ function App() {
             <div style={{ fontSize: 10, color: TD }}>Targeted drills</div>
           </div>
           <div style={{ background: "#0A0A0A", border: `1px solid ${A}22`, borderRadius: 16, padding: 10, position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.9 }} />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
               {[
                 { l: "der / die / das", s: "Articles", meta: "Gender", icon: "book", c: "__all__", m: "article" },
@@ -2863,7 +2866,7 @@ function App() {
         {(mode === "production" || mode === "dictation") ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: answered ? 1 : "0 1 auto", maxHeight: answered ? undefined : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, opacity: 0.7 }} />
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               {mode === "dictation" ? (
                 <button onClick={() => speak(card.de)} style={{ background: `${A}10`, border: `1.5px solid ${A}55`, borderRadius: 999, padding: "16px 26px", color: A, fontSize: 15, cursor: "pointer", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 10 }}>
                   <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
@@ -2906,13 +2909,13 @@ function App() {
             <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)` }} />
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
                 </div>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)` }} />
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
@@ -2967,7 +2970,7 @@ function App() {
 
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
           <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, opacity: 0.7 }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
             {mode === "article" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
@@ -3312,7 +3315,7 @@ function App() {
 
       {/* ── RESULTS ── */}
       {screen === "results" && <div style={{ padding: "40px 24px 24px", textAlign: "center" }}>
-        <div style={{ height: 3, background: `linear-gradient(90deg, transparent 0%, ${A}66 50%, transparent 100%)`, borderRadius: 2, marginBottom: 24 }} />
+        <div style={{ height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, borderRadius: 2, marginBottom: 24 }} />
         <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>{failed.length > 0 ? "Keep Going" : "Complete"}</div>
         <h2 style={{ fontFamily: FN, fontSize: 28, margin: "0 0 6px", fontWeight: 800, color: T }}>{failed.length > 0 ? "Almost There" : "Session Complete"}</h2>
         <p style={{ color: TD, fontSize: 13, marginBottom: 8 }}>

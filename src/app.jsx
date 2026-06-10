@@ -79,6 +79,27 @@ const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
 const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
 const LEVELS = ["A1", "A2", "B1"];
 
+// ── AI Tutor (bring-your-own-key) ──
+const AI_MODELS = [
+  { id: "claude-sonnet-4-6", label: "Sonnet 4.6 — balanced (default)" },
+  { id: "claude-haiku-4-5-20251001", label: "Haiku 4.5 — fastest & cheapest" },
+  { id: "claude-opus-4-8", label: "Opus 4.8 — highest quality" },
+];
+const TUTOR_SYSTEM = `You are a warm, patient German tutor inside a vocabulary app. Your learner is an English speaker at about B1 level — an electrical engineer relocating to a German-speaking country for work, so technical/workplace topics are welcome.
+
+Guidelines:
+- Reply mostly in clear, B1-level German. Keep replies short: 2–4 sentences unless asked for more.
+- When the learner makes a mistake, gently restate it correctly and add a brief English note in parentheses explaining the rule.
+- If they write in English, or ask for a grammar explanation, answer clearly in English.
+- End most replies with a natural follow-up question to keep the conversation going.
+- Be encouraging and concrete. Never invent vocabulary that isn't standard German.`;
+const tutorStarters = [
+  "Stell mir eine einfache Frage auf Deutsch.",
+  "Lass uns über meinen Arbeitstag sprechen.",
+  "Erkläre den Unterschied zwischen 'wissen' und 'kennen'.",
+  "Gib mir 5 B2-Sätze mit 'der Wirkungsgrad'.",
+];
+
 // "Mark as known" identity for a vocab word — mode-agnostic (knowing "Hallo" suppresses it
 // in both recall and production). Kept separate from progress keys, which are per-mode.
 const knownKey = (cat, de) => `${cat}::${de}`;
@@ -389,7 +410,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.2";
+const APP_VERSION = "2026.06.10.3";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -610,6 +631,13 @@ function App() {
   const [setupLevel, setSetupLevel] = useState("all");    // session level filter: "all" | A1 | A2 | B1
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
+  // AI Tutor (bring-your-own Anthropic key; everything stays on-device, calls go direct to Anthropic)
+  const [aiKey, setAiKey] = useState(() => { try { return localStorage.getItem("gfc-ai-key") || ""; } catch (e) { return ""; } });
+  const [aiModel, setAiModel] = useState(() => { try { return localStorage.getItem("gfc-ai-model") || "claude-sonnet-4-6"; } catch (e) { return "claude-sonnet-4-6"; } });
+  const [tutorMsgs, setTutorMsgs] = useState(() => { try { return JSON.parse(localStorage.getItem("gfc-tutor-msgs") || "[]"); } catch (e) { return []; } });
+  const [tutorInput, setTutorInput] = useState("");
+  const [tutorBusy, setTutorBusy] = useState(false);
+  const [tutorError, setTutorError] = useState("");
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -1182,6 +1210,51 @@ function App() {
   };
 
   // Insert a German special character into the focused typed-answer input at the caret.
+  // AI Tutor: persist key/model/chat; call Anthropic directly from the browser (BYOK).
+  const saveAiKey = (k) => { setAiKey(k); try { k ? localStorage.setItem("gfc-ai-key", k) : localStorage.removeItem("gfc-ai-key"); } catch (e) {} };
+  const saveAiModel = (m) => { setAiModel(m); try { localStorage.setItem("gfc-ai-model", m); } catch (e) {} };
+  const persistTutor = (msgs) => { try { localStorage.setItem("gfc-tutor-msgs", JSON.stringify(msgs.slice(-40))); } catch (e) {} };
+
+  const sendTutor = async (text) => {
+    const body = (text || tutorInput).trim();
+    if (!body || tutorBusy || !aiKey) return;
+    const next = [...tutorMsgs, { role: "user", text: body }];
+    setTutorMsgs(next); persistTutor(next); setTutorInput(""); setTutorBusy(true); setTutorError("");
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": aiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
+        body: JSON.stringify({
+          model: aiModel,
+          max_tokens: 700,
+          system: TUTOR_SYSTEM,
+          messages: next.slice(-20).map(m => ({ role: m.role, content: m.text })),
+        }),
+      });
+      if (!res.ok) {
+        let detail = `HTTP ${res.status}`;
+        try { const j = await res.json(); detail = j?.error?.message || detail; } catch (e) {}
+        if (res.status === 401) detail = "Invalid API key — check it in Settings.";
+        else if (res.status === 429) detail = "Rate limited or out of credit. Try again shortly.";
+        throw new Error(detail);
+      }
+      const data = await res.json();
+      const reply = (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n").trim();
+      const withReply = [...next, { role: "assistant", text: reply || "(empty reply)" }];
+      setTutorMsgs(withReply); persistTutor(withReply);
+    } catch (e) {
+      setTutorError(e.message || "Request failed. Check your connection.");
+    } finally {
+      setTutorBusy(false);
+    }
+  };
+  const clearTutor = () => { setTutorMsgs([]); setTutorError(""); try { localStorage.removeItem("gfc-tutor-msgs"); } catch (e) {} };
+
   const insertChar = (ch) => {
     const el = typedInputRef.current;
     if (!el) { setInput(v => v + ch); return; }
@@ -2348,6 +2421,20 @@ function App() {
             {dailyGoal > 60 && <p style={{ fontSize: 11, color: A, marginTop: 12, lineHeight: 1.5, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, borderLeft: `3px solid ${A}` }}>Ambitious goal. Consistency beats intensity — missing a big target often hurts streak motivation more than a smaller goal would.</p>}
           </div>
 
+          <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>AI Tutor</h3>
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontSize: 12, color: TD, marginBottom: 8, lineHeight: 1.5 }}>
+              Chat with a German tutor powered by your own Anthropic API key. The key is stored only on this device and messages go straight to Anthropic — you pay your own usage (a typical chat is a fraction of a cent). Get a key at <span style={{ color: A }}>console.anthropic.com</span>.
+            </div>
+            <input type="password" value={aiKey} onChange={e => saveAiKey(e.target.value.trim())} placeholder="sk-ant-…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
+              className="ad-input" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 14, fontFamily: "monospace", outline: "none", marginBottom: 8 }} />
+            <select aria-label="Tutor model" value={aiModel} onChange={e => saveAiModel(e.target.value)}
+              style={{ width: "100%", boxSizing: "border-box", background: "#0F0F0F", color: T, border: `1px solid ${B}`, borderRadius: 10, padding: "10px 12px", fontSize: 12, fontFamily: BD, outline: "none" }}>
+              {AI_MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+            </select>
+            <div style={{ fontSize: 11, color: aiKey ? G : TD, marginTop: 8, fontWeight: 700 }}>{aiKey ? "✓ Key saved on this device" : "No key yet — the Tutor is locked until you add one."}</div>
+          </div>
+
           <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>App Updates</h3>
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 12, color: TD, marginBottom: 6 }}>Current build: <span style={{ color: A, fontFamily: "monospace" }}>{APP_VERSION}</span></div>
@@ -2509,6 +2596,15 @@ function App() {
               </span>
             </button>
           </div>
+          <button type="button" onClick={() => setScreen("tutor")}
+            style={{ width: "100%", marginTop: 10, background: "linear-gradient(135deg, #14110A 0%, #0F0F0F 60%)", color: T, border: `1px solid ${A}44`, borderRadius: 12, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "inherit", fontWeight: 700 }}>
+            <IconBadge name="message" size={30} color={A} bg={`${A}14`} />
+            <span style={{ minWidth: 0, flex: 1 }}>
+              <span style={{ display: "block", color: A, fontSize: 10, fontWeight: 800, letterSpacing: 0.3 }}>AI Tutor {!aiKey && "· setup needed"}</span>
+              <span style={{ display: "block", fontSize: 12 }}>Chat & ask in German</span>
+            </span>
+            <Icon name="arrowRight" size={16} />
+          </button>
         </div>
         {/* Training */}
         <div style={{ marginTop: 34 }}>
@@ -2602,6 +2698,54 @@ function App() {
           <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("results")} style={{ fontFamily: FN }}>Open Results</Btn>
         </div>
       </div>}
+
+      {/* ── AI TUTOR ── */}
+      {screen === "tutor" && (
+        <div style={{ padding: "0 16px max(16px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+          <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+            <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+            <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>AI Tutor</div>
+            {tutorMsgs.length > 0
+              ? <button onClick={clearTutor} style={{ background: "transparent", border: `1px solid ${B}`, borderRadius: 10, color: TD, fontSize: 11, cursor: "pointer", padding: "8px 12px", fontWeight: 700 }}>Clear</button>
+              : <span style={{ width: 56 }} />}
+          </div>
+
+          {!aiKey ? (
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 16px", gap: 14 }}>
+              <IconBadge name="message" size={48} color={A} bg={`${A}14`} />
+              <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: T }}>Add your API key to start</div>
+              <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, maxWidth: 320 }}>The Tutor uses your own Anthropic key — it stays on this device and you pay your own usage (a fraction of a cent per chat). Get one at console.anthropic.com, then paste it in Settings.</div>
+              <Btn bg={A} color="#0A0A0A" onClick={() => { setScreen("home"); setShowSettings(true); }} style={{ fontFamily: FN, width: "auto", padding: "14px 22px" }}>Open Settings</Btn>
+            </div>
+          ) : (
+            <>
+              <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, paddingBottom: 10 }}>
+                {tutorMsgs.length === 0 && (
+                  <div style={{ marginTop: 8 }}>
+                    <div style={{ fontSize: 12, color: TD, lineHeight: 1.5, marginBottom: 12, textAlign: "center" }}>Chat in German with a B1 tutor. It corrects you and explains why. Tap a starter or type below.</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {tutorStarters.map((s, i) => (
+                        <button key={i} onClick={() => sendTutor(s)} style={{ textAlign: "left", background: "#101010", border: `1px solid ${B}`, borderRadius: 12, padding: "12px 14px", color: T, fontSize: 13, cursor: "pointer", fontFamily: "inherit", lineHeight: 1.4 }}>{s}</button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {tutorMsgs.map((m, i) => (
+                  <div key={i} style={{ alignSelf: m.role === "user" ? "flex-end" : "flex-start", maxWidth: "88%", background: m.role === "user" ? A : "#161616", color: m.role === "user" ? "#0A0A0A" : T, border: m.role === "user" ? "none" : `1px solid ${B}`, borderRadius: 16, borderBottomRightRadius: m.role === "user" ? 4 : 16, borderBottomLeftRadius: m.role === "user" ? 16 : 4, padding: "10px 14px", fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-wrap", fontWeight: m.role === "user" ? 600 : 400 }}>{m.text}</div>
+                ))}
+                {tutorBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>Tutor denkt nach…</div>}
+                {tutorError && <div style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{tutorError}</div>}
+              </div>
+              <div style={{ display: "flex", gap: 8, paddingTop: 8, borderTop: `1px solid ${B}` }}>
+                <input value={tutorInput} onChange={e => setTutorInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && tutorInput.trim()) sendTutor(); }}
+                  placeholder="Schreib auf Deutsch…" autoCapitalize="sentences" className="ad-input"
+                  style={{ flex: 1, padding: "13px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
+                <Btn bg={A} color="#0A0A0A" ariaLabel="Send" onClick={() => sendTutor()} style={{ width: "auto", padding: "13px 18px", opacity: tutorBusy ? 0.5 : 1 }}>→</Btn>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {/* ── WORD BROWSER ── */}
       {screen === "browse" && (() => {

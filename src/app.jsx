@@ -62,6 +62,7 @@ const cardId = (card) => card.id || card._id || card.de || card.q || card.a || (
 const MODE_SUMMARY_LABELS = {
   vocab: "recognition",
   production: "production",
+  dictation: "dictation",
   article: "articles",
   cloze: "cloze",
   verb: "verbs",
@@ -410,7 +411,7 @@ const PAL = {
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.3";
+const APP_VERSION = "2026.06.10.4";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -628,7 +629,8 @@ function App() {
   const [rpt, setRpt] = useState(0);
   const [prog, setProg] = useState({});
   const [known, setKnown] = useState(() => new Set());   // vocab words the user marked as known (knownKey)
-  const [setupLevel, setSetupLevel] = useState("all");    // session level filter: "all" | A1 | A2 | B1
+  const [setupLevel, setSetupLevel] = useState("all");
+  const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv    // session level filter: "all" | A1 | A2 | B1
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
   // AI Tutor (bring-your-own Anthropic key; everything stays on-device, calls go direct to Anthropic)
@@ -1254,6 +1256,31 @@ function App() {
     }
   };
   const clearTutor = () => { setTutorMsgs([]); setTutorError(""); try { localStorage.removeItem("gfc-tutor-msgs"); } catch (e) {} };
+  // "Why?" bridge: jump from an answered card into the Tutor with a prepared question,
+  // and remember where to return so Back resumes the session.
+  const tutorReturnRef = useRef("home");
+  const askTutorAboutCard = () => {
+    const c = cards[idx]; if (!c) return;
+    let q;
+    if (mode === "cloze") q = `Im Satz "${(c.q || "").replace("___", c.a)}" ist die Lösung "${c.a}".${c.h ? ` Hinweis: ${c.h}.` : ""} Erkläre die Grammatik kurz auf Englisch, mit einem neuen Beispiel.`;
+    else if (mode === "verb") q = `Erkläre kurz die Verbform "${c.pron} ${c.correct}" von "${c.verb}" (${c.tense}). Antwort auf Englisch mit einem neuen Beispiel.`;
+    else if (mode === "imperativ") q = `Erkläre den Imperativ "${c[c._person]}" (${c._person}-Form von "${c.base}"). Antwort auf Englisch.`;
+    else if (mode === "article") q = `Warum heißt es "${c.article} ${c.noun}"? Gibt es eine Regel oder Eselsbrücke für das Genus? Antwort auf Englisch.`;
+    else if (mode === "sentence") q = `Erkläre die Wortstellung in: "${(c.correct || []).join(" ")}" (Regel: ${c.rule}). Antwort auf Englisch.`;
+    else if (mode === "listening") q = `Erkläre kurz auf Englisch: "${c.q}" — die richtige Antwort war "${(c.opts || [])[c.correctIdx]}".`;
+    else q = `Erkläre kurz das Wort "${c.de}" (${c.en}): Grammatik, typische Verwendung, ein neues Beispiel. Antwort auf Englisch.`;
+    tutorReturnRef.current = screen;
+    setScreen("tutor");
+    if (aiKey) sendTutor(q);
+  };
+
+  // Dictation: speak each new card automatically (the first card is spoken from the
+  // Start tap itself for iOS; this covers every advance after that).
+  useEffect(() => {
+    if (screen !== "cards" || mode !== "dictation" || answered || idx === 0) return;
+    const c = cards[idx];
+    if (c?.de) { const t = setTimeout(() => speak(c.de), 250); return () => clearTimeout(t); }
+  }, [idx, screen, mode]);
 
   const insertChar = (ch) => {
     const el = typedInputRef.current;
@@ -1373,7 +1400,7 @@ function App() {
   const resolveKey = (key) => {
     const parts = key.split("::");
     const m = parts[0];
-    if (m === "vocab" || m === "production") {
+    if (m === "vocab" || m === "production" || m === "dictation") {
       const cat = parts[1], de = parts.slice(2).join("::");
       const found = V[cat]?.find(w => w && w.de === de);
       if (found) return { ...found, _cat: cat, _mode: m };
@@ -1528,15 +1555,21 @@ function App() {
     const ls = { cat, m, count, label, ts: Date.now() };
     setLastSession(ls); saveLast(ls);
 
-    if (m === "vocab" || m === "production") {
+    if (m === "vocab" || m === "production" || m === "dictation") {
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories" : cat);
       const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
       const pool = filterPool(rawPool);
       const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
       const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
-      setCards(sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]));
+      const sel = sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]);
+      setCards(sel);
       setScreen("cards"); setTStart(Date.now());
+      if (m === "dictation") {
+        // Same iOS rule as audio mode: prime TTS inside the tap, then speak the first card.
+        try { if (window.speechSynthesis) { const warm = new SpeechSynthesisUtterance(" "); warm.volume = 0; window.speechSynthesis.speak(warm); } } catch (e) {}
+        setTimeout(() => { if (sel[0]?.de) speak(sel[0].de); }, 300);
+      }
     } else if (m === "article") {
       setCategory("Article Drill"); const pool = cat === "__all__" ? nouns : nouns.filter(n => n.cat === cat);
       const take = Math.min(count, pool.length);
@@ -1545,8 +1578,9 @@ function App() {
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
-      const take = Math.min(count, CLOZE.length);
-      const { seeded, rest } = seedDueFirst([...CLOZE], take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
+      const cpool = clozeTopic === "all" ? [...CLOZE] : CLOZE.filter(c => c.topic === clozeTopic);
+      const take = Math.min(count, cpool.length);
+      const { seeded, rest } = seedDueFirst(cpool, take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
       setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "verb") {
@@ -1689,7 +1723,7 @@ function App() {
     setIdx(0); setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(r => r + 1); setTStart(Date.now());
-    setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production") ? "cards" : "drill");
+    setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production" || m === "dictation") ? "cards" : "drill");
   };
 
   // Card flip handlers
@@ -1709,7 +1743,7 @@ function App() {
   };
   const submitTyped = () => {
     if (answered) return;
-    const card = cards[idx]; const target = mode === "production" ? card.de : card.en;
+    const card = cards[idx]; const target = mode === "vocab" ? card.en : card.de;
     const result = checkMatch(input, target);
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
@@ -1995,6 +2029,9 @@ function App() {
           <span style={{ color: R }}>✗ {n.stats.incorrect}</span>
         </div>
         {lastSeenLabel && <div style={{ fontSize: 10, color: TD, marginTop: 4, textAlign: "center", opacity: 0.7 }}>{lastSeenLabel}</div>}
+        <button type="button" onClick={askTutorAboutCard} style={{ margin: "8px auto 0", display: "inline-flex", alignItems: "center", gap: 6, background: "transparent", border: `1px solid ${BL}44`, borderRadius: 999, padding: "6px 13px", color: BL, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+          <Icon name="message" size={13} /> Why? Ask tutor
+        </button>
       </>
     );
   };
@@ -2243,10 +2280,11 @@ function App() {
             {setupIsLibrary && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Mode</div>
-                <div style={{ display: "grid", gridTemplateColumns: setupCanUseArticles ? "repeat(2, minmax(0, 1fr))" : "repeat(3, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
                   {[
                     ["vocab", "Recall", "DE → EN"],
                     ["production", "Production", "EN → DE"],
+                    ["dictation", "Dictation", "Hear → type"],
                     ["audio", "Audio", "Hands-free"],
                     ...(setupCanUseArticles ? [["article", "Articles", "der/die/das"]] : []),
                   ].map(([m, label, sub]) => {
@@ -2293,6 +2331,17 @@ function App() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
                   {[["present", "Präsens"], ["perfekt", "Perfekt"]].map(([t, l]) => (
                     <button key={t} onClick={() => setVerbTense(t)} style={{ padding: "9px 10px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: verbTense === t ? A : "transparent", color: verbTense === t ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {setupCat === "__grammar__" && (
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Focus</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["all", "Everything"], ["adjektiv", "Adjective endings"], ["praeteritum", "Präteritum"], ["konjunktiv", "Konjunktiv II"]].map(([k, l]) => (
+                    <button key={k} onClick={() => setClozeTopic(k)} style={{ minWidth: 0, padding: "9px 6px", borderRadius: 9, fontSize: 11, fontWeight: 900, cursor: "pointer", background: clozeTopic === k ? A : "transparent", color: clozeTopic === k ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
                   ))}
                 </div>
               </div>
@@ -2596,7 +2645,7 @@ function App() {
               </span>
             </button>
           </div>
-          <button type="button" onClick={() => setScreen("tutor")}
+          <button type="button" onClick={() => { tutorReturnRef.current = "home"; setScreen("tutor"); }}
             style={{ width: "100%", marginTop: 10, background: "linear-gradient(135deg, #14110A 0%, #0F0F0F 60%)", color: T, border: `1px solid ${A}44`, borderRadius: 12, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "inherit", fontWeight: 700 }}>
             <IconBadge name="message" size={30} color={A} bg={`${A}14`} />
             <span style={{ minWidth: 0, flex: 1 }}>
@@ -2703,7 +2752,7 @@ function App() {
       {screen === "tutor" && (
         <div style={{ padding: "0 16px max(16px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
           <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-            <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+            <button onClick={() => { const r = tutorReturnRef.current || "home"; tutorReturnRef.current = "home"; setScreen(r); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
             <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>AI Tutor</div>
             {tutorMsgs.length > 0
               ? <button onClick={clearTutor} style={{ background: "transparent", border: `1px solid ${B}`, borderRadius: 10, color: TD, fontSize: 11, cursor: "pointer", padding: "8px 12px", fontWeight: 700 }}>Clear</button>
@@ -2808,12 +2857,19 @@ function App() {
         {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
-        {mode === "production" ? (
+        {(mode === "production" || mode === "dictation") ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "32px 24px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #222 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
-              <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.25, color: T, letterSpacing: -0.3 }}>{card.en}</div>
+              {mode === "dictation" ? (
+                <button onClick={() => speak(card.de)} style={{ background: `${A}10`, border: `1.5px solid ${A}55`, borderRadius: 999, padding: "16px 26px", color: A, fontSize: 15, cursor: "pointer", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 10 }}>
+                  <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
+                </button>
+              ) : (
+                <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 600, textAlign: "center", lineHeight: 1.25, color: T, letterSpacing: -0.3 }}>{card.en}</div>
+              )}
               {answered && <>
+                {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
                 <div style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>

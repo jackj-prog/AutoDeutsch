@@ -418,7 +418,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.11";
+const APP_VERSION = "2026.06.10.12";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -639,7 +639,7 @@ function App() {
   const [setupLevel, setSetupLevel] = useState("all");
   const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv    // session level filter: "all" | A1 | A2 | B1
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
-  const [browseKnownOnly, setBrowseKnownOnly] = useState(false); // word-browser: show only known words
+  const [browseFilter, setBrowseFilter] = useState("all"); // word-browser: "all" | "known" | "mastered"
   // AI Tutor (bring-your-own Anthropic key; everything stays on-device, calls go direct to Anthropic)
   const [aiKey, setAiKey] = useState(() => { try { return localStorage.getItem("gfc-ai-key") || ""; } catch (e) { return ""; } });
   const [aiModel, setAiModel] = useState(() => { try { return localStorage.getItem("gfc-ai-model") || "claude-sonnet-4-6"; } catch (e) { return "claude-sonnet-4-6"; } });
@@ -1942,7 +1942,7 @@ function App() {
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
-  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "briefcase", "Health & Doctor": "medical", "Clothing & Style": "cart", "Nature & Outdoors": "cloud", "Small Talk & Social": "message", "Restaurant & Dining Out": "utensils" };
+  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "briefcase", "Health & Doctor": "medical", "Clothing & Style": "cart", "Nature & Outdoors": "cloud", "Small Talk & Social": "message", "Restaurant & Dining Out": "utensils", "Opinions & Argument": "message", "Emails & Phone": "megaphone", "Character & Personality": "smile" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
   // Shown under the queue total so the badge number and the session size can't contradict.
   const nextBatchLabel = (resolved) => {
@@ -2706,7 +2706,7 @@ function App() {
         {/* Library */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
           <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Library</div>
-          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseKnownOnly(false); setScreen("browse"); }}
+          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
             style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
             <Icon name="book" size={12} /> Browse all words
           </button>
@@ -2806,7 +2806,8 @@ function App() {
       {screen === "browse" && (() => {
         const q = normalize(browseQuery);
         let list = allVocab();
-        if (browseKnownOnly) list = list.filter(w => known.has(knownKey(w._cat, w.de)));
+        if (browseFilter === "known") list = list.filter(w => known.has(knownKey(w._cat, w.de)));
+        else if (browseFilter === "mastered") list = list.filter(w => normalizeEntry(prog[`production::${w._cat}::${w.de}`]).stats.productionStreak >= MASTERY_STREAK);
         if (q) list = list.filter(w => normalize(w.de).includes(q) || w.en.toLowerCase().includes(browseQuery.trim().toLowerCase()));
         list.sort((a, b) => a.de.localeCompare(b.de, "de"));
         const total = list.length;
@@ -2820,11 +2821,11 @@ function App() {
             <input className="ad-input" value={browseQuery} onChange={e => setBrowseQuery(e.target.value)} placeholder="Search German or English…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
               style={{ width: "100%", boxSizing: "border-box", padding: "13px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none", marginBottom: 10 }} />
             <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-              {[[false, "All words"], [true, "Known"]].map(([v, l]) => (
-                <button key={l} onClick={() => setBrowseKnownOnly(v)} style={{ padding: "6px 14px", borderRadius: 999, fontSize: 12, fontWeight: 800, cursor: "pointer", background: browseKnownOnly === v ? A : "#0A0A0A", color: browseKnownOnly === v ? "#0A0A0A" : TD, border: `1px solid ${browseKnownOnly === v ? A : B}` }}>{l}</button>
+              {[["all", "All words"], ["mastered", "★ Mastered"], ["known", "Known"]].map(([v, l]) => (
+                <button key={v} onClick={() => setBrowseFilter(v)} style={{ padding: "6px 13px", borderRadius: 999, fontSize: 12, fontWeight: 800, cursor: "pointer", background: browseFilter === v ? A : "#0A0A0A", color: browseFilter === v ? "#0A0A0A" : TD, border: `1px solid ${browseFilter === v ? A : B}` }}>{l}</button>
               ))}
             </div>
-            {shown.length === 0 && <div style={{ color: TD, fontSize: 13, textAlign: "center", marginTop: 40 }}>{browseKnownOnly ? "No words marked as known yet. Tap “Known” on any word you don’t need to practise." : "No matches. Try a shorter search."}</div>}
+            {shown.length === 0 && <div style={{ color: TD, fontSize: 13, textAlign: "center", marginTop: 40 }}>{browseFilter === "known" ? "No words marked as known yet. Tap “Known” on any word you don’t need to practise." : browseFilter === "mastered" ? "No mastered words yet. Master a word with 5 correct production answers in a row." : "No matches. Try a shorter search."}</div>}
             <div style={{ display: "grid", gap: 8 }}>
               {shown.map(w => {
                 const isKnown = known.has(knownKey(w._cat, w.de));
@@ -2833,7 +2834,7 @@ function App() {
                 const att = v.stats.attempts + pr.stats.attempts;
                 const mastered = pr.stats.productionStreak >= MASTERY_STREAK;
                 return (
-                  <div key={`${w._cat}::${w.de}`} style={{ background: "#101010", border: `1px solid ${mastered ? `${G}44` : B}`, borderRadius: 12, padding: "11px 12px", opacity: isKnown && !browseKnownOnly ? 0.55 : 1 }}>
+                  <div key={`${w._cat}::${w.de}`} style={{ background: "#101010", border: `1px solid ${mastered ? `${G}44` : B}`, borderRadius: 12, padding: "11px 12px", opacity: isKnown && browseFilter !== "known" ? 0.55 : 1 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
@@ -3315,9 +3316,12 @@ function App() {
 
       {/* ── RESULTS ── */}
       {screen === "results" && <div style={{ padding: "40px 24px 24px", textAlign: "center" }}>
-        <div style={{ height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, borderRadius: 2, marginBottom: 24 }} />
-        <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>{failed.length > 0 ? "Keep Going" : "Complete"}</div>
-        <h2 style={{ fontFamily: FN, fontSize: 28, margin: "0 0 6px", fontWeight: 800, color: T }}>{failed.length > 0 ? "Almost There" : "Session Complete"}</h2>
+        <div style={{ height: 3, width: 64, margin: "0 auto 26px", background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, borderRadius: 2 }} />
+        <div style={{ width: 80, height: 80, borderRadius: "50%", margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: failed.length > 0 ? A : G, background: failed.length > 0 ? `${A}12` : `${G}14`, border: `1.5px solid ${failed.length > 0 ? A : G}50`, boxShadow: `0 0 48px -10px ${failed.length > 0 ? A : G}` }}>
+          <Icon name={failed.length > 0 ? "target" : "trophy"} size={38} stroke={2} />
+        </div>
+        <div style={{ fontSize: 11, color: failed.length > 0 ? A : G, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>{failed.length > 0 ? "Keep Going" : "Complete"}</div>
+        <h2 style={{ fontFamily: FN, fontSize: 31, margin: "0 0 6px", fontWeight: 800, color: T, letterSpacing: -0.4 }}>{failed.length > 0 ? "Almost There" : mode === "audio" ? "Nice Listening" : "Session Complete"}</h2>
         <p style={{ color: TD, fontSize: 13, marginBottom: 8 }}>
           {category}
           {rpt > 0 ? ` · Round ${rpt + 1}` : ""}

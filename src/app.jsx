@@ -146,6 +146,12 @@ function makeVerbQ(tense = "present") {
   return { verb: vb.v, en: vb.en, pron, correct, opts, correctIdx: opts.indexOf(correct), tense: "Präsens", hint: `${pron} → ${correct}` };
 }
 
+// Preferred German voice, persisted across sessions. Empty string = automatic
+// (first de-* voice). Module scope so every speak call site picks it up.
+let TTS_VOICE = "";
+try { TTS_VOICE = localStorage.getItem("gfc-voice") || ""; } catch (e) {}
+function setTtsVoice(name) { TTS_VOICE = name; try { localStorage.setItem("gfc-voice", name); } catch (e) {} }
+
 // Unified speech helper. Returns a Promise that resolves when the utterance ends
 // (or immediately if Speech Synthesis is unavailable / text is empty). All three
 // TTS call sites in the app flow through this.
@@ -157,7 +163,8 @@ function speakWith(text, lang = "de-DE", rate = 0.85) {
     u.lang = lang;
     u.rate = rate;
     const voices = window.speechSynthesis.getVoices();
-    const pref = voices.find(v => v.lang.startsWith(lang.slice(0, 2)));
+    const chosen = TTS_VOICE ? voices.find(v => v.name === TTS_VOICE) : null;
+    const pref = chosen || voices.find(v => v.lang.startsWith(lang.slice(0, 2)));
     if (pref) u.voice = pref;
     u.onend = () => resolve();
     u.onerror = () => resolve();
@@ -426,7 +433,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.21";
+const APP_VERSION = "2026.06.10.22";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -689,6 +696,23 @@ function App() {
   const [audioPauseLen, setAudioPauseLen] = useState(3500); // ms between utterances
   const [audioEnFirst, setAudioEnFirst] = useState(false); // EN→DE order instead of DE→EN
   const [audioIncludeExample, setAudioIncludeExample] = useState(false);
+  // German TTS voice picker ("" = auto). Voices load async via voiceschanged.
+  const [voiceName, setVoiceName] = useState(TTS_VOICE);
+  const [deVoices, setDeVoices] = useState([]);
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+    const load = () => {
+      const seen = new Set();
+      setDeVoices(window.speechSynthesis.getVoices()
+        .filter(v => v.lang && v.lang.toLowerCase().startsWith("de"))
+        .filter(v => !seen.has(v.name) && seen.add(v.name)));
+    };
+    load();
+    try {
+      window.speechSynthesis.addEventListener("voiceschanged", load);
+      return () => window.speechSynthesis.removeEventListener("voiceschanged", load);
+    } catch (e) {}
+  }, []);
   // NEW: Dialogue state
   const [dlgIdx, setDlgIdx] = useState(0);
   const [dlgRevealed, setDlgRevealed] = useState({});
@@ -2412,6 +2436,18 @@ function App() {
               </div>
             )}
 
+            {(((setupMode === "audio" || setupMode === "dictation") && setupIsLibrary) || setupCat === "__listening__") && deVoices.length > 1 && (
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>German voice</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {[["", "Auto"], ...deVoices.map(v => [v.name, v.name.replace(/\s*\([^)]*\)/g, "").trim()])].map(([val, label]) => (
+                    <button key={val || "auto"} onClick={() => { setVoiceName(val); setTtsVoice(val); if (val) speakWith("Guten Tag! Schön, dich zu sehen."); }} style={{ padding: "8px 12px", borderRadius: 9, fontSize: 11, fontWeight: 900, cursor: "pointer", background: voiceName === val ? A : "#0A0A0A", color: voiceName === val ? "#0A0A0A" : TD, border: `1px solid ${voiceName === val ? A : B}`, maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</button>
+                  ))}
+                </div>
+                <div style={{ fontSize: 10.5, color: TD, marginTop: 6 }}>Tap a voice to hear a preview — used everywhere the app speaks.</div>
+              </div>
+            )}
+
             {setupCat === "__listening__" && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Mode</div>
@@ -2424,6 +2460,25 @@ function App() {
                   ))}
                 </div>
                 {listenMode === "questions" && <p style={{ fontSize: 10, color: TD, marginTop: 8, lineHeight: 1.4 }}>Only dialogues with questions will be included ({DIALOGUES.filter(d => d.questions).length} available).</p>}
+                <div style={{ marginTop: 18 }}>
+                  <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Real German — Beyond the app</div>
+                  {[
+                    ["DW: Langsam gesprochene Nachrichten", "B1+", "Daily news read slowly, with transcript", "https://www.dw.com/de/deutsch-lernen/nachrichten/s-8030"],
+                    ["DW: Top-Thema mit Vokabeln", "B1", "Short articles with audio and vocab help", "https://www.dw.com/de/deutsch-lernen/top-thema/s-8031"],
+                    ["Tagesschau in 100 Sekunden", "B2+", "Real news at native speed", "https://www.tagesschau.de/100sekunden"],
+                    ["LibriVox: Hörbücher auf Deutsch", "B2+", "Free public-domain audiobooks", "https://librivox.org/search?primary_key=4&search_category=language&search_page=1&search_form=get_results"],
+                    ["Tatoeba: Sätze mit Audio", "All", "Native-recorded example sentences", "https://tatoeba.org/de/audio/index/deu"],
+                  ].map(([t, lvl, d, url]) => (
+                    <a key={url} href={url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", marginBottom: 6, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 10, textDecoration: "none" }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 12, color: T, fontWeight: 800 }}>{t}</div>
+                        <div style={{ fontSize: 10, color: TD, marginTop: 2, lineHeight: 1.35 }}>{d}</div>
+                      </div>
+                      <span style={{ fontSize: 9, fontWeight: 900, color: A, border: `1px solid ${A}55`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{lvl}</span>
+                    </a>
+                  ))}
+                  <p style={{ fontSize: 9.5, color: TD, marginTop: 4, lineHeight: 1.4 }}>Opens in your browser — free, legitimate sources for real listening practice.</p>
+                </div>
               </div>
             )}
 

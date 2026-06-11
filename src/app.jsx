@@ -78,7 +78,7 @@ const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) =>
 // v1 heuristic from difficulty so every card is filterable by level (A1/A2/B1).
 const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
 const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
-const LEVELS = ["A1", "A2", "B1"];
+const LEVELS = ["A1", "A2", "B1", "B2"];
 // Difficulty bands for the Sentence Builder + Grammar Cloze (friendlier than exact CEFR levels).
 const LVL_BANDS = { easy: ["A1", "A2"], core: ["B1"], hard: ["B2"] };
 const inBand = (item, band) => band === "all" || (LVL_BANDS[band] || []).includes(item.level);
@@ -421,7 +421,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.15";
+const APP_VERSION = "2026.06.10.16";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2434,9 +2434,9 @@ function App() {
             {setupIsLibrary && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Level</div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
                   {[["all", "All"], ...LEVELS.map(l => [l, l])].map(([k, l]) => (
-                    <button key={k} onClick={() => setSetupLevel(k)} style={{ padding: "9px 6px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                    <button key={k} onClick={() => setSetupLevel(k)} style={{ padding: "9px 4px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
                   ))}
                 </div>
               </div>

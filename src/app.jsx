@@ -433,7 +433,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.22";
+const APP_VERSION = "2026.06.10.23";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2460,25 +2460,6 @@ function App() {
                   ))}
                 </div>
                 {listenMode === "questions" && <p style={{ fontSize: 10, color: TD, marginTop: 8, lineHeight: 1.4 }}>Only dialogues with questions will be included ({DIALOGUES.filter(d => d.questions).length} available).</p>}
-                <div style={{ marginTop: 18 }}>
-                  <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Real German — Beyond the app</div>
-                  {[
-                    ["DW: Langsam gesprochene Nachrichten", "B1+", "Daily news read slowly, with transcript", "https://www.dw.com/de/deutsch-lernen/nachrichten/s-8030"],
-                    ["DW: Top-Thema mit Vokabeln", "B1", "Short articles with audio and vocab help", "https://www.dw.com/de/deutsch-lernen/top-thema/s-8031"],
-                    ["Tagesschau in 100 Sekunden", "B2+", "Real news at native speed", "https://www.tagesschau.de/100sekunden"],
-                    ["LibriVox: Hörbücher auf Deutsch", "B2+", "Free public-domain audiobooks", "https://librivox.org/search?primary_key=4&search_category=language&search_page=1&search_form=get_results"],
-                    ["Tatoeba: Sätze mit Audio", "All", "Native-recorded example sentences", "https://tatoeba.org/de/audio/index/deu"],
-                  ].map(([t, lvl, d, url]) => (
-                    <a key={url} href={url} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", marginBottom: 6, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 10, textDecoration: "none" }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 12, color: T, fontWeight: 800 }}>{t}</div>
-                        <div style={{ fontSize: 10, color: TD, marginTop: 2, lineHeight: 1.35 }}>{d}</div>
-                      </div>
-                      <span style={{ fontSize: 9, fontWeight: 900, color: A, border: `1px solid ${A}55`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{lvl}</span>
-                    </a>
-                  ))}
-                  <p style={{ fontSize: 9.5, color: TD, marginTop: 4, lineHeight: 1.4 }}>Opens in your browser — free, legitimate sources for real listening practice.</p>
-                </div>
               </div>
             )}
 

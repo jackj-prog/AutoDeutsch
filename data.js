@@ -464,6 +464,10 @@ const V = {
     {de:"glänzend",en:"shiny / glossy",ex:"Sie hat glänzendes Haar.",exEn:"She has shiny hair.",diff:"hard",level:"B2"},
     {de:"unscheinbar",en:"inconspicuous / plain",ex:"Ein unscheinbares graues Gebäude.",exEn:"An inconspicuous grey building.",diff:"hard",level:"B2"},
     {de:"vielfältig",en:"diverse / varied",ex:"Das Angebot ist erstaunlich vielfältig.",exEn:"The range is remarkably diverse.",diff:"hard",level:"B2"},
+    {de:"dezent",en:"subtle / understated",ex:"Sie trägt nur dezenten Schmuck.",exEn:"She only wears understated jewellery.",diff:"hard",level:"B2"},
+    {de:"grell",en:"garish / glaring",ex:"Das Licht ist viel zu grell.",exEn:"The light is far too glaring.",diff:"hard",level:"B2"},
+    {de:"einfarbig",en:"plain / single-colour",ex:"Ich hätte gern ein einfarbiges Hemd.",exEn:"I'd like a plain shirt.",diff:"hard",level:"B2"},
+    {de:"knallig",en:"loud / bright (colour)",ex:"Die Jacke ist mir zu knallig.",exEn:"The jacket is too loud for me.",diff:"hard",level:"B2"},
   ],
   "Common Verbs": [
     {de:"sein",en:"to be",ex:"Ich bin Student.",exEn:"I'm a student.",diff:"easy"},
@@ -546,6 +550,15 @@ const V = {
     {de:"unterlassen",en:"to refrain from",ex:"Bitte unterlassen Sie das.",exEn:"Please refrain from that.",diff:"hard",level:"B2"},
     {de:"betreffen",en:"to concern / affect",ex:"Das betrifft uns alle.",exEn:"That concerns us all.",diff:"hard",level:"B2"},
     {de:"ausreichen",en:"to suffice / be enough",ex:"Eine Stunde reicht dafür aus.",exEn:"An hour is enough for that.",diff:"hard",level:"B2",hint:"separable"},
+    {de:"erfordern",en:"to require / demand",ex:"Die Aufgabe erfordert viel Geduld.",exEn:"The task requires a lot of patience.",diff:"hard",level:"B2"},
+    {de:"ermöglichen",en:"to enable / make possible",ex:"Das Stipendium ermöglicht ihr das Studium.",exEn:"The scholarship makes her studies possible.",diff:"hard",level:"B2"},
+    {de:"verhindern",en:"to prevent",ex:"Wir konnten das Schlimmste verhindern.",exEn:"We managed to prevent the worst.",diff:"hard",level:"B2"},
+    {de:"vermuten",en:"to suspect / assume",ex:"Ich vermute, dass er recht hat.",exEn:"I suspect that he's right.",diff:"hard",level:"B2"},
+    {de:"behandeln",en:"to treat / handle",ex:"Das Thema wird im nächsten Kapitel behandelt.",exEn:"The topic is dealt with in the next chapter.",diff:"hard",level:"B2"},
+    {de:"erwähnen",en:"to mention",ex:"Sie hat das mit keinem Wort erwähnt.",exEn:"She didn't mention it with a single word.",diff:"hard",level:"B2"},
+    {de:"ergänzen",en:"to supplement / add",ex:"Darf ich kurz etwas ergänzen?",exEn:"May I add something briefly?",diff:"hard",level:"B2"},
+    {de:"entsprechen",en:"to correspond to",ex:"Das Ergebnis entspricht den Erwartungen.",exEn:"The result matches expectations.",diff:"hard",level:"B2",hint:"+ dative"},
+    {de:"beobachten",en:"to observe",ex:"Wir beobachten die Entwicklung genau.",exEn:"We're watching the development closely.",diff:"hard",level:"B2"},
   ],
   "Weather & Nature": [
     {de:"das Wetter",en:"weather",ex:"Wie ist das Wetter heute?",exEn:"How's the weather today?",diff:"easy"},
@@ -866,6 +879,10 @@ const V = {
     {de:"beibringen",en:"to teach (sb sth)",ex:"Sie bringt mir Deutsch bei.",exEn:"She's teaching me German.",diff:"hard",level:"B2",hint:"separable"},
     {de:"umgehen",en:"to deal with / handle",ex:"Wie gehst du mit Kritik um?",exEn:"How do you deal with criticism?",diff:"hard",level:"B2",hint:"separable; umgehen mit"},
     {de:"voraussetzen",en:"to presuppose / require",ex:"Die Stelle setzt Erfahrung voraus.",exEn:"The position requires experience.",diff:"hard",level:"B2",hint:"separable"},
+    {de:"sich gewöhnen",en:"to get used to",ex:"Ich gewöhne mich langsam an das Klima.",exEn:"I'm slowly getting used to the climate.",diff:"hard",level:"B2",hint:"reflexive; an + acc."},
+    {de:"aufgeben",en:"to give up",ex:"Gib jetzt bloß nicht auf!",exEn:"Don't give up now!",diff:"hard",level:"B2",hint:"separable"},
+    {de:"nachholen",en:"to catch up on",ex:"Den verpassten Stoff hole ich nach.",exEn:"I'll catch up on the missed material.",diff:"hard",level:"B2",hint:"separable"},
+    {de:"besorgen",en:"to get / obtain",ex:"Ich besorge noch schnell Getränke.",exEn:"I'll quickly get some drinks.",diff:"hard",level:"B2"},
   ],
   "Work & Study": [
     {de:"die Arbeit",en:"work / job",ex:"Ich gehe zur Arbeit.",exEn:"I'm going to work.",diff:"easy"},
@@ -930,6 +947,7 @@ const V = {
     {de:"der Werdegang",en:"career path / background",ex:"Erzählen Sie kurz von Ihrem Werdegang.",exEn:"Briefly tell us about your career path.",diff:"hard",level:"B2"},
     {de:"die Belegschaft",en:"workforce / staff",ex:"Die ganze Belegschaft war anwesend.",exEn:"The entire workforce was present.",diff:"hard",level:"B2"},
     {de:"der Termindruck",en:"deadline pressure",ex:"Wir stehen unter enormem Termindruck.",exEn:"We're under enormous deadline pressure.",diff:"hard",level:"B2"},
+    {de:"die Gehaltserhöhung",en:"pay rise",ex:"Ich habe um eine Gehaltserhöhung gebeten.",exEn:"I asked for a pay rise.",diff:"hard",level:"B2"},
   ],
   "Connectors & Structure": [
     {de:"und",en:"and",ex:"Ich trinke Kaffee und esse Brot.",exEn:"I drink coffee and eat bread.",diff:"easy"},
@@ -1045,6 +1063,12 @@ const V = {
     {de:"der Grundsatz",en:"principle",ex:"Aus Grundsatz lehne ich das ab.",exEn:"On principle I reject that.",diff:"hard",level:"B2"},
     {de:"der Maßstab",en:"standard / benchmark",ex:"Das setzt einen neuen Maßstab.",exEn:"That sets a new benchmark.",diff:"hard",level:"B2"},
     {de:"die Bedingung",en:"condition",ex:"Unter einer Bedingung stimme ich zu.",exEn:"I agree on one condition.",diff:"hard",level:"B2"},
+    {de:"der Aspekt",en:"aspect",ex:"Diesen Aspekt sollten wir bedenken.",exEn:"We should consider this aspect.",diff:"hard",level:"B2"},
+    {de:"die Hinsicht",en:"respect / regard",ex:"In dieser Hinsicht hast du recht.",exEn:"In this respect you're right.",diff:"hard",level:"B2"},
+    {de:"der Anlass",en:"occasion / reason",ex:"Aus diesem Anlass gibt es eine Feier.",exEn:"There's a celebration for this occasion.",diff:"hard",level:"B2"},
+    {de:"der Zweck",en:"purpose",ex:"Was ist der Zweck der Übung?",exEn:"What's the purpose of the exercise?",diff:"hard",level:"B2"},
+    {de:"die Absicht",en:"intention",ex:"Das war nicht meine Absicht.",exEn:"That wasn't my intention.",diff:"hard",level:"B2"},
+    {de:"der Umstand",en:"circumstance",ex:"Unter diesen Umständen bleiben wir.",exEn:"Under these circumstances we'll stay.",diff:"hard",level:"B2"},
   ],
   "Media & Communication": [
     {de:"das Fernsehen",en:"television",ex:"Ich schaue Fernsehen am Abend.",exEn:"I watch TV in the evening.",diff:"easy"},
@@ -1914,6 +1938,10 @@ const V = {
     {de:"sich aufregen",en:"to get worked up",ex:"Reg dich nicht auf!",exEn:"Don't get worked up!",diff:"hard",level:"B1",hint:"reflexive; sich über etw aufregen"},
     {de:"verärgert",en:"annoyed",ex:"Der Kunde war verärgert.",exEn:"The customer was annoyed.",diff:"hard",level:"B2"},
     {de:"egoistisch",en:"selfish",ex:"Das war ziemlich egoistisch.",exEn:"That was pretty selfish.",diff:"medium",level:"B1"},
+    {de:"gewissenhaft",en:"conscientious",ex:"Sie arbeitet sehr gewissenhaft.",exEn:"She works very conscientiously.",diff:"hard",level:"B2"},
+    {de:"launisch",en:"moody",ex:"Morgens ist er oft launisch.",exEn:"In the mornings he's often moody.",diff:"hard",level:"B2"},
+    {de:"entschlossen",en:"determined",ex:"Sie wirkte ruhig, aber entschlossen.",exEn:"She seemed calm but determined.",diff:"hard",level:"B2"},
+    {de:"nachsichtig",en:"lenient / forgiving",ex:"Sei nicht zu nachsichtig mit ihm.",exEn:"Don't be too lenient with him.",diff:"hard",level:"B2"},
   ]
 };
 

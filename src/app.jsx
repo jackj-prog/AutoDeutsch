@@ -426,7 +426,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.20";
+const APP_VERSION = "2026.06.10.21";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2373,7 +2373,7 @@ function App() {
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Focus</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[["all", "Everything"], ["adjektiv", "Adjective endings"], ["praeteritum", "Präteritum"], ["konjunktiv", "Konjunktiv II"]].map(([k, l]) => (
+                  {[["all", "Everything"], ["adjektiv", "Adjective endings"], ["praeteritum", "Präteritum"], ["konjunktiv", "Konjunktiv"], ["passiv", "Passiv"], ["partizip", "Partizipien"], ["relativ", "Relativsätze"], ["genitiv", "Genitiv"]].map(([k, l]) => (
                     <button key={k} onClick={() => setClozeTopic(k)} style={{ minWidth: 0, padding: "9px 6px", borderRadius: 9, fontSize: 11, fontWeight: 900, cursor: "pointer", background: clozeTopic === k ? A : "transparent", color: clozeTopic === k ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
                   ))}
                 </div>

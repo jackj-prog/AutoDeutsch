@@ -2117,6 +2117,25 @@ const CLOZE = [
   {q:"Mir ist aufgefallen, ___ etwas fehlt.",a:"dass",h:"dass-clause after auffallen",level:"B2"},
   {q:"Wir müssen damit ___, dass es teurer wird.",a:"rechnen",h:"damit rechnen, dass = to reckon with",level:"B2"},
   {q:"Das Problem lässt ___ leicht lösen.",a:"sich",h:"sich lassen + infinitive (passive sense)",level:"B2"},
+  {q:"Er sagte, er ___ krank.",a:"sei",h:"Konjunktiv I of sein: sei (indirect speech)",topic:"konjunktiv",level:"B2"},
+  {q:"Sie meinte, sie ___ keine Zeit.",a:"habe",h:"Konjunktiv I of haben: habe",topic:"konjunktiv",level:"B2"},
+  {q:"Der Minister erklärte, man ___ das prüfen.",a:"werde",h:"Konjunktiv I of werden: werde (reported future)",topic:"konjunktiv",level:"B2"},
+  {q:"Sie sagte, sie ___ morgen vorbei.",a:"komme",h:"Konjunktiv I: komme",topic:"konjunktiv",level:"B2"},
+  {q:"Es heißt, das Unternehmen ___ Stellen abbauen.",a:"wolle",h:"Konjunktiv I of wollen: wolle",topic:"konjunktiv",level:"B2"},
+  {q:"Er gab an, er ___ den Brief nie erhalten.",a:"habe",h:"Konjunktiv I Perfekt: habe erhalten",topic:"konjunktiv",level:"B2"},
+  {q:"Die ___ Preise machen vielen Sorgen. (steigen)",a:"steigenden",h:"Partizip I + ending: die steigenden Preise",topic:"partizip",level:"B2"},
+  {q:"Das ___ Auto stand vor der Tür. (reparieren)",a:"reparierte",h:"Partizip II as adjective: das reparierte Auto",topic:"partizip",level:"B2"},
+  {q:"Die ___ Gäste warteten im Foyer. (einladen)",a:"eingeladenen",h:"Partizip II: die eingeladenen Gäste",topic:"partizip",level:"B2"},
+  {q:"Das zu ___ Problem ist kompliziert. (lösen)",a:"lösende",h:"zu + Partizip I: das zu lösende Problem",topic:"partizip",level:"B2"},
+  {q:"Die ___ Bevölkerung braucht mehr Pflege. (altern)",a:"alternde",h:"Partizip I: die alternde Bevölkerung",topic:"partizip",level:"B2"},
+  {q:"Der frisch ___ Kaffee duftet herrlich. (brühen)",a:"gebrühte",h:"Partizip II: der frisch gebrühte Kaffee",topic:"partizip",level:"B2"},
+  {q:"Die ___ Unterlagen liegen im Anhang. (anfordern)",a:"angeforderten",h:"Partizip II: die angeforderten Unterlagen",topic:"partizip",level:"B2"},
+  {q:"Ein gut ___ Team arbeitet schneller. (organisieren)",a:"organisiertes",h:"Partizip II + ending: ein gut organisiertes Team",topic:"partizip",level:"B2"},
+  {q:"Hier ___ ein neues Stadion gebaut.",a:"wird",h:"Vorgangspassiv Präsens: wird gebaut",topic:"passiv",level:"B2"},
+  {q:"Das Formular muss vollständig ausgefüllt ___.",a:"werden",h:"Passiv mit Modalverb: ausgefüllt werden",topic:"passiv",level:"B2"},
+  {q:"Das Hotel, in ___ wir übernachtet haben, war laut.",a:"dem",h:"Relativsatz mit Präposition: in dem (neuter Dativ)",topic:"relativ",level:"B2"},
+  {q:"Alles, ___ er sagt, stimmt.",a:"was",h:"Relativpronomen was after alles/nichts/etwas",topic:"relativ",level:"B2"},
+  {q:"Innerhalb ___ nächsten Woche erhalten Sie Antwort.",a:"der",h:"innerhalb + Genitiv fem.: der",topic:"genitiv",level:"B2"},
 ];
 
 // ── VERB DATA ──
@@ -2308,6 +2327,18 @@ const SENTENCES = [
   {correct:["Wir","müssen","damit","rechnen",",","dass","es","teurer","wird"],en:"We have to reckon with it getting more expensive",rule:"damit rechnen, dass",level:"B2"},
   {correct:["Je","länger","ich","darüber","nachdenke",",","desto","unsicherer","werde","ich"],en:"The longer I think about it, the more unsure I get",rule:"je … desto + nachdenken über",level:"B2"},
   {correct:["Mir","wäre","es","lieber",",","wenn","du","bliebest"],en:"I'd prefer it if you stayed",rule:"Konjunktiv II; lieber sein",level:"B2"},
+  {correct:["Er","sagte",",","er","sei","mit","dem","Ergebnis","zufrieden"],en:"He said he was satisfied with the result",rule:"Konjunktiv I in indirect speech: sei",level:"B2"},
+  {correct:["Sie","behauptet",",","sie","habe","nichts","davon","gewusst"],en:"She claims she knew nothing about it",rule:"Konjunktiv I: habe",level:"B2"},
+  {correct:["Der","Chef","meinte",",","das","Projekt","laufe","gut"],en:"The boss said the project was going well",rule:"Konjunktiv I: laufe",level:"B2"},
+  {correct:["Es","heißt",",","die","Preise","würden","weiter","steigen"],en:"It is said that prices will keep rising",rule:"indirect speech with würden",level:"B2"},
+  {correct:["Er","fragte",",","ob","wir","die","Frist","einhalten","könnten"],en:"He asked whether we could meet the deadline",rule:"indirect question + Konjunktiv II",level:"B2"},
+  {correct:["Die","steigenden","Kosten","belasten","viele","Haushalte"],en:"The rising costs burden many households",rule:"Partizip I as adjective: steigend-",level:"B2"},
+  {correct:["Das","ist","ein","viel","diskutiertes","Thema"],en:"That is a much-discussed topic",rule:"Partizip II as adjective",level:"B2"},
+  {correct:["Die","im","Bericht","genannten","Zahlen","sind","veraltet"],en:"The figures mentioned in the report are outdated",rule:"extended participial attribute",level:"B2"},
+  {correct:["Das","zu","lösende","Problem","ist","komplex"],en:"The problem to be solved is complex",rule:"zu + Partizip I (gerundive)",level:"B2"},
+  {correct:["Von","der","Idee","überzeugt",",","stimmte","sie","zu"],en:"Convinced by the idea, she agreed",rule:"fronted participial phrase",level:"B2"},
+  {correct:["Laut","dem","Bericht","steigen","die","Mieten","weiter"],en:"According to the report, rents keep rising",rule:"laut + Dativ",level:"B2"},
+  {correct:["Man","geht","davon","aus",",","dass","sich","die","Lage","beruhigt"],en:"It is assumed that the situation will calm down",rule:"davon ausgehen, dass",level:"B2"},
 ];
 
 // ── NEW: MINI DIALOGUE DATA ──
@@ -2876,6 +2907,141 @@ const DIALOGUES = [
   ],questions:[
     {q:"Was ist das Problem?",opts:["Der Computer ist kaputt","Das Passwort ist abgelaufen","Das Internet ist weg"],correctIdx:1},
     {q:"Wie oft muss das Passwort geändert werden?",opts:["Jeden Monat","Alle drei Monate","Nie"],correctIdx:1}
+  ]},
+  {title:"Salary negotiation",level:"B2",lines:[
+    {de:"Sie wollten über Ihr Gehalt sprechen?",en:"You wanted to talk about your salary?"},
+    {de:"Ja. Ich habe in den letzten zwei Jahren deutlich mehr Verantwortung übernommen.",en:"Yes. I've taken on significantly more responsibility over the last two years."},
+    {de:"Das stimmt, Ihre Leistung ist unbestritten.",en:"That's true, your performance is undisputed."},
+    {de:"Deshalb halte ich eine Erhöhung um acht Prozent für angemessen.",en:"That's why I consider a raise of eight percent appropriate."},
+    {de:"Das Budget ist knapp. Ich könnte Ihnen fünf Prozent anbieten.",en:"The budget is tight. I could offer you five percent."},
+    {de:"Ließe sich das mit einem zusätzlichen Urlaubstag verbinden?",en:"Could that be combined with an additional day of leave?"},
+    {de:"Darüber lässt sich reden. Ich kläre das mit der Personalabteilung.",en:"That's negotiable. I'll clear it with HR."},
+    {de:"Vielen Dank, ich freue mich auf Ihre Rückmeldung.",en:"Thank you, I look forward to your reply."}
+  ],questions:[
+    {q:"Wie viel Prozent fordert der Mitarbeiter?",opts:["Fünf Prozent","Acht Prozent","Zehn Prozent"],correctIdx:1},
+    {q:"Was bietet die Chefin an?",opts:["Acht Prozent","Fünf Prozent","Nichts"],correctIdx:1}
+  ]},
+  {title:"Flat viewing",level:"B2",lines:[
+    {de:"Kommen Sie rein, das ist die Wohnung.",en:"Come in, this is the flat."},
+    {de:"Danke. Wie hoch sind die Decken hier? Das wirkt sehr großzügig.",en:"Thanks. How high are the ceilings? It feels very spacious."},
+    {de:"Knapp drei Meter, typisch Altbau.",en:"Almost three metres, typical period building."},
+    {de:"Gibt es einen Keller oder einen Abstellraum?",en:"Is there a cellar or a storage room?"},
+    {de:"Beides. Der Kellerraum gehört zur Wohnung.",en:"Both. The cellar room belongs to the flat."},
+    {de:"Wie sieht es mit der Heizung aus? Die Nebenkosten sind mir wichtig.",en:"What about the heating? The utility costs matter to me."},
+    {de:"Die Heizung wurde letztes Jahr erneuert, sehr sparsam.",en:"The heating was replaced last year, very economical."},
+    {de:"Gut. Wie viele Interessenten gibt es denn?",en:"Good. How many interested people are there?"},
+    {de:"Einige. Wenn Sie wollen, schicken Sie mir heute noch Ihre Unterlagen.",en:"Quite a few. If you're interested, send me your documents today."}
+  ],questions:[
+    {q:"Was wurde letztes Jahr erneuert?",opts:["Die Fenster","Die Heizung","Das Dach"],correctIdx:1},
+    {q:"Was soll der Interessent schicken?",opts:["Seine Unterlagen","Eine Anzahlung","Einen Lebenslauf"],correctIdx:0}
+  ]},
+  {title:"Internet outage hotline",level:"B2",lines:[
+    {de:"Technischer Kundendienst, guten Tag.",en:"Technical support, hello."},
+    {de:"Guten Tag. Mein Internet ist seit heute Morgen komplett ausgefallen.",en:"Hello. My internet has been completely down since this morning."},
+    {de:"Haben Sie den Router bereits neu gestartet?",en:"Have you already restarted the router?"},
+    {de:"Ja, mehrfach. Die Kontrollleuchte blinkt rot.",en:"Yes, several times. The indicator light is flashing red."},
+    {de:"Dann liegt vermutlich eine Störung an der Leitung vor.",en:"Then there's probably a fault on the line."},
+    {de:"Wie lange wird die Behebung dauern?",en:"How long will the repair take?"},
+    {de:"Ein Techniker kann frühestens morgen Vormittag kommen.",en:"A technician can come tomorrow morning at the earliest."},
+    {de:"Bekomme ich für den Ausfall eine Entschädigung?",en:"Do I get compensation for the outage?"},
+    {de:"Ab dem dritten Tag können Sie eine Gutschrift beantragen.",en:"From the third day you can request a credit."}
+  ],questions:[
+    {q:"Was blinkt am Router?",opts:["Eine grüne Leuchte","Eine rote Kontrollleuchte","Nichts"],correctIdx:1},
+    {q:"Ab wann gibt es eine Gutschrift?",opts:["Sofort","Ab dem dritten Tag","Nach einer Woche"],correctIdx:1}
+  ]},
+  {title:"Reporting an insurance claim",level:"B2",lines:[
+    {de:"Ich möchte einen Schaden melden. Mir ist Wasser in die Küche gelaufen.",en:"I'd like to report a claim. Water leaked into my kitchen."},
+    {de:"Wann ist der Schaden entstanden?",en:"When did the damage occur?"},
+    {de:"Vermutlich gestern Nacht. Die Waschmaschine des Nachbarn war undicht.",en:"Probably last night. The neighbour's washing machine was leaking."},
+    {de:"Haben Sie den Schaden dokumentiert?",en:"Have you documented the damage?"},
+    {de:"Ja, ich habe Fotos gemacht und den Vermieter informiert.",en:"Yes, I took photos and informed the landlord."},
+    {de:"Sehr gut. Reichen Sie die Fotos über unser Portal ein.",en:"Very good. Submit the photos via our portal."},
+    {de:"Übernimmt die Versicherung auch die Trocknung?",en:"Does the insurance also cover the drying?"},
+    {de:"Ja, sofern der Schaden gedeckt ist, übernehmen wir die Kosten vollständig.",en:"Yes, provided the damage is covered, we pay the costs in full."}
+  ],questions:[
+    {q:"Woher kam das Wasser?",opts:["Vom Dach","Von der Waschmaschine des Nachbarn","Aus der Spülmaschine"],correctIdx:1},
+    {q:"Was soll der Kunde einreichen?",opts:["Eine Rechnung","Die Fotos","Den Mietvertrag"],correctIdx:1}
+  ]},
+  {title:"At the car workshop",level:"B2",lines:[
+    {de:"Was kann ich für Sie tun?",en:"What can I do for you?"},
+    {de:"Beim Bremsen höre ich seit ein paar Tagen ein Schleifgeräusch.",en:"When braking I've been hearing a grinding noise for a few days."},
+    {de:"Dann sollten wir die Bremsbeläge prüfen.",en:"Then we should check the brake pads."},
+    {de:"Können Sie gleich auch den Ölwechsel machen?",en:"Can you do the oil change at the same time?"},
+    {de:"Selbstverständlich. Brauchen Sie einen Kostenvoranschlag?",en:"Of course. Do you need a cost estimate?"},
+    {de:"Ja, bitte. Und wie lange bleibt das Auto in der Werkstatt?",en:"Yes, please. And how long will the car stay in the workshop?"},
+    {de:"Bis morgen Nachmittag. Wir rufen an, sobald es fertig ist.",en:"Until tomorrow afternoon. We'll call as soon as it's ready."},
+    {de:"In Ordnung. Gibt es solange einen Ersatzwagen?",en:"Alright. Is there a courtesy car in the meantime?"},
+    {de:"Ja, gegen eine kleine Gebühr.",en:"Yes, for a small fee."}
+  ],questions:[
+    {q:"Welches Problem hat das Auto?",opts:["Ein Schleifgeräusch beim Bremsen","Es springt nicht an","Die Klimaanlage ist kaputt"],correctIdx:0},
+    {q:"Was kostet der Ersatzwagen?",opts:["Nichts","Eine kleine Gebühr","50 Euro pro Tag"],correctIdx:1}
+  ]},
+  {title:"Cancelling a gym contract",level:"B2",lines:[
+    {de:"Ich möchte meinen Vertrag kündigen.",en:"I'd like to cancel my contract."},
+    {de:"Darf ich fragen, warum Sie uns verlassen?",en:"May I ask why you're leaving us?"},
+    {de:"Ich ziehe berufsbedingt in eine andere Stadt.",en:"I'm moving to another city for work."},
+    {de:"Bei einem Umzug brauchen wir einen Nachweis, etwa die Meldebescheinigung.",en:"For a move we need proof, such as the registration certificate."},
+    {de:"Den kann ich Ihnen zuschicken. Welche Frist gilt dann?",en:"I can send you that. What notice period applies then?"},
+    {de:"Mit Nachweis können Sie mit einer Frist von einem Monat kündigen.",en:"With proof you can cancel with one month's notice."},
+    {de:"Und ohne Nachweis?",en:"And without proof?"},
+    {de:"Dann läuft der Vertrag bis zum Ende der Laufzeit weiter.",en:"Then the contract continues until the end of its term."},
+    {de:"Verstanden. Ich schicke Ihnen die Unterlagen noch diese Woche.",en:"Understood. I'll send you the documents this week."}
+  ],questions:[
+    {q:"Warum kündigt der Kunde?",opts:["Es ist zu teuer","Er zieht berufsbedingt um","Er ist unzufrieden"],correctIdx:1},
+    {q:"Welche Frist gilt mit Nachweis?",opts:["Ein Monat","Drei Monate","Sechs Monate"],correctIdx:0}
+  ]},
+  {title:"Train delay compensation",level:"B2",lines:[
+    {de:"Mein Zug hatte gestern über zwei Stunden Verspätung.",en:"My train was over two hours late yesterday."},
+    {de:"Das tut mir leid. Dann steht Ihnen eine Entschädigung zu.",en:"I'm sorry. Then you're entitled to compensation."},
+    {de:"Wie viel bekomme ich erstattet?",en:"How much do I get refunded?"},
+    {de:"Ab einer Stunde 25 Prozent, ab zwei Stunden 50 Prozent des Fahrpreises.",en:"From one hour 25 percent, from two hours 50 percent of the fare."},
+    {de:"Wo reiche ich den Antrag ein?",en:"Where do I submit the application?"},
+    {de:"Online über das Fahrgastrechte-Formular oder am Schalter.",en:"Online via the passenger-rights form or at the counter."},
+    {de:"Brauche ich dafür die Fahrkarte?",en:"Do I need the ticket for that?"},
+    {de:"Ja, und am besten auch eine Verspätungsbestätigung.",en:"Yes, and ideally a delay confirmation as well."}
+  ],questions:[
+    {q:"Wie viel wird ab zwei Stunden erstattet?",opts:["25 Prozent","50 Prozent","100 Prozent"],correctIdx:1},
+    {q:"Was braucht man für den Antrag?",opts:["Nur den Ausweis","Die Fahrkarte und eine Verspätungsbestätigung","Nichts"],correctIdx:1}
+  ]},
+  {title:"Missing parcel",level:"B2",lines:[
+    {de:"Laut Sendungsverfolgung wurde mein Paket gestern zugestellt, aber es ist nie angekommen.",en:"According to tracking my parcel was delivered yesterday, but it never arrived."},
+    {de:"Wurde es vielleicht bei einem Nachbarn abgegeben?",en:"Was it perhaps left with a neighbour?"},
+    {de:"Ich habe bei allen geklingelt, niemand hat etwas angenommen.",en:"I rang all their doorbells, nobody accepted anything."},
+    {de:"Dann eröffne ich einen Nachforschungsauftrag.",en:"Then I'll open a tracing request."},
+    {de:"Wie lange dauert so eine Nachforschung?",en:"How long does such an investigation take?"},
+    {de:"In der Regel fünf bis zehn Werktage.",en:"Usually five to ten working days."},
+    {de:"Und wenn das Paket nicht gefunden wird?",en:"And if the parcel isn't found?"},
+    {de:"Dann erstatten wir dem Absender den Warenwert.",en:"Then we refund the sender the value of the goods."}
+  ],questions:[
+    {q:"Was eröffnet die Mitarbeiterin?",opts:["Eine Beschwerde","Einen Nachforschungsauftrag","Ein neues Konto"],correctIdx:1},
+    {q:"Wer bekommt im Verlustfall das Geld?",opts:["Der Empfänger","Der Absender","Niemand"],correctIdx:1}
+  ]},
+  {title:"Discussing test results",level:"B2",lines:[
+    {de:"Ihre Blutwerte liegen jetzt vor.",en:"Your blood results are in now."},
+    {de:"Und? Gibt es etwas Auffälliges?",en:"And? Is there anything unusual?"},
+    {de:"Ihr Eisenwert ist deutlich zu niedrig, das erklärt die Müdigkeit.",en:"Your iron level is significantly too low, which explains the tiredness."},
+    {de:"Ist das etwas Ernstes?",en:"Is it something serious?"},
+    {de:"Nein, aber wir sollten die Ursache abklären.",en:"No, but we should clarify the cause."},
+    {de:"Was empfehlen Sie?",en:"What do you recommend?"},
+    {de:"Zunächst ein Eisenpräparat und in sechs Wochen eine Kontrolle.",en:"First an iron supplement and a check-up in six weeks."},
+    {de:"Muss ich bei der Ernährung etwas beachten?",en:"Do I need to watch anything in my diet?"},
+    {de:"Essen Sie eisenreich, und Kaffee am besten nicht direkt zum Essen.",en:"Eat iron-rich foods, and ideally no coffee right with meals."}
+  ],questions:[
+    {q:"Welcher Wert ist zu niedrig?",opts:["Der Zuckerwert","Der Eisenwert","Der Blutdruck"],correctIdx:1},
+    {q:"Wann ist die Kontrolle?",opts:["In sechs Wochen","Nächste Woche","In einem Jahr"],correctIdx:0}
+  ]},
+  {title:"Networking at a conference",level:"B2",lines:[
+    {de:"Der Vortrag eben war ziemlich beeindruckend, oder?",en:"That talk just now was pretty impressive, wasn't it?"},
+    {de:"Absolut, vor allem der Teil über erneuerbare Netze.",en:"Absolutely, especially the part about renewable grids."},
+    {de:"Arbeiten Sie auch in dem Bereich?",en:"Do you work in that field too?"},
+    {de:"Ja, ich entwickle Steuerungssoftware für Umspannwerke.",en:"Yes, I develop control software for substations."},
+    {de:"Spannend! Wir suchen gerade Partner für ein Pilotprojekt.",en:"Exciting! We're currently looking for partners for a pilot project."},
+    {de:"Da hätte ich durchaus Interesse. Haben Sie eine Karte?",en:"I'd definitely be interested. Do you have a card?"},
+    {de:"Klar, hier. Vernetzen wir uns am besten auch online.",en:"Sure, here. Let's also connect online."},
+    {de:"Mache ich. Ich melde mich Anfang nächster Woche bei Ihnen.",en:"Will do. I'll get in touch with you early next week."}
+  ],questions:[
+    {q:"Was entwickelt die zweite Person?",opts:["Steuerungssoftware für Umspannwerke","Solarzellen","Apps für Banken"],correctIdx:0},
+    {q:"Wofür werden Partner gesucht?",opts:["Für eine Konferenz","Für ein Pilotprojekt","Für eine Studie"],correctIdx:1}
   ]},
 ];
 

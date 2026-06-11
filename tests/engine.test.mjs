@@ -168,6 +168,25 @@ test("checkMatch accepts either Konjunktiv II alternative", () => {
   assert.equal(checkMatch("gehe", "ginge / würde gehen"), "wrong");
 });
 
+test("checkPlural accepts the plural with or without the article", () => {
+  const { checkPlural } = vm.runInContext("({ checkPlural })", ctx);
+  assert.equal(checkPlural("die Wohnungen", "die Wohnungen"), "exact");
+  assert.equal(checkPlural("Wohnungen", "die Wohnungen"), "exact");
+  assert.equal(checkPlural("Baeume", "die Bäume"), "exact"); // umlaut folding
+  assert.equal(checkPlural("Wohnung", "die Wohnungen"), "wrong"); // singular is not the plural
+  assert.equal(checkPlural("Visa", "die Visa / Visen"), "exact"); // alternatives
+});
+
+test("plural pool: every card has a 'die …' plural and resolvable fields", () => {
+  const { getPluralNouns } = vm.runInContext("({ getPluralNouns })", ctx);
+  const pool = getPluralNouns();
+  assert.ok(pool.length > 800, `expected a large plural pool, got ${pool.length}`);
+  pool.forEach(n => {
+    assert.match(n.pl, /^die .+/, `${n.de} → ${n.pl}`);
+    assert.ok(n.de && n.cat && n.en, n.de);
+  });
+});
+
 test("seedDueFirst takes at most half the session from the due set", () => {
   const pool = Array.from({ length: 20 }, (_, i) => ({ de: `w${i}` }));
   const dueSet = new Set(["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7"]);

@@ -64,6 +64,7 @@ const MODE_SUMMARY_LABELS = {
   production: "production",
   dictation: "dictation",
   article: "articles",
+  plural: "plurals",
   cloze: "cloze",
   verb: "verbs",
   sentence: "sentences",
@@ -114,13 +115,25 @@ const allVocab = () => Object.entries(V).flatMap(([c, ws]) => ws.map(w => ({ ...
 // Nouns whose dictionary form is plural-only (die Eltern, die Unterlagen, …) —
 // excluded from der/die/das practice, which would otherwise teach the plural
 // article as if it were the noun's gender.
-const PLURAL_ONLY_NOUNS = new Set(["Eltern","Haare","Pilze","Leute","Geschwister","Möbel","Lebensmittel","Ferien","Nachrichten","Daten","Kopfhörer","Unterlagen","Nebenkosten","Schulden","Zinsen","Ausgaben","Raten"]);
+const PLURAL_ONLY_NOUNS = new Set(["Eltern","Haare","Pilze","Leute","Geschwister","Möbel","Lebensmittel","Ferien","Nachrichten","Daten","Kopfhörer","Unterlagen","Nebenkosten","Schulden","Zinsen","Ausgaben","Raten","Schmerzen","Schuhe","Handschuhe","Socken","Nudeln","Schwiegereltern","Überstunden","Kenntnisse","Beschwerden","Zahnschmerzen","Bauchschmerzen","Kopfschmerzen","Allergiehinweise"]);
 
 function getNouns() {
   const n = [];
   Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ article: m[1], noun: m[2], en: w.en, cat: c }); }); });
   return n;
 }
+
+// Nouns that carry a plural form (`pl` on the vocab card) — pool for the Plural drill.
+// Card shape mirrors article cards but keeps `de` = "artikel Nomen" for stable progress keys.
+function getPluralNouns() {
+  const n = [];
+  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de || !w.pl) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ de: w.de, article: m[1], noun: m[2], en: w.en, pl: w.pl, cat: c }); }); });
+  return n;
+}
+
+// Plural grading: the plural article is always "die", so accept the answer with or without it.
+const stripPluralArticle = (s) => s.replace(/^die\s+/i, "").trim();
+const checkPlural = (input, target) => checkMatch(stripPluralArticle(input), stripPluralArticle(target));
 
 function makeVerbQ(tense = "present", pick) {
   const vb = pick || VERBS[0 | Math.random() * VERBS.length];
@@ -443,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.27";
+const APP_VERSION = "2026.06.11.28";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1222,6 +1235,7 @@ function App() {
   }, []);
 
   const nouns = useMemo(getNouns, []);
+  const pluralNouns = useMemo(getPluralNouns, []);
   const totalW = useMemo(() => Object.values(V).flat().length, []);
   const totalL = useMemo(
     () => CATS.reduce((sum, cat) => sum + V[cat].filter(w => isMasteredEntry(prog[`production::${cat}::${w.de}`])).length, 0),
@@ -1328,6 +1342,7 @@ function App() {
     else if (mode === "verb") q = `Erkläre kurz die Verbform "${c.pron} ${c.correct}" von "${c.verb}" (${c.tense}). Antwort auf Englisch mit einem neuen Beispiel.`;
     else if (mode === "imperativ") q = `Erkläre den Imperativ "${c[c._person]}" (${c._person}-Form von "${c.base}"). Antwort auf Englisch.`;
     else if (mode === "article") q = `Warum heißt es "${c.article} ${c.noun}"? Gibt es eine Regel oder Eselsbrücke für das Genus? Antwort auf Englisch.`;
+    else if (mode === "plural") q = `Der Plural von "${c.de}" ist "${c.pl}". Welche Pluralregel steckt dahinter (Endung, Umlaut)? Antwort auf Englisch mit 1–2 ähnlichen Beispielen.`;
     else if (mode === "sentence") q = `Erkläre die Wortstellung in: "${(c.correct || []).join(" ")}" (Regel: ${c.rule}). Antwort auf Englisch.`;
     else if (mode === "listening") q = `Erkläre kurz auf Englisch: "${c.q}" — die richtige Antwort war "${(c.opts || [])[c.correctIdx]}".`;
     else q = `Erkläre kurz das Wort "${c.de}" (${c.en}): Grammatik, typische Verwendung, ein neues Beispiel. Antwort auf Englisch.`;
@@ -1470,6 +1485,11 @@ function App() {
     if (m === "article") {
       const cat = parts[1], id = parts.slice(2).join("::");
       const found = nouns.find(n => n.cat === cat && `${n.article} ${n.noun}` === id);
+      if (found) return { ...found, _cat: cat, _mode: m };
+    }
+    if (m === "plural") {
+      const cat = parts[1], id = parts.slice(2).join("::");
+      const found = pluralNouns.find(n => n.cat === cat && n.de === id);
       if (found) return { ...found, _cat: cat, _mode: m };
     }
     if (m === "cloze") {
@@ -1638,6 +1658,12 @@ function App() {
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`article::${c.cat}::${c.article} ${c.noun}`));
       setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill"); setTStart(Date.now());
+    } else if (m === "plural") {
+      setCategory("Plural Drill"); const pool = cat === "__all__" ? pluralNouns : pluralNouns.filter(n => n.cat === cat);
+      const take = Math.min(count, pool.length);
+      const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`plural::${c.cat}::${c.de}`));
+      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
+      setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
       const cbase = clozeTopic === "all" ? CLOZE : CLOZE.filter(c => c.topic === clozeTopic);
@@ -1769,6 +1795,8 @@ function App() {
       setMode(largestMode); setCategory("Weak Areas"); setScreen("cards");
     } else if (largestMode === "article") {
       setMode("article"); setCategory("Article Drill"); setScreen("drill");
+    } else if (largestMode === "plural") {
+      setMode("plural"); setCategory("Plural Drill"); setScreen("drill");
     } else if (largestMode === "cloze") {
       setMode("cloze"); setCategory("Grammar Cloze"); setScreen("drill");
     } else if (largestMode === "imperativ") {
@@ -1793,6 +1821,8 @@ function App() {
       setMode(largestMode); setCategory("Today's Review"); setScreen("cards");
     } else if (largestMode === "article") {
       setMode("article"); setCategory("Article Drill"); setScreen("drill");
+    } else if (largestMode === "plural") {
+      setMode("plural"); setCategory("Plural Drill"); setScreen("drill");
     } else if (largestMode === "cloze") {
       setMode("cloze"); setCategory("Grammar Cloze"); setScreen("drill");
     } else if (largestMode === "imperativ") {
@@ -1815,6 +1845,8 @@ function App() {
       setMode(largestMode); setCategory("Almost Mastered"); setScreen("cards");
     } else if (largestMode === "article") {
       setMode("article"); setCategory("Article Drill"); setScreen("drill");
+    } else if (largestMode === "plural") {
+      setMode("plural"); setCategory("Plural Drill"); setScreen("drill");
     } else if (largestMode === "cloze") {
       setMode("cloze"); setCategory("Grammar Cloze"); setScreen("drill");
     } else if (largestMode === "imperativ") {
@@ -1869,6 +1901,13 @@ function App() {
     const card = cards[idx]; const result = checkMatch(input, card.a);
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
+  };
+  const submitPlural = () => {
+    if (answered) return;
+    const card = cards[idx]; const result = checkPlural(input, card.pl);
+    setInputResult(result); setAnswered(true);
+    record(result !== "wrong", card, Date.now() - tStart);
+    speak(card.pl);
   };
 
   const nextCard = () => {
@@ -1987,6 +2026,7 @@ function App() {
   const trainingStats = useMemo(() => {
     const out = {
       article: { total: nouns.length, seen: 0 },
+      plural: { total: pluralNouns.length, seen: 0 },
       cloze: { total: CLOZE.length, seen: 0 },
       sentence: { total: SENTENCES.length, seen: 0 },
       imperativ: { total: IMPERATIVES.length, seen: 0 },
@@ -1994,7 +2034,7 @@ function App() {
       listening: { total: DIALOGUES.length, seen: 0 },
     };
     // Unique-identifier sets so we count each underlying item only once
-    const seenArticle = new Set(), seenCloze = new Set(), seenSent = new Set(), seenImp = new Set(), seenVerb = new Set(), seenDlg = new Set();
+    const seenArticle = new Set(), seenPlural = new Set(), seenCloze = new Set(), seenSent = new Set(), seenImp = new Set(), seenVerb = new Set(), seenDlg = new Set();
     for (const [key, raw] of Object.entries(prog)) {
       const n = normalizeEntry(raw);
       if (n.stats.correct < 1) continue;
@@ -2002,6 +2042,7 @@ function App() {
       if (parts.length < 3) continue;
       const [m, cat, id] = [parts[0], parts[1], parts.slice(2).join("::")];
       if (m === "article") seenArticle.add(`${cat}::${id}`);
+      else if (m === "plural") seenPlural.add(`${cat}::${id}`);
       else if (m === "cloze") seenCloze.add(id);
       else if (m === "sentence") seenSent.add(id);
       else if (m === "imperativ") {
@@ -2015,13 +2056,14 @@ function App() {
       } else if (m === "listening") seenDlg.add(id);
     }
     out.article.seen = seenArticle.size;
+    out.plural.seen = seenPlural.size;
     out.cloze.seen = seenCloze.size;
     out.sentence.seen = seenSent.size;
     out.imperativ.seen = seenImp.size;
     out.verb.seen = seenVerb.size;
     out.listening.seen = seenDlg.size;
     return out;
-  }, [prog, nouns]);
+  }, [prog, nouns, pluralNouns]);
 
   const card = cards[idx];
   const sessionScreens = new Set(["cards", "drill", "sentence", "audio"]);
@@ -2156,6 +2198,7 @@ function App() {
   const setupSpecialCats = ["__grammar__", "__verb__", "__sentence__", "__imperativ__", "__listening__", "__weak__"];
   const setupIsLibrary = setupCat && !setupSpecialCats.includes(setupCat);
   const setupCanUseArticles = hasNouns || setupCat === "__all__";
+  const setupCanUsePlural = pluralNouns.length > 0 && (setupCat === "__all__" || (setupIsLibrary && pluralNouns.some(n => n.cat === setupCat)));
   const setupMinC = Math.min(5, maxC);
   const setupTitle = setupCat === "__all__" ? "All Categories" : setupCat === "__grammar__" ? "Grammar Cloze" : setupCat === "__verb__" ? "Verb Trainer" : setupCat === "__sentence__" ? "Sentence Builder" : setupCat === "__imperativ__" ? "Imperative" : setupCat === "__listening__" ? "Listening Practice" : setupCat === "__weak__" ? "Weak Areas" : setupCat;
   const stepSessionLength = delta => setSessLen(n => Math.max(setupMinC, Math.min(maxC, n + delta)));
@@ -2404,6 +2447,7 @@ function App() {
                     ["dictation", "Dictation", "Hear → type"],
                     ["audio", "Audio", "Hands-free"],
                     ...(setupCanUseArticles ? [["article", "Articles", "der/die/das"]] : []),
+                    ...(setupCanUsePlural ? [["plural", "Plurals", "die … ?"]] : []),
                   ].map(([m, label, sub]) => {
                     const on = setupMode === m;
                     return (
@@ -2807,6 +2851,7 @@ function App() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
               {[
                 { l: "der / die / das", s: "Articles", meta: "Gender", icon: "book", c: "__all__", m: "article" },
+                { l: "Plural Forms", s: "die … ?", meta: "Endings", icon: "grid", c: "__all__", m: "plural" },
                 { l: "Grammar Cloze", s: "Gaps", meta: "Structure", icon: "layers", c: "__grammar__", m: "cloze" },
                 { l: "Verb Trainer", s: "Conjugation", meta: "Speed", icon: "bolt", c: "__verb__", m: "verb" },
                 { l: "Sentence Builder", s: "Word order", meta: "Syntax", icon: "keyboard", c: "__sentence__", m: "sentence" },
@@ -2817,7 +2862,7 @@ function App() {
                 const pct = ts && ts.total > 0 ? (ts.seen / ts.total) * 100 : 0;
                 const done = ts && ts.seen >= ts.total && ts.total > 0;
                 return (
-                  <button key={m} onClick={() => { setSetupCat(c); setSetupMode(m); setSessLen(Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : nouns.length)); setShowSetup(true); }}
+                  <button key={m} onClick={() => { setSetupCat(c); setSetupMode(m); setSessLen(Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : m === "plural" ? Math.max(pluralNouns.length, 5) : nouns.length)); setShowSetup(true); }}
                     style={{ background: "linear-gradient(155deg, #151515 0%, #0D0D0D 100%)", border: `1px solid ${done ? G : A}22`, borderRadius: 12, padding: "12px 10px 10px", minHeight: 96, textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 10, fontFamily: "inherit", position: "relative", overflow: "hidden" }}>
                     {ts && <div style={{ position: "absolute", bottom: 0, left: 0, height: 2, width: `${pct}%`, background: done ? G : A, opacity: 0.8, transition: "width 0.5s" }} />}
                     <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
@@ -3101,7 +3146,7 @@ function App() {
 
       {/* ── DRILL SCREEN (article/cloze/verb) ── */}
       {screen === "drill" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
-        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
+        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
@@ -3112,6 +3157,17 @@ function App() {
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
+            </>}
+            {mode === "plural" && <>
+              <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What's the plural?</div>
+              <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center", lineHeight: 1.2 }}>{card.de}</div>
+              <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
+              {answered && <>
+                <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: inputResult === "wrong" ? R : G }}>{card.pl}</div>
+                {inputResult === "wrong" && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
+                {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
+                <SpeakBtn text={card.pl} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+              </>}
             </>}
             {mode === "cloze" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Fill the gap</div>
@@ -3212,6 +3268,15 @@ function App() {
                 placeholder="Type answer…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitCloze} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
+            </div></>
+          )}
+          {mode === "plural" && !answered && (
+            <><UmlautBar onInsert={insertChar} />
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitPlural(); }}
+                placeholder="die …" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
+                style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
+              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (input.trim()) submitPlural(); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
             </div></>
           )}
           {mode === "imperativ" && !answered && (
@@ -3483,7 +3548,7 @@ function App() {
           {category}
           {rpt > 0 ? ` · Round ${rpt + 1}` : ""}
           {" · "}
-          <span style={{ color: A, fontWeight: 600 }}>{mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode}</span>
+          <span style={{ color: A, fontWeight: 600 }}>{mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode}</span>
         </p>
         {failed.length > 0 && <p style={{ color: R, fontSize: 13, marginBottom: 8, fontWeight: 700 }}>{failed.length} card{failed.length !== 1 ? "s" : ""} to repeat</p>}
         {failedNames.length > 0 && <div style={{ marginBottom: 20, padding: "12px 16px", background: SH, border: `1px solid ${R}33`, borderRadius: 14, textAlign: "left", maxHeight: 120, overflowY: "auto" }}>

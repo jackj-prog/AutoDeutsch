@@ -2310,6 +2310,18 @@ const CLOZE = [
   {q:"Das Hotel, in ___ wir übernachtet haben, war laut.",a:"dem",h:"Relativsatz mit Präposition: in dem (neuter Dativ)",topic:"relativ",level:"B2"},
   {q:"Alles, ___ er sagt, stimmt.",a:"was",h:"Relativpronomen was after alles/nichts/etwas",topic:"relativ",level:"B2"},
   {q:"Innerhalb ___ nächsten Woche erhalten Sie Antwort.",a:"der",h:"innerhalb + Genitiv fem.: der",topic:"genitiv",level:"B2"},
+  {q:"Ich freue mich ___ deinen Besuch.",a:"auf",h:"sich freuen auf + acc. (future event)",level:"B1"},
+  {q:"Sie ärgert sich ___ den Stau.",a:"über",h:"sich ärgern über + acc.",level:"B1"},
+  {q:"Das hängt ___ Wetter ab.",a:"vom",h:"abhängen von + dat.; von dem = vom",level:"B1"},
+  {q:"Ich bin zufrieden ___ meiner Arbeit.",a:"mit",h:"zufrieden mit + dat.",level:"B1"},
+  {q:"Er nimmt ___ einem Kurs teil.",a:"an",h:"teilnehmen an + dat.",level:"B1"},
+  {q:"Wir warten schon eine Stunde ___ dich.",a:"auf",h:"warten auf + acc.",level:"B1"},
+  {q:"Ich habe Angst ___ Spinnen.",a:"vor",h:"Angst haben vor + dat.",level:"B1"},
+  {q:"Sie kümmert sich ___ ihre Oma.",a:"um",h:"sich kümmern um + acc.",level:"B1"},
+  {q:"Das erinnert mich ___ meine Kindheit.",a:"an",h:"erinnern an + acc.",level:"B1"},
+  {q:"Ich bedanke mich ___ das Geschenk.",a:"für",h:"sich bedanken für + acc.",level:"B1"},
+  {q:"Er beschäftigt sich ___ Geschichte.",a:"mit",h:"sich beschäftigen mit + dat.",level:"B1"},
+  {q:"Wir freuen uns ___ die schöne Zeit.",a:"über",h:"sich freuen über (something present/past)",level:"B1"},
 ];
 
 // ── VERB DATA ──
@@ -2513,6 +2525,18 @@ const SENTENCES = [
   {correct:["Von","der","Idee","überzeugt",",","stimmte","sie","zu"],en:"Convinced by the idea, she agreed",rule:"fronted participial phrase",level:"B2"},
   {correct:["Laut","dem","Bericht","steigen","die","Mieten","weiter"],en:"According to the report, rents keep rising",rule:"laut + Dativ",level:"B2"},
   {correct:["Man","geht","davon","aus",",","dass","sich","die","Lage","beruhigt"],en:"It is assumed that the situation will calm down",rule:"davon ausgehen, dass",level:"B2"},
+  {correct:["Ich","freue","mich","auf","das","Wochenende"],en:"I'm looking forward to the weekend",rule:"sich freuen auf + acc.",level:"B1"},
+  {correct:["Kannst","du","mir","beim","Umzug","helfen","?"],en:"Can you help me with the move?",rule:"helfen + bei + dat.",level:"B1"},
+  {correct:["Wir","haben","uns","im","Urlaub","kennengelernt"],en:"We met on holiday",rule:"reflexive Perfekt: kennenlernen",level:"B1"},
+  {correct:["Ich","ärgere","mich","über","den","Lärm"],en:"I'm annoyed about the noise",rule:"sich ärgern über + acc.",level:"B1"},
+  {correct:["Der","Termin","wurde","auf","Montag","verschoben"],en:"The appointment was moved to Monday",rule:"Passiv Präteritum",level:"B1"},
+  {correct:["Ich","habe","keine","Lust","auf","Hausaufgaben"],en:"I don't feel like doing homework",rule:"Lust haben auf + acc.",level:"B1"},
+  {correct:["Er","interessiert","sich","nicht","für","Politik"],en:"He's not interested in politics",rule:"sich interessieren für",level:"B1"},
+  {correct:["Wir","müssen","den","Flug","rechtzeitig","buchen"],en:"We have to book the flight in time",rule:"modal + adverb position",level:"B1"},
+  {correct:["Sie","hat","mir","ihre","Hilfe","angeboten"],en:"She offered me her help",rule:"Perfekt; dative object",level:"B1"},
+  {correct:["Ich","bin","mit","dem","Ergebnis","zufrieden"],en:"I'm satisfied with the result",rule:"zufrieden mit + dat.",level:"B1"},
+  {correct:["Das","hängt","vom","Wetter","ab"],en:"That depends on the weather",rule:"abhängen von + dat.",level:"B1"},
+  {correct:["Ich","gewöhne","mich","langsam","an","die","Stadt"],en:"I'm slowly getting used to the city",rule:"sich gewöhnen an + acc.",level:"B1"},
 ];
 
 // ── NEW: MINI DIALOGUE DATA ──
@@ -3216,6 +3240,71 @@ const DIALOGUES = [
   ],questions:[
     {q:"Was entwickelt die zweite Person?",opts:["Steuerungssoftware für Umspannwerke","Solarzellen","Apps für Banken"],correctIdx:0},
     {q:"Wofür werden Partner gesucht?",opts:["Für eine Konferenz","Für ein Pilotprojekt","Für eine Studie"],correctIdx:1}
+  ]},
+  {title:"At the bakery",level:"B1",lines:[
+    {de:"Guten Morgen, was darf es sein?",en:"Good morning, what would you like?"},
+    {de:"Vier Brötchen und ein Vollkornbrot, bitte.",en:"Four rolls and a wholemeal loaf, please."},
+    {de:"Geschnitten oder am Stück?",en:"Sliced or whole?"},
+    {de:"Geschnitten, bitte. Und sind die Croissants frisch?",en:"Sliced, please. And are the croissants fresh?"},
+    {de:"Gerade aus dem Ofen gekommen.",en:"Just out of the oven."},
+    {de:"Dann noch zwei Croissants dazu.",en:"Then two croissants as well."},
+    {de:"Sonst noch etwas?",en:"Anything else?"},
+    {de:"Nein, danke, das wäre alles.",en:"No thanks, that's everything."}
+  ],questions:[
+    {q:"Wie möchte der Kunde das Brot?",opts:["Am Stück","Geschnitten","Gar nicht"],correctIdx:1},
+    {q:"Wie viele Croissants kauft er?",opts:["Zwei","Vier","Keine"],correctIdx:0}
+  ]},
+  {title:"Lost property office",level:"B1",lines:[
+    {de:"Guten Tag, ich habe gestern meinen Rucksack im Zug vergessen.",en:"Hello, I left my backpack on the train yesterday."},
+    {de:"In welchem Zug waren Sie unterwegs?",en:"Which train were you on?"},
+    {de:"Im ICE von Hamburg nach Köln, gegen 15 Uhr.",en:"On the ICE from Hamburg to Cologne, around 3pm."},
+    {de:"Wie sieht der Rucksack aus?",en:"What does the backpack look like?"},
+    {de:"Dunkelblau, mit einem Laptop und einer Wasserflasche darin.",en:"Dark blue, with a laptop and a water bottle inside."},
+    {de:"Einen Moment, ich schaue im System nach.",en:"One moment, I'll check the system."},
+    {de:"Wurde er vielleicht abgegeben?",en:"Was it perhaps handed in?"},
+    {de:"Sie haben Glück — er ist heute Morgen angekommen.",en:"You're in luck — it arrived this morning."}
+  ],questions:[
+    {q:"Wo hat er den Rucksack vergessen?",opts:["Im Bus","Im Zug","Im Café"],correctIdx:1},
+    {q:"Was war im Rucksack?",opts:["Ein Laptop und eine Wasserflasche","Nur Bücher","Kleidung"],correctIdx:0}
+  ]},
+  {title:"Asking at the station",level:"B1",lines:[
+    {de:"Entschuldigung, wie komme ich zum Gleis 14?",en:"Excuse me, how do I get to platform 14?"},
+    {de:"Die Treppe hoch und dann links.",en:"Up the stairs and then left."},
+    {de:"Fährt dort der Zug nach München?",en:"Does the train to Munich leave from there?"},
+    {de:"Ja, aber er hat heute zehn Minuten Verspätung.",en:"Yes, but it's ten minutes late today."},
+    {de:"Gibt es hier irgendwo Schließfächer?",en:"Are there lockers anywhere here?"},
+    {de:"Ja, in der Haupthalle neben der Information.",en:"Yes, in the main hall next to the information desk."},
+    {de:"Vielen Dank für Ihre Hilfe!",en:"Thanks a lot for your help!"},
+    {de:"Gern geschehen, gute Reise!",en:"You're welcome, have a good trip!"}
+  ],questions:[
+    {q:"Wie viel Verspätung hat der Zug?",opts:["Fünf Minuten","Zehn Minuten","Eine Stunde"],correctIdx:1},
+    {q:"Wo sind die Schließfächer?",opts:["Am Gleis 14","In der Haupthalle","Draußen"],correctIdx:1}
+  ]},
+  {title:"Calling the landlord",level:"B1",lines:[
+    {de:"Guten Tag, hier Mieterin Schmidt aus der Gartenstraße 5.",en:"Hello, this is tenant Schmidt from Gartenstraße 5."},
+    {de:"Hallo Frau Schmidt, was kann ich für Sie tun?",en:"Hello Ms Schmidt, what can I do for you?"},
+    {de:"Die Heizung im Wohnzimmer wird nicht mehr warm.",en:"The radiator in the living room isn't getting warm anymore."},
+    {de:"Seit wann besteht das Problem?",en:"Since when has the problem existed?"},
+    {de:"Seit vorgestern. Entlüften hat nichts gebracht.",en:"Since the day before yesterday. Bleeding it didn't help."},
+    {de:"Dann schicke ich Ihnen einen Handwerker vorbei.",en:"Then I'll send a tradesman over."},
+    {de:"Wann kann der kommen?",en:"When can he come?"},
+    {de:"Voraussichtlich morgen zwischen acht und zwölf.",en:"Probably tomorrow between eight and twelve."}
+  ],questions:[
+    {q:"Was ist das Problem?",opts:["Die Heizung wird nicht warm","Das Fenster klemmt","Der Strom ist weg"],correctIdx:0},
+    {q:"Wann kommt der Handwerker?",opts:["Heute Abend","Morgen zwischen acht und zwölf","Nächste Woche"],correctIdx:1}
+  ]},
+  {title:"Choosing a phone plan",level:"B1",lines:[
+    {de:"Ich suche einen günstigen Handytarif.",en:"I'm looking for a cheap mobile plan."},
+    {de:"Wie viel Datenvolumen brauchen Sie denn?",en:"How much data do you need?"},
+    {de:"Mindestens zehn Gigabyte im Monat.",en:"At least ten gigabytes a month."},
+    {de:"Da hätte ich einen Tarif für zwölf Euro monatlich.",en:"I have a plan for twelve euros a month."},
+    {de:"Gibt es eine Mindestlaufzeit?",en:"Is there a minimum contract period?"},
+    {de:"Ja, vierundzwanzig Monate. Oder fünfzehn Euro ohne Laufzeit.",en:"Yes, twenty-four months. Or fifteen euros with no contract."},
+    {de:"Dann lieber den ohne Laufzeit.",en:"Then I'd rather have the one without a contract."},
+    {de:"Gern. Ich brauche nur Ihren Ausweis.",en:"Gladly. I just need your ID."}
+  ],questions:[
+    {q:"Wie viel Datenvolumen braucht der Kunde?",opts:["Fünf Gigabyte","Mindestens zehn Gigabyte","Unbegrenzt"],correctIdx:1},
+    {q:"Welchen Tarif wählt er?",opts:["Mit Laufzeit für zwölf Euro","Ohne Laufzeit für fünfzehn Euro","Keinen"],correctIdx:1}
   ]},
 ];
 

@@ -119,7 +119,7 @@ const PLURAL_ONLY_NOUNS = new Set(["Eltern","Haare","Pilze","Leute","Geschwister
 
 function getNouns() {
   const n = [];
-  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ article: m[1], noun: m[2], en: w.en, cat: c }); }); });
+  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ article: m[1], noun: m[2], en: w.en, cat: c, ex: w.ex, exEn: w.exEn }); }); });
   return n;
 }
 
@@ -127,7 +127,7 @@ function getNouns() {
 // Card shape mirrors article cards but keeps `de` = "artikel Nomen" for stable progress keys.
 function getPluralNouns() {
   const n = [];
-  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de || !w.pl) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ de: w.de, article: m[1], noun: m[2], en: w.en, pl: w.pl, cat: c }); }); });
+  Object.entries(V).forEach(([c, ws]) => { ws.forEach(w => { if (!w?.de || !w.pl) return; const m = w.de.match(/^(der|die|das) (.+)$/); if (m && !PLURAL_ONLY_NOUNS.has(m[2])) n.push({ de: w.de, article: m[1], noun: m[2], en: w.en, pl: w.pl, cat: c, ex: w.ex, exEn: w.exEn }); }); });
   return n;
 }
 
@@ -444,7 +444,7 @@ function todayKey(date = new Date()) {
 // ── Color palette (module scope so hoisted components can reference) ──
 const PAL = {
   A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
-  G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#8A857D", BL: "#60A5FA", CARD: "#151515",
+  G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#97938B", BL: "#60A5FA", CARD: "#151515",
 };
 // Calmer, more premium surface tokens: hairline borders + soft elevation instead of hard grey boxes.
 const HAIR = "rgba(255,255,255,0.06)";
@@ -456,11 +456,26 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.28";
+const APP_VERSION = "2026.06.11.29";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
 const DVH = (typeof CSS !== "undefined" && CSS.supports && CSS.supports("height: 100dvh")) ? "100dvh" : "100vh";
+
+// True on devices with a hardware pointer (desktop / iPad-with-trackpad) — gates the
+// keyboard-shortcut hints, which would be noise on touch phones.
+const HAS_FINE_POINTER = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+// Home-library grouping: 36 categories as a flat grid is a wall of scroll. The Library
+// renders these themed, collapsible groups instead. Categories missing from this map
+// fall into a trailing "More" group, so new content can never disappear from the UI.
+const LIB_GROUPS = [
+  { name: "Everyday Life", cats: ["Greetings & Basics", "Numbers & Time", "Family & People", "Food & Drink", "Around the House", "Body & Health", "Colours & Descriptions", "Common Verbs", "Everyday Actions", "Clothing & Style", "Cooking & Kitchen"] },
+  { name: "Out & About", cats: ["Travel & Directions", "Shopping & Money", "Driving & Traffic", "Weather & Nature", "Nature & Outdoors", "Restaurant & Dining Out", "Sport & Leisure"] },
+  { name: "Work & Engineering", cats: ["Work & Study", "Engineering Workplace", "Electrical Engineering", "Maths & Statistics", "Technology & Digital"] },
+  { name: "Life Admin", cats: ["Admin & Bureaucracy", "Housing & Renting", "Banking & Finance", "Health & Doctor", "Emails & Phone"] },
+  { name: "Language & Society", cats: ["Connectors & Structure", "Abstract & Advanced", "Media & Communication", "Emotions & Opinions", "Opinions & Argument", "Small Talk & Social", "Character & Personality", "Idioms & Slang"] },
+];
 
 const ICONS = {
   settings: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.5 3.5a7.5 7.5 0 0 0-.08-1.1l2.08-1.6-2-3.46-2.45 1a8.2 8.2 0 0 0-1.9-1.1L15.8 3h-4l-.35 2.74a8.2 8.2 0 0 0-1.9 1.1l-2.45-1-2 3.46 2.08 1.6a7.5 7.5 0 0 0 0 2.2L5.1 14.7l2 3.46 2.45-1a8.2 8.2 0 0 0 1.9 1.1L11.8 21h4l.35-2.74a8.2 8.2 0 0 0 1.9-1.1l2.45 1 2-3.46-2.08-1.6c.05-.36.08-.73.08-1.1Z",
@@ -508,6 +523,8 @@ const ICONS = {
   chip: "M8 8h8v8H8V8Zm-4 3h4M4 15h4M16 11h4M16 15h4M11 4v4M15 4v4M11 16v4M15 16v4",
   trophy: "M8 4h8v3a4 4 0 0 1-8 0V4Zm0 1H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5M12 11v5M9 20h6M10 16h4",
   link: "M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1",
+  flame: "M12 3c2 2.7 4.7 4.9 4.7 8.2a4.7 4.7 0 0 1-9.4 0c0-1.6.6-2.9 1.6-4.2.3 1.1 1 1.9 2 2.3C10.5 7 11 5 12 3Z",
+  chevron: "M6 9l6 6 6-6",
 };
 
 const Icon = React.memo(({ name, size = 18, stroke = 1.8, style }) => (
@@ -679,6 +696,14 @@ function App() {
   const [diffBand, setDiffBand] = useState("all");          // sentence/cloze difficulty band: all | easy | core | hard
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseFilter, setBrowseFilter] = useState("all"); // word-browser: "all" | "known" | "mastered"
+  // Which home-library groups are expanded. Persisted so the layout feels stable;
+  // undefined = default (first group open, rest collapsed).
+  const [openGroups, setOpenGroups] = useState(() => { try { return JSON.parse(localStorage.getItem("ad-lib-groups-v1") || "{}") || {}; } catch (e) { return {}; } });
+  const toggleGroup = (g) => setOpenGroups(prev => {
+    const next = { ...prev, [g]: !(prev[g] ?? (g === LIB_GROUPS[0].name)) };
+    try { localStorage.setItem("ad-lib-groups-v1", JSON.stringify(next)); } catch (e) {}
+    return next;
+  });
   // AI Tutor (bring-your-own Anthropic key; everything stays on-device, calls go direct to Anthropic)
   const [aiKey, setAiKey] = useState(() => { try { return localStorage.getItem("gfc-ai-key") || ""; } catch (e) { return ""; } });
   const [aiModel, setAiModel] = useState(() => { try { return localStorage.getItem("gfc-ai-model") || "claude-sonnet-4-6"; } catch (e) { return "claude-sonnet-4-6"; } });
@@ -1236,6 +1261,14 @@ function App() {
 
   const nouns = useMemo(getNouns, []);
   const pluralNouns = useMemo(getPluralNouns, []);
+  // Library groups with any unmapped categories appended as "More" (future-proofing).
+  const libGroups = useMemo(() => {
+    const assigned = new Set(LIB_GROUPS.flatMap(g => g.cats));
+    const groups = LIB_GROUPS.map(g => ({ ...g, cats: g.cats.filter(c => CATS.includes(c)) }));
+    const extra = CATS.filter(c => !assigned.has(c));
+    if (extra.length) groups.push({ name: "More", cats: extra });
+    return groups.filter(g => g.cats.length > 0);
+  }, []);
   const totalW = useMemo(() => Object.values(V).flat().length, []);
   const totalL = useMemo(
     () => CATS.reduce((sum, cat) => sum + V[cat].filter(w => isMasteredEntry(prog[`production::${cat}::${w.de}`])).length, 0),
@@ -1281,9 +1314,14 @@ function App() {
   const gk = (card, cat, m) => `${m}::${card._cat || card.cat || cat}::${cardId(card)}`;
 
   // Flash the answer-feedback animation (shake on wrong, pop on correct) for ~600ms.
+  // Adds a light haptic tick where supported (Android); stronger pulse on mistakes.
   const triggerFeedback = (kind) => {
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
     setFeedback(kind);
+    try {
+      const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce && navigator.vibrate) navigator.vibrate(kind === "wrong" ? 35 : 12);
+    } catch (e) {}
     feedbackTimerRef.current = setTimeout(() => setFeedback(null), 600);
   };
 
@@ -1968,6 +2006,50 @@ function App() {
     }, 180);
   };
 
+  // Session keyboard shortcuts (desktop / iPad with keyboard): Space reveals or toggles
+  // audio, 1–4 answers, Enter advances. Subscribed without a dependency array so the
+  // handler always closes over fresh state — one listener, re-bound per render (cheap).
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (showSetup || showSettings || showOnboarding) return;
+      const tag = ((e.target && e.target.tagName) || "").toLowerCase();
+      const inField = tag === "input" || tag === "textarea" || tag === "select";
+      const flipMode = screen === "cards" && mode !== "production" && mode !== "dictation";
+      if (e.key === "Enter") {
+        if (inField) return; // typed inputs own their Enter (submit)
+        if (screen === "cards" && answered) { e.preventDefault(); nextCard(); }
+        else if (screen === "drill" && answered) { e.preventDefault(); nextDrill(); }
+        else if (screen === "sentence") {
+          if (sbChecked) { e.preventDefault(); sbNext(); }
+          else if (sbPicked.length > 0) { e.preventDefault(); sbCheck(); }
+        }
+        return;
+      }
+      if (inField) return;
+      if (e.key === " ") {
+        if (screen === "audio") { e.preventDefault(); audioPlaying ? audioPause() : audioResume(); return; }
+        // The reveal panel handles its own Space when focused (role=button) — skip to avoid double fire.
+        const onRevealEl = e.target && e.target.getAttribute && e.target.getAttribute("role") === "button";
+        if (flipMode && !flipped && !onRevealEl) { e.preventDefault(); revealCard(); }
+        return;
+      }
+      if (flipMode && flipped && !answered) {
+        if (e.key === "1") { e.preventDefault(); handleFlipAnswer(false); }
+        else if (e.key === "2") { e.preventDefault(); handleFlipAnswer(true); }
+        return;
+      }
+      if (screen === "drill" && !answered && card) {
+        const n = parseInt(e.key, 10);
+        if (Number.isNaN(n) || n < 1) return;
+        if (mode === "article" && n <= 3) { e.preventDefault(); handleDrillAnswer(n - 1); }
+        else if ((mode === "verb" || mode === "listening") && card.opts && n <= card.opts.length) { e.preventDefault(); handleDrillAnswer(n - 1); }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   // Precompute all category stats in one pass — avoids 19×N recomputation on every render.
   const catStats = useMemo(() => {
     const out = {};
@@ -2130,6 +2212,19 @@ function App() {
       </div>
     </div>
   );
+
+  // Uniform section label used by every home-screen section (Today / Training / Library).
+  const SectionHead = ({ title, right, style: s }) => (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", margin: "0 0 10px", ...s }}>
+      <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 1.4, textTransform: "uppercase" }}>{title}</div>
+      {right || null}
+    </div>
+  );
+
+  // Keyboard-shortcut hint, rendered only on devices with a hardware pointer.
+  const KeyHint = ({ text }) => HAS_FINE_POINTER
+    ? <div style={{ textAlign: "center", fontSize: 10, color: TD, opacity: 0.55, paddingTop: 8, letterSpacing: 0.5 }}>{text}</div>
+    : null;
 
   // NEW: Automaticity badge shown after answer
   const SpeedBadge = ({ ms }) => {
@@ -2314,6 +2409,11 @@ function App() {
     <div style={{ fontFamily: BD, background: APP_BG, color: T, minHeight: DVH, maxWidth: 480, margin: "0 auto", position: "relative" }}>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>{`
+        * { -webkit-tap-highlight-color: transparent; }
+        body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-variant-numeric: tabular-nums; }
+        button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+        button:not(:disabled):active { transform: translateY(1px); }
+        ::selection { background: rgba(255,204,0,0.25); }
         @keyframes ad-mastery-pop {
           0% { transform: scale(0.92); box-shadow: 0 0 0 rgba(88, 214, 141, 0); }
           48% { transform: scale(1.04); box-shadow: 0 0 28px rgba(88, 214, 141, 0.28); }
@@ -2351,6 +2451,11 @@ function App() {
           .ad-spark { stroke-dashoffset: 0; }
         }
       `}</style>
+
+      {/* Screen-reader announcement of answer feedback (visually hidden) */}
+      <div aria-live="polite" style={{ position: "absolute", width: 1, height: 1, margin: -1, padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 }}>
+        {feedback === "correct" ? "Richtig" : feedback === "wrong" ? "Falsch" : ""}
+      </div>
 
       {/* ── FIRST-RUN ONBOARDING ── */}
       {showOnboarding && <div style={{ position: "fixed", inset: 0, zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.92)", padding: 22 }}>
@@ -2755,23 +2860,48 @@ function App() {
           <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
         </div>
 
-        <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 0.6, margin: "2px 0 10px" }}>Today</div>
-        {/* Today metrics */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 1, textAlign: "center" }}>
-            <div style={{ fontFamily: FN, fontSize: 26, color: T, fontWeight: 800 }}><CountUp value={dailyStats.streak} /></div>
-            <div style={{ fontSize: 10, color: TD, fontWeight: 600, letterSpacing: 0.4 }}>Day streak</div>
-          </div>
-          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 14, padding: "14px 16px", flex: 2, textAlign: "center" }}>
-            <div style={{ fontFamily: FN, fontSize: 26, fontWeight: 800 }}>
-              <span style={{ color: dailyStats.count >= dailyGoal ? G : T }}>{dailyStats.count}</span>
-              <span style={{ color: TD, fontSize: 16 }}> / {dailyGoal}</span>
+        {SectionHead({ title: "Today", style: { margin: "2px 0 10px" } })}
+        {/* Today panel: goal ring + streak + last-7-days activity */}
+        <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 18px 13px", marginBottom: 20, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 18, paddingTop: 4 }}>
+            {(() => {
+              const R0 = 34, C0 = 2 * Math.PI * R0;
+              const goalDone = dailyStats.count >= dailyGoal;
+              return (
+                <div role="img" aria-label={`${dailyStats.count} of ${dailyGoal} cards today`} style={{ position: "relative", width: 84, height: 84, flexShrink: 0 }}>
+                  <svg width="84" height="84" viewBox="0 0 84 84">
+                    <circle cx="42" cy="42" r={R0} fill="none" stroke="#1D1D1D" strokeWidth="7" />
+                    <circle cx="42" cy="42" r={R0} fill="none" stroke={goalDone ? G : A} strokeWidth="7" strokeLinecap="round"
+                      strokeDasharray={C0} strokeDashoffset={C0 * (1 - dailyGoalPct)}
+                      transform="rotate(-90 42 42)" style={{ transition: "stroke-dashoffset .5s ease, stroke .3s ease" }} />
+                  </svg>
+                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: goalDone ? G : T, lineHeight: 1 }}><CountUp value={dailyStats.count} /></div>
+                    <div style={{ fontSize: 9, color: TD, fontWeight: 700, marginTop: 2 }}>/ {dailyGoal}</div>
+                  </div>
+                </div>
+              );
+            })()}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                <Icon name="flame" size={17} style={{ color: dailyStats.streak > 0 ? A : TD }} />
+                <span style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, lineHeight: 1 }}><CountUp value={dailyStats.streak} /></span>
+                <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>day streak</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 30, marginTop: 11 }}>
+                {trend30.days.slice(-7).map((d, i) => {
+                  const isToday = i === 6;
+                  const v = isToday ? Math.max(d.attempts, dailyStats.count) : d.attempts;
+                  const h = v <= 0 ? 3 : Math.max(5, Math.min(30, Math.round((v / Math.max(dailyGoal, 1)) * 30)));
+                  return <div key={d.date} style={{ flex: 1, height: h, borderRadius: 2, background: v <= 0 ? "#1D1D1D" : v >= dailyGoal ? G : A, opacity: isToday ? 1 : 0.6, transition: "height .3s ease" }} />;
+                })}
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                <span style={{ fontSize: 9, color: TD, letterSpacing: 0.4 }}>last 7 days</span>
+                {dailyStats.count >= dailyGoal && <span style={{ fontSize: 9, color: G, fontWeight: 800 }}>✓ Goal reached</span>}
+              </div>
             </div>
-            <div style={{ fontSize: 10, color: TD, fontWeight: 600, letterSpacing: 0.4 }}>Cards today</div>
-            <div style={{ height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", marginTop: 8 }}>
-              <div style={{ height: "100%", width: `${dailyGoalPct * 100}%`, background: dailyStats.count >= dailyGoal ? G : A, borderRadius: 2, transition: "width 0.35s ease-out" }} />
-            </div>
-            {dailyStats.count >= dailyGoal && <div style={{ fontSize: 10, color: G, marginTop: 4, fontWeight: 700 }}>✓ Goal reached</div>}
           </div>
         </div>
 
@@ -2842,10 +2972,7 @@ function App() {
         </div>
         {/* Training */}
         <div style={{ marginTop: 34 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
-            <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Training</div>
-            <div style={{ fontSize: 10, color: TD }}>Targeted drills</div>
-          </div>
+          {SectionHead({ title: "Training", right: <div style={{ fontSize: 10, color: TD }}>Targeted drills</div>, style: { marginBottom: 12 } })}
           <div style={{ background: "#0A0A0A", border: `1px solid ${A}22`, borderRadius: 16, padding: 10, position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.9 }} />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
@@ -2883,40 +3010,71 @@ function App() {
           </div>
         </div>
 
-        {/* Library */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 30, marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.6 }}>Library</div>
-          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
-            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
-            <Icon name="book" size={12} /> Browse all words
-          </button>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          {CATS.map(cat => {
-            const st = getCatStats(cat);
-            const pct = st.total > 0 ? (st.seen / st.total) * 100 : 0;
-            const productionPct = st.total > 0 ? (st.productionSeen / st.total) * 100 : 0;
-            const masteredPct = st.total > 0 ? (st.mastered / st.total) * 100 : 0;
-            const done = st.mastered >= st.total && st.total > 0;
-            const justMastered = newlyMasteredCats.has(cat);
+        {/* Library — themed, collapsible groups instead of a flat 36-card wall */}
+        {SectionHead({
+          title: "Library",
+          right: (
+            <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
+              style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
+              <Icon name="book" size={12} /> Browse all words
+            </button>
+          ),
+          style: { marginTop: 30, marginBottom: 12 },
+        })}
+        <div style={{ display: "grid", gap: 8 }}>
+          {libGroups.map((g, gi) => {
+            const agg = g.cats.reduce((a, cat) => {
+              const st = getCatStats(cat);
+              return { total: a.total + st.total, mastered: a.mastered + st.mastered, prod: a.prod + st.productionSeen };
+            }, { total: 0, mastered: 0, prod: 0 });
+            const open = openGroups[g.name] ?? (gi === 0);
+            const mPct = agg.total ? (agg.mastered / agg.total) * 100 : 0;
+            const pPct = agg.total ? (agg.prod / agg.total) * 100 : 0;
+            const groupGlow = g.cats.some(cat => newlyMasteredCats.has(cat));
             return (
-              <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
-                {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
-                <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
-                  <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />
-                  <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.15, fontWeight: 800, minWidth: 0 }}>{cat}</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  {/* Dual-layer bar: gold = production progress, green fill = mastered */}
-                  <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
-                    <div style={{ position: "absolute", inset: 0, width: `${productionPct}%`, background: `${A}66`, borderRadius: 2, transition: "width 0.5s" }} />
-                    <div style={{ position: "absolute", inset: 0, width: `${masteredPct}%`, background: G, borderRadius: 2, transition: "width 0.5s" }} />
+              <div key={g.name}>
+                <button type="button" onClick={() => toggleGroup(g.name)} aria-expanded={open}
+                  style={{ width: "100%", background: "linear-gradient(180deg, #161616 0%, #0F0F0F 100%)", border: `1px solid ${groupGlow ? `${G}55` : open ? `${A}2E` : HAIR}`, borderRadius: 13, padding: "12px 14px 11px", cursor: "pointer", textAlign: "left", fontFamily: "inherit", display: "block" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <Icon name="chevron" size={15} style={{ color: open ? A : TD, transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform .18s ease" }} />
+                    <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.name}</span>
+                    <span style={{ fontSize: 10, color: TD, fontWeight: 700, flexShrink: 0 }}>{g.cats.length} topics</span>
+                    <span style={{ fontSize: 10, color: agg.mastered ? G : TD, fontWeight: 800, flexShrink: 0 }}>★ {agg.mastered}/{agg.total}</span>
                   </div>
-                  <span style={{ fontSize: 10, color: st.mastered ? G : st.productionSeen ? A : TD, fontWeight: 800, flexShrink: 0 }}>
-                    {st.total ? `★ ${st.mastered}/${st.total}` : ""}
-                  </span>
-                </div>
-              </button>
+                  <div style={{ height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative", marginTop: 9 }}>
+                    <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}66`, borderRadius: 2, transition: "width .5s" }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 2, transition: "width .5s" }} />
+                  </div>
+                </button>
+                {open && <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
+                  {g.cats.map(cat => {
+                    const st = getCatStats(cat);
+                    const productionPct = st.total > 0 ? (st.productionSeen / st.total) * 100 : 0;
+                    const masteredPct = st.total > 0 ? (st.mastered / st.total) * 100 : 0;
+                    const done = st.mastered >= st.total && st.total > 0;
+                    const justMastered = newlyMasteredCats.has(cat);
+                    return (
+                      <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
+                        {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
+                        <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
+                          <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />
+                          <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.15, fontWeight: 800, minWidth: 0 }}>{cat}</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          {/* Dual-layer bar: gold = production progress, green fill = mastered */}
+                          <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
+                            <div style={{ position: "absolute", inset: 0, width: `${productionPct}%`, background: `${A}66`, borderRadius: 2, transition: "width 0.5s" }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${masteredPct}%`, background: G, borderRadius: 2, transition: "width 0.5s" }} />
+                          </div>
+                          <span style={{ fontSize: 10, color: st.mastered ? G : st.productionSeen ? A : TD, fontWeight: 800, flexShrink: 0 }}>
+                            {st.total ? `★ ${st.mastered}/${st.total}` : ""}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>}
+              </div>
             );
           })}
         </div>
@@ -3083,6 +3241,7 @@ function App() {
                 <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitTyped} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
               </div></>
                 : <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
+              {KeyHint({ text: "Enter to submit · Enter again for next" })}
             </div>
           </div>
         ) : (
@@ -3139,6 +3298,7 @@ function App() {
               </div>}
               {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
               {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Think of the answer, then tap</div>}
+              {KeyHint({ text: "Space to reveal · 1 Again · 2 Got it · Enter next" })}
             </div>
           </div>
         )}
@@ -3156,7 +3316,16 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
-              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
+              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
+                  <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
+                    {highlightExample(card.ex, card.noun).map((p, i) => p.hl
+                      ? <span key={i} style={{ color: A, fontWeight: 600, fontStyle: "normal" }}>{p.text}</span>
+                      : <span key={i}>{p.text}</span>)}
+                  </div>
+                  {card.exEn && <div style={{ fontSize: 11, color: TD, marginTop: 4, opacity: 0.7 }}>{card.exEn}</div>}
+                </div>}
+              </>}
             </>}
             {mode === "plural" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What's the plural?</div>
@@ -3167,6 +3336,14 @@ function App() {
                 {inputResult === "wrong" && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 <SpeakBtn text={card.pl} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
+                  <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
+                    {highlightExample(card.ex, card.noun).map((p, i) => p.hl
+                      ? <span key={i} style={{ color: A, fontWeight: 600, fontStyle: "normal" }}>{p.text}</span>
+                      : <span key={i}>{p.text}</span>)}
+                  </div>
+                  {card.exEn && <div style={{ fontSize: 11, color: TD, marginTop: 4, opacity: 0.7 }}>{card.exEn}</div>}
+                </div>}
               </>}
             </>}
             {mode === "cloze" && <>
@@ -3335,6 +3512,7 @@ function App() {
           )}
           <div style={{ marginTop: "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextDrill}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
+            {KeyHint({ text: mode === "article" ? "Keys 1–3 to answer · Enter for next" : (mode === "listening" || (mode === "verb" && card.opts)) ? "Keys 1–4 to answer · Enter for next" : "Enter to submit · Enter again for next" })}
           </div>
         </div>
       </div>}
@@ -3364,6 +3542,7 @@ function App() {
           <div style={{ marginTop: "auto", paddingTop: 8, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {!sbChecked && sbPicked.length > 0 && <Btn bg={BL} color="#0A0A0A" onClick={sbCheck} style={{ fontFamily: FN }}>Check</Btn>}
             {sbChecked && <Btn bg={SH} border={`1px solid ${B}`} onClick={sbNext}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
+            {KeyHint({ text: "Enter to check · Enter again for next" })}
           </div>
         </div>
       </div>}

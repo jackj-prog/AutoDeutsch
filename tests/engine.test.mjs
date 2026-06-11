@@ -187,6 +187,14 @@ test("plural pool: every card has a 'die …' plural and resolvable fields", () 
   });
 });
 
+test("article/plural pools carry example sentences for the post-answer reveal", () => {
+  const { getNouns, getPluralNouns } = vm.runInContext("({ getNouns, getPluralNouns })", ctx);
+  const nouns = getNouns();
+  const plural = getPluralNouns();
+  assert.ok(nouns.filter(n => n.ex).length / nouns.length > 0.8, "most article cards should have ex");
+  assert.ok(plural.filter(n => n.ex).length / plural.length > 0.8, "most plural cards should have ex");
+});
+
 test("seedDueFirst takes at most half the session from the due set", () => {
   const pool = Array.from({ length: 20 }, (_, i) => ({ de: `w${i}` }));
   const dueSet = new Set(["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7"]);

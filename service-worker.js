@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autodeutsch-v67';
+const CACHE_NAME = 'autodeutsch-v68';
 
 const CORE_ASSETS = [
   './',
@@ -48,14 +48,15 @@ self.addEventListener('message', event => {
 });
 
 // Fetch: network-first for the app shell, cache-first for static supporting assets.
-// Keep index.html and app.js in lockstep; otherwise a fresh HTML integrity hash can
-// be paired with an old cached app.js and the browser will block the script.
+// Keep index.html, app.js AND data.js in lockstep; index.html pins both scripts with
+// SRI hashes, so pairing a fresh HTML with either script from an older cache makes the
+// browser block that script (data.js blocked = "V is not defined" = blank screen).
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   const isSameOrigin = url.origin === self.location.origin;
   const isAppShell = event.request.mode === 'navigate'
     || url.pathname.endsWith('.html')
-    || (isSameOrigin && url.pathname.endsWith('/app.js'));
+    || (isSameOrigin && (url.pathname.endsWith('/app.js') || url.pathname.endsWith('/data.js')));
 
   if (isAppShell) {
     event.respondWith(

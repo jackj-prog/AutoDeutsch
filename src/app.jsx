@@ -134,6 +134,11 @@ function makeVerbQ(tense = "present") {
     const pp = parts[1];
     return { verb: vb.v, en: vb.en, pron, correct: `${correctAux} ${pp}`, tense: "Perfekt", hint: `${vb.v} → ${vb.aux} + ${pp}` };
   }
+  if (tense === "praeteritum") {
+    // ich and er share the same Präteritum form, so we can vary the pronoun freely.
+    const p = Math.random() < 0.5 ? "ich" : "er";
+    return { verb: vb.v, en: vb.en, pron: p, correct: vb.pt, tense: "Präteritum", hint: `${vb.v} → ${vb.pt}` };
+  }
   const correct = vb.pr[key];
   const allF = [...new Set(Object.values(vb.pr))].filter(f => f !== correct);
   const wrongs = sh(allF).slice(0, 3); while (wrongs.length < 3) wrongs.push(correct + "e");
@@ -421,7 +426,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.17";
+const APP_VERSION = "2026.06.10.18";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2356,8 +2361,8 @@ function App() {
             {setupCat === "__verb__" && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Tense</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[["present", "Präsens"], ["perfekt", "Perfekt"]].map(([t, l]) => (
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["present", "Präsens"], ["perfekt", "Perfekt"], ["praeteritum", "Präteritum"]].map(([t, l]) => (
                     <button key={t} onClick={() => setVerbTense(t)} style={{ padding: "9px 10px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: verbTense === t ? A : "transparent", color: verbTense === t ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
                   ))}
                 </div>

@@ -62,6 +62,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     if (!isStr(v.v) || !isStr(v.en)) err(`VERBS[${i}]: missing v/en`);
     persons.forEach(p => { if (!isStr(v.pr?.[p])) err(`VERBS "${v.v}": missing present form for "${p}"`); });
     if (!isStr(v.pf)) err(`VERBS "${v.v}": missing Perfekt`);
+    if (!isStr(v.pt)) err(`VERBS "${v.v}": missing Präteritum`);
     if (!["haben", "sein"].includes(v.aux)) err(`VERBS "${v.v}": aux must be haben|sein`);
     if (seenV.has(v.v)) err(`VERBS: duplicate "${v.v}"`);
     seenV.add(v.v);

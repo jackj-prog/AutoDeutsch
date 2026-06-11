@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.31";
+const APP_VERSION = "2026.06.11.32";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1622,6 +1622,42 @@ function App() {
     };
   }, [trendStats]);
 
+  // Deep statistics for the Stats screen: per-CEFR-level vocab funnel, SRS box
+  // histogram, all-time totals, and a mastery-pace projection toward B2 derived
+  // from masteredAt timestamps (cards mastered in the last 28 days → weekly rate).
+  const deepStats = useMemo(() => {
+    const levels = {};
+    LEVELS.forEach(l => { levels[l] = { total: 0, seen: 0, production: 0, mastered: 0 }; });
+    allVocab().forEach(w => {
+      const L = levels[cardLevel(w)];
+      if (!L) return;
+      L.total++;
+      const v = normalizeEntry(prog[`vocab::${w._cat}::${w.de}`]);
+      const p = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
+      if (v.stats.attempts > 0 || p.stats.attempts > 0) L.seen++;
+      if (p.stats.attempts > 0) L.production++;
+      if (p.stats.productionStreak >= MASTERY_STREAK) L.mastered++;
+    });
+    const boxes = [0, 0, 0, 0, 0, 0];
+    let attempts = 0, correct = 0, entries = 0;
+    const masteredDates = [];
+    Object.entries(prog).forEach(([k, raw]) => {
+      const n = normalizeEntry(raw);
+      if (n.stats.attempts < 1) return;
+      entries++;
+      attempts += n.stats.attempts;
+      correct += n.stats.correct;
+      boxes[Math.max(0, Math.min(5, Math.floor(n.srs.box || 0)))]++;
+      if (k.startsWith("production::") && n.stats.masteredAt) masteredDates.push(n.stats.masteredAt);
+    });
+    const now = Date.now();
+    const recent28 = masteredDates.filter(t => now - t <= 28 * SRS_DAY_MS).length;
+    const perWeek = recent28 / 4;
+    const b2Remaining = Math.max(0, levels.B2.total - levels.B2.mastered);
+    const b2WeeksLeft = perWeek > 0 ? b2Remaining / perWeek : null;
+    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft };
+  }, [prog]);
+
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
     setSetupMode(dm || "vocab");
@@ -2401,6 +2437,10 @@ function App() {
           </div>
         )}
 
+        <button type="button" onClick={() => setScreen("stats")}
+          style={{ marginTop: 14, width: "100%", background: "#0F0F0F", border: `1px solid ${A}2E`, borderRadius: 10, padding: "11px 12px", color: A, fontSize: 12, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, fontFamily: "inherit" }}>
+          <Icon name="chart" size={14} /> Detailed stats — Path to B2
+        </button>
       </div>
     );
   };
@@ -3193,6 +3233,116 @@ function App() {
               })}
             </div>
             {total > shown.length && <div style={{ color: TD, fontSize: 11, textAlign: "center", marginTop: 12 }}>Showing {shown.length} of {total} — refine your search to see more.</div>}
+          </div>
+        );
+      })()}
+
+      {/* ── STATS DEEP-DIVE ── */}
+      {screen === "stats" && (() => {
+        const ds = deepStats;
+        const LEVEL_COLORS = { A1: G, A2: BL, B1: A, B2: R };
+        const maxBox = Math.max(1, ...ds.boxes);
+        const boxLabels = ["1d", "2d", "4d", "7d", "14d", "30d"];
+        const overallAcc = ds.attempts > 0 ? Math.round((ds.correct / ds.attempts) * 100) : null;
+        const b2Months = ds.b2WeeksLeft != null ? ds.b2WeeksLeft / 4.345 : null;
+        const panel = { background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV };
+        const flagBar = <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />;
+        return (
+          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
+            <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+              <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>Statistics</div>
+              <span style={{ width: 56 }} />
+            </div>
+
+            {/* Path to B2: per-level vocabulary funnel */}
+            <div style={panel}>
+              {flagBar}
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 3, paddingTop: 4 }}>PATH TO B2</div>
+              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>Vocabulary mastered per CEFR level (★ = 5 production answers in a row)</div>
+              {LEVELS.map(l => {
+                const L = ds.levels[l];
+                const seenPct = L.total ? (L.seen / L.total) * 100 : 0;
+                const mPct = L.total ? (L.mastered / L.total) * 100 : 0;
+                return (
+                  <div key={l} style={{ marginBottom: 12 }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 5 }}>
+                      <span style={{ fontSize: 11, fontWeight: 900, color: LEVEL_COLORS[l], border: `1px solid ${LEVEL_COLORS[l]}55`, borderRadius: 6, padding: "1px 7px" }}>{l}</span>
+                      <span style={{ fontSize: 11, color: TD, flex: 1 }}>{L.seen} seen · {L.production} produced</span>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: L.mastered ? G : TD }}>★ {L.mastered}<span style={{ color: TD, fontWeight: 700 }}> / {L.total}</span></span>
+                    </div>
+                    <div style={{ height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, width: `${seenPct}%`, background: `${LEVEL_COLORS[l]}33`, borderRadius: 3 }} />
+                      <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 3 }} />
+                    </div>
+                  </div>
+                );
+              })}
+              <div style={{ marginTop: 12, padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
+                {ds.perWeek > 0 ? (
+                  <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace the remaining <span style={{ color: T, fontWeight: 800 }}>{ds.b2Remaining}</span> B2 words take about <span style={{ color: A, fontWeight: 800 }}>{b2Months >= 18 ? `${(b2Months / 12).toFixed(1)} years` : `${b2Months.toFixed(1)} months`}</span>.</>
+                ) : (
+                  <>Master a few words in production mode to unlock a pace projection toward B2.</>
+                )}
+              </div>
+            </div>
+
+            {/* SRS box histogram */}
+            <div style={panel}>
+              {flagBar}
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 3, paddingTop: 4 }}>MEMORY STRENGTH</div>
+              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>Cards per spaced-repetition box (review interval)</div>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 90 }}>
+                {ds.boxes.map((n, i) => (
+                  <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, height: "100%", justifyContent: "flex-end" }}>
+                    <span style={{ fontSize: 10, fontWeight: 800, color: n > 0 ? T : TD }}>{n}</span>
+                    <div style={{ width: "100%", height: `${Math.max(3, (n / maxBox) * 62)}px`, borderRadius: 4, background: i >= 4 ? G : i >= 2 ? A : `${A}55`, opacity: n > 0 ? 1 : 0.25, transition: "height .4s ease" }} />
+                    <span style={{ fontSize: 9, color: TD, fontWeight: 700 }}>{boxLabels[i]}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 10, color: TD, marginTop: 10, lineHeight: 1.45 }}>Right is better: a card in the 30d box only needs a monthly check. Wrong answers move cards left.</div>
+            </div>
+
+            {/* All-time totals */}
+            <div style={panel}>
+              {flagBar}
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 12, paddingTop: 4 }}>ALL-TIME</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
+                {[
+                  { v: ds.entries, l: "Cards practised", c: T },
+                  { v: ds.attempts, l: "Answers", c: T },
+                  { v: overallAcc == null ? "–" : `${overallAcc}%`, l: "Accuracy", c: overallAcc >= 80 ? G : overallAcc >= 60 ? A : R },
+                  { v: ds.masteredTotal, l: "Mastered ★", c: G },
+                ].map(it => (
+                  <div key={it.l} style={{ minWidth: 0, textAlign: "center" }}>
+                    <div style={{ fontFamily: FN, fontSize: 20, fontWeight: 800, color: it.c }}>{typeof it.v === "number" ? it.v.toLocaleString() : it.v}</div>
+                    <div style={{ fontSize: 9, color: TD, fontWeight: 700, letterSpacing: 0.3, marginTop: 2 }}>{it.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Drill coverage */}
+            <div style={panel}>
+              {flagBar}
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 3, paddingTop: 4 }}>DRILL COVERAGE</div>
+              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>Items answered correctly at least once</div>
+              {[["article", "Articles"], ["plural", "Plurals"], ["cloze", "Grammar Cloze"], ["verb", "Verbs"], ["sentence", "Sentences"], ["imperativ", "Imperative"], ["listening", "Listening"]].map(([m, label]) => {
+                const ts = trainingStats[m];
+                if (!ts || !ts.total) return null;
+                const pct = (ts.seen / ts.total) * 100;
+                return (
+                  <div key={m} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 9 }}>
+                    <span style={{ fontSize: 11, color: T, fontWeight: 700, width: 96, flexShrink: 0 }}>{label}</span>
+                    <div style={{ flex: 1, height: 5, background: "#0A0A0A", borderRadius: 3, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${pct}%`, background: pct >= 100 ? G : A, borderRadius: 3, transition: "width .4s" }} />
+                    </div>
+                    <span style={{ fontSize: 10, color: TD, fontWeight: 800, width: 70, textAlign: "right", flexShrink: 0 }}>{ts.seen}/{ts.total}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         );
       })()}

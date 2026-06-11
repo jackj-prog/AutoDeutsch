@@ -421,7 +421,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.16";
+const APP_VERSION = "2026.06.10.17";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1629,15 +1629,17 @@ function App() {
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "listening") {
       setCategory(listenMode === "questions" ? "Listening + Questions" : "Listening Practice");
+      const dband = (arr) => diffBand === "all" ? sh([...arr])
+        : [...sh(arr.filter(d => inBand(d, diffBand))), ...sh(arr.filter(d => !inBand(d, diffBand)))];
       if (listenMode === "listen") {
         // Tap-through mode: use existing dialogues screen
-        const pool = sh([...DIALOGUES]).slice(0, count);
+        const pool = dband(DIALOGUES).slice(0, count);
         setCards(pool); setDlgIdx(0); setDlgRevealed({});
         setScreen("dialogues"); setTStart(Date.now());
       } else {
         // Questions mode: flatten to one card per question, only dialogues that have questions
         const withQ = DIALOGUES.filter(d => d.questions && d.questions.length);
-        const shuffled = sh([...withQ]);
+        const shuffled = dband(withQ);
         const expanded = shuffled.flatMap(d => d.questions.map((q, qi) => ({
           _dialogue: d, _qIdx: qi, q: q.q, opts: q.opts, correctIdx: q.correctIdx,
           de: `${d.title}::${qi}`,
@@ -2373,7 +2375,7 @@ function App() {
               </div>
             )}
 
-            {(setupCat === "__sentence__" || setupCat === "__grammar__") && (
+            {(setupCat === "__sentence__" || setupCat === "__grammar__" || setupCat === "__listening__") && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Difficulty</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
@@ -2382,7 +2384,7 @@ function App() {
                   ))}
                 </div>
                 <div style={{ fontSize: 10.5, color: TD, marginTop: 6, lineHeight: 1.4 }}>
-                  {diffBand === "easy" ? "A1–A2 · short, present tense" : diffBand === "core" ? "B1 · everyday complexity" : diffBand === "hard" ? "B2 · clauses, Konjunktiv, Passiv" : "All levels mixed together"}
+                  {diffBand === "easy" ? "A1–A2 · simple & short" : diffBand === "core" ? "B1 · everyday complexity" : diffBand === "hard" ? "B2 · complex & demanding" : "All levels mixed together"}
                 </div>
               </div>
             )}

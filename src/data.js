@@ -2240,56 +2240,571 @@ const SENTENCES = [
 
 // ── NEW: MINI DIALOGUE DATA ──
 const DIALOGUES = [
-  {title:"At the café",lines:[{de:"Guten Tag! Was darf es sein?",en:"Good day! What can I get you?"},{de:"Einen Kaffee, bitte.",en:"A coffee, please."},{de:"Mit Milch und Zucker?",en:"With milk and sugar?"},{de:"Nur Milch, bitte. Was kostet das?",en:"Just milk, please. How much is that?"},{de:"Zwei Euro fünfzig.",en:"Two euros fifty."}]},
-  {title:"Asking for directions",lines:[{de:"Entschuldigung, wo ist der Bahnhof?",en:"Excuse me, where is the train station?"},{de:"Gehen Sie geradeaus und dann links.",en:"Go straight ahead and then left."},{de:"Ist es weit von hier?",en:"Is it far from here?"},{de:"Nein, ungefähr fünf Minuten zu Fuß.",en:"No, about five minutes on foot."}]},
-  {title:"At the supermarket",lines:[{de:"Haben Sie Vollkornbrot?",en:"Do you have wholemeal bread?"},{de:"Ja, im dritten Gang links.",en:"Yes, in the third aisle on the left."},{de:"Danke. Und wo finde ich die Milch?",en:"Thanks. And where can I find the milk?"},{de:"Ganz hinten im Kühlregal.",en:"Right at the back in the fridge section."}]},
-  {title:"Meeting someone",lines:[{de:"Hallo! Ich bin Anna. Und du?",en:"Hello! I'm Anna. And you?"},{de:"Hi, ich heiße Jack. Woher kommst du?",en:"Hi, my name is Jack. Where are you from?"},{de:"Ich komme aus Berlin. Und du?",en:"I'm from Berlin. And you?"},{de:"Ich komme aus Wales.",en:"I'm from Wales."},{de:"Oh cool! Was machst du in Deutschland?",en:"Oh cool! What are you doing in Germany?"}]},
-  {title:"Booking a hotel",lines:[{de:"Guten Tag. Ich möchte ein Zimmer buchen.",en:"Good day. I'd like to book a room."},{de:"Für wie viele Nächte?",en:"For how many nights?"},{de:"Drei Nächte, bitte. Was kostet das pro Nacht?",en:"Three nights, please. How much per night?"},{de:"Achtzig Euro mit Frühstück.",en:"Eighty euros with breakfast."}]},
-  {title:"At the doctor",lines:[{de:"Was fehlt Ihnen?",en:"What's wrong with you?"},{de:"Ich habe Kopfschmerzen und Fieber.",en:"I have a headache and a fever."},{de:"Seit wann haben Sie die Beschwerden?",en:"How long have you had the symptoms?"},{de:"Seit gestern Abend.",en:"Since yesterday evening."},{de:"Ich schreibe Ihnen ein Rezept.",en:"I'll write you a prescription."}]},
-  {title:"On the phone",lines:[{de:"Hallo, hier ist Jack. Ist Anna da?",en:"Hello, this is Jack. Is Anna there?"},{de:"Einen Moment bitte, ich verbinde Sie.",en:"One moment please, I'll put you through."},{de:"Danke!",en:"Thanks!"},{de:"Hallo Jack! Schön, dass du anrufst.",en:"Hello Jack! Nice that you're calling."}]},
-  {title:"At the restaurant",lines:[{de:"Einen Tisch für zwei, bitte.",en:"A table for two, please."},{de:"Gerne. Hier ist die Speisekarte.",en:"Of course. Here is the menu."},{de:"Was können Sie empfehlen?",en:"What can you recommend?"},{de:"Der Fisch ist heute besonders gut.",en:"The fish is especially good today."},{de:"Dann nehme ich den Fisch.",en:"Then I'll have the fish."}]},
-  {title:"Weekend plans",lines:[{de:"Was machst du am Wochenende?",en:"What are you doing at the weekend?"},{de:"Ich gehe wandern, wenn das Wetter gut ist.",en:"I'm going hiking if the weather is good."},{de:"Das klingt toll! Darf ich mitkommen?",en:"That sounds great! Can I come along?"},{de:"Natürlich! Wir treffen uns um neun.",en:"Of course! We'll meet at nine."}]},
-  {title:"At the train station",lines:[{de:"Eine Fahrkarte nach Berlin, bitte.",en:"A ticket to Berlin, please."},{de:"Einfach oder hin und zurück?",en:"Single or return?"},{de:"Hin und zurück, bitte. Muss ich umsteigen?",en:"Return, please. Do I have to change?"},{de:"Ja, in Frankfurt. Gleis sieben.",en:"Yes, in Frankfurt. Platform seven."}]},
-  {title:"Small talk at work",lines:[{de:"Morgen! Wie war dein Wochenende?",en:"Morning! How was your weekend?"},{de:"Ganz gut, danke. Ich war beim Bouldern.",en:"Pretty good, thanks. I was bouldering."},{de:"Oh, das mache ich auch gern!",en:"Oh, I like doing that too!"},{de:"Wir sollten mal zusammen gehen.",en:"We should go together sometime."}]},
-  {title:"Renting a flat",lines:[{de:"Ich suche eine Wohnung mit zwei Zimmern.",en:"I'm looking for a flat with two rooms."},{de:"Wie hoch darf die Miete sein?",en:"How high can the rent be?"},{de:"Maximal achthundert Euro warm.",en:"Maximum eight hundred euros including bills."},{de:"Ich habe etwas in der Stadtmitte.",en:"I have something in the city centre."}]},
-  {title:"At the pharmacy",lines:[{de:"Guten Tag. Ich brauche etwas gegen Kopfschmerzen.",en:"Good day. I need something for a headache."},{de:"Haben Sie ein Rezept?",en:"Do you have a prescription?"},{de:"Nein, ich brauche etwas ohne Rezept.",en:"No, I need something without a prescription."},{de:"Dann nehmen Sie diese Tabletten hier.",en:"Then take these tablets here."},{de:"Wie oft soll ich sie einnehmen?",en:"How often should I take them?"},{de:"Zweimal täglich, nach dem Essen.",en:"Twice a day, after meals."}]},
-  {title:"Job interview basics",lines:[{de:"Erzählen Sie mir bitte kurz über sich.",en:"Please tell me briefly about yourself."},{de:"Ich bin Jack, und ich arbeite als Ingenieur.",en:"I'm Jack, and I work as an engineer."},{de:"Warum möchten Sie bei uns arbeiten?",en:"Why would you like to work with us?"},{de:"Ich schätze Ihre Firma und suche eine neue Herausforderung.",en:"I value your company and am looking for a new challenge."},{de:"Welche Stärken haben Sie?",en:"What are your strengths?"},{de:"Ich bin zuverlässig und arbeite gut im Team.",en:"I'm reliable and work well in a team."}]},
-  {title:"At the post office",lines:[{de:"Ich möchte dieses Paket nach England schicken.",en:"I'd like to send this parcel to England."},{de:"Normal oder als Expresspaket?",en:"Standard or express?"},{de:"Normal, bitte. Wie lange dauert das?",en:"Standard, please. How long does it take?"},{de:"Ungefähr eine Woche.",en:"About a week."},{de:"Gut. Und eine Briefmarke für diesen Brief.",en:"Good. And a stamp for this letter."}]},
-  {title:"Reporting an issue to a landlord",lines:[{de:"Guten Tag, die Heizung in meiner Wohnung funktioniert nicht.",en:"Good day, the heating in my flat isn't working."},{de:"Seit wann haben Sie das Problem?",en:"Since when have you had the problem?"},{de:"Seit gestern Abend. Es ist sehr kalt geworden.",en:"Since yesterday evening. It's gotten very cold."},{de:"Ich schicke morgen einen Techniker vorbei.",en:"I'll send a technician by tomorrow."},{de:"Vielen Dank, das wäre super.",en:"Thank you, that would be great."}]},
-  {title:"Ordering online delivery",lines:[{de:"Hallo, ich habe online bestellt, aber nichts ist angekommen.",en:"Hello, I ordered online but nothing has arrived."},{de:"Haben Sie eine Bestellnummer?",en:"Do you have an order number?"},{de:"Ja, die Nummer ist 47583.",en:"Yes, the number is 47583."},{de:"Einen Moment, ich prüfe das für Sie.",en:"One moment, I'll check that for you."},{de:"Das Paket kommt morgen zwischen neun und zwölf.",en:"The parcel will arrive tomorrow between nine and twelve."}]},
-  {title:"Small talk about weekend",lines:[{de:"Wie war dein Wochenende?",en:"How was your weekend?"},{de:"Ganz gut, danke. Ich war wandern im Wald.",en:"Pretty good, thanks. I was hiking in the forest."},{de:"Klingt schön! Mit wem?",en:"Sounds nice! With who?"},{de:"Mit ein paar Freunden aus dem Fitnessstudio.",en:"With a few friends from the gym."},{de:"Und das Wetter?",en:"And the weather?"},{de:"Es hat geregnet, aber wir hatten trotzdem viel Spaß.",en:"It rained, but we still had a lot of fun."}]},
-  {title:"Buying a SIM card",lines:[{de:"Ich möchte eine Prepaid-SIM-Karte kaufen.",en:"I'd like to buy a prepaid SIM card."},{de:"Welche Anbieter kennen Sie?",en:"Which providers do you know?"},{de:"Ist dieser Tarif für Telefonieren und Internet?",en:"Is this plan for calls and internet?"},{de:"Ja, Sie bekommen 10 GB Daten und eine Flatrate.",en:"Yes, you get 10 GB of data and a flat rate."},{de:"Was kostet das pro Monat?",en:"How much per month?"},{de:"Fünfzehn Euro.",en:"Fifteen euros."}]},
-  {title:"Registering at the Bürgeramt",lines:[{de:"Ich möchte mich anmelden.",en:"I'd like to register."},{de:"Haben Sie einen Termin?",en:"Do you have an appointment?"},{de:"Ja, um elf Uhr. Mein Name ist Jack Williams.",en:"Yes, at eleven o'clock. My name is Jack Williams."},{de:"Bitte zeigen Sie Ihren Pass und den Mietvertrag.",en:"Please show your passport and rental contract."},{de:"Hier, bitte schön.",en:"Here you go."}]},
-  {title:"Joining a gym",lines:[{de:"Ich interessiere mich für eine Mitgliedschaft.",en:"I'm interested in a membership."},{de:"Möchten Sie das Monats- oder Jahresabo?",en:"Would you like the monthly or yearly subscription?"},{de:"Was kostet das Jahresabo?",en:"How much is the yearly subscription?"},{de:"300 Euro, und die erste Woche ist kostenlos.",en:"300 euros, and the first week is free."},{de:"Kann ich zuerst eine Probestunde machen?",en:"Can I do a trial session first?"}]},
-  {title:"Texting a friend to meet",lines:[{de:"Hey, hast du heute Abend Zeit?",en:"Hey, do you have time this evening?"},{de:"Ja, was machen wir?",en:"Yeah, what are we doing?"},{de:"Lass uns ins Kino gehen. Es läuft ein guter Film.",en:"Let's go to the cinema. There's a good film on."},{de:"Klingt super! Um wie viel Uhr?",en:"Sounds great! At what time?"},{de:"Um acht vor dem Kino?",en:"Eight in front of the cinema?"},{de:"Perfekt, bis dann!",en:"Perfect, see you then!"}]},
-  {title:"Complaining politely at a restaurant",lines:[{de:"Entschuldigung, die Suppe ist kalt.",en:"Excuse me, the soup is cold."},{de:"Oh, das tut mir leid. Ich bringe eine neue.",en:"Oh, I'm sorry. I'll bring a new one."},{de:"Danke. Und das Brot fehlt auch noch.",en:"Thanks. And the bread is still missing too."},{de:"Entschuldigen Sie die Verspätung. Es kommt gleich.",en:"Please excuse the delay. It's coming right away."}]},
-  {title:"Asking about work hours",lines:[{de:"Wann hast du normalerweise Feierabend?",en:"When do you usually finish work?"},{de:"Meistens um 17 Uhr, manchmal später.",en:"Usually at 5pm, sometimes later."},{de:"Und am Wochenende?",en:"And on the weekend?"},{de:"Am Wochenende arbeite ich nicht.",en:"I don't work on the weekend."}]},
-  {title:"At the airport check-in",lines:[{de:"Guten Tag, ich möchte einchecken.",en:"Good day, I'd like to check in."},{de:"Ihren Pass bitte. Haben Sie Gepäck?",en:"Your passport please. Do you have luggage?"},{de:"Ja, einen Koffer.",en:"Yes, one suitcase."},{de:"Bitte stellen Sie ihn aufs Band. Hier ist Ihre Bordkarte.",en:"Please put it on the belt. Here's your boarding pass."},{de:"Welches Gate?",en:"Which gate?"},{de:"Gate zwölf, das Boarding beginnt um neun.",en:"Gate twelve, boarding starts at nine."}]},
-  {title:"Im Café bestellen",lines:[{speaker:"Kellner",de:"Guten Tag, was möchten Sie?",en:"Hello, what would you like?"},{speaker:"Kunde",de:"Einen Cappuccino und ein Stück Apfelkuchen, bitte.",en:"A cappuccino and a slice of apple cake, please."},{speaker:"Kellner",de:"Möchten Sie den Kuchen mit Sahne?",en:"Would you like the cake with cream?"},{speaker:"Kunde",de:"Ja, gerne. Was macht das zusammen?",en:"Yes, please. How much is that altogether?"},{speaker:"Kellner",de:"Sieben Euro vierzig.",en:"Seven euros forty."}],questions:[{q:"Was bestellt der Kunde zu trinken?",opts:["Einen Kaffee","Einen Cappuccino","Einen Tee"],correctIdx:1},{q:"Möchte der Kunde Sahne auf dem Kuchen?",opts:["Ja","Nein","Nur Zucker"],correctIdx:0}]},
-  {title:"Bezahlen im Restaurant",lines:[{speaker:"Kunde",de:"Die Rechnung, bitte!",en:"The bill, please!"},{speaker:"Kellner",de:"Zusammen oder getrennt?",en:"Together or separately?"},{speaker:"Kunde",de:"Zusammen, bitte.",en:"Together, please."},{speaker:"Kellner",de:"Das macht 32 Euro 50.",en:"That's 32 euros 50."},{speaker:"Kunde",de:"Hier sind 35. Stimmt so.",en:"Here's 35. Keep the change."},{speaker:"Kellner",de:"Vielen Dank, schönen Abend!",en:"Thank you, have a nice evening!"}],questions:[{q:"Wie viel kostet das Essen?",opts:["32,50 €","35,00 €","25,50 €"],correctIdx:0},{q:"Wie zahlen die Gäste?",opts:["Getrennt","Zusammen","Mit Karte"],correctIdx:1}]},
-  {title:"Beim Bäcker",lines:[{speaker:"Kunde",de:"Guten Morgen! Zwei Brötchen und ein Vollkornbrot, bitte.",en:"Good morning! Two rolls and a wholemeal bread, please."},{speaker:"Verkäuferin",de:"Sonst noch etwas?",en:"Anything else?"},{speaker:"Kunde",de:"Ja, ein Croissant mit Schokolade.",en:"Yes, a chocolate croissant."},{speaker:"Verkäuferin",de:"Das macht vier Euro achtzig.",en:"That's four euros eighty."},{speaker:"Kunde",de:"Bitte schön. Danke!",en:"Here you go. Thanks!"}],questions:[{q:"Wie viele Brötchen kauft der Kunde?",opts:["Eins","Zwei","Drei"],correctIdx:1},{q:"Was kauft er noch außer Brot?",opts:["Einen Kuchen","Ein Croissant","Nichts"],correctIdx:1}]},
-  {title:"In der Apotheke",lines:[{speaker:"Kunde",de:"Ich habe Halsschmerzen. Was können Sie mir empfehlen?",en:"I have a sore throat. What can you recommend?"},{speaker:"Apotheker",de:"Diese Lutschtabletten helfen gut.",en:"These lozenges help well."},{speaker:"Kunde",de:"Brauche ich ein Rezept?",en:"Do I need a prescription?"},{speaker:"Apotheker",de:"Nein, die bekommen Sie rezeptfrei.",en:"No, they're available over the counter."},{speaker:"Kunde",de:"Gut, die nehme ich. Was kosten sie?",en:"Good, I'll take them. How much are they?"},{speaker:"Apotheker",de:"Sechs Euro neunzig.",en:"Six euros ninety."}],questions:[{q:"Was hat der Kunde?",opts:["Kopfschmerzen","Halsschmerzen","Bauchschmerzen"],correctIdx:1},{q:"Braucht er ein Rezept?",opts:["Ja","Nein","Vielleicht"],correctIdx:1}]},
-  {title:"Beim Arzt — Termin machen",lines:[{speaker:"Patient",de:"Guten Tag, ich hätte gern einen Termin.",en:"Hello, I'd like an appointment."},{speaker:"Sprechstundenhilfe",de:"Waren Sie schon einmal bei uns?",en:"Have you been with us before?"},{speaker:"Patient",de:"Nein, ich bin neu hier.",en:"No, I'm new here."},{speaker:"Sprechstundenhilfe",de:"Geht es am Donnerstag um 10 Uhr?",en:"Does Thursday at 10am work?"},{speaker:"Patient",de:"Ja, das passt mir. Danke!",en:"Yes, that suits me. Thanks!"}],questions:[{q:"War der Patient schon einmal dort?",opts:["Ja","Nein","Letztes Jahr"],correctIdx:1},{q:"Wann ist der Termin?",opts:["Mittwoch","Donnerstag","Freitag"],correctIdx:1}]},
-  {title:"An der Supermarktkasse",lines:[{speaker:"Kassiererin",de:"Haben Sie eine Kundenkarte?",en:"Do you have a loyalty card?"},{speaker:"Kunde",de:"Nein, habe ich nicht.",en:"No, I don't."},{speaker:"Kassiererin",de:"Das macht 23 Euro 80.",en:"That's 23 euros 80."},{speaker:"Kunde",de:"Kann ich mit Karte zahlen?",en:"Can I pay by card?"},{speaker:"Kassiererin",de:"Ja, natürlich. Stecken Sie bitte die Karte ein.",en:"Yes, of course. Please insert the card."},{speaker:"Kunde",de:"Brauche ich eine Quittung?",en:"Do I need a receipt?"},{speaker:"Kassiererin",de:"Wie Sie möchten.",en:"As you wish."}],questions:[{q:"Hat der Kunde eine Kundenkarte?",opts:["Ja","Nein","Er sucht sie"],correctIdx:1},{q:"Wie zahlt der Kunde?",opts:["Bar","Mit Karte","Mit Handy"],correctIdx:1}]},
-  {title:"Am Bahnhof — Ticket kaufen",lines:[{speaker:"Reisender",de:"Eine Fahrkarte nach Hamburg, bitte.",en:"A ticket to Hamburg, please."},{speaker:"Schalterbeamter",de:"Einfach oder hin und zurück?",en:"Single or return?"},{speaker:"Reisender",de:"Hin und zurück. Zweite Klasse.",en:"Return. Second class."},{speaker:"Schalterbeamter",de:"Wann möchten Sie zurückfahren?",en:"When would you like to come back?"},{speaker:"Reisender",de:"Sonntag Abend.",en:"Sunday evening."},{speaker:"Schalterbeamter",de:"Das macht 89 Euro.",en:"That's 89 euros."}],questions:[{q:"Wohin fährt der Reisende?",opts:["München","Hamburg","Berlin"],correctIdx:1},{q:"Welche Art Ticket kauft er?",opts:["Einfach","Hin und zurück","Monatskarte"],correctIdx:1}]},
-  {title:"Zug — Verspätung",lines:[{speaker:"Reisender",de:"Entschuldigung, hat der Zug nach Köln Verspätung?",en:"Excuse me, is the Cologne train delayed?"},{speaker:"Bahnangestellter",de:"Ja, leider zwanzig Minuten.",en:"Yes, unfortunately twenty minutes."},{speaker:"Reisender",de:"Und von welchem Gleis fährt er ab?",en:"And from which platform does it leave?"},{speaker:"Bahnangestellter",de:"Gleis sieben, heute ausnahmsweise.",en:"Platform seven, exceptionally today."},{speaker:"Reisender",de:"Danke für die Information.",en:"Thanks for the information."}],questions:[{q:"Wie viel Verspätung hat der Zug?",opts:["10 Minuten","20 Minuten","30 Minuten"],correctIdx:1},{q:"Von welchem Gleis fährt er ab?",opts:["Gleis 5","Gleis 7","Gleis 9"],correctIdx:1}]},
-  {title:"Im Hotel einchecken",lines:[{speaker:"Gast",de:"Guten Abend, ich habe ein Zimmer reserviert. Mein Name ist Williams.",en:"Good evening, I've reserved a room. My name is Williams."},{speaker:"Rezeptionist",de:"Willkommen! Ein Doppelzimmer für zwei Nächte, richtig?",en:"Welcome! A double room for two nights, correct?"},{speaker:"Gast",de:"Genau. Gibt es WLAN im Zimmer?",en:"Exactly. Is there wifi in the room?"},{speaker:"Rezeptionist",de:"Ja, das Passwort finden Sie auf diesem Zettel.",en:"Yes, you'll find the password on this slip."},{speaker:"Gast",de:"Um wie viel Uhr gibt es Frühstück?",en:"What time is breakfast?"},{speaker:"Rezeptionist",de:"Von sieben bis zehn Uhr.",en:"From seven to ten."}],questions:[{q:"Wie lange bleibt der Gast?",opts:["Eine Nacht","Zwei Nächte","Drei Nächte"],correctIdx:1},{q:"Wann gibt es Frühstück?",opts:["6–9 Uhr","7–10 Uhr","8–11 Uhr"],correctIdx:1}]},
-  {title:"Nach dem Weg fragen",lines:[{speaker:"Tourist",de:"Entschuldigung, wie komme ich zum Museum?",en:"Excuse me, how do I get to the museum?"},{speaker:"Passant",de:"Gehen Sie hier geradeaus, dann die zweite Straße rechts.",en:"Go straight here, then second street on the right."},{speaker:"Tourist",de:"Wie weit ist es?",en:"How far is it?"},{speaker:"Passant",de:"Ungefähr zehn Minuten zu Fuß.",en:"About ten minutes on foot."},{speaker:"Tourist",de:"Vielen Dank!",en:"Thank you very much!"}],questions:[{q:"Was sucht der Tourist?",opts:["Den Bahnhof","Das Museum","Das Hotel"],correctIdx:1},{q:"Wie weit ist es zu Fuß?",opts:["5 Minuten","10 Minuten","20 Minuten"],correctIdx:1}]},
-  {title:"Taxi rufen",lines:[{speaker:"Fahrgast",de:"Guten Abend, ich brauche ein Taxi zum Flughafen.",en:"Good evening, I need a taxi to the airport."},{speaker:"Taxifahrer",de:"Steigen Sie bitte ein. Haben Sie Gepäck?",en:"Please get in. Do you have luggage?"},{speaker:"Fahrgast",de:"Ja, zwei Koffer im Kofferraum, bitte.",en:"Yes, two suitcases in the trunk, please."},{speaker:"Taxifahrer",de:"Kein Problem. Wann ist Ihr Flug?",en:"No problem. When's your flight?"},{speaker:"Fahrgast",de:"Um halb neun. Schaffen wir das?",en:"At half past eight. Will we make it?"},{speaker:"Taxifahrer",de:"Locker. Es gibt kaum Verkehr.",en:"Easily. There's hardly any traffic."}],questions:[{q:"Wohin möchte der Fahrgast?",opts:["Zum Bahnhof","Zum Flughafen","Zum Hotel"],correctIdx:1},{q:"Wie viele Koffer hat er?",opts:["Einen","Zwei","Drei"],correctIdx:1}]},
-  {title:"Frühstück im Hotel",lines:[{speaker:"Kellner",de:"Kaffee oder Tee?",en:"Coffee or tea?"},{speaker:"Gast",de:"Einen Kaffee, bitte. Mit Milch.",en:"A coffee, please. With milk."},{speaker:"Kellner",de:"Möchten Sie Eier zum Frühstück?",en:"Would you like eggs for breakfast?"},{speaker:"Gast",de:"Ja, Rührei mit Brötchen, bitte.",en:"Yes, scrambled eggs with a roll, please."},{speaker:"Kellner",de:"Kommt sofort.",en:"Coming right up."}],questions:[{q:"Was trinkt der Gast?",opts:["Tee","Kaffee mit Milch","Orangensaft"],correctIdx:1},{q:"Welche Eier bestellt er?",opts:["Spiegelei","Rührei","Gekochtes Ei"],correctIdx:1}]},
-  {title:"Einkaufen — Kleidung",lines:[{speaker:"Kunde",de:"Entschuldigung, haben Sie diese Hose auch in Größe 32?",en:"Excuse me, do you have these trousers in size 32?"},{speaker:"Verkäuferin",de:"Einen Moment, ich schaue nach.",en:"One moment, I'll have a look."},{speaker:"Verkäuferin",de:"Ja, hier bitte. Möchten Sie sie anprobieren?",en:"Yes, here you go. Would you like to try them on?"},{speaker:"Kunde",de:"Gerne. Wo ist die Umkleide?",en:"Yes please. Where's the changing room?"},{speaker:"Verkäuferin",de:"Gleich dort hinten rechts.",en:"Just over there on the right."}],questions:[{q:"Welche Größe sucht der Kunde?",opts:["Größe 30","Größe 32","Größe 34"],correctIdx:1},{q:"Möchte er die Hose anprobieren?",opts:["Ja","Nein","Später"],correctIdx:0}]},
-  {title:"Beim Frisör",lines:[{speaker:"Kunde",de:"Ich möchte die Haare schneiden lassen, bitte.",en:"I'd like to have my hair cut, please."},{speaker:"Frisör",de:"Wie kurz möchten Sie sie haben?",en:"How short would you like them?"},{speaker:"Kunde",de:"Nur die Spitzen, etwa zwei Zentimeter.",en:"Just the ends, about two centimetres."},{speaker:"Frisör",de:"Und waschen dazu?",en:"And a wash with that?"},{speaker:"Kunde",de:"Ja, bitte.",en:"Yes, please."}],questions:[{q:"Wie viel möchte der Kunde abschneiden?",opts:["1 cm","2 cm","5 cm"],correctIdx:1},{q:"Möchte er die Haare waschen lassen?",opts:["Ja","Nein","Nur föhnen"],correctIdx:0}]},
-  {title:"Die Wohnung putzen",lines:[{speaker:"Mitbewohner A",de:"Hast du heute Zeit zu putzen?",en:"Do you have time to clean today?"},{speaker:"Mitbewohner B",de:"Leider nicht, ich muss arbeiten.",en:"Unfortunately not, I have to work."},{speaker:"Mitbewohner A",de:"Kannst du wenigstens den Müll rausbringen?",en:"Can you at least take out the rubbish?"},{speaker:"Mitbewohner B",de:"Ja, das mache ich gleich.",en:"Yes, I'll do that right away."}],questions:[{q:"Kann Mitbewohner B heute putzen?",opts:["Ja","Nein, er muss arbeiten","Später"],correctIdx:1},{q:"Was macht er trotzdem?",opts:["Staub saugen","Den Müll rausbringen","Kochen"],correctIdx:1}]},
-  {title:"Geburtstag planen",lines:[{speaker:"Anna",de:"Nächste Woche habe ich Geburtstag.",en:"Next week is my birthday."},{speaker:"Tom",de:"Schön! Wie alt wirst du?",en:"Nice! How old are you turning?"},{speaker:"Anna",de:"26. Ich möchte eine kleine Feier machen.",en:"26. I'd like to have a small party."},{speaker:"Tom",de:"Darf ich kommen?",en:"May I come?"},{speaker:"Anna",de:"Klar, du bist eingeladen. Samstag um 19 Uhr bei mir.",en:"Sure, you're invited. Saturday at 7pm at mine."}],questions:[{q:"Wie alt wird Anna?",opts:["24","25","26"],correctIdx:2},{q:"Wann ist die Feier?",opts:["Freitag","Samstag","Sonntag"],correctIdx:1}]},
-  {title:"Das Wetter",lines:[{speaker:"Freund A",de:"Was für ein Wetter heute!",en:"What weather today!"},{speaker:"Freund B",de:"Ja, es regnet schon den ganzen Tag.",en:"Yeah, it's been raining all day."},{speaker:"Freund A",de:"Morgen soll es besser werden.",en:"It's supposed to get better tomorrow."},{speaker:"Freund B",de:"Hoffentlich! Dann können wir spazieren gehen.",en:"Hopefully! Then we can go for a walk."}],questions:[{q:"Wie ist das Wetter heute?",opts:["Sonnig","Regnerisch","Windig"],correctIdx:1},{q:"Was planen sie für morgen?",opts:["Spazieren gehen","Kino","Zu Hause bleiben"],correctIdx:0}]},
-  {title:"Urlaubspläne",lines:[{speaker:"Kollege",de:"Hast du schon Urlaubspläne?",en:"Do you have holiday plans yet?"},{speaker:"Freund",de:"Ja, ich fahre im August nach Italien.",en:"Yes, I'm going to Italy in August."},{speaker:"Kollege",de:"Wie lange bleibst du?",en:"How long are you staying?"},{speaker:"Freund",de:"Zwei Wochen. Und du?",en:"Two weeks. And you?"},{speaker:"Kollege",de:"Ich weiß noch nicht. Vielleicht nach Österreich.",en:"I don't know yet. Maybe Austria."}],questions:[{q:"Wohin fährt der Freund?",opts:["Spanien","Italien","Österreich"],correctIdx:1},{q:"Wie lange bleibt er?",opts:["1 Woche","2 Wochen","3 Wochen"],correctIdx:1}]},
-  {title:"Fitnessstudio anmelden",lines:[{speaker:"Interessent",de:"Ich möchte mich anmelden.",en:"I'd like to sign up."},{speaker:"Mitarbeiter",de:"Welches Abo interessiert Sie?",en:"Which membership interests you?"},{speaker:"Interessent",de:"Was kostet das Jahresabo?",en:"How much is the yearly one?"},{speaker:"Mitarbeiter",de:"300 Euro, mit Sauna 360.",en:"300 euros, with sauna 360."},{speaker:"Interessent",de:"Ohne Sauna, bitte. Brauche ich einen Ausweis?",en:"Without sauna, please. Do I need an ID?"},{speaker:"Mitarbeiter",de:"Ja, Ausweis und Kontodaten.",en:"Yes, ID and bank details."}],questions:[{q:"Was kostet das Abo ohne Sauna?",opts:["300 €","360 €","250 €"],correctIdx:0},{q:"Was braucht der Interessent?",opts:["Nur einen Ausweis","Nur Kontodaten","Ausweis und Kontodaten"],correctIdx:2}]},
-  {title:"Einen Freund einladen",lines:[{speaker:"Maria",de:"Hast du am Samstag was vor?",en:"Do you have plans Saturday?"},{speaker:"Peter",de:"Nichts Besonderes. Warum?",en:"Nothing special. Why?"},{speaker:"Maria",de:"Ich koche Abendessen. Hast du Lust?",en:"I'm cooking dinner. Want to come?"},{speaker:"Peter",de:"Sehr gerne. Was kochst du?",en:"I'd love to. What are you cooking?"},{speaker:"Maria",de:"Pasta mit Gemüse. Bringst du Wein mit?",en:"Pasta with vegetables. Can you bring wine?"},{speaker:"Peter",de:"Klar, mache ich.",en:"Sure, I'll do that."}],questions:[{q:"Was kocht Maria?",opts:["Fleisch","Pasta mit Gemüse","Pizza"],correctIdx:1},{q:"Was soll Peter mitbringen?",opts:["Brot","Wein","Nachtisch"],correctIdx:1}]},
-  {title:"Im Fundbüro",lines:[{speaker:"Kunde",de:"Ich habe meinen Regenschirm verloren.",en:"I've lost my umbrella."},{speaker:"Beamter",de:"Wo haben Sie ihn zuletzt gesehen?",en:"Where did you last see it?"},{speaker:"Kunde",de:"Im Bus, Linie 42.",en:"On the bus, line 42."},{speaker:"Beamter",de:"Welche Farbe?",en:"What colour?"},{speaker:"Kunde",de:"Schwarz mit weißen Punkten.",en:"Black with white dots."},{speaker:"Beamter",de:"Einen Moment, ich schaue nach.",en:"One moment, I'll check."}],questions:[{q:"Was hat der Kunde verloren?",opts:["Seine Tasche","Seinen Regenschirm","Sein Handy"],correctIdx:1},{q:"Wo hat er es verloren?",opts:["Im Zug","Im Bus","Auf der Straße"],correctIdx:1}]},
-  {title:"Paket abholen",lines:[{speaker:"Kunde",de:"Guten Tag, ich möchte ein Paket abholen.",en:"Hello, I'd like to pick up a parcel."},{speaker:"Angestellter",de:"Haben Sie die Abholnummer?",en:"Do you have the collection number?"},{speaker:"Kunde",de:"Ja, hier: 5847.",en:"Yes, here: 5847."},{speaker:"Angestellter",de:"Und Ihren Ausweis, bitte.",en:"And your ID, please."},{speaker:"Kunde",de:"Hier bitte.",en:"Here you go."},{speaker:"Angestellter",de:"Moment, ich hole das Paket.",en:"One moment, I'll fetch the parcel."}],questions:[{q:"Was macht der Kunde?",opts:["Ein Paket verschicken","Ein Paket abholen","Briefmarken kaufen"],correctIdx:1},{q:"Was braucht der Angestellte?",opts:["Nur die Nummer","Nur den Ausweis","Nummer und Ausweis"],correctIdx:2}]},
-  {title:"Freunde im Fitnessstudio",lines:[{speaker:"Anna",de:"Gehst du auch nach der Arbeit zum Training?",en:"Going to training after work too?"},{speaker:"Ben",de:"Ja, treffen wir uns dort?",en:"Yes, shall we meet there?"},{speaker:"Anna",de:"Gerne. Um sechs?",en:"Sounds good. At six?"},{speaker:"Ben",de:"Lieber halb sieben, ich bin müde.",en:"Better half past six, I'm tired."},{speaker:"Anna",de:"Okay, bis dann!",en:"Okay, see you then!"}],questions:[{q:"Wann treffen sie sich?",opts:["18:00","18:30","19:00"],correctIdx:1},{q:"Warum später?",opts:["Ben ist müde","Anna arbeitet länger","Das Studio öffnet später"],correctIdx:0}]},
-  {title:"Tisch reservieren",lines:[{speaker:"Gast",de:"Guten Tag, ich möchte einen Tisch reservieren.",en:"Hello, I'd like to reserve a table."},{speaker:"Kellner",de:"Für wann und wie viele Personen?",en:"For when and how many people?"},{speaker:"Gast",de:"Samstagabend, vier Personen.",en:"Saturday evening, four people."},{speaker:"Kellner",de:"Um wie viel Uhr?",en:"At what time?"},{speaker:"Gast",de:"Um halb acht, bitte.",en:"At half past seven, please."},{speaker:"Kellner",de:"In Ordnung. Auf welchen Namen?",en:"All right. Under which name?"},{speaker:"Gast",de:"Schmidt.",en:"Schmidt."}],questions:[{q:"Für wie viele Personen?",opts:["Zwei","Drei","Vier"],correctIdx:2},{q:"Wann ist die Reservierung?",opts:["19:00","19:30","20:00"],correctIdx:1}]},
-  {title:"Kontoeröffnung bei der Bank",lines:[{speaker:"Kunde",de:"Ich möchte ein Konto eröffnen.",en:"I'd like to open an account."},{speaker:"Bankangestellter",de:"Welche Art von Konto?",en:"What kind of account?"},{speaker:"Kunde",de:"Ein Girokonto, bitte.",en:"A current account, please."},{speaker:"Bankangestellter",de:"Haben Sie einen Ausweis und eine Meldebescheinigung?",en:"Do you have ID and proof of residence?"},{speaker:"Kunde",de:"Ja, beides hier.",en:"Yes, both here."},{speaker:"Bankangestellter",de:"Sehr gut. Es dauert etwa zwanzig Minuten.",en:"Very good. It takes about twenty minutes."}],questions:[{q:"Welches Konto möchte der Kunde?",opts:["Sparkonto","Girokonto","Kreditkartenkonto"],correctIdx:1},{q:"Wie lange dauert es?",opts:["10 Minuten","20 Minuten","30 Minuten"],correctIdx:1}]}
+  {title:"At the café",level:"A2",lines:[
+    {de:"Guten Tag! Was darf es sein?",en:"Good day! What can I get you?"},
+    {de:"Einen Kaffee, bitte.",en:"A coffee, please."},
+    {de:"Mit Milch und Zucker?",en:"With milk and sugar?"},
+    {de:"Nur Milch, bitte. Was kostet das?",en:"Just milk, please. How much is that?"},
+    {de:"Zwei Euro fünfzig.",en:"Two euros fifty."}
+  ]},
+  {title:"Asking for directions",level:"A2",lines:[
+    {de:"Entschuldigung, wo ist der Bahnhof?",en:"Excuse me, where is the train station?"},
+    {de:"Gehen Sie geradeaus und dann links.",en:"Go straight ahead and then left."},
+    {de:"Ist es weit von hier?",en:"Is it far from here?"},
+    {de:"Nein, ungefähr fünf Minuten zu Fuß.",en:"No, about five minutes on foot."}
+  ]},
+  {title:"At the supermarket",level:"A2",lines:[
+    {de:"Haben Sie Vollkornbrot?",en:"Do you have wholemeal bread?"},
+    {de:"Ja, im dritten Gang links.",en:"Yes, in the third aisle on the left."},
+    {de:"Danke. Und wo finde ich die Milch?",en:"Thanks. And where can I find the milk?"},
+    {de:"Ganz hinten im Kühlregal.",en:"Right at the back in the fridge section."}
+  ]},
+  {title:"Meeting someone",level:"A2",lines:[
+    {de:"Hallo! Ich bin Anna. Und du?",en:"Hello! I'm Anna. And you?"},
+    {de:"Hi, ich heiße Jack. Woher kommst du?",en:"Hi, my name is Jack. Where are you from?"},
+    {de:"Ich komme aus Berlin. Und du?",en:"I'm from Berlin. And you?"},
+    {de:"Ich komme aus Wales.",en:"I'm from Wales."},
+    {de:"Oh cool! Was machst du in Deutschland?",en:"Oh cool! What are you doing in Germany?"}
+  ]},
+  {title:"Booking a hotel",level:"A2",lines:[
+    {de:"Guten Tag. Ich möchte ein Zimmer buchen.",en:"Good day. I'd like to book a room."},
+    {de:"Für wie viele Nächte?",en:"For how many nights?"},
+    {de:"Drei Nächte, bitte. Was kostet das pro Nacht?",en:"Three nights, please. How much per night?"},
+    {de:"Achtzig Euro mit Frühstück.",en:"Eighty euros with breakfast."}
+  ]},
+  {title:"At the doctor",level:"A2",lines:[
+    {de:"Was fehlt Ihnen?",en:"What's wrong with you?"},
+    {de:"Ich habe Kopfschmerzen und Fieber.",en:"I have a headache and a fever."},
+    {de:"Seit wann haben Sie die Beschwerden?",en:"How long have you had the symptoms?"},
+    {de:"Seit gestern Abend.",en:"Since yesterday evening."},
+    {de:"Ich schreibe Ihnen ein Rezept.",en:"I'll write you a prescription."}
+  ]},
+  {title:"On the phone",level:"A2",lines:[
+    {de:"Hallo, hier ist Jack. Ist Anna da?",en:"Hello, this is Jack. Is Anna there?"},
+    {de:"Einen Moment bitte, ich verbinde Sie.",en:"One moment please, I'll put you through."},
+    {de:"Danke!",en:"Thanks!"},
+    {de:"Hallo Jack! Schön, dass du anrufst.",en:"Hello Jack! Nice that you're calling."}
+  ]},
+  {title:"At the restaurant",level:"A2",lines:[
+    {de:"Einen Tisch für zwei, bitte.",en:"A table for two, please."},
+    {de:"Gerne. Hier ist die Speisekarte.",en:"Of course. Here is the menu."},
+    {de:"Was können Sie empfehlen?",en:"What can you recommend?"},
+    {de:"Der Fisch ist heute besonders gut.",en:"The fish is especially good today."},
+    {de:"Dann nehme ich den Fisch.",en:"Then I'll have the fish."}
+  ]},
+  {title:"Weekend plans",level:"A2",lines:[
+    {de:"Was machst du am Wochenende?",en:"What are you doing at the weekend?"},
+    {de:"Ich gehe wandern, wenn das Wetter gut ist.",en:"I'm going hiking if the weather is good."},
+    {de:"Das klingt toll! Darf ich mitkommen?",en:"That sounds great! Can I come along?"},
+    {de:"Natürlich! Wir treffen uns um neun.",en:"Of course! We'll meet at nine."}
+  ]},
+  {title:"At the train station",level:"A2",lines:[
+    {de:"Eine Fahrkarte nach Berlin, bitte.",en:"A ticket to Berlin, please."},
+    {de:"Einfach oder hin und zurück?",en:"Single or return?"},
+    {de:"Hin und zurück, bitte. Muss ich umsteigen?",en:"Return, please. Do I have to change?"},
+    {de:"Ja, in Frankfurt. Gleis sieben.",en:"Yes, in Frankfurt. Platform seven."}
+  ]},
+  {title:"Small talk at work",level:"A2",lines:[
+    {de:"Morgen! Wie war dein Wochenende?",en:"Morning! How was your weekend?"},
+    {de:"Ganz gut, danke. Ich war beim Bouldern.",en:"Pretty good, thanks. I was bouldering."},
+    {de:"Oh, das mache ich auch gern!",en:"Oh, I like doing that too!"},
+    {de:"Wir sollten mal zusammen gehen.",en:"We should go together sometime."}
+  ]},
+  {title:"Renting a flat",level:"A2",lines:[
+    {de:"Ich suche eine Wohnung mit zwei Zimmern.",en:"I'm looking for a flat with two rooms."},
+    {de:"Wie hoch darf die Miete sein?",en:"How high can the rent be?"},
+    {de:"Maximal achthundert Euro warm.",en:"Maximum eight hundred euros including bills."},
+    {de:"Ich habe etwas in der Stadtmitte.",en:"I have something in the city centre."}
+  ]},
+  {title:"At the pharmacy",level:"B1",lines:[
+    {de:"Guten Tag. Ich brauche etwas gegen Kopfschmerzen.",en:"Good day. I need something for a headache."},
+    {de:"Haben Sie ein Rezept?",en:"Do you have a prescription?"},
+    {de:"Nein, ich brauche etwas ohne Rezept.",en:"No, I need something without a prescription."},
+    {de:"Dann nehmen Sie diese Tabletten hier.",en:"Then take these tablets here."},
+    {de:"Wie oft soll ich sie einnehmen?",en:"How often should I take them?"},
+    {de:"Zweimal täglich, nach dem Essen.",en:"Twice a day, after meals."}
+  ]},
+  {title:"Job interview basics",level:"B1",lines:[
+    {de:"Erzählen Sie mir bitte kurz über sich.",en:"Please tell me briefly about yourself."},
+    {de:"Ich bin Jack, und ich arbeite als Ingenieur.",en:"I'm Jack, and I work as an engineer."},
+    {de:"Warum möchten Sie bei uns arbeiten?",en:"Why would you like to work with us?"},
+    {de:"Ich schätze Ihre Firma und suche eine neue Herausforderung.",en:"I value your company and am looking for a new challenge."},
+    {de:"Welche Stärken haben Sie?",en:"What are your strengths?"},
+    {de:"Ich bin zuverlässig und arbeite gut im Team.",en:"I'm reliable and work well in a team."}
+  ]},
+  {title:"At the post office",level:"A2",lines:[
+    {de:"Ich möchte dieses Paket nach England schicken.",en:"I'd like to send this parcel to England."},
+    {de:"Normal oder als Expresspaket?",en:"Standard or express?"},
+    {de:"Normal, bitte. Wie lange dauert das?",en:"Standard, please. How long does it take?"},
+    {de:"Ungefähr eine Woche.",en:"About a week."},
+    {de:"Gut. Und eine Briefmarke für diesen Brief.",en:"Good. And a stamp for this letter."}
+  ]},
+  {title:"Reporting an issue to a landlord",level:"A2",lines:[
+    {de:"Guten Tag, die Heizung in meiner Wohnung funktioniert nicht.",en:"Good day, the heating in my flat isn't working."},
+    {de:"Seit wann haben Sie das Problem?",en:"Since when have you had the problem?"},
+    {de:"Seit gestern Abend. Es ist sehr kalt geworden.",en:"Since yesterday evening. It's gotten very cold."},
+    {de:"Ich schicke morgen einen Techniker vorbei.",en:"I'll send a technician by tomorrow."},
+    {de:"Vielen Dank, das wäre super.",en:"Thank you, that would be great."}
+  ]},
+  {title:"Ordering online delivery",level:"A2",lines:[
+    {de:"Hallo, ich habe online bestellt, aber nichts ist angekommen.",en:"Hello, I ordered online but nothing has arrived."},
+    {de:"Haben Sie eine Bestellnummer?",en:"Do you have an order number?"},
+    {de:"Ja, die Nummer ist 47583.",en:"Yes, the number is 47583."},
+    {de:"Einen Moment, ich prüfe das für Sie.",en:"One moment, I'll check that for you."},
+    {de:"Das Paket kommt morgen zwischen neun und zwölf.",en:"The parcel will arrive tomorrow between nine and twelve."}
+  ]},
+  {title:"Small talk about weekend",level:"B1",lines:[
+    {de:"Wie war dein Wochenende?",en:"How was your weekend?"},
+    {de:"Ganz gut, danke. Ich war wandern im Wald.",en:"Pretty good, thanks. I was hiking in the forest."},
+    {de:"Klingt schön! Mit wem?",en:"Sounds nice! With who?"},
+    {de:"Mit ein paar Freunden aus dem Fitnessstudio.",en:"With a few friends from the gym."},
+    {de:"Und das Wetter?",en:"And the weather?"},
+    {de:"Es hat geregnet, aber wir hatten trotzdem viel Spaß.",en:"It rained, but we still had a lot of fun."}
+  ]},
+  {title:"Buying a SIM card",level:"B1",lines:[
+    {de:"Ich möchte eine Prepaid-SIM-Karte kaufen.",en:"I'd like to buy a prepaid SIM card."},
+    {de:"Welche Anbieter kennen Sie?",en:"Which providers do you know?"},
+    {de:"Ist dieser Tarif für Telefonieren und Internet?",en:"Is this plan for calls and internet?"},
+    {de:"Ja, Sie bekommen 10 GB Daten und eine Flatrate.",en:"Yes, you get 10 GB of data and a flat rate."},
+    {de:"Was kostet das pro Monat?",en:"How much per month?"},
+    {de:"Fünfzehn Euro.",en:"Fifteen euros."}
+  ]},
+  {title:"Registering at the Bürgeramt",level:"A2",lines:[
+    {de:"Ich möchte mich anmelden.",en:"I'd like to register."},
+    {de:"Haben Sie einen Termin?",en:"Do you have an appointment?"},
+    {de:"Ja, um elf Uhr. Mein Name ist Jack Williams.",en:"Yes, at eleven o'clock. My name is Jack Williams."},
+    {de:"Bitte zeigen Sie Ihren Pass und den Mietvertrag.",en:"Please show your passport and rental contract."},
+    {de:"Hier, bitte schön.",en:"Here you go."}
+  ]},
+  {title:"Joining a gym",level:"A2",lines:[
+    {de:"Ich interessiere mich für eine Mitgliedschaft.",en:"I'm interested in a membership."},
+    {de:"Möchten Sie das Monats- oder Jahresabo?",en:"Would you like the monthly or yearly subscription?"},
+    {de:"Was kostet das Jahresabo?",en:"How much is the yearly subscription?"},
+    {de:"300 Euro, und die erste Woche ist kostenlos.",en:"300 euros, and the first week is free."},
+    {de:"Kann ich zuerst eine Probestunde machen?",en:"Can I do a trial session first?"}
+  ]},
+  {title:"Texting a friend to meet",level:"B1",lines:[
+    {de:"Hey, hast du heute Abend Zeit?",en:"Hey, do you have time this evening?"},
+    {de:"Ja, was machen wir?",en:"Yeah, what are we doing?"},
+    {de:"Lass uns ins Kino gehen. Es läuft ein guter Film.",en:"Let's go to the cinema. There's a good film on."},
+    {de:"Klingt super! Um wie viel Uhr?",en:"Sounds great! At what time?"},
+    {de:"Um acht vor dem Kino?",en:"Eight in front of the cinema?"},
+    {de:"Perfekt, bis dann!",en:"Perfect, see you then!"}
+  ]},
+  {title:"Complaining politely at a restaurant",level:"A2",lines:[
+    {de:"Entschuldigung, die Suppe ist kalt.",en:"Excuse me, the soup is cold."},
+    {de:"Oh, das tut mir leid. Ich bringe eine neue.",en:"Oh, I'm sorry. I'll bring a new one."},
+    {de:"Danke. Und das Brot fehlt auch noch.",en:"Thanks. And the bread is still missing too."},
+    {de:"Entschuldigen Sie die Verspätung. Es kommt gleich.",en:"Please excuse the delay. It's coming right away."}
+  ]},
+  {title:"Asking about work hours",level:"A2",lines:[
+    {de:"Wann hast du normalerweise Feierabend?",en:"When do you usually finish work?"},
+    {de:"Meistens um 17 Uhr, manchmal später.",en:"Usually at 5pm, sometimes later."},
+    {de:"Und am Wochenende?",en:"And on the weekend?"},
+    {de:"Am Wochenende arbeite ich nicht.",en:"I don't work on the weekend."}
+  ]},
+  {title:"At the airport check-in",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte einchecken.",en:"Good day, I'd like to check in."},
+    {de:"Ihren Pass bitte. Haben Sie Gepäck?",en:"Your passport please. Do you have luggage?"},
+    {de:"Ja, einen Koffer.",en:"Yes, one suitcase."},
+    {de:"Bitte stellen Sie ihn aufs Band. Hier ist Ihre Bordkarte.",en:"Please put it on the belt. Here's your boarding pass."},
+    {de:"Welches Gate?",en:"Which gate?"},
+    {de:"Gate zwölf, das Boarding beginnt um neun.",en:"Gate twelve, boarding starts at nine."}
+  ]},
+  {title:"Im Café bestellen",level:"A2",lines:[
+    {de:"Guten Tag, was möchten Sie?",en:"Hello, what would you like?"},
+    {de:"Einen Cappuccino und ein Stück Apfelkuchen, bitte.",en:"A cappuccino and a slice of apple cake, please."},
+    {de:"Möchten Sie den Kuchen mit Sahne?",en:"Would you like the cake with cream?"},
+    {de:"Ja, gerne. Was macht das zusammen?",en:"Yes, please. How much is that altogether?"},
+    {de:"Sieben Euro vierzig.",en:"Seven euros forty."}
+  ],questions:[
+    {q:"Was bestellt der Kunde zu trinken?",opts:["Einen Kaffee","Einen Cappuccino","Einen Tee"],correctIdx:1},
+    {q:"Möchte der Kunde Sahne auf dem Kuchen?",opts:["Ja","Nein","Nur Zucker"],correctIdx:0}
+  ]},
+  {title:"Bezahlen im Restaurant",level:"B1",lines:[
+    {de:"Die Rechnung, bitte!",en:"The bill, please!"},
+    {de:"Zusammen oder getrennt?",en:"Together or separately?"},
+    {de:"Zusammen, bitte.",en:"Together, please."},
+    {de:"Das macht 32 Euro 50.",en:"That's 32 euros 50."},
+    {de:"Hier sind 35. Stimmt so.",en:"Here's 35. Keep the change."},
+    {de:"Vielen Dank, schönen Abend!",en:"Thank you, have a nice evening!"}
+  ],questions:[
+    {q:"Wie viel kostet das Essen?",opts:["32,50 €","35,00 €","25,50 €"],correctIdx:0},
+    {q:"Wie zahlen die Gäste?",opts:["Getrennt","Zusammen","Mit Karte"],correctIdx:1}
+  ]},
+  {title:"Beim Bäcker",level:"A2",lines:[
+    {de:"Guten Morgen! Zwei Brötchen und ein Vollkornbrot, bitte.",en:"Good morning! Two rolls and a wholemeal bread, please."},
+    {de:"Sonst noch etwas?",en:"Anything else?"},
+    {de:"Ja, ein Croissant mit Schokolade.",en:"Yes, a chocolate croissant."},
+    {de:"Das macht vier Euro achtzig.",en:"That's four euros eighty."},
+    {de:"Bitte schön. Danke!",en:"Here you go. Thanks!"}
+  ],questions:[
+    {q:"Wie viele Brötchen kauft der Kunde?",opts:["Eins","Zwei","Drei"],correctIdx:1},
+    {q:"Was kauft er noch außer Brot?",opts:["Einen Kuchen","Ein Croissant","Nichts"],correctIdx:1}
+  ]},
+  {title:"In der Apotheke",level:"B1",lines:[
+    {de:"Ich habe Halsschmerzen. Was können Sie mir empfehlen?",en:"I have a sore throat. What can you recommend?"},
+    {de:"Diese Lutschtabletten helfen gut.",en:"These lozenges help well."},
+    {de:"Brauche ich ein Rezept?",en:"Do I need a prescription?"},
+    {de:"Nein, die bekommen Sie rezeptfrei.",en:"No, they're available over the counter."},
+    {de:"Gut, die nehme ich. Was kosten sie?",en:"Good, I'll take them. How much are they?"},
+    {de:"Sechs Euro neunzig.",en:"Six euros ninety."}
+  ],questions:[
+    {q:"Was hat der Kunde?",opts:["Kopfschmerzen","Halsschmerzen","Bauchschmerzen"],correctIdx:1},
+    {q:"Braucht er ein Rezept?",opts:["Ja","Nein","Vielleicht"],correctIdx:1}
+  ]},
+  {title:"Beim Arzt — Termin machen",level:"A2",lines:[
+    {de:"Guten Tag, ich hätte gern einen Termin.",en:"Hello, I'd like an appointment."},
+    {de:"Waren Sie schon einmal bei uns?",en:"Have you been with us before?"},
+    {de:"Nein, ich bin neu hier.",en:"No, I'm new here."},
+    {de:"Geht es am Donnerstag um 10 Uhr?",en:"Does Thursday at 10am work?"},
+    {de:"Ja, das passt mir. Danke!",en:"Yes, that suits me. Thanks!"}
+  ],questions:[
+    {q:"War der Patient schon einmal dort?",opts:["Ja","Nein","Letztes Jahr"],correctIdx:1},
+    {q:"Wann ist der Termin?",opts:["Mittwoch","Donnerstag","Freitag"],correctIdx:1}
+  ]},
+  {title:"An der Supermarktkasse",level:"B1",lines:[
+    {de:"Haben Sie eine Kundenkarte?",en:"Do you have a loyalty card?"},
+    {de:"Nein, habe ich nicht.",en:"No, I don't."},
+    {de:"Das macht 23 Euro 80.",en:"That's 23 euros 80."},
+    {de:"Kann ich mit Karte zahlen?",en:"Can I pay by card?"},
+    {de:"Ja, natürlich. Stecken Sie bitte die Karte ein.",en:"Yes, of course. Please insert the card."},
+    {de:"Brauche ich eine Quittung?",en:"Do I need a receipt?"},
+    {de:"Wie Sie möchten.",en:"As you wish."}
+  ],questions:[
+    {q:"Hat der Kunde eine Kundenkarte?",opts:["Ja","Nein","Er sucht sie"],correctIdx:1},
+    {q:"Wie zahlt der Kunde?",opts:["Bar","Mit Karte","Mit Handy"],correctIdx:1}
+  ]},
+  {title:"Am Bahnhof — Ticket kaufen",level:"B1",lines:[
+    {de:"Eine Fahrkarte nach Hamburg, bitte.",en:"A ticket to Hamburg, please."},
+    {de:"Einfach oder hin und zurück?",en:"Single or return?"},
+    {de:"Hin und zurück. Zweite Klasse.",en:"Return. Second class."},
+    {de:"Wann möchten Sie zurückfahren?",en:"When would you like to come back?"},
+    {de:"Sonntag Abend.",en:"Sunday evening."},
+    {de:"Das macht 89 Euro.",en:"That's 89 euros."}
+  ],questions:[
+    {q:"Wohin fährt der Reisende?",opts:["München","Hamburg","Berlin"],correctIdx:1},
+    {q:"Welche Art Ticket kauft er?",opts:["Einfach","Hin und zurück","Monatskarte"],correctIdx:1}
+  ]},
+  {title:"Zug — Verspätung",level:"A2",lines:[
+    {de:"Entschuldigung, hat der Zug nach Köln Verspätung?",en:"Excuse me, is the Cologne train delayed?"},
+    {de:"Ja, leider zwanzig Minuten.",en:"Yes, unfortunately twenty minutes."},
+    {de:"Und von welchem Gleis fährt er ab?",en:"And from which platform does it leave?"},
+    {de:"Gleis sieben, heute ausnahmsweise.",en:"Platform seven, exceptionally today."},
+    {de:"Danke für die Information.",en:"Thanks for the information."}
+  ],questions:[
+    {q:"Wie viel Verspätung hat der Zug?",opts:["10 Minuten","20 Minuten","30 Minuten"],correctIdx:1},
+    {q:"Von welchem Gleis fährt er ab?",opts:["Gleis 5","Gleis 7","Gleis 9"],correctIdx:1}
+  ]},
+  {title:"Im Hotel einchecken",level:"B1",lines:[
+    {de:"Guten Abend, ich habe ein Zimmer reserviert. Mein Name ist Williams.",en:"Good evening, I've reserved a room. My name is Williams."},
+    {de:"Willkommen! Ein Doppelzimmer für zwei Nächte, richtig?",en:"Welcome! A double room for two nights, correct?"},
+    {de:"Genau. Gibt es WLAN im Zimmer?",en:"Exactly. Is there wifi in the room?"},
+    {de:"Ja, das Passwort finden Sie auf diesem Zettel.",en:"Yes, you'll find the password on this slip."},
+    {de:"Um wie viel Uhr gibt es Frühstück?",en:"What time is breakfast?"},
+    {de:"Von sieben bis zehn Uhr.",en:"From seven to ten."}
+  ],questions:[
+    {q:"Wie lange bleibt der Gast?",opts:["Eine Nacht","Zwei Nächte","Drei Nächte"],correctIdx:1},
+    {q:"Wann gibt es Frühstück?",opts:["6–9 Uhr","7–10 Uhr","8–11 Uhr"],correctIdx:1}
+  ]},
+  {title:"Nach dem Weg fragen",level:"A2",lines:[
+    {de:"Entschuldigung, wie komme ich zum Museum?",en:"Excuse me, how do I get to the museum?"},
+    {de:"Gehen Sie hier geradeaus, dann die zweite Straße rechts.",en:"Go straight here, then second street on the right."},
+    {de:"Wie weit ist es?",en:"How far is it?"},
+    {de:"Ungefähr zehn Minuten zu Fuß.",en:"About ten minutes on foot."},
+    {de:"Vielen Dank!",en:"Thank you very much!"}
+  ],questions:[
+    {q:"Was sucht der Tourist?",opts:["Den Bahnhof","Das Museum","Das Hotel"],correctIdx:1},
+    {q:"Wie weit ist es zu Fuß?",opts:["5 Minuten","10 Minuten","20 Minuten"],correctIdx:1}
+  ]},
+  {title:"Taxi rufen",level:"B1",lines:[
+    {de:"Guten Abend, ich brauche ein Taxi zum Flughafen.",en:"Good evening, I need a taxi to the airport."},
+    {de:"Steigen Sie bitte ein. Haben Sie Gepäck?",en:"Please get in. Do you have luggage?"},
+    {de:"Ja, zwei Koffer im Kofferraum, bitte.",en:"Yes, two suitcases in the trunk, please."},
+    {de:"Kein Problem. Wann ist Ihr Flug?",en:"No problem. When's your flight?"},
+    {de:"Um halb neun. Schaffen wir das?",en:"At half past eight. Will we make it?"},
+    {de:"Locker. Es gibt kaum Verkehr.",en:"Easily. There's hardly any traffic."}
+  ],questions:[
+    {q:"Wohin möchte der Fahrgast?",opts:["Zum Bahnhof","Zum Flughafen","Zum Hotel"],correctIdx:1},
+    {q:"Wie viele Koffer hat er?",opts:["Einen","Zwei","Drei"],correctIdx:1}
+  ]},
+  {title:"Frühstück im Hotel",level:"A2",lines:[
+    {de:"Kaffee oder Tee?",en:"Coffee or tea?"},
+    {de:"Einen Kaffee, bitte. Mit Milch.",en:"A coffee, please. With milk."},
+    {de:"Möchten Sie Eier zum Frühstück?",en:"Would you like eggs for breakfast?"},
+    {de:"Ja, Rührei mit Brötchen, bitte.",en:"Yes, scrambled eggs with a roll, please."},
+    {de:"Kommt sofort.",en:"Coming right up."}
+  ],questions:[
+    {q:"Was trinkt der Gast?",opts:["Tee","Kaffee mit Milch","Orangensaft"],correctIdx:1},
+    {q:"Welche Eier bestellt er?",opts:["Spiegelei","Rührei","Gekochtes Ei"],correctIdx:1}
+  ]},
+  {title:"Einkaufen — Kleidung",level:"A2",lines:[
+    {de:"Entschuldigung, haben Sie diese Hose auch in Größe 32?",en:"Excuse me, do you have these trousers in size 32?"},
+    {de:"Einen Moment, ich schaue nach.",en:"One moment, I'll have a look."},
+    {de:"Ja, hier bitte. Möchten Sie sie anprobieren?",en:"Yes, here you go. Would you like to try them on?"},
+    {de:"Gerne. Wo ist die Umkleide?",en:"Yes please. Where's the changing room?"},
+    {de:"Gleich dort hinten rechts.",en:"Just over there on the right."}
+  ],questions:[
+    {q:"Welche Größe sucht der Kunde?",opts:["Größe 30","Größe 32","Größe 34"],correctIdx:1},
+    {q:"Möchte er die Hose anprobieren?",opts:["Ja","Nein","Später"],correctIdx:0}
+  ]},
+  {title:"Beim Frisör",level:"A2",lines:[
+    {de:"Ich möchte die Haare schneiden lassen, bitte.",en:"I'd like to have my hair cut, please."},
+    {de:"Wie kurz möchten Sie sie haben?",en:"How short would you like them?"},
+    {de:"Nur die Spitzen, etwa zwei Zentimeter.",en:"Just the ends, about two centimetres."},
+    {de:"Und waschen dazu?",en:"And a wash with that?"},
+    {de:"Ja, bitte.",en:"Yes, please."}
+  ],questions:[
+    {q:"Wie viel möchte der Kunde abschneiden?",opts:["1 cm","2 cm","5 cm"],correctIdx:1},
+    {q:"Möchte er die Haare waschen lassen?",opts:["Ja","Nein","Nur föhnen"],correctIdx:0}
+  ]},
+  {title:"Die Wohnung putzen",level:"A2",lines:[
+    {de:"Hast du heute Zeit zu putzen?",en:"Do you have time to clean today?"},
+    {de:"Leider nicht, ich muss arbeiten.",en:"Unfortunately not, I have to work."},
+    {de:"Kannst du wenigstens den Müll rausbringen?",en:"Can you at least take out the rubbish?"},
+    {de:"Ja, das mache ich gleich.",en:"Yes, I'll do that right away."}
+  ],questions:[
+    {q:"Kann Mitbewohner B heute putzen?",opts:["Ja","Nein, er muss arbeiten","Später"],correctIdx:1},
+    {q:"Was macht er trotzdem?",opts:["Staub saugen","Den Müll rausbringen","Kochen"],correctIdx:1}
+  ]},
+  {title:"Geburtstag planen",level:"A2",lines:[
+    {de:"Nächste Woche habe ich Geburtstag.",en:"Next week is my birthday."},
+    {de:"Schön! Wie alt wirst du?",en:"Nice! How old are you turning?"},
+    {de:"26. Ich möchte eine kleine Feier machen.",en:"26. I'd like to have a small party."},
+    {de:"Darf ich kommen?",en:"May I come?"},
+    {de:"Klar, du bist eingeladen. Samstag um 19 Uhr bei mir.",en:"Sure, you're invited. Saturday at 7pm at mine."}
+  ],questions:[
+    {q:"Wie alt wird Anna?",opts:["24","25","26"],correctIdx:2},
+    {q:"Wann ist die Feier?",opts:["Freitag","Samstag","Sonntag"],correctIdx:1}
+  ]},
+  {title:"Das Wetter",level:"A2",lines:[
+    {de:"Was für ein Wetter heute!",en:"What weather today!"},
+    {de:"Ja, es regnet schon den ganzen Tag.",en:"Yeah, it's been raining all day."},
+    {de:"Morgen soll es besser werden.",en:"It's supposed to get better tomorrow."},
+    {de:"Hoffentlich! Dann können wir spazieren gehen.",en:"Hopefully! Then we can go for a walk."}
+  ],questions:[
+    {q:"Wie ist das Wetter heute?",opts:["Sonnig","Regnerisch","Windig"],correctIdx:1},
+    {q:"Was planen sie für morgen?",opts:["Spazieren gehen","Kino","Zu Hause bleiben"],correctIdx:0}
+  ]},
+  {title:"Urlaubspläne",level:"A2",lines:[
+    {de:"Hast du schon Urlaubspläne?",en:"Do you have holiday plans yet?"},
+    {de:"Ja, ich fahre im August nach Italien.",en:"Yes, I'm going to Italy in August."},
+    {de:"Wie lange bleibst du?",en:"How long are you staying?"},
+    {de:"Zwei Wochen. Und du?",en:"Two weeks. And you?"},
+    {de:"Ich weiß noch nicht. Vielleicht nach Österreich.",en:"I don't know yet. Maybe Austria."}
+  ],questions:[
+    {q:"Wohin fährt der Freund?",opts:["Spanien","Italien","Österreich"],correctIdx:1},
+    {q:"Wie lange bleibt er?",opts:["1 Woche","2 Wochen","3 Wochen"],correctIdx:1}
+  ]},
+  {title:"Fitnessstudio anmelden",level:"B1",lines:[
+    {de:"Ich möchte mich anmelden.",en:"I'd like to sign up."},
+    {de:"Welches Abo interessiert Sie?",en:"Which membership interests you?"},
+    {de:"Was kostet das Jahresabo?",en:"How much is the yearly one?"},
+    {de:"300 Euro, mit Sauna 360.",en:"300 euros, with sauna 360."},
+    {de:"Ohne Sauna, bitte. Brauche ich einen Ausweis?",en:"Without sauna, please. Do I need an ID?"},
+    {de:"Ja, Ausweis und Kontodaten.",en:"Yes, ID and bank details."}
+  ],questions:[
+    {q:"Was kostet das Abo ohne Sauna?",opts:["300 €","360 €","250 €"],correctIdx:0},
+    {q:"Was braucht der Interessent?",opts:["Nur einen Ausweis","Nur Kontodaten","Ausweis und Kontodaten"],correctIdx:2}
+  ]},
+  {title:"Einen Freund einladen",level:"B1",lines:[
+    {de:"Hast du am Samstag was vor?",en:"Do you have plans Saturday?"},
+    {de:"Nichts Besonderes. Warum?",en:"Nothing special. Why?"},
+    {de:"Ich koche Abendessen. Hast du Lust?",en:"I'm cooking dinner. Want to come?"},
+    {de:"Sehr gerne. Was kochst du?",en:"I'd love to. What are you cooking?"},
+    {de:"Pasta mit Gemüse. Bringst du Wein mit?",en:"Pasta with vegetables. Can you bring wine?"},
+    {de:"Klar, mache ich.",en:"Sure, I'll do that."}
+  ],questions:[
+    {q:"Was kocht Maria?",opts:["Fleisch","Pasta mit Gemüse","Pizza"],correctIdx:1},
+    {q:"Was soll Peter mitbringen?",opts:["Brot","Wein","Nachtisch"],correctIdx:1}
+  ]},
+  {title:"Im Fundbüro",level:"B1",lines:[
+    {de:"Ich habe meinen Regenschirm verloren.",en:"I've lost my umbrella."},
+    {de:"Wo haben Sie ihn zuletzt gesehen?",en:"Where did you last see it?"},
+    {de:"Im Bus, Linie 42.",en:"On the bus, line 42."},
+    {de:"Welche Farbe?",en:"What colour?"},
+    {de:"Schwarz mit weißen Punkten.",en:"Black with white dots."},
+    {de:"Einen Moment, ich schaue nach.",en:"One moment, I'll check."}
+  ],questions:[
+    {q:"Was hat der Kunde verloren?",opts:["Seine Tasche","Seinen Regenschirm","Sein Handy"],correctIdx:1},
+    {q:"Wo hat er es verloren?",opts:["Im Zug","Im Bus","Auf der Straße"],correctIdx:1}
+  ]},
+  {title:"Paket abholen",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte ein Paket abholen.",en:"Hello, I'd like to pick up a parcel."},
+    {de:"Haben Sie die Abholnummer?",en:"Do you have the collection number?"},
+    {de:"Ja, hier: 5847.",en:"Yes, here: 5847."},
+    {de:"Und Ihren Ausweis, bitte.",en:"And your ID, please."},
+    {de:"Hier bitte.",en:"Here you go."},
+    {de:"Moment, ich hole das Paket.",en:"One moment, I'll fetch the parcel."}
+  ],questions:[
+    {q:"Was macht der Kunde?",opts:["Ein Paket verschicken","Ein Paket abholen","Briefmarken kaufen"],correctIdx:1},
+    {q:"Was braucht der Angestellte?",opts:["Nur die Nummer","Nur den Ausweis","Nummer und Ausweis"],correctIdx:2}
+  ]},
+  {title:"Freunde im Fitnessstudio",level:"A2",lines:[
+    {de:"Gehst du auch nach der Arbeit zum Training?",en:"Going to training after work too?"},
+    {de:"Ja, treffen wir uns dort?",en:"Yes, shall we meet there?"},
+    {de:"Gerne. Um sechs?",en:"Sounds good. At six?"},
+    {de:"Lieber halb sieben, ich bin müde.",en:"Better half past six, I'm tired."},
+    {de:"Okay, bis dann!",en:"Okay, see you then!"}
+  ],questions:[
+    {q:"Wann treffen sie sich?",opts:["18:00","18:30","19:00"],correctIdx:1},
+    {q:"Warum später?",opts:["Ben ist müde","Anna arbeitet länger","Das Studio öffnet später"],correctIdx:0}
+  ]},
+  {title:"Tisch reservieren",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte einen Tisch reservieren.",en:"Hello, I'd like to reserve a table."},
+    {de:"Für wann und wie viele Personen?",en:"For when and how many people?"},
+    {de:"Samstagabend, vier Personen.",en:"Saturday evening, four people."},
+    {de:"Um wie viel Uhr?",en:"At what time?"},
+    {de:"Um halb acht, bitte.",en:"At half past seven, please."},
+    {de:"In Ordnung. Auf welchen Namen?",en:"All right. Under which name?"},
+    {de:"Schmidt.",en:"Schmidt."}
+  ],questions:[
+    {q:"Für wie viele Personen?",opts:["Zwei","Drei","Vier"],correctIdx:2},
+    {q:"Wann ist die Reservierung?",opts:["19:00","19:30","20:00"],correctIdx:1}
+  ]},
+  {title:"Kontoeröffnung bei der Bank",level:"B1",lines:[
+    {de:"Ich möchte ein Konto eröffnen.",en:"I'd like to open an account."},
+    {de:"Welche Art von Konto?",en:"What kind of account?"},
+    {de:"Ein Girokonto, bitte.",en:"A current account, please."},
+    {de:"Haben Sie einen Ausweis und eine Meldebescheinigung?",en:"Do you have ID and proof of residence?"},
+    {de:"Ja, beides hier.",en:"Yes, both here."},
+    {de:"Sehr gut. Es dauert etwa zwanzig Minuten.",en:"Very good. It takes about twenty minutes."}
+  ],questions:[
+    {q:"Welches Konto möchte der Kunde?",opts:["Sparkonto","Girokonto","Kreditkartenkonto"],correctIdx:1},
+    {q:"Wie lange dauert es?",opts:["10 Minuten","20 Minuten","30 Minuten"],correctIdx:1}
+  ]},
+  {title:"Job interview",level:"B2",lines:[
+    {de:"Schön, dass Sie da sind. Erzählen Sie doch kurz von sich.",en:"Glad you're here. Why don't you tell us a bit about yourself."},
+    {de:"Gerne. Ich habe Elektrotechnik studiert und fünf Jahre als Entwickler gearbeitet.",en:"Gladly. I studied electrical engineering and worked as a developer for five years."},
+    {de:"Was reizt Sie an dieser Stelle?",en:"What appeals to you about this position?"},
+    {de:"Vor allem die Arbeit an nachhaltigen Energielösungen.",en:"Above all, working on sustainable energy solutions."},
+    {de:"Wo sehen Sie Ihre größte Schwäche?",en:"Where do you see your greatest weakness?"},
+    {de:"Ich neige dazu, mich in Details zu verlieren, arbeite aber daran.",en:"I tend to get lost in details, but I'm working on it."},
+    {de:"Wann könnten Sie frühestens anfangen?",en:"When could you start at the earliest?"},
+    {de:"Ich habe eine Kündigungsfrist von drei Monaten.",en:"I have a three-month notice period."},
+    {de:"Vielen Dank. Wir melden uns bis Ende der Woche.",en:"Thank you. We'll be in touch by the end of the week."}
+  ],questions:[
+    {q:"Was hat der Bewerber studiert?",opts:["Elektrotechnik","Maschinenbau","Informatik"],correctIdx:0},
+    {q:"Wie lang ist seine Kündigungsfrist?",opts:["Ein Monat","Drei Monate","Sechs Wochen"],correctIdx:1}
+  ]},
+  {title:"Registering at the city office",level:"B2",lines:[
+    {de:"Guten Tag, ich möchte mich anmelden. Ich bin gerade umgezogen.",en:"Hello, I'd like to register. I've just moved."},
+    {de:"Haben Sie die Wohnungsgeberbestätigung dabei?",en:"Do you have the landlord's confirmation with you?"},
+    {de:"Ja, hier ist sie. Brauchen Sie auch meinen Ausweis?",en:"Yes, here it is. Do you also need my ID?"},
+    {de:"Genau, und bitte füllen Sie dieses Formular aus.",en:"Exactly, and please fill out this form."},
+    {de:"Muss ich die Anmeldung persönlich machen?",en:"Do I have to register in person?"},
+    {de:"Ja, eine Vertretung ist nur mit Vollmacht möglich.",en:"Yes, representation is only possible with power of attorney."},
+    {de:"Wie lange dauert die Bearbeitung?",en:"How long does processing take?"},
+    {de:"Sie bekommen die Meldebescheinigung sofort.",en:"You'll get the registration certificate right away."}
+  ],questions:[
+    {q:"Was muss der Mann mitbringen?",opts:["Nur seinen Pass","Die Wohnungsgeberbestätigung und seinen Ausweis","Einen Mietvertrag"],correctIdx:1},
+    {q:"Wann bekommt er die Meldebescheinigung?",opts:["Sofort","Nach einer Woche","Per Post"],correctIdx:0}
+  ]},
+  {title:"Discussing a rental contract",level:"B2",lines:[
+    {de:"Die Kaltmiete beträgt 850 Euro, dazu kommen die Nebenkosten.",en:"The base rent is 850 euros, plus utility costs."},
+    {de:"Wie hoch sind die Nebenkosten ungefähr?",en:"Roughly how high are the utility costs?"},
+    {de:"Etwa 200 Euro im Monat, Strom ist aber nicht enthalten.",en:"About 200 euros a month, but electricity isn't included."},
+    {de:"Und wie viel Kaution muss ich hinterlegen?",en:"And how much deposit do I have to pay?"},
+    {de:"Drei Kaltmieten, also 2550 Euro.",en:"Three months' base rent, so 2,550 euros."},
+    {de:"Ist eine Ratenzahlung der Kaution möglich?",en:"Is it possible to pay the deposit in instalments?"},
+    {de:"Ja, Sie können sie in drei Raten zahlen.",en:"Yes, you can pay it in three instalments."},
+    {de:"Gut. Ab wann könnte ich einziehen?",en:"Good. From when could I move in?"},
+    {de:"Die Wohnung ist ab dem Ersten frei.",en:"The flat is available from the first."}
+  ],questions:[
+    {q:"Was ist in den Nebenkosten NICHT enthalten?",opts:["Wasser","Strom","Heizung"],correctIdx:1},
+    {q:"Wie kann die Kaution gezahlt werden?",opts:["Nur auf einmal","In drei Raten","Gar nicht"],correctIdx:1}
+  ]},
+  {title:"At the doctor's",level:"B2",lines:[
+    {de:"Was führt Sie zu mir?",en:"What brings you in?"},
+    {de:"Ich habe seit einer Woche starke Kopfschmerzen und mir ist oft schwindelig.",en:"I've had bad headaches for a week and I often feel dizzy."},
+    {de:"Treten die Beschwerden zu bestimmten Zeiten auf?",en:"Do the symptoms occur at particular times?"},
+    {de:"Meistens nachmittags, wenn ich lange am Bildschirm war.",en:"Mostly in the afternoon, after I've been at the screen for a long time."},
+    {de:"Schlafen Sie genug und trinken Sie ausreichend?",en:"Do you sleep enough and drink enough?"},
+    {de:"Ehrlich gesagt trinke ich zu wenig.",en:"Honestly, I drink too little."},
+    {de:"Das könnte eine Rolle spielen. Wir machen trotzdem einen Test.",en:"That could play a role. We'll do a test anyway."},
+    {de:"Ist das etwas Ernstes?",en:"Is it something serious?"},
+    {de:"Wahrscheinlich nicht, aber wir gehen auf Nummer sicher.",en:"Probably not, but we'll be on the safe side."}
+  ],questions:[
+    {q:"Wann treten die Kopfschmerzen meistens auf?",opts:["Morgens","Nachmittags","Nachts"],correctIdx:1},
+    {q:"Was macht der Patient laut Gespräch falsch?",opts:["Er trinkt zu wenig","Er schläft zu viel","Er isst zu spät"],correctIdx:0}
+  ]},
+  {title:"Project status meeting",level:"B2",lines:[
+    {de:"Wie ist der aktuelle Stand beim Projekt?",en:"What's the current status of the project?"},
+    {de:"Wir liegen etwa eine Woche hinter dem Zeitplan.",en:"We're about a week behind schedule."},
+    {de:"Woran liegt die Verzögerung?",en:"What's causing the delay?"},
+    {de:"Eine Schnittstelle bereitet uns mehr Probleme als erwartet.",en:"An interface is giving us more trouble than expected."},
+    {de:"Brauchen Sie zusätzliche Ressourcen?",en:"Do you need additional resources?"},
+    {de:"Eine zweite Entwicklerin würde uns sehr helfen.",en:"A second developer would help us a lot."},
+    {de:"Das lässt sich einrichten. Halten wir die Deadline?",en:"That can be arranged. Will we hold the deadline?"},
+    {de:"Mit Unterstützung schaffen wir es voraussichtlich.",en:"With support we'll probably make it."}
+  ],questions:[
+    {q:"Warum gibt es eine Verzögerung?",opts:["Eine Schnittstelle macht Probleme","Es fehlt Geld","Der Kunde hat abgesagt"],correctIdx:0},
+    {q:"Was wird dem Team angeboten?",opts:["Mehr Zeit","Eine zweite Entwicklerin","Ein Bonus"],correctIdx:1}
+  ]},
+  {title:"Opening a bank account",level:"B2",lines:[
+    {de:"Ich würde gern ein Girokonto eröffnen.",en:"I'd like to open a current account."},
+    {de:"Sind Sie in Deutschland gemeldet?",en:"Are you registered in Germany?"},
+    {de:"Ja, ich habe mich letzte Woche angemeldet.",en:"Yes, I registered last week."},
+    {de:"Dann brauche ich Ihren Ausweis und die Meldebescheinigung.",en:"Then I need your ID and the registration certificate."},
+    {de:"Fallen für das Konto Gebühren an?",en:"Are there any fees for the account?"},
+    {de:"Bei einem regelmäßigen Gehaltseingang ist das Konto kostenlos.",en:"With a regular salary deposit the account is free."},
+    {de:"Bekomme ich auch eine Kreditkarte?",en:"Do I also get a credit card?"},
+    {de:"Die können Sie beantragen, sie kostet aber extra.",en:"You can apply for one, but it costs extra."}
+  ],questions:[
+    {q:"Wann ist das Konto kostenlos?",opts:["Immer","Bei einem regelmäßigen Gehaltseingang","Nie"],correctIdx:1},
+    {q:"Was braucht die Bank?",opts:["Nur den Ausweis","Ausweis und Meldebescheinigung","Einen Arbeitsvertrag"],correctIdx:1}
+  ]},
+  {title:"Making a complaint",level:"B2",lines:[
+    {de:"Ich möchte mich über mein neues Gerät beschweren.",en:"I'd like to complain about my new device."},
+    {de:"Was ist denn das Problem?",en:"What seems to be the problem?"},
+    {de:"Es schaltet sich nach kurzer Zeit von selbst aus.",en:"It switches itself off after a short while."},
+    {de:"Haben Sie es schon einmal zurückgesetzt?",en:"Have you already reset it?"},
+    {de:"Ja, mehrmals, aber das hat nichts gebracht.",en:"Yes, several times, but it didn't help."},
+    {de:"Dann liegt vermutlich ein Defekt vor.",en:"Then there's probably a defect."},
+    {de:"Ich bestehe auf einem Umtausch.",en:"I insist on an exchange."},
+    {de:"Das ist kein Problem, sofern Sie den Kassenbon haben.",en:"That's no problem, provided you have the receipt."}
+  ],questions:[
+    {q:"Was ist das Problem mit dem Gerät?",opts:["Es ist zu laut","Es schaltet sich von selbst aus","Es lädt nicht"],correctIdx:1},
+    {q:"Was braucht der Kunde für den Umtausch?",opts:["Den Kassenbon","Die Verpackung","Nichts"],correctIdx:0}
+  ]},
+  {title:"Debate: working from home",level:"B2",lines:[
+    {de:"Ich finde, Homeoffice sollte die Regel werden.",en:"I think working from home should become the norm."},
+    {de:"Da bin ich anderer Meinung. Der persönliche Austausch fehlt mir.",en:"I disagree. I miss the personal interaction."},
+    {de:"Man spart aber enorm viel Zeit durch den Wegfall des Pendelns.",en:"But you save an enormous amount of time without commuting."},
+    {de:"Das stimmt, andererseits verschwimmen die Grenzen zwischen Arbeit und Freizeit.",en:"True, on the other hand the lines between work and leisure blur."},
+    {de:"Eine Mischung aus beidem wäre wohl ideal.",en:"A mixture of both would probably be ideal."},
+    {de:"Dem kann ich zustimmen. Zwei Tage zu Hause, drei im Büro.",en:"I can agree with that. Two days at home, three in the office."},
+    {de:"Genau, so bleibt die Flexibilität erhalten.",en:"Exactly, that way the flexibility is preserved."}
+  ],questions:[
+    {q:"Was kritisiert die zweite Person?",opts:["Es kostet zu viel","Der persönliche Austausch fehlt","Es ist zu laut"],correctIdx:1},
+    {q:"Worauf einigen sich beide?",opts:["Nur Büro","Nur Homeoffice","Eine Mischung aus beidem"],correctIdx:2}
+  ]},
+  {title:"Rescheduling an appointment",level:"B2",lines:[
+    {de:"Praxis Dr. Weber, guten Tag.",en:"Dr. Weber's practice, hello."},
+    {de:"Guten Tag, ich müsste leider meinen Termin verschieben.",en:"Hello, unfortunately I need to reschedule my appointment."},
+    {de:"Um welchen Termin geht es?",en:"Which appointment is it about?"},
+    {de:"Morgen um zehn, auf den Namen Klein.",en:"Tomorrow at ten, under the name Klein."},
+    {de:"Einen Moment … Wäre Donnerstag um vierzehn Uhr möglich?",en:"One moment … Would Thursday at two be possible?"},
+    {de:"Donnerstag passt mir leider nicht. Ginge auch Freitag?",en:"Thursday doesn't suit me, unfortunately. Would Friday work too?"},
+    {de:"Freitag um neun hätte ich noch frei.",en:"I'd still have Friday at nine free."},
+    {de:"Das passt mir gut, vielen Dank.",en:"That suits me well, thank you."}
+  ],questions:[
+    {q:"Warum ruft die Frau an?",opts:["Sie will absagen","Sie will verschieben","Sie will ein Rezept"],correctIdx:1},
+    {q:"Wann ist der neue Termin?",opts:["Donnerstag um vierzehn Uhr","Freitag um neun","Morgen um zehn"],correctIdx:1}
+  ]},
+  {title:"Reporting a technical problem",level:"B2",lines:[
+    {de:"IT-Support, was kann ich für Sie tun?",en:"IT support, what can I do for you?"},
+    {de:"Ich komme seit heute Morgen nicht mehr ins System.",en:"I haven't been able to get into the system since this morning."},
+    {de:"Erscheint eine Fehlermeldung?",en:"Does an error message appear?"},
+    {de:"Ja, es heißt, mein Passwort sei abgelaufen.",en:"Yes, it says my password has expired."},
+    {de:"Dann setze ich es zurück. Sie bekommen gleich eine E-Mail.",en:"Then I'll reset it. You'll get an email shortly."},
+    {de:"Muss ich mein Passwort regelmäßig ändern?",en:"Do I have to change my password regularly?"},
+    {de:"Ja, aus Sicherheitsgründen alle drei Monate.",en:"Yes, for security reasons every three months."},
+    {de:"Gut zu wissen, vielen Dank für die schnelle Hilfe.",en:"Good to know, thanks for the quick help."}
+  ],questions:[
+    {q:"Was ist das Problem?",opts:["Der Computer ist kaputt","Das Passwort ist abgelaufen","Das Internet ist weg"],correctIdx:1},
+    {q:"Wie oft muss das Passwort geändert werden?",opts:["Jeden Monat","Alle drei Monate","Nie"],correctIdx:1}
+  ]},
 ];
 
 

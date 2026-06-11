@@ -48,6 +48,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     if (!isStr(c.q) || !c.q.includes("___")) err(`CLOZE[${i}]: q missing or has no ___ gap`);
     if (!isStr(c.a)) err(`CLOZE[${i}] "${c.q}": missing answer`);
     if (!isStr(c.h)) warn(`CLOZE[${i}] "${c.q}": missing hint`);
+    if (c.level && !["A1", "A2", "B1", "B2"].includes(c.level)) err(`CLOZE[${i}] "${c.q}": bad level "${c.level}"`);
     const key = c.id || c.q;
     if (seenQ.has(key)) err(`CLOZE: duplicate question "${key}"`);
     seenQ.add(key);
@@ -72,6 +73,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     if (!s) { err(`SENTENCES[${i}] is a hole`); return; }
     if (!Array.isArray(s.correct) || s.correct.length < 2 || !s.correct.every(isStr)) err(`SENTENCES[${i}]: correct must be an array of words`);
     if (!isStr(s.en) || !isStr(s.rule)) err(`SENTENCES[${i}] "${(s.correct || []).join(" ")}": missing en/rule`);
+    if (s.level && !["A1", "A2", "B1", "B2"].includes(s.level)) err(`SENTENCES[${i}] "${(s.correct || []).join(" ")}": bad level "${s.level}"`);
     const key = s.id || (s.correct || []).join(" ");
     if (seenS.has(key)) err(`SENTENCES: duplicate "${key}"`);
     seenS.add(key);

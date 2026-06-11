@@ -79,6 +79,9 @@ const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) =>
 const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
 const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
 const LEVELS = ["A1", "A2", "B1"];
+// Difficulty bands for the Sentence Builder + Grammar Cloze (friendlier than exact CEFR levels).
+const LVL_BANDS = { easy: ["A1", "A2"], core: ["B1"], hard: ["B2"] };
+const inBand = (item, band) => band === "all" || (LVL_BANDS[band] || []).includes(item.level);
 
 // ── AI Tutor (bring-your-own-key) ──
 const AI_MODELS = [
@@ -418,7 +421,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.13";
+const APP_VERSION = "2026.06.10.14";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -637,7 +640,8 @@ function App() {
   const [prog, setProg] = useState({});
   const [known, setKnown] = useState(() => new Set());   // vocab words the user marked as known (knownKey)
   const [setupLevel, setSetupLevel] = useState("all");
-  const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv    // session level filter: "all" | A1 | A2 | B1
+  const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv
+  const [diffBand, setDiffBand] = useState("all");          // sentence/cloze difficulty band: all | easy | core | hard
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
   const [browseFilter, setBrowseFilter] = useState("all"); // word-browser: "all" | "known" | "mastered"
   // AI Tutor (bring-your-own Anthropic key; everything stays on-device, calls go direct to Anthropic)
@@ -1585,7 +1589,14 @@ function App() {
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
-      const cpool = clozeTopic === "all" ? [...CLOZE] : CLOZE.filter(c => c.topic === clozeTopic);
+      const cbase = clozeTopic === "all" ? CLOZE : CLOZE.filter(c => c.topic === clozeTopic);
+      let cpool;
+      if (diffBand === "all") cpool = [...cbase];
+      else {
+        const hit = cbase.filter(c => inBand(c, diffBand));
+        // Stay in-band when it can fill the session; otherwise top up with the rest.
+        cpool = hit.length >= Math.min(count, cbase.length) ? hit : [...hit, ...cbase.filter(c => !inBand(c, diffBand))];
+      }
       const take = Math.min(count, cpool.length);
       const { seeded, rest } = seedDueFirst(cpool, take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
       setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
@@ -1595,7 +1606,13 @@ function App() {
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "sentence") {
       setCategory("Sentence Builder");
-      const pool = sh([...SENTENCES]).slice(0, Math.min(count, SENTENCES.length));
+      let sordered;
+      if (diffBand === "all") sordered = sh([...SENTENCES]);
+      else {
+        const hit = sh(SENTENCES.filter(s => inBand(s, diffBand)));
+        sordered = hit.length >= Math.min(count, SENTENCES.length) ? hit : [...hit, ...sh(SENTENCES.filter(s => !inBand(s, diffBand)))];
+      }
+      const pool = sordered.slice(0, Math.min(count, SENTENCES.length));
       setCards(pool); setScreen("sentence");
       const first = pool[0]; setSbPool(sh([...first.correct])); setSbPicked([]); setSbChecked(false); setSbCorrect(false);
       setTStart(Date.now());
@@ -2352,6 +2369,20 @@ function App() {
                   {[["all", "Everything"], ["adjektiv", "Adjective endings"], ["praeteritum", "Präteritum"], ["konjunktiv", "Konjunktiv II"]].map(([k, l]) => (
                     <button key={k} onClick={() => setClozeTopic(k)} style={{ minWidth: 0, padding: "9px 6px", borderRadius: 9, fontSize: 11, fontWeight: 900, cursor: "pointer", background: clozeTopic === k ? A : "transparent", color: clozeTopic === k ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {(setupCat === "__sentence__" || setupCat === "__grammar__") && (
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Difficulty</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["all", "Mixed"], ["easy", "Easy"], ["core", "Core"], ["hard", "Hard"]].map(([k, l]) => (
+                    <button key={k} onClick={() => setDiffBand(k)} style={{ minWidth: 0, padding: "9px 6px", borderRadius: 9, fontSize: 11, fontWeight: 900, cursor: "pointer", background: diffBand === k ? A : "transparent", color: diffBand === k ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
+                  ))}
+                </div>
+                <div style={{ fontSize: 10.5, color: TD, marginTop: 6, lineHeight: 1.4 }}>
+                  {diffBand === "easy" ? "A1–A2 · short, present tense" : diffBand === "core" ? "B1 · everyday complexity" : diffBand === "hard" ? "B2 · clauses, Konjunktiv, Passiv" : "All levels mixed together"}
                 </div>
               </div>
             )}

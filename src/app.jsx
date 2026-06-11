@@ -433,7 +433,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.23";
+const APP_VERSION = "2026.06.10.24";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -716,6 +716,18 @@ function App() {
   // NEW: Dialogue state
   const [dlgIdx, setDlgIdx] = useState(0);
   const [dlgRevealed, setDlgRevealed] = useState({});
+  // Token guards the sequential play-all loop: bumping it (nav/replay) stops the old loop.
+  const dlgPlayRef = useRef(0);
+  const dlgStopPlay = () => { dlgPlayRef.current++; try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} };
+  const playDialogue = async (lines) => {
+    const tok = ++dlgPlayRef.current;
+    for (const l of lines) {
+      if (dlgPlayRef.current !== tok) return;
+      await speakWith(l.de);
+      if (dlgPlayRef.current !== tok) return;
+      await new Promise(r => setTimeout(r, 500));
+    }
+  };
   // NEW: Streak + daily stats
   const [dailyStats, setDailyStats] = useState({ date: todayKey(), count: 0, streak: 0 });
   // User-adjustable daily goal (cards/day target). Default 20 preserves behaviour for existing users.
@@ -3243,34 +3255,56 @@ function App() {
       </div>}
 
       {/* ── NEW: DIALOGUE SCREEN ── */}
-      {screen === "dialogues" && <div style={{ padding: "0 20px", minHeight: DVH }}>
+      {screen === "dialogues" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 0", minHeight: DVH, display: "flex", flexDirection: "column" }}>
         {(() => {
           const pool = (cards && cards.length) ? cards : DIALOGUES;
           const dlg = pool[dlgIdx];
           if (!dlg) return null;
           return (
             <>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", color: TD, fontSize: 14, cursor: "pointer" }}>← Back</button>
-                <div style={{ fontSize: 12, color: TD, fontWeight: 600 }}>{dlgIdx + 1}/{pool.length}</div>
-              </div>
-              <div style={{ fontFamily: FN, fontSize: 22, marginBottom: 16 }}>{dlg.title}</div>
-              {dlg.lines.map((line, i) => (
-                <div key={i} style={{ marginBottom: 14 }}>
-                  {line.speaker && <div style={{ fontSize: 10, color: AD, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 2 }}>{line.speaker}</div>}
-                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                    <div style={{ fontSize: 14, color: T, lineHeight: 1.5, flex: 1 }}>{line.de}</div>
-                    <button type="button" aria-label={`Play line ${i + 1}`} onClick={() => speak(line.de)} style={{ background: "none", border: "none", color: A, fontSize: 14, cursor: "pointer", flexShrink: 0, padding: 3 }}><Icon name="volume" size={15} /></button>
-                  </div>
-                  <button onClick={() => { setDlgRevealed(r => ({ ...r, [i]: true })); speak(line.de); }} style={{ background: "none", border: "none", color: dlgRevealed[i] ? BL : TD, fontSize: 12, cursor: "pointer", padding: "4px 0", fontStyle: "italic" }}>
-                    {dlgRevealed[i] ? line.en : "↳ tap to translate"}
-                  </button>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <button onClick={() => { dlgStopPlay(); setScreen("home"); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  {dlg.level && <span style={{ fontSize: 9, fontWeight: 900, color: A, border: `1px solid ${A}55`, borderRadius: 6, padding: "2px 7px", letterSpacing: 0.5 }}>{dlg.level}</span>}
+                  <div style={{ fontSize: 12, color: TD, fontWeight: 600 }}>{dlgIdx + 1}/{pool.length}</div>
                 </div>
-              ))}
-              <div style={{ display: "flex", gap: 10, marginTop: 24, paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
-                {dlgIdx > 0 && <Btn bg={S} border={`1px solid ${B}`} onClick={() => { setDlgIdx(i => i - 1); setDlgRevealed({}); }} style={{ flex: 1 }}>← Prev</Btn>}
-                {dlgIdx < pool.length - 1 && <Btn bg={A} color="#0A0A0A" onClick={() => { setDlgIdx(i => i + 1); setDlgRevealed({}); }} style={{ flex: 1 }}>Next →</Btn>}
-                {dlgIdx === pool.length - 1 && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ flex: 1 }}>Done</Btn>}
+              </div>
+              <ProgBar pct={((dlgIdx + 1) / Math.max(pool.length, 1)) * 100} color={A} />
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginTop: 14, marginBottom: 4 }}>
+                <div style={{ fontFamily: FN, fontSize: 21, lineHeight: 1.15 }}>{dlg.title}</div>
+                <button onClick={() => playDialogue(dlg.lines)} aria-label="Play whole dialogue" style={{ display: "flex", alignItems: "center", gap: 6, background: `${A}14`, border: `1px solid ${A}44`, borderRadius: 999, color: A, fontSize: 11, fontWeight: 900, cursor: "pointer", padding: "7px 13px", flexShrink: 0 }}><Icon name="volume" size={13} /> Play all</button>
+              </div>
+              <div style={{ fontSize: 10.5, color: TD, marginBottom: 14 }}>Tap a bubble to hear it{Object.keys(dlgRevealed).length === 0 ? " and reveal the English" : ""}.</div>
+              <div style={{ flex: 1 }}>
+                {dlg.lines.map((line, i) => {
+                  const right = i % 2 === 1; // second speaker sits right, chat-style
+                  return (
+                    <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: right ? "flex-end" : "flex-start", marginBottom: 10 }}>
+                      {line.speaker && <div style={{ fontSize: 9.5, color: AD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3, padding: "0 6px" }}>{line.speaker}</div>}
+                      <button type="button" aria-label={`Play and translate line ${i + 1}`} onClick={() => { dlgStopPlay(); setDlgRevealed(r => ({ ...r, [i]: true })); speak(line.de); }}
+                        style={{
+                          maxWidth: "86%", textAlign: "left", cursor: "pointer", padding: "11px 14px",
+                          background: right ? `linear-gradient(160deg, ${A}1C 0%, ${A}0E 100%)` : "linear-gradient(160deg, #1A1A1A 0%, #121212 100%)",
+                          border: `1px solid ${right ? `${A}3D` : B}`,
+                          borderRadius: 16,
+                          borderBottomRightRadius: right ? 5 : 16,
+                          borderBottomLeftRadius: right ? 16 : 5,
+                          fontFamily: "inherit",
+                        }}>
+                        <span style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
+                          <span style={{ fontSize: 14.5, color: T, lineHeight: 1.45, fontWeight: 600 }}>{line.de}</span>
+                          <Icon name="volume" size={12} stroke={2.2} style={{ color: A, opacity: 0.65, flexShrink: 0, alignSelf: "center" }} />
+                        </span>
+                        {dlgRevealed[i] && <span style={{ display: "block", fontSize: 12, color: BL, lineHeight: 1.4, marginTop: 6 }}>{line.en}</span>}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 18, paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
+                {dlgIdx > 0 && <Btn bg={S} border={`1px solid ${B}`} onClick={() => { dlgStopPlay(); setDlgIdx(i => i - 1); setDlgRevealed({}); }} style={{ flex: 1 }}>← Prev</Btn>}
+                {dlgIdx < pool.length - 1 && <Btn bg={A} color="#0A0A0A" onClick={() => { dlgStopPlay(); setDlgIdx(i => i + 1); setDlgRevealed({}); }} style={{ flex: 1 }}>Next →</Btn>}
+                {dlgIdx === pool.length - 1 && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => { dlgStopPlay(); setScreen("home"); }} style={{ flex: 1 }}>Done</Btn>}
               </div>
             </>
           );

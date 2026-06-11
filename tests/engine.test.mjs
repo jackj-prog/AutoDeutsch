@@ -137,6 +137,37 @@ test("highlightExample covers umlaut tails (Universität fully highlighted)", ()
   assert.ok(hl.includes("Universität"), `highlighted: "${hl}"`);
 });
 
+test("makeVerbQ konjunktiv2 produces a typed KII question", () => {
+  const { makeVerbQ } = vm.runInContext("({ makeVerbQ })", ctx);
+  for (let i = 0; i < 25; i++) {
+    const q = makeVerbQ("konjunktiv2");
+    assert.equal(q.tense, "Konjunktiv II");
+    assert.ok(["ich", "er"].includes(q.pron), `pron: ${q.pron}`);
+    assert.ok(typeof q.correct === "string" && q.correct.length > 0);
+    assert.equal(q.opts, undefined); // typed answer, not multiple choice
+  }
+});
+
+test("makeVerbQ honors a pre-picked verb (weighted selection hook)", () => {
+  const { makeVerbQ, VERBS } = vm.runInContext("({ makeVerbQ, VERBS })", ctx);
+  const sein = VERBS.find(v => v.v === "sein");
+  const q = makeVerbQ("konjunktiv2", sein);
+  assert.equal(q.verb, "sein");
+  assert.equal(q.correct, "wäre");
+});
+
+test("every verb carries a Konjunktiv II form", () => {
+  const { VERBS } = vm.runInContext("({ VERBS })", ctx);
+  VERBS.forEach(v => assert.ok(typeof v.kj2 === "string" && v.kj2.trim().length > 0, `${v.v} missing kj2`));
+});
+
+test("checkMatch accepts either Konjunktiv II alternative", () => {
+  assert.equal(checkMatch("ginge", "ginge / würde gehen"), "exact");
+  assert.equal(checkMatch("würde gehen", "ginge / würde gehen"), "exact");
+  assert.equal(checkMatch("wuerde gehen", "ginge / würde gehen"), "exact"); // umlaut folding
+  assert.equal(checkMatch("gehe", "ginge / würde gehen"), "wrong");
+});
+
 test("seedDueFirst takes at most half the session from the due set", () => {
   const pool = Array.from({ length: 20 }, (_, i) => ({ de: `w${i}` }));
   const dueSet = new Set(["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7"]);

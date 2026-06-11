@@ -122,8 +122,8 @@ function getNouns() {
   return n;
 }
 
-function makeVerbQ(tense = "present") {
-  const vb = VERBS[0 | Math.random() * VERBS.length];
+function makeVerbQ(tense = "present", pick) {
+  const vb = pick || VERBS[0 | Math.random() * VERBS.length];
   const pron = PRONS[0 | Math.random() * PRONS.length];
   const key = PK[pron];
   if (tense === "perfekt") {
@@ -138,6 +138,16 @@ function makeVerbQ(tense = "present") {
     // ich and er share the same Präteritum form, so we can vary the pronoun freely.
     const p = Math.random() < 0.5 ? "ich" : "er";
     return { verb: vb.v, en: vb.en, pron: p, correct: vb.pt, tense: "Präteritum", hint: `${vb.v} → ${vb.pt}` };
+  }
+  if (tense === "konjunktiv2") {
+    // ich/er share the KII form too. `kj2` may carry "/" alternatives (synthetic form
+    // and würde + Infinitiv) — checkMatch accepts any of them.
+    const p = Math.random() < 0.5 ? "ich" : "er";
+    const forms = vb.kj2.split("/").map(s => s.trim());
+    const hint = forms[0].startsWith("würde") && forms[0] !== "würde"
+      ? "regular: würde + Infinitiv"
+      : `irregular Konjunktiv II${forms[1] ? ` — "${forms[1]}" also accepted` : ""}`;
+    return { verb: vb.v, en: vb.en, pron: p, correct: vb.kj2, tense: "Konjunktiv II", hint };
   }
   const correct = vb.pr[key];
   const allF = [...new Set(Object.values(vb.pr))].filter(f => f !== correct);
@@ -433,7 +443,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.10.26";
+const APP_VERSION = "2026.06.11.27";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1643,7 +1653,43 @@ function App() {
       setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "verb") {
-      setCategory("Verb Trainer"); setCards(Array.from({ length: count }, () => makeVerbQ(verbTense)));
+      setCategory("Verb Trainer");
+      // Weakness-aware draw: aggregate saved per-conjugation stats for the selected tense
+      // into one entry per verb, then weight the random draw with perfMultiplier so verbs
+      // you struggle with come up more often (same soft boost as vocab, max 1.8x).
+      const tenseLabel = { present: "Präsens", perfekt: "Perfekt", praeteritum: "Präteritum", konjunktiv2: "Konjunktiv II" }[verbTense];
+      const aggByVerb = {};
+      Object.entries(prog).forEach(([k, v]) => {
+        if (!k.startsWith("verb::")) return;
+        const id = k.split("::").slice(2).join("::");
+        if (!id.endsWith(`-${tenseLabel}`)) return;
+        const verbName = id.slice(0, id.indexOf("-")); // verb names contain no dash
+        const n = normalizeEntry(v);
+        const a = aggByVerb[verbName] || (aggByVerb[verbName] = { attempts: 0, correct: 0, incorrect: 0, totalMs: 0, timed: 0 });
+        a.attempts += n.stats.attempts; a.correct += n.stats.correct; a.incorrect += n.stats.incorrect;
+        a.totalMs += (n.stats.avgTime || 0) * (n.stats.timedAttempts || 0); a.timed += n.stats.timedAttempts || 0;
+      });
+      const weights = VERBS.map(vb => {
+        const a = aggByVerb[vb.v];
+        if (!a) return 1;
+        return perfMultiplier({
+          stats: { attempts: a.attempts, correct: a.correct, incorrect: a.incorrect, avgTime: a.timed ? a.totalMs / a.timed : 0, timedAttempts: a.timed, currentStreak: 0, productionStreak: 0, masteredAt: null, lastSeen: null },
+          srs: { box: 0 },
+        });
+      });
+      const totalWt = weights.reduce((s, w) => s + w, 0);
+      const drawVerb = () => {
+        let r = Math.random() * totalWt;
+        for (let i = 0; i < VERBS.length; i++) { r -= weights[i]; if (r <= 0) return VERBS[i]; }
+        return VERBS[VERBS.length - 1];
+      };
+      let prevVerb = null;
+      setCards(Array.from({ length: count }, () => {
+        let vb = drawVerb();
+        if (prevVerb && vb.v === prevVerb) vb = drawVerb(); // soften back-to-back repeats
+        prevVerb = vb.v;
+        return makeVerbQ(verbTense, vb);
+      }));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "sentence") {
       setCategory("Sentence Builder");
@@ -1781,7 +1827,9 @@ function App() {
 
   const startRepeat = () => {
     const m = mode;
-    if (m === "verb") setCards(Array.from({ length: failed.length }, () => makeVerbQ(verbTense)));
+    // Verbs repeat the exact conjugations you failed (that's what the button promises) —
+    // not a fresh random batch.
+    if (m === "verb") setCards(sh([...failed]));
     else if (m === "sentence") {
       setCards(sh([...failed]));
       const f = failed[0];
@@ -2397,11 +2445,12 @@ function App() {
             {setupCat === "__verb__" && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Tense</div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[["present", "Präsens"], ["perfekt", "Perfekt"], ["praeteritum", "Präteritum"]].map(([t, l]) => (
-                    <button key={t} onClick={() => setVerbTense(t)} style={{ padding: "9px 10px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: verbTense === t ? A : "transparent", color: verbTense === t ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["present", "Präsens"], ["perfekt", "Perfekt"], ["praeteritum", "Präteritum"], ["konjunktiv2", "Konjunktiv II"]].map(([t, l]) => (
+                    <button key={t} onClick={() => setVerbTense(t)} style={{ minWidth: 0, padding: "9px 10px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: verbTense === t ? A : "transparent", color: verbTense === t ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
                   ))}
                 </div>
+                {verbTense === "konjunktiv2" && <div style={{ fontSize: 10.5, color: TD, marginTop: 6, lineHeight: 1.4 }}>Polite requests & hypotheticals: wäre, hätte, könnte… Typed — both the irregular form and „würde + Infinitiv" count where natural.</div>}
               </div>
             )}
 

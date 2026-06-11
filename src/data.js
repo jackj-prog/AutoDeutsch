@@ -3306,6 +3306,186 @@ const DIALOGUES = [
     {q:"Wie viel Datenvolumen braucht der Kunde?",opts:["Fünf Gigabyte","Mindestens zehn Gigabyte","Unbegrenzt"],correctIdx:1},
     {q:"Welchen Tarif wählt er?",opts:["Mit Laufzeit für zwölf Euro","Ohne Laufzeit für fünfzehn Euro","Keinen"],correctIdx:1}
   ]},
+  {title:"Onboarding: erster Arbeitstag",level:"B2",lines:[
+    {de:"Herzlich willkommen im Team! Haben Sie Ihren Dienstausweis schon erhalten?",en:"A warm welcome to the team! Have you received your staff ID yet?"},
+    {de:"Ja, den habe ich heute Morgen am Empfang abgeholt.",en:"Yes, I picked it up at reception this morning."},
+    {de:"Gut. Als Erstes richten wir Ihren Laptop und die Zugänge ein.",en:"Good. First we'll set up your laptop and your accounts."},
+    {de:"Brauche ich für das interne Netzwerk ein eigenes Passwort?",en:"Do I need a separate password for the internal network?"},
+    {de:"Ja, und die Zwei-Faktor-Authentifizierung ist verpflichtend.",en:"Yes, and two-factor authentication is mandatory."},
+    {de:"Verstanden. Wann findet die Sicherheitsunterweisung statt?",en:"Understood. When does the safety briefing take place?"},
+    {de:"Morgen um neun, sie ist für alle neuen Mitarbeiter Pflicht.",en:"Tomorrow at nine — it's compulsory for all new employees."},
+    {de:"In Ordnung. Und mittags zeigt mir jemand die Kantine?",en:"All right. And at lunch someone will show me the canteen?"},
+    {de:"Natürlich, da kommt das ganze Team mit.",en:"Of course, the whole team will come along."}
+  ],questions:[
+    {q:"Was ist verpflichtend?",opts:["Ein eigener Parkplatz","Die Mittagspause","Die Zwei-Faktor-Authentifizierung"],correctIdx:2},
+    {q:"Wann ist die Sicherheitsunterweisung?",opts:["Heute Mittag","Morgen um neun","Nächste Woche"],correctIdx:1},
+    {q:"Was hat die neue Person am Empfang abgeholt?",opts:["Den Laptop","Den Dienstausweis","Den Schlüssel"],correctIdx:1}
+  ]},
+  {title:"Code-Review im Team",level:"B2",lines:[
+    {de:"Hast du dir meinen Pull Request schon angesehen?",en:"Have you looked at my pull request yet?"},
+    {de:"Ja, insgesamt sieht er gut aus, aber ich habe zwei Anmerkungen.",en:"Yes, overall it looks good, but I have two comments."},
+    {de:"Gern, was würdest du ändern?",en:"Sure, what would you change?"},
+    {de:"Die Funktion zur Fehlerbehandlung ist mir zu unübersichtlich.",en:"The error-handling function is too convoluted for my taste."},
+    {de:"Stimmt, die könnte ich in kleinere Teile zerlegen.",en:"True, I could break it into smaller pieces."},
+    {de:"Außerdem fehlen Tests für den Grenzfall, wenn die Liste leer ist.",en:"Also, tests are missing for the edge case when the list is empty."},
+    {de:"Guter Hinweis, den Fall habe ich übersehen.",en:"Good point, I overlooked that case."},
+    {de:"Sonst passt alles. Nach den Änderungen gebe ich es frei.",en:"Everything else is fine. After the changes I'll approve it."},
+    {de:"Danke dir, ich kümmere mich heute noch darum.",en:"Thanks, I'll take care of it today."}
+  ],questions:[
+    {q:"Wie viele Anmerkungen gibt es?",opts:["Keine","Zwei","Fünf"],correctIdx:1},
+    {q:"Welcher Testfall fehlt?",opts:["Eine leere Liste","Ein zu langer Text","Eine falsche Zahl"],correctIdx:0},
+    {q:"Wann will die Person die Änderungen machen?",opts:["Nächste Woche","Heute noch","Morgen früh"],correctIdx:1}
+  ]},
+  {title:"Anruf beim Finanzamt",level:"B2",lines:[
+    {de:"Guten Tag, ich habe eine Frage zu meiner Steuer-Identifikationsnummer.",en:"Hello, I have a question about my tax identification number."},
+    {de:"Gern. Worum geht es genau?",en:"Of course. What exactly is it about?"},
+    {de:"Ich bin neu zugezogen und habe noch keinen Brief mit der Nummer erhalten.",en:"I've just moved here and haven't received a letter with the number yet."},
+    {de:"Wann haben Sie sich denn angemeldet?",en:"When did you register your address?"},
+    {de:"Vor ungefähr drei Wochen, beim Bürgeramt hier in der Stadt.",en:"About three weeks ago, at the citizens' office here in town."},
+    {de:"Dann müsste der Brief bald kommen. Normalerweise dauert es bis zu vier Wochen.",en:"Then the letter should arrive soon. It normally takes up to four weeks."},
+    {de:"Kann mein Arbeitgeber so lange warten?",en:"Can my employer wait that long?"},
+    {de:"Ja, er rechnet zunächst pauschal ab und korrigiert das später.",en:"Yes, they bill at a flat rate at first and correct it later."},
+    {de:"Das beruhigt mich, vielen Dank für die Auskunft.",en:"That's a relief, thank you very much for the information."}
+  ],questions:[
+    {q:"Was fehlt dem Anrufer?",opts:["Die Steuer-Identifikationsnummer","Der Reisepass","Der Arbeitsvertrag"],correctIdx:0},
+    {q:"Wie lange dauert es normalerweise?",opts:["Zwei Tage","Ein halbes Jahr","Bis zu vier Wochen"],correctIdx:2},
+    {q:"Was macht der Arbeitgeber zunächst?",opts:["Er zahlt gar nicht","Er rechnet pauschal ab","Er wartet auf das Amt"],correctIdx:1}
+  ]},
+  {title:"Umzugsunternehmen beauftragen",level:"B2",lines:[
+    {de:"Guten Tag, ich hätte gern ein Angebot für einen Umzug.",en:"Hello, I'd like a quote for a move."},
+    {de:"Gern. Von wo nach wo ziehen Sie um?",en:"Certainly. Where are you moving from and to?"},
+    {de:"Von einer Dreizimmerwohnung im dritten Stock in eine Neubauwohnung am Stadtrand.",en:"From a three-room flat on the third floor to a new-build flat on the edge of town."},
+    {de:"Gibt es in beiden Häusern einen Aufzug?",en:"Is there a lift in both buildings?"},
+    {de:"Im alten Haus leider nicht, im neuen schon.",en:"Unfortunately not in the old building, but yes in the new one."},
+    {de:"Das beeinflusst den Preis. Brauchen Sie auch Verpackungsmaterial?",en:"That affects the price. Do you also need packing material?"},
+    {de:"Ja, bitte, vor allem Kartons für Bücher und Geschirr.",en:"Yes, please — above all boxes for books and crockery."},
+    {de:"Ich schicke Ihnen morgen einen Kostenvoranschlag per E-Mail.",en:"I'll send you a cost estimate by email tomorrow."},
+    {de:"Sehr gut. Eine Halteverbotszone organisieren Sie auch?",en:"Very good. Do you also arrange a no-parking zone?"},
+    {de:"Ja, das übernehmen wir komplett.",en:"Yes, we handle that completely."}
+  ],questions:[
+    {q:"Warum wird der Umzug teurer?",opts:["Es ist Wochenende","Die Wohnung ist zu groß","Im alten Haus gibt es keinen Aufzug"],correctIdx:2},
+    {q:"Was bekommt der Kunde morgen?",opts:["Die Kartons","Einen Kostenvoranschlag","Die Rechnung"],correctIdx:1},
+    {q:"Was organisiert die Firma außerdem?",opts:["Eine Halteverbotszone","Einen neuen Mietvertrag","Die Renovierung"],correctIdx:0}
+  ]},
+  {title:"Strom anmelden",level:"B2",lines:[
+    {de:"Ich möchte für meine neue Wohnung einen Stromvertrag abschließen.",en:"I'd like to set up an electricity contract for my new flat."},
+    {de:"Gern. Wissen Sie, wie hoch Ihr Jahresverbrauch ungefähr ist?",en:"Certainly. Do you know roughly what your annual consumption is?"},
+    {de:"Als Single-Haushalt schätze ich etwa 1.500 Kilowattstunden.",en:"As a single household I'd estimate about 1,500 kilowatt hours."},
+    {de:"Dann empfehle ich unseren Ökostromtarif mit Preisgarantie.",en:"Then I recommend our green electricity tariff with a price guarantee."},
+    {de:"Wie lange gilt die Preisgarantie?",en:"How long does the price guarantee last?"},
+    {de:"Zwölf Monate ab Vertragsbeginn, danach kann sich der Arbeitspreis ändern.",en:"Twelve months from the start of the contract; after that the unit price can change."},
+    {de:"Und welche Daten brauchen Sie von mir?",en:"And what details do you need from me?"},
+    {de:"Die Zählernummer und den Zählerstand am Einzugstag.",en:"The meter number and the meter reading on the day you move in."},
+    {de:"Beides habe ich schon notiert, das schicke ich Ihnen gleich.",en:"I've already noted down both — I'll send them to you right away."}
+  ],questions:[
+    {q:"Welchen Tarif empfiehlt die Beraterin?",opts:["Den günstigsten Tarif","Den Ökostromtarif mit Preisgarantie","Einen Nachttarif"],correctIdx:1},
+    {q:"Wie lange gilt die Preisgarantie?",opts:["Zwölf Monate","Zwei Jahre","Unbegrenzt"],correctIdx:0},
+    {q:"Welche Daten werden gebraucht?",opts:["Kontonummer und Gehalt","Zählernummer und Zählerstand","Nur die Adresse"],correctIdx:1}
+  ]},
+  {title:"Diskussion: Elektroautos",level:"B2",lines:[
+    {de:"Würdest du dir ein Elektroauto kaufen?",en:"Would you buy an electric car?"},
+    {de:"Ich bin unentschlossen. Die Reichweite macht mir Sorgen.",en:"I'm undecided. The range worries me."},
+    {de:"Moderne Modelle schaffen doch locker über vierhundert Kilometer.",en:"Modern models easily manage over four hundred kilometres."},
+    {de:"Schon, aber auf dem Land gibt es zu wenige Ladesäulen.",en:"Sure, but in the countryside there are too few charging stations."},
+    {de:"Dafür sind die Betriebskosten deutlich niedriger als beim Verbrenner.",en:"On the other hand, running costs are much lower than with a combustion engine."},
+    {de:"Das stimmt, vor allem wenn man zu Hause laden kann.",en:"That's true, especially if you can charge at home."},
+    {de:"Eben. Und die Wartung ist einfacher, weil weniger Teile verschleißen.",en:"Exactly. And maintenance is simpler because fewer parts wear out."},
+    {de:"Überzeugt hast du mich noch nicht, aber eine Probefahrt mache ich gern.",en:"You haven't convinced me yet, but I'm happy to take a test drive."}
+  ],questions:[
+    {q:"Was macht der skeptischen Person Sorgen?",opts:["Die Reichweite","Die Farbe","Der Lärm"],correctIdx:0},
+    {q:"Welcher Vorteil wird genannt?",opts:["Höherer Wiederverkaufswert","Niedrigere Betriebskosten","Schnelleres Fahren"],correctIdx:1},
+    {q:"Wie endet das Gespräch?",opts:["Mit einem Kauf","Mit einem Streit","Mit der Zusage zu einer Probefahrt"],correctIdx:2}
+  ]},
+  {title:"Krankmeldung im Büro",level:"B2",lines:[
+    {de:"Guten Morgen, ich muss mich leider für heute krankmelden.",en:"Good morning, unfortunately I have to call in sick for today."},
+    {de:"Gute Besserung! Was fehlt Ihnen denn?",en:"Get well soon! What's wrong?"},
+    {de:"Eine starke Erkältung mit Fieber, ich gehe gleich zum Arzt.",en:"A heavy cold with a fever — I'm going to the doctor shortly."},
+    {de:"Verstanden. Denken Sie an die Krankschreibung.",en:"Understood. Remember the sick note."},
+    {de:"Ja, ab wann brauche ich die genau?",en:"Yes — from when exactly do I need it?"},
+    {de:"Spätestens ab dem dritten Krankheitstag, so steht es im Arbeitsvertrag.",en:"From the third day of illness at the latest — that's what it says in the employment contract."},
+    {de:"Die Bescheinigung lasse ich Ihnen elektronisch zukommen.",en:"I'll have the certificate sent to you electronically."},
+    {de:"Perfekt. Ihre Termine heute sage ich ab.",en:"Perfect. I'll cancel your appointments for today."},
+    {de:"Vielen Dank, das hilft mir sehr.",en:"Thank you very much, that helps me a lot."}
+  ],questions:[
+    {q:"Ab wann braucht man die Krankschreibung?",opts:["Ab dem ersten Tag","Spätestens ab dem dritten Tag","Erst nach einer Woche"],correctIdx:1},
+    {q:"Was übernimmt die Kollegin?",opts:["Sie sagt die Termine ab","Sie ruft den Arzt an","Sie bringt Medikamente"],correctIdx:0},
+    {q:"Wie wird die Bescheinigung geschickt?",opts:["Per Post","Per Fax","Elektronisch"],correctIdx:2}
+  ]},
+  {title:"Feedbackgespräch mit der Chefin",level:"B2",lines:[
+    {de:"Schön, dass Sie Zeit haben. Wie zufrieden sind Sie mit Ihrem ersten halben Jahr?",en:"Good that you have time. How happy are you with your first six months?"},
+    {de:"Insgesamt sehr zufrieden, vor allem die Projekte sind spannend.",en:"Very happy overall — above all the projects are exciting."},
+    {de:"Das freut mich. Ihre technische Arbeit wird im Team sehr geschätzt.",en:"I'm glad. Your technical work is highly valued in the team."},
+    {de:"Danke. Woran sollte ich noch arbeiten?",en:"Thank you. What should I still work on?"},
+    {de:"Bringen Sie sich in Besprechungen ruhig stärker ein.",en:"Feel free to contribute more actively in meetings."},
+    {de:"Das fällt mir auf Deutsch manchmal noch schwer.",en:"That's still sometimes difficult for me in German."},
+    {de:"Verständlich. Wir übernehmen gern die Kosten für einen Sprachkurs.",en:"Understandable. We're happy to cover the costs of a language course."},
+    {de:"Das wäre großartig, da sage ich nicht Nein.",en:"That would be great — I won't say no to that."},
+    {de:"Gut, dann halten wir das als Ziel fürs nächste Quartal fest.",en:"Good, then let's record that as a goal for the next quarter."}
+  ],questions:[
+    {q:"Was wird im Team geschätzt?",opts:["Die technische Arbeit","Die Pünktlichkeit","Der Humor"],correctIdx:0},
+    {q:"Woran soll die Person arbeiten?",opts:["Mehr Überstunden machen","Sich in Besprechungen stärker einbringen","Schneller programmieren"],correctIdx:1},
+    {q:"Was bietet die Chefin an?",opts:["Eine Gehaltserhöhung","Einen Firmenwagen","Einen bezahlten Sprachkurs"],correctIdx:2}
+  ]},
+  {title:"Wohnungsübergabe",level:"B2",lines:[
+    {de:"Kommen Sie rein, machen wir gemeinsam das Übergabeprotokoll.",en:"Come in — let's do the handover record together."},
+    {de:"Gern. Die Wände habe ich frisch gestrichen, wie vereinbart.",en:"Gladly. I've freshly painted the walls, as agreed."},
+    {de:"Das sieht ordentlich aus. Hier im Bad fehlt allerdings eine Fliese.",en:"That looks tidy. Here in the bathroom, though, a tile is missing."},
+    {de:"Die war schon beim Einzug beschädigt, das steht im alten Protokoll.",en:"It was already damaged when I moved in — it's in the old record."},
+    {de:"Stimmt, hier ist es vermerkt. Dann geht das nicht zu Ihren Lasten.",en:"True, it's noted here. Then it won't be charged to you."},
+    {de:"Wie viele Schlüssel muss ich zurückgeben?",en:"How many keys do I have to return?"},
+    {de:"Alle vier, auch den für den Briefkasten.",en:"All four, including the one for the letterbox."},
+    {de:"Hier sind sie. Wann bekomme ich die Kaution zurück?",en:"Here they are. When do I get my deposit back?"},
+    {de:"Innerhalb von drei Monaten, nach der Nebenkostenabrechnung.",en:"Within three months, after the utility bill statement."}
+  ],questions:[
+    {q:"Warum muss der Mieter die Fliese nicht bezahlen?",opts:["Der Schaden stand schon im alten Protokoll","Die Vermieterin hat sie zerbrochen","Fliesen sind nicht wichtig"],correctIdx:0},
+    {q:"Wie viele Schlüssel gibt der Mieter zurück?",opts:["Zwei","Drei","Vier"],correctIdx:2},
+    {q:"Wann kommt die Kaution zurück?",opts:["Sofort","Innerhalb von drei Monaten","Nach einem Jahr"],correctIdx:1}
+  ]},
+  {title:"Technisches Problem im Labor",level:"B2",lines:[
+    {de:"Der Prüfstand zeigt seit heute Morgen unplausible Messwerte an.",en:"The test rig has been showing implausible readings since this morning."},
+    {de:"Hast du die Verkabelung schon überprüft?",en:"Have you checked the wiring yet?"},
+    {de:"Ja, alle Stecker sitzen fest, und die Sicherungen sind in Ordnung.",en:"Yes, all the connectors are firmly seated and the fuses are fine."},
+    {de:"Vielleicht liegt es am Sensor. Wann wurde er zuletzt kalibriert?",en:"Maybe it's the sensor. When was it last calibrated?"},
+    {de:"Vor über einem Jahr, das könnte das Problem erklären.",en:"Over a year ago — that could explain the problem."},
+    {de:"Dann melde ihn zur Kalibrierung an und nimm solange den Ersatzsensor.",en:"Then book it in for calibration and use the spare sensor in the meantime."},
+    {de:"Mache ich. Soll ich die Messreihe von heute verwerfen?",en:"Will do. Should I discard today's measurement series?"},
+    {de:"Ja, dokumentier den Vorfall aber bitte im Protokoll.",en:"Yes, but please document the incident in the log."},
+    {de:"In Ordnung, ich trage es gleich ein.",en:"All right, I'll enter it right away."}
+  ],questions:[
+    {q:"Was zeigt der Prüfstand an?",opts:["Unplausible Messwerte","Gar nichts","Zu hohe Temperaturen"],correctIdx:0},
+    {q:"Was könnte die Ursache sein?",opts:["Ein Stromausfall","Ein lange nicht kalibrierter Sensor","Falsche Software"],correctIdx:1},
+    {q:"Was passiert mit der heutigen Messreihe?",opts:["Sie wird veröffentlicht","Sie wird verworfen","Sie wird verkauft"],correctIdx:1}
+  ]},
+  {title:"Termin bei der Ausländerbehörde",level:"B2",lines:[
+    {de:"Guten Tag, ich komme wegen der Verlängerung meiner Aufenthaltserlaubnis.",en:"Hello, I'm here about extending my residence permit."},
+    {de:"Haben Sie den Antrag vorab online ausgefüllt?",en:"Did you fill in the application online in advance?"},
+    {de:"Ja, hier ist die Bestätigung mit dem QR-Code.",en:"Yes, here's the confirmation with the QR code."},
+    {de:"Danke. Ich brauche noch Ihren Pass und ein aktuelles biometrisches Foto.",en:"Thank you. I also need your passport and a current biometric photo."},
+    {de:"Beides habe ich dabei. Mein Arbeitsvertrag ist auch dabei.",en:"I have both with me. My employment contract is here too."},
+    {de:"Sehr gut, der unbefristete Vertrag erleichtert die Sache.",en:"Very good — the permanent contract makes things easier."},
+    {de:"Wie lange dauert die Bearbeitung voraussichtlich?",en:"How long is processing expected to take?"},
+    {de:"Etwa sechs Wochen. Bis dahin gilt diese Fiktionsbescheinigung.",en:"About six weeks. Until then this provisional certificate is valid."},
+    {de:"Verstanden, vielen Dank für Ihre Hilfe.",en:"Understood — thank you very much for your help."}
+  ],questions:[
+    {q:"Warum ist die Person bei der Behörde?",opts:["Wegen der Verlängerung der Aufenthaltserlaubnis","Wegen eines neuen Reisepasses","Wegen einer Heirat"],correctIdx:0},
+    {q:"Was erleichtert die Bearbeitung?",opts:["Ein Empfehlungsschreiben","Der unbefristete Arbeitsvertrag","Bargeld"],correctIdx:1},
+    {q:"Was gilt während der Bearbeitungszeit?",opts:["Eine Fiktionsbescheinigung","Gar nichts","Das alte Visum für immer"],correctIdx:0}
+  ]},
+  {title:"Smalltalk in der Kaffeeküche",level:"B2",lines:[
+    {de:"Na, wie war dein Wochenende? Du wolltest doch wandern gehen.",en:"So, how was your weekend? You were going to go hiking, weren't you?"},
+    {de:"Ja, wir waren in den Bergen, aber das Wetter hat nicht mitgespielt.",en:"Yes, we were in the mountains, but the weather didn't cooperate."},
+    {de:"Wie schade! Seid ihr trotzdem losgezogen?",en:"What a shame! Did you set off anyway?"},
+    {de:"Nur bis zur Hütte, danach hat es angefangen zu gewittern.",en:"Only as far as the hut — after that a thunderstorm started."},
+    {de:"Da habt ihr richtig reagiert, das kann gefährlich werden.",en:"You reacted correctly — that can get dangerous."},
+    {de:"Eben. Dafür war der Kaiserschmarrn auf der Hütte hervorragend.",en:"Exactly. On the plus side, the Kaiserschmarrn at the hut was outstanding."},
+    {de:"Das klingt nach einem guten Trost. Nächstes Mal klappt es bestimmt.",en:"That sounds like a good consolation. Next time it'll work out for sure."},
+    {de:"Hoffentlich. Und du? Wie läuft dein Badezimmer-Projekt?",en:"Hopefully. And you? How's your bathroom project going?"},
+    {de:"Frag lieber nicht, die Fliesen sind schon wieder ausverkauft.",en:"Better not to ask — the tiles are sold out yet again."}
+  ],questions:[
+    {q:"Warum sind sie nur bis zur Hütte gewandert?",opts:["Es hat angefangen zu gewittern","Sie waren zu müde","Der Weg war gesperrt"],correctIdx:0},
+    {q:"Was war hervorragend?",opts:["Das Wetter","Der Kaiserschmarrn","Die Aussicht"],correctIdx:1},
+    {q:"Welches Problem hat die andere Person?",opts:["Das Auto ist kaputt","Die Fliesen sind ausverkauft","Der Urlaub wurde storniert"],correctIdx:1}
+  ]},
 ];
 
 

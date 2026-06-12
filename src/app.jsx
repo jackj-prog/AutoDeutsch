@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.34";
+const APP_VERSION = "2026.06.11.35";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -628,14 +628,15 @@ const SpeakBtn = React.memo(({ text }) => (
 ));
 
 const ProgBar = React.memo(({ pct, color }) => (
-  <div style={{ height: 3, background: "rgba(255,255,255,0.07)", borderRadius: 2, marginBottom: 18, overflow: "hidden" }}>
+  <div style={{ height: 5, background: "rgba(255,255,255,0.07)", borderRadius: 999, marginBottom: 18, overflow: "hidden" }}>
     <div style={{
       height: "100%",
       width: `${pct}%`,
       background: color === PAL.R
         ? `linear-gradient(90deg, ${PAL.R}99, ${PAL.R})`
         : `linear-gradient(90deg, ${PAL.AD}, ${PAL.A})`,
-      borderRadius: 2,
+      borderRadius: 999,
+      boxShadow: color === PAL.R ? `0 0 10px ${PAL.R}66` : `0 0 10px ${PAL.A}50`,
       transition: "width 0.35s ease-out"
     }} />
   </div>
@@ -2300,14 +2301,14 @@ function App() {
           color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px",
           fontWeight: 600, letterSpacing: 0.3, flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6
         }}><Icon name="arrowLeft" size={14} /> Back</button>
-        <div style={{ fontSize: 11, color: TD, fontWeight: 600, textAlign: "right", lineHeight: 1.3, minWidth: 0, flex: 1 }}>
-          <div style={{ color: T, fontWeight: 700, letterSpacing: 0.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div style={{ fontSize: 11, color: TD, fontWeight: 600, textAlign: "right", lineHeight: 1.3, minWidth: 0, flex: 1, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8 }}>
+          <div style={{ color: T, fontWeight: 700, letterSpacing: 0.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>
             {extra}{category}
           </div>
-          <div style={{ fontSize: 10, marginTop: 2, letterSpacing: 1 }}>
-            {rpt > 0 && <span style={{ color: R, fontWeight: 700, marginRight: 6 }}>R{rpt + 1}</span>}
-            <span style={{ color: TD }}>{idx + 1} / {cards.length}</span>
-          </div>
+          <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 5, background: "#141414", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "4px 11px", fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5 }}>
+            {rpt > 0 && <span style={{ color: R }}>R{rpt + 1}</span>}
+            <span style={{ color: T }}>{idx + 1}<span style={{ color: TD, fontWeight: 700 }}> / {cards.length}</span></span>
+          </span>
         </div>
       </div>
     </div>
@@ -2516,6 +2517,8 @@ function App() {
         ::selection { background: rgba(255,204,0,0.25); }
         @keyframes ad-screen-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .ad-screen { animation: ad-screen-in .24s ease-out; }
+        @keyframes ad-ring-in { from { stroke-dashoffset: var(--c); } }
+        .ad-ringin { animation: ad-ring-in .9s ease-out; }
         @keyframes ad-mastery-pop {
           0% { transform: scale(0.92); box-shadow: 0 0 0 rgba(88, 214, 141, 0); }
           48% { transform: scale(1.04); box-shadow: 0 0 28px rgba(88, 214, 141, 0.28); }
@@ -2547,7 +2550,7 @@ function App() {
         .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
         button:focus-visible, [role="button"]:focus-visible, input:focus-visible { outline: 2px solid #FFCC00AA; outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -3922,73 +3925,104 @@ function App() {
       </div>}
 
       {/* ── RESULTS ── */}
-      {screen === "results" && <div style={{ padding: "40px 24px 24px", textAlign: "center" }}>
-        <div style={{ height: 3, width: 64, margin: "0 auto 26px", background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, borderRadius: 2 }} />
-        <div style={{ width: 80, height: 80, borderRadius: "50%", margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: failed.length > 0 ? A : G, background: failed.length > 0 ? `${A}12` : `${G}14`, border: `1.5px solid ${failed.length > 0 ? A : G}50`, boxShadow: `0 0 48px -10px ${failed.length > 0 ? A : G}` }}>
-          <Icon name={failed.length > 0 ? "target" : "trophy"} size={38} stroke={2} />
-        </div>
-        <div style={{ fontSize: 11, color: failed.length > 0 ? A : G, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>{failed.length > 0 ? "Keep Going" : "Complete"}</div>
-        <h2 style={{ fontFamily: FN, fontSize: 31, margin: "0 0 6px", fontWeight: 800, color: T, letterSpacing: -0.4 }}>{failed.length > 0 ? "Almost There" : mode === "audio" ? "Nice Listening" : "Session Complete"}</h2>
-        <p style={{ color: TD, fontSize: 13, marginBottom: 8 }}>
-          {category}
-          {rpt > 0 ? ` · Round ${rpt + 1}` : ""}
-          {" · "}
-          <span style={{ color: A, fontWeight: 600 }}>{mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode}</span>
-        </p>
-        {failed.length > 0 && <p style={{ color: R, fontSize: 13, marginBottom: 8, fontWeight: 700 }}>{failed.length} card{failed.length !== 1 ? "s" : ""} to repeat</p>}
-        {failedNames.length > 0 && <div style={{ marginBottom: 20, padding: "12px 16px", background: SH, border: `1px solid ${R}33`, borderRadius: 14, textAlign: "left", maxHeight: 120, overflowY: "auto" }}>
-          {failedNames.map((n, i) => (<div key={i} style={{ fontSize: 12, color: R, padding: "4px 0", borderBottom: i < failedNames.length - 1 ? `1px solid ${B}` : "none" }}>✗ {n}</div>))}
-        </div>}
-        {newlyMastered.length > 0 && <div className="ad-mastery-burst" style={{ margin: "0 0 20px", padding: "14px 14px 12px", background: `linear-gradient(145deg, ${G}14, #0F0F0F 68%)`, border: `1px solid ${G}55`, borderRadius: 14, textAlign: "left", boxShadow: `0 0 24px ${G}12` }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <IconBadge name="trophy" size={30} color={G} bg={`${G}12`} />
-              <div>
-                <div style={{ color: G, fontSize: 10, fontWeight: 900, letterSpacing: 1.2, textTransform: "uppercase" }}>Newly mastered</div>
-                <div style={{ color: T, fontFamily: FN, fontSize: 16, fontWeight: 900 }}>{newlyMastered.length} card{newlyMastered.length === 1 ? "" : "s"}</div>
+      {screen === "results" && (() => {
+        const totalAns = stats.c + stats.w;
+        const acc = totalAns > 0 ? Math.round((stats.c / totalAns) * 100) : null;
+        const good = failed.length === 0;
+        const heroColor = good ? G : A;
+        const modeLabel = mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode;
+        const R1 = 50, C1 = 2 * Math.PI * R1;
+        const goalPct = Math.min(1, dailyStats.count / Math.max(dailyGoal, 1));
+        return (
+          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+            <div style={{ paddingTop: "max(24px, env(safe-area-inset-top))", textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 11, color: heroColor, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase" }}>{good ? (mode === "audio" ? "Nice listening" : "Session complete") : "Keep going"}</div>
+              <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>{category}{rpt > 0 ? ` · Round ${rpt + 1}` : ""} · <span style={{ color: A, fontWeight: 700 }}>{modeLabel}</span></div>
+            </div>
+
+            {/* Session summary */}
+            <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "20px 18px 16px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV, textAlign: "center" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
+              {mode === "audio" ? (
+                /* Audio is passive listening — no graded answers, so no accuracy fiction. */
+                <div style={{ padding: "14px 0 10px" }}>
+                  <div style={{ fontFamily: FN, fontSize: 52, color: A, fontWeight: 800, lineHeight: 1 }}><CountUp value={stats.c} /></div>
+                  <div style={{ fontSize: 10, color: TD, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.4, marginTop: 6 }}>Phrases heard</div>
+                </div>
+              ) : (
+                <>
+                  <div style={{ position: "relative", width: 124, height: 124, margin: "6px auto 10px" }}>
+                    <svg width="124" height="124" viewBox="0 0 124 124">
+                      <circle cx="62" cy="62" r={R1} fill="none" stroke="#1D1D1D" strokeWidth="9" />
+                      {acc != null && <circle className="ad-ringin" cx="62" cy="62" r={R1} fill="none" stroke={acc >= 80 ? G : acc >= 60 ? A : R} strokeWidth="9" strokeLinecap="round"
+                        strokeDasharray={C1} strokeDashoffset={C1 * (1 - acc / 100)} transform="rotate(-90 62 62)" style={{ "--c": `${C1}` }} />}
+                    </svg>
+                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ fontFamily: FN, fontSize: 30, fontWeight: 800, color: acc == null ? TD : acc >= 80 ? G : acc >= 60 ? A : R, lineHeight: 1 }}>{acc == null ? "–" : <CountUp value={acc} format={n => `${n}%`} />}</div>
+                      <div style={{ fontSize: 9, color: TD, fontWeight: 700, letterSpacing: 0.8, textTransform: "uppercase", marginTop: 3 }}>accuracy</div>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: `${G}12`, border: `1px solid ${G}33`, borderRadius: 999, padding: "6px 14px", color: G, fontSize: 13, fontWeight: 800 }}>✓ <CountUp value={stats.c} /></span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: stats.w > 0 ? `${R}12` : "#141414", border: `1px solid ${stats.w > 0 ? `${R}33` : B}`, borderRadius: 999, padding: "6px 14px", color: stats.w > 0 ? "#F87171" : TD, fontSize: 13, fontWeight: 800 }}>✗ <CountUp value={stats.w} /></span>
+                  </div>
+                </>
+              )}
+              {/* Session → daily goal connection */}
+              <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${B}55`, display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 700, letterSpacing: 0.4, flexShrink: 0 }}>Today</span>
+                <div style={{ flex: 1, height: 5, background: "#0A0A0A", borderRadius: 3, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${goalPct * 100}%`, background: dailyStats.count >= dailyGoal ? G : A, borderRadius: 3, transition: "width .5s ease" }} />
+                </div>
+                <span style={{ fontSize: 11, fontWeight: 800, color: dailyStats.count >= dailyGoal ? G : T, flexShrink: 0 }}>{dailyStats.count}<span style={{ color: TD, fontWeight: 700 }}> / {dailyGoal}</span></span>
               </div>
             </div>
-            <div style={{ color: TD, fontSize: 10, textAlign: "right" }}>5/5 production<br />streak</div>
-          </div>
-          <div style={{ display: "grid", gap: 7 }}>
-            {newlyMastered.slice(0, 5).map(item => (
-              <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "7px 0", borderTop: `1px solid ${B}55`, fontSize: 12 }}>
-                <span style={{ color: T, fontWeight: 900 }}>{item.de}</span>
-                {item.en && <span style={{ color: TD, textAlign: "right" }}>{item.en}</span>}
+
+            {newlyMastered.length > 0 && <div className="ad-mastery-burst" style={{ margin: "0 0 14px", padding: "14px 14px 12px", background: `linear-gradient(145deg, ${G}14, #0F0F0F 68%)`, border: `1px solid ${G}55`, borderRadius: 14, textAlign: "left", boxShadow: `0 0 24px ${G}12` }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <IconBadge name="trophy" size={30} color={G} />
+                  <div>
+                    <div style={{ color: G, fontSize: 10, fontWeight: 900, letterSpacing: 1.2, textTransform: "uppercase" }}>Newly mastered</div>
+                    <div style={{ color: T, fontFamily: FN, fontSize: 16, fontWeight: 900 }}>{newlyMastered.length} card{newlyMastered.length === 1 ? "" : "s"}</div>
+                  </div>
+                </div>
+                <div style={{ color: TD, fontSize: 10, textAlign: "right" }}>5/5 production<br />streak</div>
               </div>
-            ))}
+              <div style={{ display: "grid", gap: 7 }}>
+                {newlyMastered.slice(0, 5).map(item => (
+                  <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "7px 0", borderTop: `1px solid ${B}55`, fontSize: 12 }}>
+                    <span style={{ color: T, fontWeight: 900 }}>{item.de}</span>
+                    {item.en && <span style={{ color: TD, textAlign: "right" }}>{item.en}</span>}
+                  </div>
+                ))}
+              </div>
+              {newlyMastered.length > 5 && <div style={{ color: TD, fontSize: 10, textAlign: "center", paddingTop: 8 }}>+ {newlyMastered.length - 5} more</div>}
+            </div>}
+
+            {failedNames.length > 0 && <div style={{ marginBottom: 14, background: "linear-gradient(180deg, #161010 0%, #100C0C 100%)", border: `1px solid ${R}30`, borderRadius: 14, overflow: "hidden" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 14px 9px", borderBottom: `1px solid ${R}22` }}>
+                <Icon name="refresh" size={14} style={{ color: "#F87171" }} />
+                <span style={{ fontSize: 11, color: "#F87171", fontWeight: 800, letterSpacing: 0.6, textTransform: "uppercase", flex: 1 }}>To repeat</span>
+                <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>{failed.length}</span>
+              </div>
+              <div style={{ padding: "6px 14px 10px", maxHeight: 120, overflowY: "auto" }}>
+                {failedNames.map((n, i) => (<div key={i} style={{ fontSize: 12.5, color: T, padding: "5px 0", borderBottom: i < failedNames.length - 1 ? `1px solid ${B}44` : "none" }}>{n}</div>))}
+              </div>
+            </div>}
+
+            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 10, paddingTop: 10 }}>
+              {failed.length > 0 ? <>
+                <Btn bg={R} color="#FFF" onClick={startRepeat} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>
+                <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ fontWeight: 600 }}>Back to home</Btn>
+              </> : <>
+                <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("home")} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Weiter</Btn>
+                {lastSession && lastSession.cat !== "__due__" && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => startSession(lastSession.cat, lastSession.m, lastSession.count)} style={{ fontWeight: 600, fontSize: 13 }}>Go again — {lastSession.label}</Btn>}
+              </>}
+            </div>
           </div>
-          {newlyMastered.length > 5 && <div style={{ color: TD, fontSize: 10, textAlign: "center", paddingTop: 8 }}>+ {newlyMastered.length - 5} more</div>}
-        </div>}
-        {failed.length === 0 && <div style={{ height: 16 }} />}
-
-        {mode === "audio" ? (
-          /* Audio is passive listening — there are no graded answers, so showing a
-             correct/wrong split or "100% accuracy" here would be fiction. */
-          <div style={{ marginBottom: 28 }}>
-            <div style={{ fontFamily: FN, fontSize: 48, color: A, fontWeight: 800 }}><CountUp value={stats.c} /></div>
-            <div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Phrases heard</div>
-          </div>
-        ) : (
-        <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 28 }}>
-          <div><div style={{ fontFamily: FN, fontSize: 48, color: G, fontWeight: 800 }}><CountUp value={stats.c} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Correct</div></div>
-          <div style={{ width: 1, background: B }} />
-          <div><div style={{ fontFamily: FN, fontSize: 48, color: R, fontWeight: 800 }}><CountUp value={stats.w} /></div><div style={{ fontSize: 10, color: TD, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>Wrong</div></div>
-        </div>
-        )}
-
-        {(mode !== "audio" && stats.c + stats.w > 0) && <div style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${failed.length > 0 ? R : A}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", background: SH }}>
-          <div style={{ fontFamily: FN, fontSize: 30, color: failed.length > 0 ? R : A, fontWeight: 800 }}><CountUp value={Math.round((stats.c / (stats.c + stats.w)) * 100)} format={n => `${n}%`} /></div>
-          <div style={{ fontSize: 10, color: TD, fontWeight: 600 }}>accuracy</div>
-        </div>}
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {failed.length > 0 ? <>
-            <Btn bg={R} color="#FFF" onClick={startRepeat} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>
-            <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ fontWeight: 600 }}>Back to home</Btn>
-          </> : <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("home")} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Weiter</Btn>}
-        </div>
-      </div>}
+        );
+      })()}
 
       {/* Spacer keeps tab-screen content clear of the fixed bottom nav */}
       {["home", "library", "stats"].includes(screen) && <div style={{ height: 74 }} />}

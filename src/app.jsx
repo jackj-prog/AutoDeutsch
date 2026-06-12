@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.37";
+const APP_VERSION = "2026.06.11.38";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -727,6 +727,7 @@ function App() {
   const [tStart, setTStart] = useState(0);
   const [lastElapsed, setLastElapsed] = useState(0); // NEW: for automaticity display
   const [revealElapsed, setRevealElapsed] = useState(0);
+  const [lastBoxMove, setLastBoxMove] = useState(null); // {from, to} SRS box move of the last answer
   // Sentence building
   const [sbPool, setSbPool] = useState([]);
   const [sbPicked, setSbPicked] = useState([]);
@@ -1441,6 +1442,9 @@ function App() {
       ? (productionStreak >= MASTERY_STREAK ? (prev.stats.masteredAt || now) : null)
       : (prev.stats.masteredAt || null);
 
+    const prevBox = Math.max(0, Math.min(5, Math.floor(prev.srs.box || 0)));
+    const newBox = nextBox(prev.srs.box, correct, prev.srs.lastReviewed, now);
+    setLastBoxMove({ from: prevBox, to: newBox });
     const upd = {
       ...prog,
       [key]: {
@@ -1456,7 +1460,7 @@ function App() {
           masteredAt,
         },
         srs: {
-          box: nextBox(prev.srs.box, correct, prev.srs.lastReviewed, now),
+          box: newBox,
           lastReviewed: now,
         },
       },
@@ -1726,7 +1730,7 @@ function App() {
     if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; }
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(0); setIdx(0); setNewlyMastered([]); setMasteryBurst(null);
     setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
-    setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0);
+    setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setLastBoxMove(null);
     // Fresh session → clear first-attempt tracker so stats record this run's first attempts.
     // startRepeat deliberately does NOT call this, so repeated failures stay excluded.
     countedKeysRef.current = new Set();
@@ -1983,7 +1987,7 @@ function App() {
       if (f) { setSbPool(sh([...f.correct])); setSbPicked([]); setSbChecked(false); setSbCorrect(false); }
     } else setCards(sh([...failed]));
     setIdx(0); setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
-    setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
+    setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(r => r + 1); setTStart(Date.now());
     setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production" || m === "dictation") ? "cards" : "drill");
   };
@@ -2112,7 +2116,7 @@ function App() {
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
-      setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
+      setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
       setTimeout(() => { setVis(true); navLockRef.current = false; }, 50);
@@ -2140,7 +2144,7 @@ function App() {
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
-      setAnswered(false); setSel(null); setInput(""); setInputResult(null); setShowHint(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
+      setAnswered(false); setSel(null); setInput(""); setInputResult(null); setShowHint(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
       setTimeout(() => { setVis(true); navLockRef.current = false; }, 50);
@@ -2160,7 +2164,7 @@ function App() {
     setTimeout(() => {
       const next = cards[Math.min(idx + 1, cards.length - 1)];
       if (next) setSbPool(sh([...next.correct]));
-      setSbPicked([]); setSbChecked(false); setSbCorrect(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
+      setSbPicked([]); setSbChecked(false); setSbCorrect(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cards.length - 1, 0)));
       setTStart(Date.now());
       setTimeout(() => { setVis(true); navLockRef.current = false; }, 50);
@@ -2442,6 +2446,16 @@ function App() {
           <span style={{ opacity: 0.35 }}>•</span>
           <span style={{ color: R }}>✗ {n.stats.incorrect}</span>
         </div>
+        {/* SRS legibility: show what this answer did to the review schedule */}
+        {lastBoxMove && lastBoxMove.to !== lastBoxMove.from && (
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 7 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10.5, fontWeight: 800, borderRadius: 999, padding: "4px 11px", background: lastBoxMove.to > lastBoxMove.from ? `${G}12` : `${R}12`, border: `1px solid ${lastBoxMove.to > lastBoxMove.from ? G : R}33`, color: lastBoxMove.to > lastBoxMove.from ? G : "#F87171" }}>
+              {lastBoxMove.to > lastBoxMove.from
+                ? `↑ Memory level ${lastBoxMove.to}/5 · next review in ${SRS_INTERVALS[lastBoxMove.to]}d`
+                : `↓ Level ${lastBoxMove.to}/5 · reviews every ${SRS_INTERVALS[lastBoxMove.to]}d`}
+            </span>
+          </div>
+        )}
         {lastSeenLabel && <div style={{ fontSize: 10, color: TD, marginTop: 4, textAlign: "center", opacity: 0.7 }}>{lastSeenLabel}</div>}
         <button type="button" onClick={askTutorAboutCard} style={{ margin: "8px auto 0", display: "inline-flex", alignItems: "center", gap: 6, background: "transparent", border: `1px solid ${BL}44`, borderRadius: 999, padding: "6px 13px", color: BL, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
           <Icon name="message" size={13} /> Why? Ask tutor

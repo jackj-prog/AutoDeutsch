@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.32";
+const APP_VERSION = "2026.06.11.33";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -486,14 +486,14 @@ const ICONS = {
   arrowRight: "M5 12h14M13 6l6 6-6 6",
   arrowLeft: "M19 12H5M11 6l-6 6 6 6",
   refresh: "M20 6v5h-5M4 18v-5h5M18.5 9a7 7 0 0 0-12-2.5L4 9m16 6-2.5 2.5A7 7 0 0 1 5.5 15",
-  book: "M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 0-4-4V4Zm0 0v12",
+  book: "M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2V4Zm20 0h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7V4Z",
   layers: "M12 3 3 8l9 5 9-5-9-5Zm-7 9 7 4 7-4M5 16l7 4 7-4",
   headphones: "M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-2v-7h4M4 13h4v7H6a2 2 0 0 1-2-2v-5Z",
   keyboard: "M4 7h16v10H4V7Zm3 3h.01M10 10h.01M13 10h.01M16 10h.01M7 14h10",
   target: "M12 3v3M12 18v3M3 12h3M18 12h3M7.5 7.5l2.1 2.1M14.4 14.4l2.1 2.1M16.5 7.5l-2.1 2.1M9.6 14.4l-2.1 2.1M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z",
   calendar: "M7 3v3M17 3v3M4 8h16M5 5h14v16H5V5Z",
   clock: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 4v4l3 2",
-  chart: "M5 19V5M5 19h15M9 16v-5M13 16V8M17 16v-8",
+  chart: "M3 3v18h18M8 17v-6m4.5 6V7m4.5 10v-3.5",
   check: "M20 6 9 17l-5-5",
   shield: "M12 3 5 6v5c0 4.5 2.8 8 7 10 4.2-2 7-5.5 7-10V6l-7-3Z",
   wifi: "M5 10a10 10 0 0 1 14 0M8 13a6 6 0 0 1 8 0M11 16a2 2 0 0 1 2 0M12 19h.01",
@@ -501,8 +501,8 @@ const ICONS = {
   upload: "M12 16V4M7 9l5-5 5 5M5 20h14",
   download: "M12 4v12M7 11l5 5 5-5M5 20h14",
   volume: "M4 10v4h4l5 4V6l-5 4H4Zm13-2a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14",
-  home: "M4 11 12 4l8 7v9h-5v-6H9v6H4v-9Z",
-  users: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8-1a3 3 0 1 0 0-6M2 20a6 6 0 0 1 12 0M14 20a5 5 0 0 1 8 0",
+  home: "m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2V10Z",
+  users: "M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12.5 10v-2a4 4 0 0 0-3-3.85M16 3.15a4 4 0 0 1 0 7.7",
   heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z",
   hand: "M7 11V6a2 2 0 0 1 4 0v5M11 10V5a2 2 0 0 1 4 0v6M15 11V7a2 2 0 0 1 4 0v5c0 5-3 8-7 8h-1a6 6 0 0 1-6-6v-3a2 2 0 0 1 4 0v2",
   utensils: "M6 3v8M4 3v5a2 2 0 0 0 4 0V3M6 11v10M15 3v18M18 3v7a3 3 0 0 1-3 3",
@@ -510,7 +510,7 @@ const ICONS = {
   medical: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5v8M8 12h8",
   smile: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM9 10h.01M15 10h.01M8.5 14a5 5 0 0 0 7 0",
   megaphone: "M4 10v4h4l9 4V6l-9 4H4Zm4 4v5M17 9a4 4 0 0 1 0 6",
-  cart: "M4 5h2l2 10h9l2-7H7M9 20h.01M17 20h.01",
+  cart: "M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21.5 7H6M9 20.5h.01M18 20.5h.01",
   grid: "M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z",
   alert: "M12 3 2 21h20L12 3Zm0 6v5m0 3h.01",
   calendarCheck: "M7 3v3M17 3v3M4 8h16M5 5h14v16H5V5Zm4 10 2 2 4-5",
@@ -518,8 +518,8 @@ const ICONS = {
   bolt: "M13 2 4 14h7l-1 8 9-12h-7l1-8Z",
   cloud: "M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11-2A5 5 0 0 0 7 18Z",
   map: "M9 18 4 20V6l5-2 6 2 5-2v14l-5 2-6-2Zm0 0V4m6 16V6",
-  briefcase: "M9 6V4h6v2M4 7h16v12H4V7Zm0 5h16",
-  message: "M4 5h16v11H8l-4 4V5Z",
+  briefcase: "M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Zm0 4h18",
+  message: "M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.6 0-3.1-.4-4.4-1.2L3 20l1.2-5.1A8.5 8.5 0 1 1 21 11.5Z",
   chip: "M8 8h8v8H8V8Zm-4 3h4M4 15h4M16 11h4M16 15h4M11 4v4M15 4v4M11 16v4M15 16v4",
   trophy: "M8 4h8v3a4 4 0 0 1-8 0V4Zm0 1H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5M12 11v5M9 20h6M10 16h4",
   link: "M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1",
@@ -527,15 +527,15 @@ const ICONS = {
   chevron: "M6 9l6 6 6-6",
 };
 
-const Icon = React.memo(({ name, size = 18, stroke = 1.8, style }) => (
+const Icon = React.memo(({ name, size = 18, stroke = 2, style }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: "block", flexShrink: 0, ...style }}>
     <path d={ICONS[name] || ICONS.book} fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 ));
 
-const IconBadge = React.memo(({ name, color = PAL.A, bg = "#0A0A0A66", size = 32 }) => (
-  <span style={{ width: size, height: size, borderRadius: 8, display: "inline-flex", alignItems: "center", justifyContent: "center", color, background: bg, border: `1px solid ${color}22`, flexShrink: 0 }}>
-    <Icon name={name} size={Math.max(16, size - 14)} />
+const IconBadge = React.memo(({ name, color = PAL.A, bg, size = 32 }) => (
+  <span style={{ width: size, height: size, borderRadius: Math.round(size * 0.34), display: "inline-flex", alignItems: "center", justifyContent: "center", color, background: bg || `linear-gradient(180deg, ${color}1F 0%, ${color}08 100%)`, border: `1px solid ${color}26`, boxShadow: `inset 0 1px 0 ${color}14`, flexShrink: 0 }}>
+    <Icon name={name} size={Math.max(15, size - 15)} />
   </span>
 ));
 
@@ -1962,6 +1962,60 @@ function App() {
       revealCard();
     }
   };
+
+  // ── Tinder-style swipe grading on the flip card ──
+  // Once the answer is revealed, dragging the card right grades "Got it", left "Again",
+  // and auto-advances — one gesture instead of two taps. The drag is applied
+  // imperatively (ref styles), so pointermove never causes a React re-render.
+  const swipeRef = useRef(null);
+  const swipeLeftRef = useRef(null);   // "AGAIN" stamp, fades in while dragging left
+  const swipeRightRef = useRef(null);  // "GOT IT" stamp, fades in while dragging right
+  const swipeMovedRef = useRef(false); // suppresses click-to-reveal right after a drag
+  const swipeDrag = useRef({ active: false, startX: 0, startY: 0, dx: 0 });
+  const resetSwipeVisuals = () => {
+    const el = swipeRef.current;
+    if (el) { el.style.transition = ""; el.style.transform = ""; el.style.opacity = ""; }
+    if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
+    if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
+  };
+  const onCardPointerDown = (e) => {
+    swipeMovedRef.current = false;
+    if (!flipped || answered) return;
+    swipeDrag.current = { active: true, startX: e.clientX, startY: e.clientY, dx: 0 };
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+  const onCardPointerMove = (e) => {
+    const s = swipeDrag.current;
+    if (!s.active) return;
+    const dx = e.clientX - s.startX, dy = e.clientY - s.startY;
+    if (!swipeMovedRef.current && Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+    swipeMovedRef.current = true;
+    s.dx = dx;
+    const el = swipeRef.current;
+    if (el) { el.style.transition = "none"; el.style.transform = `translateX(${dx}px) rotate(${dx * 0.045}deg)`; }
+    const p = Math.min(1, Math.abs(dx) / 110);
+    if (swipeRightRef.current) swipeRightRef.current.style.opacity = dx > 0 ? p : 0;
+    if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = dx < 0 ? p : 0;
+  };
+  const onCardPointerUp = () => {
+    const s = swipeDrag.current;
+    if (!s.active) return;
+    s.active = false;
+    const el = swipeRef.current;
+    const dx = s.dx;
+    if (el && swipeMovedRef.current && Math.abs(dx) > 90 && flipped && !answered) {
+      const correct = dx > 0;
+      el.style.transition = "transform .28s ease-in, opacity .28s ease-in";
+      el.style.transform = `translateX(${correct ? 560 : -560}px) rotate(${correct ? 20 : -20}deg)`;
+      el.style.opacity = "0";
+      handleFlipAnswer(correct);
+      window.setTimeout(() => { resetSwipeVisuals(); nextCard(); }, 240);
+    } else {
+      if (el) { el.style.transition = "transform .22s ease"; el.style.transform = ""; }
+      if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
+      if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
+    }
+  };
   const submitTyped = () => {
     if (answered) return;
     const card = cards[idx]; const target = mode === "vocab" ? card.en : card.de;
@@ -2336,7 +2390,7 @@ function App() {
 
   const ProgressHub = () => {
     return (
-      <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginTop: 30, marginBottom: 4, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+      <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "18px 18px 18px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.8 }} />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginTop: 4, marginBottom: 14 }}>
           <div>
@@ -2437,10 +2491,6 @@ function App() {
           </div>
         )}
 
-        <button type="button" onClick={() => setScreen("stats")}
-          style={{ marginTop: 14, width: "100%", background: "#0F0F0F", border: `1px solid ${A}2E`, borderRadius: 10, padding: "11px 12px", color: A, fontSize: 12, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, fontFamily: "inherit" }}>
-          <Icon name="chart" size={14} /> Detailed stats — Path to B2
-        </button>
       </div>
     );
   };
@@ -2454,6 +2504,8 @@ function App() {
         button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
         button:not(:disabled):active { transform: translateY(1px); }
         ::selection { background: rgba(255,204,0,0.25); }
+        @keyframes ad-screen-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .ad-screen { animation: ad-screen-in .24s ease-out; }
         @keyframes ad-mastery-pop {
           0% { transform: scale(0.92); box-shadow: 0 0 0 rgba(88, 214, 141, 0); }
           48% { transform: scale(1.04); box-shadow: 0 0 28px rgba(88, 214, 141, 0.28); }
@@ -2485,7 +2537,7 @@ function App() {
         .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
         button:focus-visible, [role="button"]:focus-visible, input:focus-visible { outline: 2px solid #FFCC00AA; outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -2496,6 +2548,9 @@ function App() {
       <div aria-live="polite" style={{ position: "absolute", width: 1, height: 1, margin: -1, padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 }}>
         {feedback === "correct" ? "Richtig" : feedback === "wrong" ? "Falsch" : ""}
       </div>
+
+      {/* Keyed on `screen` so every navigation gets a subtle slide-up entrance. */}
+      <div key={screen} className="ad-screen">
 
       {/* ── FIRST-RUN ONBOARDING ── */}
       {showOnboarding && <div style={{ position: "fixed", inset: 0, zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.92)", padding: 22 }}>
@@ -3050,17 +3105,20 @@ function App() {
           </div>
         </div>
 
-        {/* Library — themed, collapsible groups instead of a flat 36-card wall */}
-        {SectionHead({
-          title: "Library",
-          right: (
-            <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
-              style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
-              <Icon name="book" size={12} /> Browse all words
-            </button>
-          ),
-          style: { marginTop: 30, marginBottom: 12 },
-        })}
+      </div>}
+
+      {/* ── LIBRARY TAB — themed, collapsible groups instead of a flat 36-card wall ── */}
+      {screen === "library" && <div style={{ padding: "0 20px 8px" }}>
+        <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10 }}>
+          <div>
+            <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Library</div>
+            <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{totalW.toLocaleString()} words · {CATS.length} topics</div>
+          </div>
+          <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
+            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "6px 13px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5, marginBottom: 2 }}>
+            <Icon name="book" size={12} /> Browse & search
+          </button>
+        </div>
         <div style={{ display: "grid", gap: 8 }}>
           {libGroups.map((g, gi) => {
             const agg = g.cats.reduce((a, cat) => {
@@ -3118,9 +3176,6 @@ function App() {
             );
           })}
         </div>
-
-        {ProgressHub()}
-
       </div>}
 
       {activeCardMissing && <div style={{ padding: "40px 24px 24px", minHeight: DVH, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -3134,7 +3189,7 @@ function App() {
 
       {/* ── AI TUTOR ── */}
       {screen === "tutor" && (
-        <div style={{ padding: "0 16px max(16px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "0 16px calc(max(16px, env(safe-area-inset-bottom)) + 64px)", minHeight: DVH, display: "flex", flexDirection: "column" }}>
           <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
             <button onClick={() => { const r = tutorReturnRef.current || "home"; tutorReturnRef.current = "home"; setScreen(r); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
             <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>AI Tutor</div>
@@ -3193,7 +3248,7 @@ function App() {
         return (
           <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
             <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-              <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+              <button onClick={() => setScreen("library")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
               <div style={{ fontSize: 11, color: TD, fontWeight: 700 }}>{known.size} known · {allVocab().length} words</div>
             </div>
             <input className="ad-input" value={browseQuery} onChange={e => setBrowseQuery(e.target.value)} placeholder="Search German or English…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -3249,11 +3304,12 @@ function App() {
         const flagBar = <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />;
         return (
           <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
-            <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-              <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
-              <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>Statistics</div>
-              <span style={{ width: 56 }} />
+            <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14 }}>
+              <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Statistics</div>
+              <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your numbers, level by level</div>
             </div>
+
+            {ProgressHub()}
 
             {/* Path to B2: per-level vocabulary funnel */}
             <div style={panel}>
@@ -3396,7 +3452,13 @@ function App() {
           </div>
         ) : (
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <div role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey} onClick={revealCard} style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "default", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
+            <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey}
+              onClick={() => { if (swipeMovedRef.current) return; revealCard(); }}
+              onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
+              style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
+              {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
+              <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>GOT IT</div>
+              <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${R}`, color: "#F87171", borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>AGAIN</div>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
@@ -3448,6 +3510,7 @@ function App() {
               </div>}
               {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
               {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Think of the answer, then tap</div>}
+              {flipped && !answered && <div style={{ textAlign: "center", color: TD, fontSize: 11, paddingTop: 8, opacity: 0.7 }}>…or swipe the card — left Again, right Got it</div>}
               {KeyHint({ text: "Space to reveal · 1 Again · 2 Got it · Enter next" })}
             </div>
           </div>
@@ -3933,6 +3996,30 @@ function App() {
           </> : <Btn bg={A} color="#0A0A0A" onClick={() => setScreen("home")} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Weiter</Btn>}
         </div>
       </div>}
+
+      {/* Spacer keeps tab-screen content clear of the fixed bottom nav */}
+      {["home", "library", "stats"].includes(screen) && <div style={{ height: 74 }} />}
+      </div>
+
+      {/* ── BOTTOM TAB NAVIGATION (hidden during sessions for focus) ── */}
+      {["home", "library", "stats", "tutor"].includes(screen) && (
+        <nav aria-label="Main navigation" style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 480, zIndex: 90, background: "rgba(9,9,9,0.86)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderTop: `1px solid ${HAIR}` }}>
+          <div style={{ height: 2, background: FLAG, opacity: 0.5 }} />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
+            {[["home", "Home", "home"], ["library", "Library", "book"], ["stats", "Stats", "chart"], ["tutor", "Tutor", "message"]].map(([id, label, icon]) => {
+              const active = screen === id;
+              return (
+                <button key={id} type="button" aria-current={active ? "page" : undefined}
+                  onClick={() => { if (id === "tutor") tutorReturnRef.current = "home"; setScreen(id); }}
+                  style={{ background: "transparent", border: "none", cursor: "pointer", padding: "10px 0 6px", display: "grid", justifyItems: "center", gap: 4, color: active ? A : TD, fontFamily: "inherit" }}>
+                  <Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} />
+                  <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 0.4 }}>{label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      )}
     </div>
   );
 }

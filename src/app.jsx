@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.38";
+const APP_VERSION = "2026.06.11.39";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -728,6 +728,7 @@ function App() {
   const [lastElapsed, setLastElapsed] = useState(0); // NEW: for automaticity display
   const [revealElapsed, setRevealElapsed] = useState(0);
   const [lastBoxMove, setLastBoxMove] = useState(null); // {from, to} SRS box move of the last answer
+  const [combo, setCombo] = useState(0); // consecutive correct answers this session (momentum signal)
   // Sentence building
   const [sbPool, setSbPool] = useState([]);
   const [sbPicked, setSbPicked] = useState([]);
@@ -1467,6 +1468,7 @@ function App() {
     };
     setProg(upd); save(upd);
     setStats(s => ({ c: s.c + (correct ? 1 : 0), w: s.w + (correct ? 0 : 1) }));
+    setCombo(c => (correct ? c + 1 : 0));
     if (unlockedMastery) {
       const item = {
         id: key,
@@ -1728,6 +1730,7 @@ function App() {
   const resetSessionState = () => {
     navLockRef.current = false;
     if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; }
+    setCombo(0);
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(0); setIdx(0); setNewlyMastered([]); setMasteryBurst(null);
     setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setLastBoxMove(null);
@@ -1988,7 +1991,7 @@ function App() {
     } else setCards(sh([...failed]));
     setIdx(0); setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
-    setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(r => r + 1); setTStart(Date.now());
+    setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setCombo(0); setRpt(r => r + 1); setTStart(Date.now());
     setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production" || m === "dictation") ? "cards" : "drill");
   };
 
@@ -2370,6 +2373,7 @@ function App() {
           <div style={{ color: T, fontWeight: 700, letterSpacing: 0.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>
             {extra}{category}
           </div>
+          {combo >= 3 && <span className="ad-pop" key={combo} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 4, background: `${A}14`, border: `1px solid ${A}3D`, borderRadius: 999, padding: "4px 10px", fontSize: 10.5, fontWeight: 900, color: A }}><Icon name="flame" size={12} /> {combo}</span>}
           <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 5, background: "#141414", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "4px 11px", fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5 }}>
             {rpt > 0 && <span style={{ color: R }}>R{rpt + 1}</span>}
             <span style={{ color: T }}>{idx + 1}<span style={{ color: TD, fontWeight: 700 }}> / {cards.length}</span></span>

@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.35";
+const APP_VERSION = "2026.06.11.36";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -740,6 +740,9 @@ function App() {
   const [listenMode, setListenMode] = useState("listen");
   // Session difficulty: "mixed" (default), "easy", "hard" — influences card selection order only
   const [sessDiff, setSessDiff] = useState("mixed");
+  // Auto-advance after exact-correct answers (1s). Persisted; default on.
+  const [autoAdvance, setAutoAdvance] = useState(() => { try { return localStorage.getItem("gfc-autoadv-v1") !== "0"; } catch (e) { return true; } });
+  const toggleAutoAdvance = () => setAutoAdvance(v => { const n = !v; try { localStorage.setItem("gfc-autoadv-v1", n ? "1" : "0"); } catch (e) {} return n; });
   // Audio mode state
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPauseLen, setAudioPauseLen] = useState(3500); // ms between utterances
@@ -1204,6 +1207,8 @@ function App() {
     if (screen !== "drill" && playAllTimersRef.current.length > 0) {
       stopPlayAll();
     }
+    // Any screen change kills a pending auto-advance — it must never fire into another screen.
+    if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; }
   }, [screen, stopPlayAll]);
 
   // Listen for "update available" dispatched from the SW registration script
@@ -1685,6 +1690,7 @@ function App() {
 
   const resetSessionState = () => {
     navLockRef.current = false;
+    if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; }
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(0); setIdx(0); setNewlyMastered([]); setMasteryBurst(null);
     setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0);
@@ -2027,6 +2033,19 @@ function App() {
       if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
     }
   };
+  // ── Auto-advance on exact-correct answers ──
+  // A correct answer needs no review stop: after a 1s glance at the green state the
+  // session moves on by itself, saving one tap per correct card (the majority of taps
+  // in a session). Wrong and "close" answers still stop for inspection. Toggleable in
+  // Settings; any manual advance or leaving the screen cancels the pending timer.
+  const autoAdvTimerRef = useRef(null);
+  const scheduleAutoAdvance = (advanceFn) => {
+    if (!autoAdvance) return;
+    if (autoAdvTimerRef.current) clearTimeout(autoAdvTimerRef.current);
+    autoAdvTimerRef.current = setTimeout(() => { autoAdvTimerRef.current = null; advanceFn(); }, 1000);
+  };
+  const cancelAutoAdvance = () => { if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; } };
+
   const submitTyped = () => {
     if (answered) return;
     const card = cards[idx]; const target = mode === "vocab" ? card.en : card.de;
@@ -2034,12 +2053,14 @@ function App() {
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
     speak(card.de);
+    if (result === "exact") scheduleAutoAdvance(nextCard);
   };
   const submitCloze = () => {
     if (answered) return;
     const card = cards[idx]; const result = checkMatch(input, card.a);
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
+    if (result === "exact") scheduleAutoAdvance(nextDrill);
   };
   const submitPlural = () => {
     if (answered) return;
@@ -2047,9 +2068,11 @@ function App() {
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
     speak(card.pl);
+    if (result === "exact") scheduleAutoAdvance(nextDrill);
   };
 
   const nextCard = () => {
+    cancelAutoAdvance();
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
@@ -2073,9 +2096,11 @@ function App() {
     // Only speak when there's something meaningful to say. In verb mode the full
     // "pron + conjugation" is the natural utterance. Other modes don't emit speech here.
     if (mode === "verb" && card.pron && card.correct) speak(`${card.pron} ${card.correct}`);
+    if (correct) scheduleAutoAdvance(nextDrill);
   };
 
   const nextDrill = () => {
+    cancelAutoAdvance();
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
@@ -2091,8 +2116,9 @@ function App() {
   // Sentence building
   const sbTapWord = (word, i) => { if (sbChecked) return; const np = [...sbPool]; np.splice(i, 1); setSbPool(np); setSbPicked(p => [...p, word]); };
   const sbUntapWord = (word, i) => { if (sbChecked) return; const np = [...sbPicked]; np.splice(i, 1); setSbPicked(np); setSbPool(p => [...p, word]); };
-  const sbCheck = () => { const card = cards[idx]; const isCorrect = sbPicked.join(" ") === card.correct.join(" "); setSbChecked(true); setSbCorrect(isCorrect); record(isCorrect, card, Date.now() - tStart); };
+  const sbCheck = () => { const card = cards[idx]; const isCorrect = sbPicked.join(" ") === card.correct.join(" "); setSbChecked(true); setSbCorrect(isCorrect); record(isCorrect, card, Date.now() - tStart); if (isCorrect) scheduleAutoAdvance(sbNext); };
   const sbNext = () => {
+    cancelAutoAdvance();
     if (navLockRef.current) return;
     if (idx >= cards.length - 1) { setScreen("results"); return; }
     navLockRef.current = true;
@@ -2852,6 +2878,14 @@ function App() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>Practice</h3>
+          <div style={{ marginBottom: 20 }}>
+            <button onClick={toggleAutoAdvance} style={{ width: "100%", padding: "11px 12px", borderRadius: 10, fontSize: 12, fontWeight: 800, cursor: "pointer", background: autoAdvance ? `${A}22` : "#0A0A0A", color: autoAdvance ? A : TD, border: `1px solid ${autoAdvance ? A : B}`, textAlign: "left", fontFamily: "inherit" }}>
+              Auto-advance on correct: {autoAdvance ? "On" : "Off"}
+            </button>
+            <div style={{ fontSize: 11, color: TD, marginTop: 6, lineHeight: 1.45 }}>Correct answers move on by themselves after a second. Wrong or near-miss answers always stop for review.</div>
           </div>
 
           {/* Daily goal — cards-per-day target shown on home's streak row */}
@@ -3668,10 +3702,10 @@ function App() {
           {mode === "imperativ" && !answered && (
             <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); } }}
+              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
                 placeholder={card._person === "sie" ? "e.g. kommen Sie" : "Type the imperative…"} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
-              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
+              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
             </div></>
           )}
           {mode === "listening" && !answered && card.opts && (
@@ -3713,10 +3747,10 @@ function App() {
           {mode === "verb" && !answered && !card.opts && (
             <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8 }}>
-              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); } }}
+              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
                 placeholder={`${card.pron} …`} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
-              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
+              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
             </div></>
           )}
           <div style={{ marginTop: "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>

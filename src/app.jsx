@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.36";
+const APP_VERSION = "2026.06.11.37";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -820,10 +820,16 @@ function App() {
   // Keys of cards already counted toward trend stats this session. Resets on new session start;
   // explicitly NOT reset by startRepeat — repeats must not affect averages.
   const countedKeysRef = useRef(new Set());
+  // Keys already re-queued for an in-session retry (one retry per card per session).
+  const requeuedRef = useRef(new Set());
   // Listening mode "Play all" — stores timer IDs so we can cancel the chain on re-tap
   const playAllTimersRef = useRef([]);
   // Prevent double-taps from scheduling two "next card" transitions and pushing idx past cards.length.
   const navLockRef = useRef(false);
+  // Live cards.length for advance guards. The swipe path calls nextCard from a setTimeout
+  // whose closure pre-dates an in-session retry splice; reading length via ref keeps the
+  // "last card?" decision correct even then.
+  const cardsLenRef = useRef(0);
   const [playAllActive, setPlayAllActive] = useState(false);
   const stopPlayAll = useCallback(() => {
     playAllTimersRef.current.forEach(t => clearTimeout(t));
@@ -1469,7 +1475,34 @@ function App() {
       setMasteryBurst(item);
       window.setTimeout(() => setMasteryBurst(cur => cur?.id === key ? null : cur), 1800);
     }
-    if (!correct) { setFailed(f => [...f, card]); setFailedNames(f => [...f, card.de || card.q || card.verb || (card.article && card.noun ? `${card.article} ${card.noun}` : null) || (card.correct && card.correct.join(' ')) || '?']); }
+    // ── In-session retry (learning step) ──
+    // A wrong card re-queues ~4 positions ahead in the SAME session, while the correction
+    // is fresh — once per card per session, first round only (repeat rounds ARE the retry).
+    // Getting the retry right clears the card from the failed list; the SRS cram guard
+    // already stops the same-day success from inflating the review interval.
+    if (!correct) {
+      const alreadyFailed = failed.some(c => gk(c, category, mode) === key);
+      if (!alreadyFailed) {
+        setFailed(f => [...f, card]);
+        setFailedNames(f => [...f, card.de || card.q || card.verb || (card.article && card.noun ? `${card.article} ${card.noun}` : null) || (card.correct && card.correct.join(' ')) || '?']);
+      }
+      if (rpt === 0 && !requeuedRef.current.has(key)) {
+        requeuedRef.current.add(key);
+        setCards(cs => {
+          const pos = Math.min(idx + 4, cs.length);
+          const copy = [...cs];
+          copy.splice(pos, 0, card);
+          return copy;
+        });
+      }
+    } else if (requeuedRef.current.has(key)) {
+      // Retry succeeded — the card is cleared within the session.
+      const removeIdx = failed.findIndex(c => gk(c, category, mode) === key);
+      if (removeIdx >= 0) {
+        setFailed(f => { const n = [...f]; n.splice(removeIdx, 1); return n; });
+        setFailedNames(f => { const n = [...f]; n.splice(removeIdx, 1); return n; });
+      }
+    }
     setLastElapsed(recallMs);
     // NEW: Update daily stats
     const today = todayKey();
@@ -1697,6 +1730,7 @@ function App() {
     // Fresh session → clear first-attempt tracker so stats record this run's first attempts.
     // startRepeat deliberately does NOT call this, so repeated failures stay excluded.
     countedKeysRef.current = new Set();
+    requeuedRef.current = new Set();
     setSbPool([]); setSbPicked([]); setSbChecked(false); setSbCorrect(false);
   };
 
@@ -2074,12 +2108,12 @@ function App() {
   const nextCard = () => {
     cancelAutoAdvance();
     if (navLockRef.current) return;
-    if (idx >= cards.length - 1) { setScreen("results"); return; }
+    if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
       setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
-      setIdx(i => Math.min(i + 1, Math.max(cards.length - 1, 0)));
+      setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
       setTimeout(() => { setVis(true); navLockRef.current = false; }, 50);
     }, 180);
@@ -2102,12 +2136,12 @@ function App() {
   const nextDrill = () => {
     cancelAutoAdvance();
     if (navLockRef.current) return;
-    if (idx >= cards.length - 1) { setScreen("results"); return; }
+    if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
       setAnswered(false); setSel(null); setInput(""); setInputResult(null); setShowHint(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null);
-      setIdx(i => Math.min(i + 1, Math.max(cards.length - 1, 0)));
+      setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
       setTimeout(() => { setVis(true); navLockRef.current = false; }, 50);
     }, 180);
@@ -2120,7 +2154,7 @@ function App() {
   const sbNext = () => {
     cancelAutoAdvance();
     if (navLockRef.current) return;
-    if (idx >= cards.length - 1) { setScreen("results"); return; }
+    if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
@@ -2275,6 +2309,7 @@ function App() {
   }, [prog, nouns, pluralNouns]);
 
   const card = cards[idx];
+  cardsLenRef.current = cards.length;
   const sessionScreens = new Set(["cards", "drill", "sentence", "audio"]);
   const activeCardMissing = sessionScreens.has(screen) && cards.length > 0 && !card;
   const cardBox = card ? normalizeEntry(prog[gk(card, category, mode)]).srs.box : 0;

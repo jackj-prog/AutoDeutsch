@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.33";
+const APP_VERSION = "2026.06.11.34";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1997,20 +1997,30 @@ function App() {
     if (swipeRightRef.current) swipeRightRef.current.style.opacity = dx > 0 ? p : 0;
     if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = dx < 0 ? p : 0;
   };
+  // Single grading path for flip cards — used by the swipe release, the small
+  // Again/Got-it chips, and the 1/2 keyboard shortcuts. Flies the card off,
+  // records the answer and auto-advances; there is no post-answer stop anymore.
+  const swipeGrade = (correct) => {
+    if (!flipped || answered) return;
+    const el = swipeRef.current;
+    if (el) {
+      el.style.transition = "transform .28s ease-in, opacity .28s ease-in";
+      el.style.transform = `translateX(${correct ? 560 : -560}px) rotate(${correct ? 20 : -20}deg)`;
+      el.style.opacity = "0";
+    }
+    const stamp = correct ? swipeRightRef.current : swipeLeftRef.current;
+    if (stamp) stamp.style.opacity = 1;
+    handleFlipAnswer(correct);
+    window.setTimeout(() => { resetSwipeVisuals(); nextCard(); }, 240);
+  };
   const onCardPointerUp = () => {
     const s = swipeDrag.current;
     if (!s.active) return;
     s.active = false;
-    const el = swipeRef.current;
-    const dx = s.dx;
-    if (el && swipeMovedRef.current && Math.abs(dx) > 90 && flipped && !answered) {
-      const correct = dx > 0;
-      el.style.transition = "transform .28s ease-in, opacity .28s ease-in";
-      el.style.transform = `translateX(${correct ? 560 : -560}px) rotate(${correct ? 20 : -20}deg)`;
-      el.style.opacity = "0";
-      handleFlipAnswer(correct);
-      window.setTimeout(() => { resetSwipeVisuals(); nextCard(); }, 240);
+    if (swipeMovedRef.current && Math.abs(s.dx) > 90 && flipped && !answered) {
+      swipeGrade(s.dx > 0);
     } else {
+      const el = swipeRef.current;
       if (el) { el.style.transition = "transform .22s ease"; el.style.transform = ""; }
       if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
       if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
@@ -2125,8 +2135,8 @@ function App() {
         return;
       }
       if (flipMode && flipped && !answered) {
-        if (e.key === "1") { e.preventDefault(); handleFlipAnswer(false); }
-        else if (e.key === "2") { e.preventDefault(); handleFlipAnswer(true); }
+        if (e.key === "1") { e.preventDefault(); swipeGrade(false); }
+        else if (e.key === "2") { e.preventDefault(); swipeGrade(true); }
         return;
       }
       if (screen === "drill" && !answered && card) {
@@ -3471,7 +3481,6 @@ function App() {
                   <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
-                  {answered && <>{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
                   {HintBtn({ hint: card.hint })}
                   {showEx ? (
                     <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}`, textAlign: "center", maxWidth: "92%" }}>
@@ -3487,31 +3496,15 @@ function App() {
                 </div>
               </div>
             </div>
-            <div style={{ paddingTop: 20, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
-              {flipped && !answered && <div style={{ display: "flex", gap: 12 }}>
-                <button onClick={() => handleFlipAnswer(false)} style={{
-                  flex: 1, padding: "18px 16px", borderRadius: 16,
-                  background: `linear-gradient(180deg, ${R}14 0%, ${R}22 100%)`,
-                  color: "#F87171", border: `1px solid ${R}44`,
-                  fontSize: 16, fontWeight: 700, fontFamily: "inherit",
-                  cursor: "pointer", letterSpacing: 0.3,
-                  boxShadow: `inset 0 1px 0 ${R}33, 0 2px 4px rgba(0,0,0,0.35)`,
-                  transition: "transform 0.1s, background 0.2s"
-                }}>Again</button>
-                <button onClick={() => handleFlipAnswer(true)} style={{
-                  flex: 1, padding: "18px 16px", borderRadius: 16,
-                  background: `linear-gradient(180deg, ${G}14 0%, ${G}22 100%)`,
-                  color: "#86EFAC", border: `1px solid ${G}55`,
-                  fontSize: 16, fontWeight: 700, fontFamily: "inherit",
-                  cursor: "pointer", letterSpacing: 0.3,
-                  boxShadow: `inset 0 1px 0 ${G}33, 0 2px 4px rgba(0,0,0,0.35)`,
-                  transition: "transform 0.1s, background 0.2s"
-                }}>Got it</button>
+            <div style={{ paddingTop: 18, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
+              {/* Grading is swipe-first: the chips are a quiet fallback (desktop, accessibility). */}
+              {flipped && <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, opacity: answered ? 0.35 : 1, transition: "opacity .15s" }}>
+                <button onClick={() => swipeGrade(false)} disabled={answered} style={{ background: "transparent", border: `1px solid ${R}3D`, borderRadius: 999, padding: "10px 18px", color: "#F87171", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 7 }}><Icon name="arrowLeft" size={14} /> Again</button>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 700, letterSpacing: 1.4, textTransform: "uppercase", opacity: 0.65 }}>swipe</span>
+                <button onClick={() => swipeGrade(true)} disabled={answered} style={{ background: "transparent", border: `1px solid ${G}44`, borderRadius: 999, padding: "10px 18px", color: "#86EFAC", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 7 }}>Got it <Icon name="arrowRight" size={14} /></button>
               </div>}
-              {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
               {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Think of the answer, then tap</div>}
-              {flipped && !answered && <div style={{ textAlign: "center", color: TD, fontSize: 11, paddingTop: 8, opacity: 0.7 }}>…or swipe the card — left Again, right Got it</div>}
-              {KeyHint({ text: "Space to reveal · 1 Again · 2 Got it · Enter next" })}
+              {KeyHint({ text: "Space to reveal · 1 Again · 2 Got it" })}
             </div>
           </div>
         )}

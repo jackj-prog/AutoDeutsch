@@ -90,6 +90,21 @@ function seedState({ persona, mode }) {
       prog[`vocab::${c}::seed${ci}_${i}`] = mk(box, 4 + i, 1, 0, null);
     }
   });
+  // Real card keys (these `de` values exist in data.js) so the home review queue
+  // (Due / Weak) actually resolves and renders.
+  const real = {
+    "Greetings & Basics": ["Hallo", "Tschüss", "Danke", "Entschuldigung", "Guten Morgen"],
+    "Work & Study": ["die Arbeit", "das Büro", "der Termin", "die Prüfung"],
+    "Electrical Engineering": ["der Widerstand", "die Spannung", "der Kondensator"],
+    "Travel & Directions": ["die Straße", "der Bahnhof", "das Auto"],
+  };
+  let ri = 0;
+  Object.entries(real).forEach(([c, des]) => des.forEach(de => {
+    ri++;
+    prog[`production::${c}::${de}`] = ri % 4 === 0
+      ? mk(1, 2, 5, 0, null) // weak: incorrect 5, box 1
+      : { stats: { attempts: 6, correct: 5, incorrect: 1, lastSeen: Date.now() - 25 * DAY, avgTime: 6000, timedAttempts: 5, currentStreak: 2, productionStreak: 2, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * DAY } }; // due (box 3, interval 7d, 25d ago)
+  }));
   localStorage.setItem("gfc-v7", JSON.stringify(prog));
 }
 

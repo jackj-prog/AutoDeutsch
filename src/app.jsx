@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.65";
+const APP_VERSION = "2026.06.11.66";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -810,7 +810,12 @@ function App() {
   const [rpt, setRpt] = useState(0);
   const [prog, setProg] = useState({});
   const [known, setKnown] = useState(() => new Set());   // vocab words the user marked as known (knownKey)
-  const [setupLevel, setSetupLevel] = useState("all");
+  // Level focus (all | A1 | A2 | B1 | B2) — a sticky preference, surfaced on home so the
+  // learner can aim sessions at their CEFR level (e.g. B2) without digging into the modal.
+  const [setupLevel, setSetupLevel] = useState(() => {
+    try { return localStorage.getItem("ad-level-v1") || "all"; } catch (e) { return "all"; }
+  });
+  const setSessLevel = useCallback((lvl) => { setSetupLevel(lvl); try { localStorage.setItem("ad-level-v1", lvl); } catch (e) {} }, []);
   const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv
   const [diffBand, setDiffBand] = useState("all");          // sentence/cloze difficulty band: all | easy | core | hard
   const [browseQuery, setBrowseQuery] = useState("");     // word-browser search text
@@ -1914,7 +1919,8 @@ function App() {
   const finishOnboarding = () => {
     updateDailyGoal(onboardingGoal);
     setSetupMode(onboardingMode);
-    setSessDiff(onboardingLevel === "B1" ? "hard" : "mixed");
+    setSessLevel(onboardingLevel); // honour the chosen level — actually filter content to it
+    setSessDiff(["B1", "B2"].includes(onboardingLevel) ? "hard" : "mixed");
     setShowOnboarding(false);
     try {
       localStorage.setItem("ad-onboarding-v1", "done");
@@ -2970,8 +2976,8 @@ function App() {
 
           <div style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", marginBottom: 8 }}>Starting level</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {["A1", "A2", "B1"].map(level => (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
+              {["A1", "A2", "B1", "B2"].map(level => (
                 <button key={level} type="button" onClick={() => setOnboardingLevel(level)} style={{ padding: "11px 8px", borderRadius: 10, border: `1px solid ${onboardingLevel === level ? A : B}`, background: onboardingLevel === level ? `${A}18` : "#0D0D0D", color: onboardingLevel === level ? A : T, fontWeight: 800, cursor: "pointer", fontFamily: FN }}>{level}</button>
               ))}
             </div>
@@ -3188,7 +3194,7 @@ function App() {
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Level</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
                   {[["all", "All"], ...LEVELS.map(l => [l, l])].map(([k, l]) => (
-                    <button key={k} onClick={() => setSetupLevel(k)} style={{ padding: "9px 4px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                    <button key={k} onClick={() => setSessLevel(k)} style={{ padding: "9px 4px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
                   ))}
                 </div>
               </div>
@@ -3470,6 +3476,22 @@ function App() {
                     <Icon name={icon} size={18} style={{ color: on ? A : TD }} />
                     <span style={{ fontSize: 10, fontWeight: 800, color: on ? A : TD, lineHeight: 1 }}>{label}</span>
                   </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* Level focus — aim sessions at a CEFR level (e.g. B2) straight from home. */}
+          <div>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 7, paddingLeft: 2 }}>
+              <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Level focus</span>
+              {setupLevel !== "all" && <span style={{ fontSize: 9.5, color: A, fontWeight: 700 }}>{setupLevel} only</span>}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
+              {[["all", "All"], ["A1", "A1"], ["A2", "A2"], ["B1", "B1"], ["B2", "B2"]].map(([lv, label]) => {
+                const on = setupLevel === lv;
+                return (
+                  <button key={lv} type="button" aria-pressed={on} onClick={() => setSessLevel(lv)}
+                    style={{ background: on ? `${A}1A` : "#0F0F0F", border: `1px solid ${on ? A : HAIR}`, borderRadius: 10, padding: "8px 0", cursor: "pointer", fontFamily: "inherit", fontSize: 11, fontWeight: 800, color: on ? A : TD, transition: "background .15s, border-color .15s" }}>{label}</button>
                 );
               })}
             </div>

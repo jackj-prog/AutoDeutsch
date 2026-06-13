@@ -19,6 +19,9 @@ const CATS = Object.keys(V);
 const MASTERY_STREAK = 5;
 // Day-streak values worth celebrating (a milestone day feels special, not routine).
 const STREAK_MILESTONES = new Set([3, 7, 14, 21, 30, 50, 75, 100, 150, 200, 250, 300, 365, 500, 730, 1000]);
+// Streak Freeze: a banked buffer that absorbs a missed day so the streak survives.
+// One is earned every 7 streak-days; new users start with one as a safety net.
+const MAX_FREEZES = 2;
 
 // SRS interval schedule — days after lastReviewed until a card is due again.
 // Box 0 = seen-but-not-learned (review daily until it graduates); box 5 = 30-day review.
@@ -468,7 +471,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.56";
+const APP_VERSION = "2026.06.11.57";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -553,6 +556,7 @@ const ICONS = {
   mail: "M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2ZM22 7l-10 7L2 7",
   file: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5ZM14 3v5h5M9 13h6M9 17h6",
   wine: "M8 22h8M12 14v8M7 3h10l-.7 5.2a4.3 4.3 0 0 1-8.6 0L7 3Z",
+  flake: "M12 2v20M3.34 7l17.32 10M3.34 17l17.32-10M12 2l-2.5 2.5M12 2l2.5 2.5M12 22l-2.5-2.5M12 22l2.5-2.5M3.34 7l.4 3.4M3.34 7l3.4-.4M20.66 17l-.4-3.4M20.66 17l-3.4.4M20.66 7l-3.4-.4M20.66 7l-.4 3.4M3.34 17l3.4.4M3.34 17l.4-3.4",
 };
 
 // Glyph icons that read better as solid silhouettes than hollow outlines. Everything
@@ -829,6 +833,15 @@ function App() {
   };
   // NEW: Streak + daily stats
   const [dailyStats, setDailyStats] = useState({ date: todayKey(), count: 0, streak: 0 });
+  // Banked Streak Freezes (0–MAX). New users get one as a safety net; one is earned every
+  // 7 streak-days. A freeze auto-absorbs a missed day so the streak isn't lost.
+  const [freezes, setFreezes] = useState(() => {
+    try { const v = parseInt(localStorage.getItem("gfc-freezes-v1"), 10); return Number.isFinite(v) ? Math.max(0, Math.min(MAX_FREEZES, v)) : 1; } catch (e) { return 1; }
+  });
+  const persistFreezes = useCallback((n) => { try { localStorage.setItem("gfc-freezes-v1", String(n)); } catch (e) {} }, []);
+  const earnFreeze = useCallback(() => setFreezes(f => { const n = Math.min(MAX_FREEZES, f + 1); persistFreezes(n); return n; }), [persistFreezes]);
+  // Set when a freeze was spent on app open, to tell the user their streak was saved.
+  const [freezeNotice, setFreezeNotice] = useState(null); // { streak } | null
   // User-adjustable daily goal (cards/day target). Default 20 preserves behaviour for existing users.
   const [dailyGoal, setDailyGoal] = useState(20);
   // Daily trend stats: { "YYYY-MM-DD": {attempts, correct, totalMs}, ... } — last 60 days
@@ -943,11 +956,28 @@ function App() {
           if (parsed.date === today) {
             setDailyStats(parsed);
           } else {
-            // New day: carry streak if yesterday was active (count > 0), else reset.
-            // Do NOT increment here — record() handles increment when user actually records.
-            const yesterday = todayKey(new Date(Date.now() - 86400000));
-            const wasActiveYesterday = parsed.date === yesterday && (parsed.count || 0) > 0;
-            const newStreak = wasActiveYesterday ? parsed.streak : 0;
+            // New day. Carry the streak if active yesterday; if a day was missed, spend
+            // banked Streak Freezes to absorb it. Do NOT increment here — record() handles
+            // the increment when the user actually practises.
+            const parseDay = s => { const p = String(s).split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).getTime(); };
+            const gap = Math.round((parseDay(today) - parseDay(parsed.date)) / 86400000);
+            const missed = Math.max(0, gap - 1); // full days skipped between last active day and today
+            const wasActive = (parsed.count || 0) > 0;
+            let newStreak = 0;
+            if (wasActive && missed === 0) {
+              newStreak = parsed.streak; // active yesterday → carry
+            } else if (wasActive && parsed.streak > 0 && missed > 0) {
+              let have = 1;
+              try { const v = parseInt(localStorage.getItem("gfc-freezes-v1"), 10); have = Number.isFinite(v) ? v : 1; } catch (e) {}
+              if (have >= missed) {
+                const left = have - missed;
+                setFreezes(left); persistFreezes(left);
+                newStreak = parsed.streak; // streak saved by the freeze(s)
+                setFreezeNotice({ streak: parsed.streak });
+                // Persist date=today so reopening before practising doesn't double-spend.
+                saveDaily({ date: today, count: 0, streak: newStreak });
+              }
+            }
             setDailyStats({ date: today, count: 0, streak: newStreak });
           }
         }
@@ -1083,10 +1113,13 @@ function App() {
       if (d.streak > prev.streak && STREAK_MILESTONES.has(d.streak)) {
         setTimeout(() => celebrateStreak(d.streak), 0);
       }
+      if (d.streak > prev.streak && d.streak % 7 === 0) {
+        setTimeout(() => earnFreeze(), 0);
+      }
       saveDaily(d);
       return d;
     });
-  }, [saveDaily, dailyGoal, celebrateGoal, celebrateStreak]);
+  }, [saveDaily, dailyGoal, celebrateGoal, celebrateStreak, earnFreeze]);
 
   // Screen Wake Lock: keeps the screen on during audio playback.
   // iOS 16.4+ and modern Android support it; older browsers silently no-op.
@@ -1171,7 +1204,7 @@ function App() {
       app: "AutoDeutsch",
       schemaVersion: "v7",
       exportedAt: new Date().toISOString(),
-      prog, dailyStats, lastSession, dailyGoal, trendStats,
+      prog, dailyStats, lastSession, dailyGoal, trendStats, freezes,
       known: [...known],
     };
     try {
@@ -1223,6 +1256,10 @@ function App() {
         if (data.lastSession) { setLastSession(data.lastSession); saveLast(data.lastSession); }
         if (typeof data.dailyGoal === "number" && data.dailyGoal >= 10 && data.dailyGoal <= 200) {
           updateDailyGoal(data.dailyGoal);
+        }
+        if (typeof data.freezes === "number") {
+          const f = Math.max(0, Math.min(MAX_FREEZES, Math.round(data.freezes)));
+          setFreezes(prev => { const n = Math.max(prev, f); persistFreezes(n); return n; }); // keep the higher
         }
         if (data.trendStats && typeof data.trendStats === "object") {
           // Merge per-day: keep whichever record has more attempts (richer history).
@@ -1601,6 +1638,10 @@ function App() {
       // A streak that reaches a milestone today is a bigger moment (overrides goal if same tick).
       if (d.streak > prev.streak && STREAK_MILESTONES.has(d.streak)) {
         setTimeout(() => celebrateStreak(d.streak), 0);
+      }
+      // Earn a Streak Freeze every 7 streak-days (banked, capped at MAX_FREEZES).
+      if (d.streak > prev.streak && d.streak % 7 === 0) {
+        setTimeout(() => earnFreeze(), 0);
       }
       saveDaily(d);
       return d;
@@ -3185,6 +3226,15 @@ function App() {
 
       {/* ── HOME ── */}
       {screen === "home" && <div style={{ padding: "12px 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
+        {/* Streak Freeze used — reassure the user their streak survived a missed day */}
+        {freezeNotice && (
+          <button onClick={() => setFreezeNotice(null)}
+            style={{ width: "100%", background: "linear-gradient(135deg, #0E1626 0%, #0F0F0F 65%)", color: T, border: `1px solid ${BL}55`, borderRadius: 12, padding: "11px 14px", marginBottom: 14, fontSize: 12, lineHeight: 1.4, cursor: "pointer", textAlign: "left", fontFamily: "inherit", fontWeight: 700, display: "flex", alignItems: "center", gap: 10 }}>
+            <Icon name="flake" size={20} style={{ color: BL, flexShrink: 0 }} />
+            <span style={{ flex: 1 }}><strong style={{ color: BL }}>Streak Freeze used</strong><br /><span style={{ fontWeight: 500, fontSize: 11, color: TD }}>A missed day was absorbed — your {freezeNotice.streak}-day streak is safe.</span></span>
+            <Icon name="check" size={16} style={{ color: BL }} />
+          </button>
+        )}
         {/* Update available — appears when a new SW version is installed and waiting */}
         {updateAvailable && (
           <button onClick={applyUpdate}
@@ -3251,6 +3301,7 @@ function App() {
                     <Icon name="flame" size={17} style={{ color: dailyStats.streak > 0 ? A : TD }} />
                     <span style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, lineHeight: 1 }}><CountUp value={dailyStats.streak} /></span>
                     <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>day streak</span>
+                    {freezes > 0 && <span title={`${freezes} Streak Freeze${freezes > 1 ? "s" : ""} banked — absorbs a missed day`} style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 3, color: BL, fontSize: 12, fontWeight: 800 }}><Icon name="flake" size={14} /> {freezes}</span>}
                   </div>
                   <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 30, marginTop: 11 }}>
                     {trend30.days.slice(-7).map((d, i) => {

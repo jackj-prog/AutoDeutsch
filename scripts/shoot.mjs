@@ -57,7 +57,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -74,6 +74,9 @@ function seedState({ persona, mode, near, streakReady }) {
   localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: today, count: near ? 19 : (adv ? 23 : 12), streak: adv ? 48 : 6 }));
   // `streakReady` = active yesterday at streak 6, none today → first card today hits the 7-day milestone.
   if (streakReady) localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: key(new Date(Date.now() - DAY)), count: 8, streak: 6 }));
+  localStorage.setItem("gfc-freezes-v1", "2"); // banked Streak Freezes (shown on home)
+  // `freezeMiss` = last active 2 days ago (missed yesterday) with 1 freeze → freeze absorbs the gap on load.
+  if (freezeMiss) { localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: key(new Date(Date.now() - 2 * DAY)), count: 8, streak: 6 })); localStorage.setItem("gfc-freezes-v1", "1"); }
   const trend = {};
   for (let i = 29; i >= 0; i--) {
     const k = key(new Date(Date.now() - i * DAY));
@@ -127,7 +130,7 @@ async function clickText(page, txt) {
 }
 
 async function gotoScreen(page, screen) {
-  if (screen === "home" || screen === "onboarding") return;
+  if (screen === "home" || screen === "onboarding" || screen === "freezeused") return;
   if (["library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "drill") return clickText(page, "Production practice");
@@ -200,7 +203,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

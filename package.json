@@ -8,7 +8,9 @@
     "build": "node build-static.mjs",
     "validate": "node scripts/validate-data.mjs",
     "check-sri": "node scripts/check-sri.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "shoot:setup": "npm i -D puppeteer-core @sparticuz/chromium react@18.2.0 react-dom@18.2.0",
+    "shoot": "npm run build && node scripts/shoot.mjs"
   },
   "devDependencies": {
     "@babel/standalone": "7.23.9"

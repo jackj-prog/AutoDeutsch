@@ -37,6 +37,24 @@ roll forward cleanly and you can confirm the running build in Settings.
 
 CI runs validate + tests + the SRI check on every push.
 
+## Visual audits (screenshots)
+
+`scripts/shoot.mjs` renders the built bundle in headless Chromium and writes
+PNGs to `screenshots/` — for design/UX review without a device. It loads the
+real `data.js`/`app.js` but swaps the two CDN React tags for npm-vendored UMD
+copies (the shipped `index.html` is untouched), so it works where cdnjs is
+blocked. The browser tooling is kept **out** of `devDependencies` so `npm ci`
+and CI stay lean — install it once per machine:
+
+```bash
+npm run shoot:setup                 # one-time: puppeteer-core + headless chromium + react UMD
+npm run shoot                       # builds, then shoots screenshots/home.png
+node scripts/shoot.mjs all          # home, library, stats, browse, tutor, drill
+node scripts/shoot.mjs stats drill  # specific screens
+```
+
+Screenshots and the temp harness are git-ignored.
+
 ## Local preview
 
 It's a static site — any web server works (SRI requires http, not `file://`):

@@ -113,6 +113,15 @@ async function gotoScreen(page, screen) {
   if (screen === "drill") return clickText(page, "Production practice");
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
+  if (screen === "answered") {
+    // Production session → submit a wrong answer so the answered-state feedback
+    // (reveal, stats, hint, example, auto-advance-off) is visible and stable.
+    await clickText(page, "Production practice");
+    await page.evaluate(() => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); i.value = "xxx"; i.dispatchEvent(new Event("input", { bubbles: true })); } });
+    await new Promise(r => setTimeout(r, 200));
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+    await new Promise(r => setTimeout(r, 700));
+  }
   if (screen === "recall") {
     // Custom session → Recall (DE→EN flip) → Start, then reveal the first card so the
     // swipe chips + verdict stamps are visible.

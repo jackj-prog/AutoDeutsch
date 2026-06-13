@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.47";
+const APP_VERSION = "2026.06.11.48";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3589,7 +3589,7 @@ function App() {
 
         {(mode === "production" || mode === "dictation") ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
-            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: answered ? 1 : "0 1 auto", maxHeight: answered ? undefined : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 1 auto", maxHeight: answered ? 560 : 260, margin: answered ? "auto 0" : undefined, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: answered ? "auto" : "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               {mode === "dictation" ? (
                 <button onClick={() => speak(card.de)} style={{ background: `${A}10`, border: `1.5px solid ${A}55`, borderRadius: 999, padding: "16px 26px", color: A, fontSize: 15, cursor: "pointer", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 10 }}>

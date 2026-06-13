@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.48";
+const APP_VERSION = "2026.06.11.49";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3602,6 +3602,7 @@ function App() {
                 {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
                 <div style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
+                {inputResult === "wrong" && input.trim() && <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>You wrote <span style={{ color: "#F87171", textDecoration: "line-through", textDecorationColor: `${R}88` }}>{input.trim()}</span></div>}
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {HintBtn({ hint: card.hint })}

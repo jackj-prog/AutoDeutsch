@@ -117,7 +117,11 @@ async function gotoScreen(page, screen) {
     // Production session → submit a wrong answer so the answered-state feedback
     // (reveal, stats, hint, example, auto-advance-off) is visible and stable.
     await clickText(page, "Production practice");
-    await page.evaluate(() => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); i.value = "xxx"; i.dispatchEvent(new Event("input", { bubbles: true })); } });
+    // Use React's native value setter so the controlled input's onChange actually fires.
+    await page.evaluate(() => {
+      const i = document.querySelector('input[lang="de"]');
+      if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "betrug"); i.dispatchEvent(new Event("input", { bubbles: true })); }
+    });
     await new Promise(r => setTimeout(r, 200));
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
     await new Promise(r => setTimeout(r, 700));

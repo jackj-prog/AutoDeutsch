@@ -62,6 +62,8 @@ function seedState({ persona, mode, near, streakReady }) {
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
   if (mode) localStorage.setItem("ad-mode-v1", mode); // SHOOT_MODE: verify the dynamic hero
+  // Expand all Library groups so every category icon is visible for audits.
+  localStorage.setItem("ad-lib-groups-v1", JSON.stringify({ "Everyday Life": true, "Out & About": true, "Work & Engineering": true, "Life Admin": true, "Language & Society": true, "More": true }));
   if (persona === "first") return;
   const adv = persona === "advanced";
   const z = n => String(n).padStart(2, "0");

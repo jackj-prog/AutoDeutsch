@@ -468,7 +468,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.55";
+const APP_VERSION = "2026.06.11.56";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -539,6 +539,20 @@ const ICONS = {
   // flame at streak size, unlike the previous thin outline.
   flame: "M12.96 2.29a.75.75 0 0 0-1.07-.14A9.74 9.74 0 0 0 8.35 8.33 7.55 7.55 0 0 1 6.65 6.6a.75.75 0 0 0-1.16-.08A9 9 0 1 0 15.68 4.53a7.46 7.46 0 0 1-2.72-2.24ZM15.75 14.25a3.75 3.75 0 1 1-7.31-1.17c.63.46 1.35.8 2.13 1a5.99 5.99 0 0 1 1.93-3.55 3.75 3.75 0 0 1 3.25 3.72Z",
   chevron: "M6 9l6 6 6-6",
+  // ── Category icons (added so every Library category gets a distinct, literal glyph) ──
+  car: "M5 11l1.6-4.8A2 2 0 0 1 8.5 5h7a2 2 0 0 1 1.9 1.2L20 11M4 11h16a1 1 0 0 1 1 1v4h-3M7 16H3v-4a1 1 0 0 1 1-1M7 16h10M6 16a2 2 0 1 0 4 0 2 2 0 0 0-4 0Zm8 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z",
+  leaf: "M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10ZM2 21c0-3 1.85-5.36 5.08-6C9.5 14.5 12 13 13 12",
+  pot: "M4 11h16v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5ZM2 11h20M9 7c.7-1 .2-2-.3-3M15 7c.7-1 .2-2-.3-3",
+  wrench: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9l-3.8 3.8Z",
+  scale: "M12 3v18M7 21h10M3 7h4c2 0 4-1 5-2 1 1 3 2 5 2h4M5 7l-3 7c.9.7 1.9 1 3 1s2.1-.3 3-1L5 7Zm14 0-3 7c.9.7 1.9 1 3 1s2.1-.3 3-1l-3-7Z",
+  quote: "M9 7H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2l-1 4M21 7h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2l-1 4",
+  user: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
+  bank: "M12 3 4 7h16L12 3ZM4 10v9M8 10v9M12 10v9M16 10v9M20 10v9M3 21h18M3 10h18",
+  shirt: "M16 3l4.4 1.5a2 2 0 0 1 1.3 2.2l-.6 3.5a1 1 0 0 1-1 .8H18v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9H4.9a1 1 0 0 1-1-.8l-.6-3.5a2 2 0 0 1 1.3-2.2L8 3a4 4 0 0 0 8 0Z",
+  key: "M7 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM10 10h10M16 10v3M20 10v3",
+  mail: "M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2ZM22 7l-10 7L2 7",
+  file: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5ZM14 3v5h5M9 13h6M9 17h6",
+  wine: "M8 22h8M12 14v8M7 3h10l-.7 5.2a4.3 4.3 0 0 1-8.6 0L7 3Z",
 };
 
 // Glyph icons that read better as solid silhouettes than hollow outlines. Everything
@@ -2461,7 +2475,8 @@ function App() {
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
   const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
-  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "sofa", "Body & Health": "medical", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "briefcase", "Housing & Renting": "sofa", "Banking & Finance": "cart", "Driving & Traffic": "map", "Cooking & Kitchen": "utensils", "Idioms & Slang": "smile", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "briefcase", "Health & Doctor": "medical", "Clothing & Style": "cart", "Nature & Outdoors": "cloud", "Small Talk & Social": "message", "Restaurant & Dining Out": "utensils", "Opinions & Argument": "message", "Emails & Phone": "megaphone", "Character & Personality": "smile" };
+  // Each category maps to a distinct, literal glyph (audited for collisions + recognisability).
+  const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "home", "Body & Health": "heart", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "file", "Housing & Renting": "key", "Banking & Finance": "bank", "Driving & Traffic": "car", "Cooking & Kitchen": "pot", "Idioms & Slang": "quote", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "wrench", "Health & Doctor": "medical", "Clothing & Style": "shirt", "Nature & Outdoors": "leaf", "Small Talk & Social": "message", "Restaurant & Dining Out": "wine", "Opinions & Argument": "scale", "Emails & Phone": "mail", "Character & Personality": "user" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
   // Shown under the queue total so the badge number and the session size can't contradict.
   const nextBatchLabel = (resolved) => {

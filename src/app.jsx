@@ -483,6 +483,26 @@ const PAL = {
   A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
   G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#97938B", BL: "#60A5FA", CARD: "#151515",
 };
+// Flame "heat" by count — used for both the day streak and the in-session combo. As the
+// number climbs the flame shifts from brand gold toward fiery orange, grows, glows, and
+// flickers, so being on a roll/streak looks like it. Returns { color, glow, boost, anim }.
+const flameHeat = (n) => {
+  if (n >= 30) return { color: "#FF6A12", glow: 14, boost: 5, anim: "ad-flame-roar" };
+  if (n >= 14) return { color: "#FF8A1E", glow: 11, boost: 4, anim: "ad-flame-flicker" };
+  if (n >= 7)  return { color: "#FFA826", glow: 8,  boost: 2, anim: "ad-flame-flicker" };
+  if (n >= 3)  return { color: "#FFCC00", glow: 5,  boost: 1, anim: null };
+  if (n >= 1)  return { color: "#FFCC00", glow: 0,  boost: 0, anim: null };
+  return { color: PAL.TD, glow: 0, boost: 0, anim: null };
+};
+// A flame at its current heat: glowing, slightly grown, flickering at high tiers.
+const HotFlame = ({ n, size }) => {
+  const h = flameHeat(n);
+  return (
+    <span className={h.anim || undefined} style={{ display: "inline-flex", filter: h.glow ? `drop-shadow(0 0 ${h.glow}px ${h.color}cc)` : "none" }}>
+      <Icon name="flame" size={size + h.boost} style={{ color: h.color }} />
+    </span>
+  );
+};
 // Calmer, more premium surface tokens: hairline borders + soft elevation instead of hard grey boxes.
 const HAIR = "rgba(255,255,255,0.06)";
 const ELEV = "0 8px 30px -14px rgba(0,0,0,0.8)";
@@ -493,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.64";
+const APP_VERSION = "2026.06.11.65";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2617,7 +2637,7 @@ function App() {
           <div style={{ color: T, fontWeight: 700, letterSpacing: 0.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>
             {extra}{category}
           </div>
-          {combo >= 3 && <span className="ad-pop" key={combo} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 4, background: `${A}14`, border: `1px solid ${A}3D`, borderRadius: 999, padding: "4px 10px", fontSize: 10.5, fontWeight: 900, color: A }}><Icon name="flame" size={12} /> {combo}</span>}
+          {combo >= 3 && (() => { const h = flameHeat(combo); return <span className="ad-pop" key={combo} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 4, background: `${h.color}1C`, border: `1px solid ${h.color}55`, borderRadius: 999, padding: "4px 10px", fontSize: 10.5, fontWeight: 900, color: h.color, boxShadow: h.glow ? `0 0 ${h.glow}px ${h.color}55` : "none" }}><HotFlame n={combo} size={12} /> {combo}</span>; })()}
           <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 5, background: "#141414", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "4px 11px", fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5 }}>
             {rpt > 0 && <span style={{ color: R }}>R{rpt + 1}</span>}
             <span style={{ color: T }}>{idx + 1}<span style={{ color: TD, fontWeight: 700 }}> / {cards.length}</span></span>
@@ -2874,11 +2894,15 @@ function App() {
         @keyframes ad-goal-ring { 0%{transform:scale(.55);opacity:.65} 100%{transform:scale(2);opacity:0} }
         .ad-goal-ring { animation: ad-goal-ring 1.15s ease-out .12s both; }
         @keyframes ad-confetti { 0% { opacity:1; transform:translate3d(0,0,0) rotate(0) } 100% { opacity:0; transform:translate3d(var(--tx),var(--ty),0) rotate(var(--rot)) } }
+        @keyframes ad-flame-flicker { 0%,100% { transform:scale(1) translateY(0) } 50% { transform:scale(1.08) translateY(-.5px) } }
+        @keyframes ad-flame-roar { 0%,100% { transform:scale(1.04) rotate(-2deg) } 50% { transform:scale(1.16) rotate(2deg) } }
+        .ad-flame-flicker { animation: ad-flame-flicker 1.5s ease-in-out infinite; transform-origin:50% 80%; }
+        .ad-flame-roar { animation: ad-flame-roar 1s ease-in-out infinite; transform-origin:50% 80%; }
         @keyframes ad-toast-in { from { opacity:0; transform:translateY(-16px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
         @keyframes ad-toast-out { to { opacity:0; transform:translateY(-10px) } }
         .ad-toast { animation: ad-toast-in .36s cubic-bezier(.2,.7,.3,1.3) both, ad-toast-out .36s ease 1.85s forwards; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -3385,7 +3409,7 @@ function App() {
               ) : (
                 <>
                   <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                    <Icon name="flame" size={17} style={{ color: dailyStats.streak > 0 ? A : TD }} />
+                    <HotFlame n={dailyStats.streak} size={17} />
                     <span style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, lineHeight: 1 }}><CountUp value={dailyStats.streak} /></span>
                     <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>day streak</span>
                     {freezes > 0 && <span title={`${freezes} Streak Freeze${freezes > 1 ? "s" : ""} banked — absorbs a missed day`} style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 3, color: BL, fontSize: 12, fontWeight: 800 }}><Icon name="flake" size={14} /> {freezes}</span>}

@@ -57,19 +57,20 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
-  if (mastery) {
-    // One real card, one step from mastery and due → it's the session's first card; the
-    // driver types its known answer to cross the 5th production streak.
-    const D = 86400000;
+  if (mastery || correctFast) {
+    // One real due card → it's the session's first card; the driver types its known
+    // answer. productionStreak 4 (mastery) crosses the 5th streak; 1 (correctFast) is a
+    // plain correct answer for verifying the minimal fast-path card.
+    const ps = mastery ? 4 : 1, D = 86400000;
     localStorage.setItem("gfc-goal-v7", "20");
     localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: 12, streak: 6 }));
     localStorage.setItem("gfc-freezes-v1", "2");
     localStorage.setItem("gfc-v7", JSON.stringify({
-      "production::Travel & Directions::der Bahnhof": { stats: { attempts: 4, correct: 4, incorrect: 0, lastSeen: Date.now() - 25 * D, avgTime: 5000, timedAttempts: 4, currentStreak: 4, productionStreak: 4, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * D } },
+      "production::Travel & Directions::der Bahnhof": { stats: { attempts: ps, correct: ps, incorrect: 0, lastSeen: Date.now() - 25 * D, avgTime: 5000, timedAttempts: ps, currentStreak: ps, productionStreak: ps, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * D } },
     }));
     return;
   }
@@ -149,8 +150,8 @@ async function gotoScreen(page, screen) {
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
-  if (screen === "mastery") {
-    // First card is the seeded near-mastery card (der Bahnhof). Type its correct answer.
+  if (screen === "mastery" || screen === "correct") {
+    // First card is the seeded due card (der Bahnhof). Type its correct answer.
     await clickText(page, "Production practice");
     await new Promise(r => setTimeout(r, 250));
     await page.evaluate(() => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "der Bahnhof"); i.dispatchEvent(new Event("input", { bubbles: true })); } });
@@ -224,7 +225,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

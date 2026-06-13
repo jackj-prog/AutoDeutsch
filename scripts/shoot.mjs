@@ -135,6 +135,30 @@ async function gotoScreen(page, screen) {
     await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
     await new Promise(r => setTimeout(r, 700));
   }
+  if (screen === "results") {
+    // Drive a short production session to completion (all wrong) to reach the results screen.
+    await clickText(page, "Custom session");
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => (b.textContent || "").trim() === "5")?.click()); // 5 cards
+    await new Promise(r => setTimeout(r, 150));
+    await clickText(page, "Start session");
+    const nativeType = (val) => page.evaluate((v) => {
+      const i = document.querySelector('input[lang="de"]');
+      if (!i) return false;
+      i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, v); i.dispatchEvent(new Event("input", { bubbles: true }));
+      return true;
+    }, val);
+    for (let k = 0; k < 24; k++) {
+      const done = await page.evaluate(() => /Repeat \d|Keep going|Session complete|Weiter|Back to home/i.test(document.body.innerText) && !document.querySelector('input[lang="de"]'));
+      if (done) break;
+      if (await nativeType("x")) {
+        await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+        await new Promise(r => setTimeout(r, 220));
+      }
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /^(Next|Results)/.test((b.textContent || "").trim()))?.click());
+      await new Promise(r => setTimeout(r, 220));
+    }
+    await new Promise(r => setTimeout(r, 500));
+  }
 }
 
 async function run() {

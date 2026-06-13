@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.49";
+const APP_VERSION = "2026.06.11.50";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -4109,8 +4109,9 @@ function App() {
               <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>{category}{rpt > 0 ? ` · Round ${rpt + 1}` : ""} · <span style={{ color: A, fontWeight: 700 }}>{modeLabel}</span></div>
             </div>
 
-            {/* Session summary */}
-            <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "20px 18px 16px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV, textAlign: "center" }}>
+            {/* Session summary — marginTop:auto pairs with the actions' marginTop:auto to
+                center the summary/failed block evenly between the title and the buttons. */}
+            <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "20px 18px 16px", marginTop: "auto", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV, textAlign: "center" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
               {mode === "audio" ? (
                 /* Audio is passive listening — no graded answers, so no accuracy fiction. */

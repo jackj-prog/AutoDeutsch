@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.50";
+const APP_VERSION = "2026.06.11.51";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -813,6 +813,15 @@ function App() {
   const [showTrendBreakdown, setShowTrendBreakdown] = useState(false);
   const [newlyMastered, setNewlyMastered] = useState([]);
   const [masteryBurst, setMasteryBurst] = useState(null);
+  // Non-blocking celebration shown the moment the daily goal is crossed mid-session.
+  const [goalCelebration, setGoalCelebration] = useState(null); // { count, streak } | null
+  const goalCelebrateTimerRef = useRef(null);
+  const celebrateGoal = useCallback((d) => {
+    setGoalCelebration({ count: d.count, streak: d.streak });
+    try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([35, 55, 35]); } catch (e) {}
+    if (goalCelebrateTimerRef.current) clearTimeout(goalCelebrateTimerRef.current);
+    goalCelebrateTimerRef.current = setTimeout(() => setGoalCelebration(null), 2700);
+  }, []);
   const [lastSession, setLastSession] = useState(null);
   // Detect whether localStorage actually writes (false in Safari private mode / quota exhausted)
   const [storageOK, setStorageOK] = useState(true);
@@ -1034,10 +1043,13 @@ function App() {
         // an app left open across 2+ idle midnights must not over-count.
         d = { date: today, count: 1, streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1 };
       }
+      if (prev.date === today && prev.count < dailyGoal && d.count >= dailyGoal) {
+        setTimeout(() => celebrateGoal(d), 0);
+      }
       saveDaily(d);
       return d;
     });
-  }, [saveDaily]);
+  }, [saveDaily, dailyGoal, celebrateGoal]);
 
   // Screen Wake Lock: keeps the screen on during audio playback.
   // iOS 16.4+ and modern Android support it; older browsers silently no-op.
@@ -1544,6 +1556,10 @@ function App() {
         // Only continue the streak if the previous activity was actually yesterday —
         // an app left open across 2+ idle midnights must not over-count.
         d = { date: today, count: 1, streak: prev.date === todayKey(new Date(Date.now() - SRS_DAY_MS)) ? prev.streak + 1 : 1 };
+      }
+      // Celebrate the exact moment today's goal is reached — once, mid-session.
+      if (prev.date === today && prev.count < dailyGoal && d.count >= dailyGoal) {
+        setTimeout(() => celebrateGoal(d), 0);
       }
       saveDaily(d);
       return d;
@@ -2705,8 +2721,13 @@ function App() {
         .ad-uk:active { transform: translateY(1px) scale(.95); border-color: #FFCC00; }
         .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
         button:focus-visible, [role="button"]:focus-visible, input:focus-visible { outline: 2px solid #FFCC00AA; outline-offset: 2px; }
+        @keyframes ad-goal-in { 0%{opacity:0;transform:scale(.82) translateY(10px)} 55%{opacity:1;transform:scale(1.05) translateY(0)} 72%{transform:scale(.98)} 100%{opacity:1;transform:scale(1)} }
+        @keyframes ad-goal-out { to { opacity:0; transform:scale(.96) } }
+        .ad-goal { animation: ad-goal-in .52s cubic-bezier(.2,.7,.3,1.3) both, ad-goal-out .42s ease 2.28s forwards; }
+        @keyframes ad-goal-ring { 0%{transform:scale(.55);opacity:.65} 100%{transform:scale(2);opacity:0} }
+        .ad-goal-ring { animation: ad-goal-ring 1.15s ease-out .12s both; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -2717,6 +2738,26 @@ function App() {
       <div aria-live="polite" style={{ position: "absolute", width: 1, height: 1, margin: -1, padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 }}>
         {feedback === "correct" ? "Richtig" : feedback === "wrong" ? "Falsch" : ""}
       </div>
+
+      {/* ── DAILY-GOAL CELEBRATION (non-blocking; taps pass through to keep the flow) ── */}
+      {goalCelebration && (
+        <div role="status" aria-label="Daily goal reached" style={{ position: "fixed", inset: 0, zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", padding: 24 }}>
+          <div className="ad-goal" style={{ position: "relative", background: "linear-gradient(160deg, #16190E 0%, #121212 72%)", border: `1px solid ${G}55`, borderRadius: 22, padding: "26px 30px 24px", textAlign: "center", boxShadow: `0 0 70px -12px ${G}66, 0 24px 60px rgba(0,0,0,.55)`, maxWidth: 320 }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, borderTopLeftRadius: 22, borderTopRightRadius: 22 }} />
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14, position: "relative", height: 64 }}>
+              <div className="ad-goal-ring" style={{ position: "absolute", top: 0, width: 64, height: 64, borderRadius: "50%", border: `2px solid ${G}` }} />
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: `${G}16`, border: `2px solid ${G}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 34px ${G}55` }}>
+                <Icon name="check" size={34} stroke={3} style={{ color: G }} />
+              </div>
+            </div>
+            <div style={{ fontSize: 11, color: G, fontWeight: 900, letterSpacing: 2.4, textTransform: "uppercase", marginBottom: 7 }}>Daily goal reached</div>
+            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, color: T, lineHeight: 1.1 }}>{goalCelebration.count} cards today</div>
+            <div style={{ fontSize: 13, color: TD, marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <Icon name="flame" size={15} style={{ color: A }} /> {goalCelebration.streak}-day streak going strong
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Keyed on `screen` so every navigation gets a subtle slide-up entrance. */}
       <div key={screen} className="ad-screen">

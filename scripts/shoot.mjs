@@ -57,7 +57,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode }) {
+function seedState({ persona, mode, near }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -68,7 +68,8 @@ function seedState({ persona, mode }) {
   const key = (d = new Date()) => `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
   const DAY = 86400000, today = key();
   localStorage.setItem("gfc-goal-v7", "20");
-  localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: today, count: adv ? 23 : 12, streak: adv ? 48 : 6 }));
+  // `near` = one card short of the goal, to reach the goal-crossing celebration.
+  localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: today, count: near ? 19 : (adv ? 23 : 12), streak: adv ? 48 : 6 }));
   const trend = {};
   for (let i = 29; i >= 0; i--) {
     const k = key(new Date(Date.now() - i * DAY));
@@ -128,6 +129,16 @@ async function gotoScreen(page, screen) {
   if (screen === "drill") return clickText(page, "Production practice");
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
+  if (screen === "goal") {
+    // Seeded one card short of the goal → answering one card triggers the celebration.
+    await clickText(page, "Production practice");
+    await page.evaluate(() => {
+      const i = document.querySelector('input[lang="de"]');
+      if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "x"); i.dispatchEvent(new Event("input", { bubbles: true })); }
+    });
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+    await new Promise(r => setTimeout(r, 600)); // celebration is mid-animation
+  }
   if (screen === "answered") {
     // Production session → submit a wrong answer so the answered-state feedback
     // (reveal, stats, hint, example, auto-advance-off) is visible and stable.
@@ -184,7 +195,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

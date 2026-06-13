@@ -471,7 +471,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.57";
+const APP_VERSION = "2026.06.11.58";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1586,7 +1586,8 @@ function App() {
       };
       setNewlyMastered(list => list.some(x => x.id === key) ? list : [...list, item]);
       setMasteryBurst(item);
-      window.setTimeout(() => setMasteryBurst(cur => cur?.id === key ? null : cur), 1800);
+      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([18, 40, 18]); } catch (e) {}
+      window.setTimeout(() => setMasteryBurst(cur => cur?.id === key ? null : cur), 2300);
     }
     // ── In-session retry (learning step) ──
     // A wrong card re-queues ~4 positions ahead in the SAME session, while the correction
@@ -2613,12 +2614,6 @@ function App() {
             {mastered ? (unlockedNow ? "Mastery unlocked - 5 in a row" : "Mastered - 5 in a row") : `${productionStreak} / ${MASTERY_STREAK} production streak`}
           </div>
         )}
-        {unlockedNow && masteryBurst?.id === key && (
-          <div className="ad-mastery-burst" style={{ margin: "8px auto 0", maxWidth: 250, borderRadius: 12, border: `1px solid ${G}55`, background: `linear-gradient(135deg, ${G}18, #0F0F0F 70%)`, padding: "9px 12px", color: T, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: `0 0 18px ${G}18` }}>
-            <Icon name="trophy" size={16} style={{ color: G }} />
-            <span style={{ fontSize: 11, fontWeight: 900 }}>New mastered card</span>
-          </div>
-        )}
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginTop: 8, fontSize: 11, color: TD, letterSpacing: 0.2 }}>
           <span>Attempts {n.stats.attempts}</span>
           <span style={{ opacity: 0.35 }}>•</span>
@@ -2809,8 +2804,11 @@ function App() {
         .ad-goal { animation: ad-goal-in .52s cubic-bezier(.2,.7,.3,1.3) both, ad-goal-out .42s ease 2.28s forwards; }
         @keyframes ad-goal-ring { 0%{transform:scale(.55);opacity:.65} 100%{transform:scale(2);opacity:0} }
         .ad-goal-ring { animation: ad-goal-ring 1.15s ease-out .12s both; }
+        @keyframes ad-toast-in { from { opacity:0; transform:translateY(-16px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
+        @keyframes ad-toast-out { to { opacity:0; transform:translateY(-10px) } }
+        .ad-toast { animation: ad-toast-in .36s cubic-bezier(.2,.7,.3,1.3) both, ad-toast-out .36s ease 1.85s forwards; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -2837,6 +2835,22 @@ function App() {
             <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, color: T, lineHeight: 1.1 }}>{celebration.big}</div>
             <div style={{ fontSize: 13, color: TD, marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6 }}>
               {celebration.subIcon && <Icon name={celebration.subIcon} size={15} style={{ color: A }} />} {celebration.sub}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MASTERY TOAST — slides down when a word is mastered (5 production in a row).
+          Lighter than the centre celebrations because it can fire several times a session. ── */}
+      {masteryBurst && (
+        <div role="status" aria-label={`Mastered ${masteryBurst.de}`} style={{ position: "fixed", top: "max(12px, env(safe-area-inset-top))", left: "50%", transform: "translateX(-50%)", zIndex: 125, width: "calc(100% - 32px)", maxWidth: 420, pointerEvents: "none", display: "flex", justifyContent: "center" }}>
+          <div className="ad-toast" style={{ display: "flex", alignItems: "center", gap: 11, background: "linear-gradient(135deg, #0F1A11 0%, #0F0F0F 70%)", border: `1px solid ${G}66`, borderRadius: 14, padding: "10px 16px 10px 11px", boxShadow: `0 14px 44px -12px ${G}66, 0 8px 24px rgba(0,0,0,.5)`, maxWidth: 360, minWidth: 0 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `${G}18`, border: `1px solid ${G}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name="trophy" size={20} style={{ color: G }} />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 9.5, color: G, fontWeight: 900, letterSpacing: 1.4, textTransform: "uppercase" }}>Mastered · 5 in a row</div>
+              <div style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{masteryBurst.de}</div>
             </div>
           </div>
         </div>

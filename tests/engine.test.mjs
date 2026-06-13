@@ -63,6 +63,18 @@ test("checkMatch: exact matches, including umlaut folding and / alternatives", (
   assert.equal(checkMatch("gerne", "gern / gerne"), "exact");
 });
 
+test("checkMatch: capitalisation mismatch is flagged 'capital', not silently exact", () => {
+  assert.equal(checkMatch("Haus", "Haus"), "exact");
+  assert.equal(checkMatch("haus", "Haus"), "capital");           // noun not capitalised
+  assert.equal(checkMatch("der bahnhof", "der Bahnhof"), "capital"); // noun in a phrase
+  assert.equal(checkMatch("Dem", "dem"), "capital");             // non-noun wrongly capitalised
+  assert.equal(checkMatch("bär", "Bär"), "capital");             // works through umlaut folding
+  assert.equal(checkMatch("Tschüss", "Tschüss"), "exact");
+  assert.equal(checkMatch("der Bahnhof", "der Bahnhof"), "exact");
+  // a capital slip on a slash-alternative still resolves to 'capital'
+  assert.equal(checkMatch("gerne", "gern / Gerne"), "capital");
+});
+
 test("checkMatch: short-word near-misses are wrong, not close (different words)", () => {
   assert.equal(checkMatch("neue", "neun"), "wrong");
   assert.equal(checkMatch("rat", "rot"), "wrong");

@@ -150,11 +150,13 @@ async function gotoScreen(page, screen) {
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
-  if (screen === "mastery" || screen === "correct") {
-    // First card is the seeded due card (der Bahnhof). Type its correct answer.
+  if (screen === "mastery" || screen === "correct" || screen === "capital") {
+    // First card is the seeded due card (der Bahnhof). Type its answer — lowercased for
+    // the 'capital' case to verify the capitalisation flag.
     await clickText(page, "Production practice");
     await new Promise(r => setTimeout(r, 250));
-    await page.evaluate(() => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "der Bahnhof"); i.dispatchEvent(new Event("input", { bubbles: true })); } });
+    const answer = screen === "capital" ? "der bahnhof" : "der Bahnhof";
+    await page.evaluate((a) => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, a); i.dispatchEvent(new Event("input", { bubbles: true })); } }, answer);
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
     await new Promise(r => setTimeout(r, 550));
     return;
@@ -225,7 +227,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.42";
+const APP_VERSION = "2026.06.11.43";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2351,6 +2351,9 @@ function App() {
   const sessionScreens = new Set(["cards", "drill", "sentence", "audio"]);
   const activeCardMissing = sessionScreens.has(screen) && cards.length > 0 && !card;
   const cardBox = card ? normalizeEntry(prog[gk(card, category, mode)]).srs.box : 0;
+  // A card you keep getting wrong (leech-like). Used to auto-surface its mnemonic on
+  // reveal — brute-force repetition is the worst leech fix; the hint is the lever.
+  const cardStruggling = card ? normalizeEntry(prog[gk(card, category, mode)]).stats.incorrect >= 3 : false;
 
   useEffect(() => {
     if (!activeCardMissing) return;
@@ -2437,7 +2440,9 @@ function App() {
   // NEW: Hint toggle button for cards with mnemonic hints
   const HintBtn = ({ hint }) => {
     if (!hint) return null;
-    if (showHint) return (<div style={{ marginTop: 6, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, fontSize: 11, color: BL, lineHeight: 1.4, borderLeft: `3px solid ${BL}`, display: "flex", gap: 6, alignItems: "flex-start" }}><Icon name="target" size={13} style={{ marginTop: 1 }} /> <span>{hint}</span></div>);
+    // Struggling cards show the mnemonic automatically (only once answered, so it never
+    // gives the answer away pre-attempt); others keep it behind a tap.
+    if (showHint || (answered && cardStruggling)) return (<div style={{ marginTop: 6, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, fontSize: 11, color: BL, lineHeight: 1.4, borderLeft: `3px solid ${BL}`, display: "flex", gap: 6, alignItems: "flex-start" }}><Icon name="target" size={13} style={{ marginTop: 1 }} /> <span>{answered && cardStruggling && !showHint ? <><strong style={{ color: T }}>Tricky one — </strong>{hint}</> : hint}</span></div>);
     return (<button onClick={() => setShowHint(true)} style={{ marginTop: 6, background: "none", border: `1px solid ${BL}44`, borderRadius: 8, padding: "7px 12px", color: BL, fontSize: 11, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="target" size={13} /> Show hint</button>);
   };
 

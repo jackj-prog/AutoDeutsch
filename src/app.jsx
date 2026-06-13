@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.51";
+const APP_VERSION = "2026.06.11.52";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3197,23 +3197,33 @@ function App() {
               );
             })()}
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                <Icon name="flame" size={17} style={{ color: dailyStats.streak > 0 ? A : TD }} />
-                <span style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, lineHeight: 1 }}><CountUp value={dailyStats.streak} /></span>
-                <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>day streak</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 30, marginTop: 11 }}>
-                {trend30.days.slice(-7).map((d, i) => {
-                  const isToday = i === 6;
-                  const v = isToday ? Math.max(d.attempts, dailyStats.count) : d.attempts;
-                  const h = v <= 0 ? 3 : Math.max(5, Math.min(30, Math.round((v / Math.max(dailyGoal, 1)) * 30)));
-                  return <div key={d.date} style={{ flex: 1, height: h, borderRadius: 2, background: v <= 0 ? "#1D1D1D" : v >= dailyGoal ? G : A, opacity: isToday ? 1 : 0.6, transition: "height .3s ease" }} />;
-                })}
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-                <span style={{ fontSize: 9, color: TD, letterSpacing: 0.4 }}>last 7 days</span>
-                {dailyStats.count >= dailyGoal && <span style={{ fontSize: 9, color: G, fontWeight: 800 }}>✓ Goal reached</span>}
-              </div>
+              {(dailyStats.count === 0 && dailyStats.streak === 0 && trend30.totalAttempts === 0) ? (
+                // Warm first-run welcome instead of an empty 0/0 dashboard.
+                <>
+                  <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: T, lineHeight: 1.15 }}>Willkommen — let's begin</div>
+                  <div style={{ fontSize: 12, color: TD, marginTop: 7, lineHeight: 1.45 }}>Finish today's first cards to light your <span style={{ color: A, fontWeight: 700 }}>streak</span> <Icon name="flame" size={12} style={{ color: A, verticalAlign: "-1px" }} /> and start filling your week.</div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                    <Icon name="flame" size={17} style={{ color: dailyStats.streak > 0 ? A : TD }} />
+                    <span style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, lineHeight: 1 }}><CountUp value={dailyStats.streak} /></span>
+                    <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>day streak</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 30, marginTop: 11 }}>
+                    {trend30.days.slice(-7).map((d, i) => {
+                      const isToday = i === 6;
+                      const v = isToday ? Math.max(d.attempts, dailyStats.count) : d.attempts;
+                      const h = v <= 0 ? 3 : Math.max(5, Math.min(30, Math.round((v / Math.max(dailyGoal, 1)) * 30)));
+                      return <div key={d.date} style={{ flex: 1, height: h, borderRadius: 2, background: v <= 0 ? "#1D1D1D" : v >= dailyGoal ? G : A, opacity: isToday ? 1 : 0.6, transition: "height .3s ease" }} />;
+                    })}
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                    <span style={{ fontSize: 9, color: TD, letterSpacing: 0.4 }}>last 7 days</span>
+                    {dailyStats.count >= dailyGoal && <span style={{ fontSize: 9, color: G, fontWeight: 800 }}>✓ Goal reached</span>}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

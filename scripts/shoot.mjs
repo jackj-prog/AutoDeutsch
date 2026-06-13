@@ -57,20 +57,20 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
-  if (mastery || correctFast) {
-    // One real due card → it's the session's first card; the driver types its known
-    // answer. productionStreak 4 (mastery) crosses the 5th streak; 1 (correctFast) is a
-    // plain correct answer for verifying the minimal fast-path card.
+  if (mastery || correctFast || eszett) {
+    // One real due card → it's the session's first card; the driver types its known answer.
+    // productionStreak 4 (mastery) crosses the 5th streak; 1 otherwise. eszett uses a ß word.
     const ps = mastery ? 4 : 1, D = 86400000;
+    const cardKey = eszett ? "production::Travel & Directions::die Straße" : "production::Travel & Directions::der Bahnhof";
     localStorage.setItem("gfc-goal-v7", "20");
     localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: 12, streak: 6 }));
     localStorage.setItem("gfc-freezes-v1", "2");
     localStorage.setItem("gfc-v7", JSON.stringify({
-      "production::Travel & Directions::der Bahnhof": { stats: { attempts: ps, correct: ps, incorrect: 0, lastSeen: Date.now() - 25 * D, avgTime: 5000, timedAttempts: ps, currentStreak: ps, productionStreak: ps, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * D } },
+      [cardKey]: { stats: { attempts: ps, correct: ps, incorrect: 0, lastSeen: Date.now() - 25 * D, avgTime: 5000, timedAttempts: ps, currentStreak: ps, productionStreak: ps, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * D } },
     }));
     return;
   }
@@ -151,12 +151,12 @@ async function gotoScreen(page, screen) {
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
   if (screen === "konj1") { await clickText(page, "Verb Trainer"); await clickText(page, "Konjunktiv I"); await clickText(page, "Start session"); return; }
-  if (screen === "mastery" || screen === "correct" || screen === "capital") {
+  if (screen === "mastery" || screen === "correct" || screen === "capital" || screen === "eszett") {
     // First card is the seeded due card (der Bahnhof). Type its answer — lowercased for
     // the 'capital' case to verify the capitalisation flag.
     await clickText(page, "Production practice");
     await new Promise(r => setTimeout(r, 250));
-    const answer = screen === "capital" ? "der bahnhof" : "der Bahnhof";
+    const answer = screen === "capital" ? "der bahnhof" : screen === "eszett" ? "die Strasse" : "der Bahnhof";
     await page.evaluate((a) => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, a); i.dispatchEvent(new Event("input", { bubbles: true })); } }, answer);
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
     await new Promise(r => setTimeout(r, 550));
@@ -228,7 +228,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

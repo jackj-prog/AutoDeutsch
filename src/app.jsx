@@ -226,6 +226,11 @@ function normalize(s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/
 // silently accepting (normalize() lowercases, hiding the error entirely).
 function normCase(s) { return s.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss").replace(/[^a-zA-Z0-9 ]/g, "").trim(); }
 
+// ß-preserving normaliser (lowercased, umlaut-folded, ß kept) — used to detect a ß-vs-ss
+// mismatch. Post-1996: ß after a long vowel/diphthong (Straße, Fuß), ss after a short
+// vowel (Fluss, dass). normalize() folds ß→ss, so it can't see the difference.
+function normEszett(s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/[^a-zß0-9 ]/g, "").trim(); }
+
 // True "within one edit" check — handles single insertion, deletion, or substitution.
 // The previous position-compare version failed on insertions because a single inserted
 // character cascaded into N mismatches.
@@ -248,11 +253,13 @@ function within1Edit(a, b) {
 // "wrong". "capital" is graded correct but flagged so the learner fixes their Groß-/
 // Kleinschreibung — the orthographic skill that defines written German.
 function checkMatch(input, target) {
-  const ni = normalize(input), nt = normalize(target);
-  const ci = normCase(input);
-  if (ni === nt) return ci === normCase(target) ? "exact" : "capital";
+  const ni = normalize(input);
+  // Grade a word-level match: capitalisation first (the bigger skill), then ß-vs-ss.
+  const grade = (p) => normCase(input) !== normCase(p) ? "capital"
+    : normEszett(input) !== normEszett(p) ? "eszett" : "exact";
+  if (ni === normalize(target)) return grade(target);
   const parts = target.split("/").map(s => s.trim());
-  for (const p of parts) if (normalize(p) === ni) return ci === normCase(p) ? "exact" : "capital";
+  for (const p of parts) if (normalize(p) === ni) return grade(p);
   // Typo tolerance ("close") only for longer answers. For short words a single edit
   // usually yields a *different* valid word (neun↔neue, rot↔rat, Tee↔See), which must
   // NOT be graded correct — so require an exact match at <5 chars. Checked per slash
@@ -486,7 +493,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.61";
+const APP_VERSION = "2026.06.11.62";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3803,6 +3810,7 @@ function App() {
                 <div style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
+                {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
                 {inputResult === "wrong" && input.trim() && <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>You wrote <span style={{ color: "#F87171", textDecoration: "line-through", textDecorationColor: `${R}88` }}>{input.trim()}</span></div>}
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
@@ -3915,6 +3923,7 @@ function App() {
                 {inputResult === "wrong" && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
+                {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
                 <SpeakBtn text={card.pl} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
                   <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
@@ -3932,6 +3941,7 @@ function App() {
               {answered && <div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
                 {inputResult === "wrong" ? <><span style={{ color: R }}>Your answer: {input}</span><br /><span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   inputResult === "capital" ? <span style={{ color: A }}>✓ Right — mind the capitalisation ({card.a})</span> :
+                  inputResult === "eszett" ? <span style={{ color: A }}>✓ Right — mind ß vs ss ({card.a})</span> :
                   <span style={{ color: G }}>Correct! ✓</span>}{" "}{card.h}
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </div>}

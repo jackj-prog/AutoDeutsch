@@ -75,6 +75,16 @@ test("checkMatch: capitalisation mismatch is flagged 'capital', not silently exa
   assert.equal(checkMatch("gerne", "gern / Gerne"), "capital");
 });
 
+test("checkMatch: ß-vs-ss mismatch is flagged 'eszett', not silently exact", () => {
+  assert.equal(checkMatch("Straße", "Straße"), "exact");
+  assert.equal(checkMatch("Strasse", "Straße"), "eszett");  // ss where ß belongs (Swiss-valid but flagged)
+  assert.equal(checkMatch("Fluß", "Fluss"), "eszett");      // ß where ss belongs (post-1996 error)
+  assert.equal(checkMatch("Fuss", "Fuß"), "eszett");
+  assert.equal(checkMatch("dass", "dass"), "exact");
+  // capitalisation takes precedence when both differ
+  assert.equal(checkMatch("strasse", "Straße"), "capital");
+});
+
 test("checkMatch: short-word near-misses are wrong, not close (different words)", () => {
   assert.equal(checkMatch("neue", "neun"), "wrong");
   assert.equal(checkMatch("rat", "rot"), "wrong");

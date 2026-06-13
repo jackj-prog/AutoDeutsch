@@ -131,6 +131,7 @@ async function gotoScreen(page, screen) {
   if (screen === "drill") return clickText(page, "Production practice");
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
+  if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
   if (screen === "goal" || screen === "streak") {
     // goal: seeded one short of the goal. streak: first card today hits a milestone.
     await clickText(page, "Production practice");

@@ -468,7 +468,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.54";
+const APP_VERSION = "2026.06.11.55";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -535,15 +535,23 @@ const ICONS = {
   chip: "M8 8h8v8H8V8Zm-4 3h4M4 15h4M16 11h4M16 15h4M11 4v4M15 4v4M11 16v4M15 16v4",
   trophy: "M8 4h8v3a4 4 0 0 1-8 0V4Zm0 1H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5M12 11v5M9 20h6M10 16h4",
   link: "M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1",
-  flame: "M12 3c2 2.7 4.7 4.9 4.7 8.2a4.7 4.7 0 0 1-9.4 0c0-1.6.6-2.9 1.6-4.2.3 1.1 1 1.9 2 2.3C10.5 7 11 5 12 3Z",
+  // Solid fire: a strong filled flame with an inner-flame cutout — reads as a real
+  // flame at streak size, unlike the previous thin outline.
+  flame: "M12.96 2.29a.75.75 0 0 0-1.07-.14A9.74 9.74 0 0 0 8.35 8.33 7.55 7.55 0 0 1 6.65 6.6a.75.75 0 0 0-1.16-.08A9 9 0 1 0 15.68 4.53a7.46 7.46 0 0 1-2.72-2.24ZM15.75 14.25a3.75 3.75 0 1 1-7.31-1.17c.63.46 1.35.8 2.13 1a5.99 5.99 0 0 1 1.93-3.55 3.75 3.75 0 0 1 3.25 3.72Z",
   chevron: "M6 9l6 6 6-6",
 };
 
-const Icon = React.memo(({ name, size = 18, stroke = 2, style }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: "block", flexShrink: 0, ...style }}>
-    <path d={ICONS[name] || ICONS.book} fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-));
+// Glyph icons that read better as solid silhouettes than hollow outlines. Everything
+// else stays line-art (stroke 2) for a consistent, principled icon system.
+const SOLID_ICONS = new Set(["flame", "play", "pause"]);
+const Icon = React.memo(({ name, size = 18, stroke = 2, style }) => {
+  const solid = SOLID_ICONS.has(name);
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: "block", flexShrink: 0, ...style }}>
+      <path d={ICONS[name] || ICONS.book} fill={solid ? "currentColor" : "none"} stroke={solid ? "none" : "currentColor"} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" fillRule="evenodd" clipRule="evenodd" />
+    </svg>
+  );
+});
 
 const IconBadge = React.memo(({ name, color = PAL.A, bg, size = 32 }) => (
   <span style={{ width: size, height: size, borderRadius: Math.round(size * 0.34), display: "inline-flex", alignItems: "center", justifyContent: "center", color, background: bg || `linear-gradient(180deg, ${color}1F 0%, ${color}08 100%)`, border: `1px solid ${color}26`, boxShadow: `inset 0 1px 0 ${color}14`, flexShrink: 0 }}>

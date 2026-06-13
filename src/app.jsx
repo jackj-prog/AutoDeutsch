@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.39";
+const APP_VERSION = "2026.06.11.40";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1766,7 +1766,9 @@ function App() {
       const pool = filterPool(rawPool);
       const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
       const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
-      const sel = sh([...seeded, ...weightedSelect(rest, count - seeded.length, getMult)]);
+      // Front-load due reviews: they land while attention is freshest, and an
+      // abandoned session still services SRS debt before fresh material.
+      const sel = [...sh(seeded), ...weightedSelect(rest, count - seeded.length, getMult)];
       setCards(sel);
       setScreen("cards"); setTStart(Date.now());
       if (m === "dictation") {
@@ -1778,13 +1780,13 @@ function App() {
       setCategory("Article Drill"); const pool = cat === "__all__" ? nouns : nouns.filter(n => n.cat === cat);
       const take = Math.min(count, pool.length);
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`article::${c.cat}::${c.article} ${c.noun}`));
-      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
+      setCards([...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))]);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "plural") {
       setCategory("Plural Drill"); const pool = cat === "__all__" ? pluralNouns : pluralNouns.filter(n => n.cat === cat);
       const take = Math.min(count, pool.length);
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`plural::${c.cat}::${c.de}`));
-      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
+      setCards([...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))]);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
@@ -1798,7 +1800,7 @@ function App() {
       }
       const take = Math.min(count, cpool.length);
       const { seeded, rest } = seedDueFirst(cpool, take, c => dueCards.has(`cloze::Grammar Cloze::${c.q}`));
-      setCards(sh([...seeded, ...sh(rest).slice(0, Math.max(0, take - seeded.length))]));
+      setCards([...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))]);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "verb") {
       setCategory("Verb Trainer");
@@ -1860,7 +1862,7 @@ function App() {
       const pool = sh([...IMPERATIVES]).flatMap(card => selected.map(p => ({ ...card, _person: p, de: `${card.base}::${p}` })));
       const take = Math.min(count, pool.length);
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`imperativ::Imperative::${c.de}`));
-      setCards(sh([...seeded, ...rest.slice(0, Math.max(0, take - seeded.length))]));
+      setCards([...sh(seeded), ...rest.slice(0, Math.max(0, take - seeded.length))]);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "listening") {
       setCategory(listenMode === "questions" ? "Listening + Questions" : "Listening Practice");

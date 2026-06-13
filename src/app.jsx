@@ -17,6 +17,8 @@ const PRONS = ["ich","du","er/sie/es","wir","ihr","sie/Sie"];
 const PK = {ich:"ich",du:"du","er/sie/es":"er",wir:"wir",ihr:"ihr","sie/Sie":"sie"};
 const CATS = Object.keys(V);
 const MASTERY_STREAK = 5;
+// Day-streak values worth celebrating (a milestone day feels special, not routine).
+const STREAK_MILESTONES = new Set([3, 7, 14, 21, 30, 50, 75, 100, 150, 200, 250, 300, 365, 500, 730, 1000]);
 
 // SRS interval schedule — days after lastReviewed until a card is due again.
 // Box 0 = seen-but-not-learned (review daily until it graduates); box 5 = 30-day review.
@@ -466,7 +468,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.52";
+const APP_VERSION = "2026.06.11.53";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -813,15 +815,25 @@ function App() {
   const [showTrendBreakdown, setShowTrendBreakdown] = useState(false);
   const [newlyMastered, setNewlyMastered] = useState([]);
   const [masteryBurst, setMasteryBurst] = useState(null);
-  // Non-blocking celebration shown the moment the daily goal is crossed mid-session.
-  const [goalCelebration, setGoalCelebration] = useState(null); // { count, streak } | null
-  const goalCelebrateTimerRef = useRef(null);
-  const celebrateGoal = useCallback((d) => {
-    setGoalCelebration({ count: d.count, streak: d.streak });
+  // Non-blocking full-screen celebration (daily goal reached, streak milestone).
+  // { color, icon, tag, big, sub, subIcon } | null
+  const [celebration, setCelebration] = useState(null);
+  const celebrateTimerRef = useRef(null);
+  const showCelebration = useCallback((c) => {
+    setCelebration(c);
     try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([35, 55, 35]); } catch (e) {}
-    if (goalCelebrateTimerRef.current) clearTimeout(goalCelebrateTimerRef.current);
-    goalCelebrateTimerRef.current = setTimeout(() => setGoalCelebration(null), 2700);
+    if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current);
+    celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2700);
   }, []);
+  const celebrateGoal = useCallback((d) => showCelebration({
+    color: "#4ADE80", icon: "check", tag: "Daily goal reached", big: `${d.count} cards today`,
+    sub: `${d.streak}-day streak going strong`, subIcon: "flame",
+  }), [showCelebration]);
+  const celebrateStreak = useCallback((n) => showCelebration({
+    color: "#FFCC00", icon: "flame", tag: `${n}-day streak`,
+    big: n >= 100 ? "Legendary." : n >= 30 ? "Unstoppable." : n >= 14 ? "On fire." : "You're on a roll!",
+    sub: "Keep it alive — come back tomorrow", subIcon: null,
+  }), [showCelebration]);
   const [lastSession, setLastSession] = useState(null);
   // Detect whether localStorage actually writes (false in Safari private mode / quota exhausted)
   const [storageOK, setStorageOK] = useState(true);
@@ -1046,10 +1058,13 @@ function App() {
       if (prev.date === today && prev.count < dailyGoal && d.count >= dailyGoal) {
         setTimeout(() => celebrateGoal(d), 0);
       }
+      if (d.streak > prev.streak && STREAK_MILESTONES.has(d.streak)) {
+        setTimeout(() => celebrateStreak(d.streak), 0);
+      }
       saveDaily(d);
       return d;
     });
-  }, [saveDaily, dailyGoal, celebrateGoal]);
+  }, [saveDaily, dailyGoal, celebrateGoal, celebrateStreak]);
 
   // Screen Wake Lock: keeps the screen on during audio playback.
   // iOS 16.4+ and modern Android support it; older browsers silently no-op.
@@ -1560,6 +1575,10 @@ function App() {
       // Celebrate the exact moment today's goal is reached — once, mid-session.
       if (prev.date === today && prev.count < dailyGoal && d.count >= dailyGoal) {
         setTimeout(() => celebrateGoal(d), 0);
+      }
+      // A streak that reaches a milestone today is a bigger moment (overrides goal if same tick).
+      if (d.streak > prev.streak && STREAK_MILESTONES.has(d.streak)) {
+        setTimeout(() => celebrateStreak(d.streak), 0);
       }
       saveDaily(d);
       return d;
@@ -2739,21 +2758,21 @@ function App() {
         {feedback === "correct" ? "Richtig" : feedback === "wrong" ? "Falsch" : ""}
       </div>
 
-      {/* ── DAILY-GOAL CELEBRATION (non-blocking; taps pass through to keep the flow) ── */}
-      {goalCelebration && (
-        <div role="status" aria-label="Daily goal reached" style={{ position: "fixed", inset: 0, zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", padding: 24 }}>
-          <div className="ad-goal" style={{ position: "relative", background: "linear-gradient(160deg, #16190E 0%, #121212 72%)", border: `1px solid ${G}55`, borderRadius: 22, padding: "26px 30px 24px", textAlign: "center", boxShadow: `0 0 70px -12px ${G}66, 0 24px 60px rgba(0,0,0,.55)`, maxWidth: 320 }}>
+      {/* ── CELEBRATION OVERLAY (goal / streak) — non-blocking; taps pass through ── */}
+      {celebration && (
+        <div role="status" aria-label={celebration.tag} style={{ position: "fixed", inset: 0, zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", padding: 24 }}>
+          <div className="ad-goal" style={{ position: "relative", background: "linear-gradient(160deg, #16190E 0%, #121212 72%)", border: `1px solid ${celebration.color}55`, borderRadius: 22, padding: "26px 30px 24px", textAlign: "center", boxShadow: `0 0 70px -12px ${celebration.color}66, 0 24px 60px rgba(0,0,0,.55)`, maxWidth: 320 }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, borderTopLeftRadius: 22, borderTopRightRadius: 22 }} />
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 14, position: "relative", height: 64 }}>
-              <div className="ad-goal-ring" style={{ position: "absolute", top: 0, width: 64, height: 64, borderRadius: "50%", border: `2px solid ${G}` }} />
-              <div style={{ width: 64, height: 64, borderRadius: "50%", background: `${G}16`, border: `2px solid ${G}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 34px ${G}55` }}>
-                <Icon name="check" size={34} stroke={3} style={{ color: G }} />
+              <div className="ad-goal-ring" style={{ position: "absolute", top: 0, width: 64, height: 64, borderRadius: "50%", border: `2px solid ${celebration.color}` }} />
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: `${celebration.color}16`, border: `2px solid ${celebration.color}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 34px ${celebration.color}55` }}>
+                <Icon name={celebration.icon} size={34} stroke={celebration.icon === "check" ? 3 : 2} style={{ color: celebration.color }} />
               </div>
             </div>
-            <div style={{ fontSize: 11, color: G, fontWeight: 900, letterSpacing: 2.4, textTransform: "uppercase", marginBottom: 7 }}>Daily goal reached</div>
-            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, color: T, lineHeight: 1.1 }}>{goalCelebration.count} cards today</div>
+            <div style={{ fontSize: 11, color: celebration.color, fontWeight: 900, letterSpacing: 2.4, textTransform: "uppercase", marginBottom: 7 }}>{celebration.tag}</div>
+            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, color: T, lineHeight: 1.1 }}>{celebration.big}</div>
             <div style={{ fontSize: 13, color: TD, marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <Icon name="flame" size={15} style={{ color: A }} /> {goalCelebration.streak}-day streak going strong
+              {celebration.subIcon && <Icon name={celebration.subIcon} size={15} style={{ color: A }} />} {celebration.sub}
             </div>
           </div>
         </div>

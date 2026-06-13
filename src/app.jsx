@@ -493,7 +493,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.62";
+const APP_VERSION = "2026.06.11.63";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -734,6 +734,44 @@ function UmlautBar({ onInsert }) {
           style={{ flex: "1 1 0", minWidth: 34, padding: "9px 0", borderRadius: 9, background: PAL.SH, border: `1px solid ${PAL.B}`, color: PAL.A, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "transform .08s ease, background .15s ease, border-color .15s ease" }}>
           {k}
         </button>
+      ))}
+    </div>
+  );
+}
+
+// Brand-coloured confetti burst (German-flag gold/red/white + success green) for the
+// celebration peaks. Pure CSS particles, no library; honours reduced-motion. Particles
+// explode from the centre and arc down via per-particle CSS custom properties.
+const CONFETTI_COLORS = ["#FFCC00", "#DD0000", "#F0EDE5", "#4ADE80", "#FFD93B"];
+function Confetti({ count = 46 }) {
+  const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pieces = useMemo(() => Array.from({ length: count }, (_, i) => {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 60 + Math.random() * 170;
+    return {
+      tx: Math.cos(angle) * dist,
+      ty: Math.sin(angle) * dist + 70 + Math.random() * 170, // gravity drift down
+      rot: Math.random() * 720 - 360,
+      size: 5 + Math.random() * 6,
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      delay: Math.random() * 0.12,
+      dur: 1.1 + Math.random() * 0.8,
+      round: Math.random() > 0.55,
+      left: 50 + (Math.random() * 26 - 13),
+    };
+  }), [count]);
+  if (reduce) return null;
+  return (
+    <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+      {pieces.map((p, i) => (
+        <span key={i} style={{
+          position: "absolute", left: `${p.left}%`, top: "40%",
+          width: p.size, height: p.round ? p.size : p.size * 0.5,
+          background: p.color, borderRadius: p.round ? "50%" : 1.5,
+          "--tx": `${p.tx}px`, "--ty": `${p.ty}px`, "--rot": `${p.rot}deg`,
+          animation: `ad-confetti ${p.dur}s ${p.delay}s cubic-bezier(.15,.7,.4,1) forwards`,
+          willChange: "transform, opacity",
+        }} />
       ))}
     </div>
   );
@@ -2835,6 +2873,7 @@ function App() {
         .ad-goal { animation: ad-goal-in .52s cubic-bezier(.2,.7,.3,1.3) both, ad-goal-out .42s ease 2.28s forwards; }
         @keyframes ad-goal-ring { 0%{transform:scale(.55);opacity:.65} 100%{transform:scale(2);opacity:0} }
         .ad-goal-ring { animation: ad-goal-ring 1.15s ease-out .12s both; }
+        @keyframes ad-confetti { 0% { opacity:1; transform:translate3d(0,0,0) rotate(0) } 100% { opacity:0; transform:translate3d(var(--tx),var(--ty),0) rotate(var(--rot)) } }
         @keyframes ad-toast-in { from { opacity:0; transform:translateY(-16px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
         @keyframes ad-toast-out { to { opacity:0; transform:translateY(-10px) } }
         .ad-toast { animation: ad-toast-in .36s cubic-bezier(.2,.7,.3,1.3) both, ad-toast-out .36s ease 1.85s forwards; }
@@ -2854,6 +2893,7 @@ function App() {
       {/* ── CELEBRATION OVERLAY (goal / streak) — non-blocking; taps pass through ── */}
       {celebration && (
         <div role="status" aria-label={celebration.tag} style={{ position: "fixed", inset: 0, zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", padding: 24 }}>
+          <Confetti />
           <div className="ad-goal" style={{ position: "relative", background: "linear-gradient(160deg, #16190E 0%, #121212 72%)", border: `1px solid ${celebration.color}55`, borderRadius: 22, padding: "26px 30px 24px", textAlign: "center", boxShadow: `0 0 70px -12px ${celebration.color}66, 0 24px 60px rgba(0,0,0,.55)`, maxWidth: 320 }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, borderTopLeftRadius: 22, borderTopRightRadius: 22 }} />
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 14, position: "relative", height: 64 }}>

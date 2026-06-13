@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.44";
+const APP_VERSION = "2026.06.11.45";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2041,9 +2041,25 @@ function App() {
   const swipeRightRef = useRef(null);  // "GOT IT" stamp, fades in while dragging right
   const swipeMovedRef = useRef(false); // suppresses click-to-reveal right after a drag
   const swipeDrag = useRef({ active: false, startX: 0, startY: 0, dx: 0 });
-  const resetSwipeVisuals = () => {
+  // pointermove can fire several times per frame; we only stash the latest dx and apply
+  // it once per animation frame (rAF-throttled) to avoid redundant style recalcs.
+  const swipeRafRef = useRef(0);
+  const applySwipeFrame = () => {
+    swipeRafRef.current = 0;
     const el = swipeRef.current;
-    if (el) { el.style.transition = ""; el.style.transform = ""; el.style.opacity = ""; }
+    if (!el || !swipeDrag.current.active) return;
+    const dx = swipeDrag.current.dx;
+    // translate3d forces a compositor layer so the card's shadow/gradient/3D subtree is
+    // rasterised once and only transformed on the GPU thereafter — no per-frame repaint.
+    el.style.transform = `translate3d(${dx}px,0,0) rotate(${dx * 0.045}deg)`;
+    const p = Math.min(1, Math.abs(dx) / 110);
+    if (swipeRightRef.current) swipeRightRef.current.style.opacity = dx > 0 ? p : 0;
+    if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = dx < 0 ? p : 0;
+  };
+  const resetSwipeVisuals = () => {
+    if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
+    const el = swipeRef.current;
+    if (el) { el.style.transition = ""; el.style.transform = ""; el.style.opacity = ""; el.style.willChange = ""; }
     if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
     if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
   };
@@ -2051,6 +2067,8 @@ function App() {
     swipeMovedRef.current = false;
     if (!flipped || answered) return;
     swipeDrag.current = { active: true, startX: e.clientX, startY: e.clientY, dx: 0 };
+    const el = swipeRef.current;
+    if (el) { el.style.transition = "none"; el.style.willChange = "transform"; } // promote to its own layer up front
     try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
   };
   const onCardPointerMove = (e) => {
@@ -2060,21 +2078,19 @@ function App() {
     if (!swipeMovedRef.current && Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
     swipeMovedRef.current = true;
     s.dx = dx;
-    const el = swipeRef.current;
-    if (el) { el.style.transition = "none"; el.style.transform = `translateX(${dx}px) rotate(${dx * 0.045}deg)`; }
-    const p = Math.min(1, Math.abs(dx) / 110);
-    if (swipeRightRef.current) swipeRightRef.current.style.opacity = dx > 0 ? p : 0;
-    if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = dx < 0 ? p : 0;
+    if (!swipeRafRef.current) swipeRafRef.current = requestAnimationFrame(applySwipeFrame);
   };
   // Single grading path for flip cards — used by the swipe release, the small
   // Again/Got-it chips, and the 1/2 keyboard shortcuts. Flies the card off,
   // records the answer and auto-advances; there is no post-answer stop anymore.
   const swipeGrade = (correct) => {
     if (!flipped || answered) return;
+    if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
     const el = swipeRef.current;
     if (el) {
-      el.style.transition = "transform .28s ease-in, opacity .28s ease-in";
-      el.style.transform = `translateX(${correct ? 560 : -560}px) rotate(${correct ? 20 : -20}deg)`;
+      el.style.willChange = "transform";
+      el.style.transition = "transform .26s cubic-bezier(.4,.0,.7,.2), opacity .26s ease-in";
+      el.style.transform = `translate3d(${correct ? 620 : -620}px,0,0) rotate(${correct ? 18 : -18}deg)`;
       el.style.opacity = "0";
     }
     const stamp = correct ? swipeRightRef.current : swipeLeftRef.current;
@@ -2086,13 +2102,17 @@ function App() {
     const s = swipeDrag.current;
     if (!s.active) return;
     s.active = false;
+    if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
     if (swipeMovedRef.current && Math.abs(s.dx) > 90 && flipped && !answered) {
       swipeGrade(s.dx > 0);
     } else {
       const el = swipeRef.current;
-      if (el) { el.style.transition = "transform .22s ease"; el.style.transform = ""; }
+      if (el) { el.style.transition = "transform .2s cubic-bezier(.22,.61,.36,1)"; el.style.transform = "translate3d(0,0,0)"; }
       if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
       if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
+      // Release the compositor hint once the spring-back settles (keeping will-change
+      // permanently would waste a layer per idle card).
+      window.setTimeout(() => { const e2 = swipeRef.current; if (e2 && !swipeDrag.current.active) e2.style.willChange = ""; }, 220);
     }
   };
   // ── Auto-advance on exact-correct answers ──
@@ -3085,7 +3105,7 @@ function App() {
             style={{ position: "absolute", top: 10, right: 10, background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 9, color: TD, cursor: "pointer", padding: 7, lineHeight: 1 }}><Icon name="settings" size={16} /></button>
           <div style={{ fontSize: 10, color: A, fontWeight: 800, letterSpacing: 2.5, marginBottom: 8, textTransform: "uppercase" }}>Learn German</div>
           <h1 style={{ fontFamily: FN, fontSize: 40, margin: "0 0 8px", fontWeight: 800, lineHeight: 1, color: T, display: "flex", alignItems: "center", letterSpacing: -0.5 }}>
-            <img src="icons/icon-192x192.png" alt="" style={{ width: 38, height: 38, mixBlendMode: "screen", marginLeft: -6, marginRight: -2 }} />
+            <img src="icons/icon-192x192.png" alt="" style={{ width: 50, height: 50, mixBlendMode: "screen", marginLeft: -11, marginRight: -9, marginTop: -2 }} />
             <span>utodeutsch</span>
           </h1>
           <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
@@ -4149,8 +4169,9 @@ function App() {
         );
       })()}
 
-      {/* Spacer keeps tab-screen content clear of the fixed bottom nav */}
-      {["home", "library", "stats"].includes(screen) && <div style={{ height: 74 }} />}
+      {/* Spacer keeps tab-screen content clear of the fixed bottom nav — sized to the
+          nav incl. the home-indicator safe area, so the last row is never clipped. */}
+      {["home", "library", "stats"].includes(screen) && <div style={{ height: "calc(72px + env(safe-area-inset-bottom))" }} />}
       </div>
 
       {/* ── BOTTOM TAB NAVIGATION (hidden during sessions for focus) ── */}

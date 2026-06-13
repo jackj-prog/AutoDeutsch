@@ -34,7 +34,7 @@ try {
 }
 
 const argv = process.argv.slice(2);
-const ALL = ["home", "library", "stats", "browse", "tutor", "drill"];
+const ALL = ["home", "library", "stats", "browse", "tutor", "drill", "recall"];
 const screens = argv.length ? (argv.includes("all") ? ALL : argv) : ["home"];
 
 // Harness HTML: reuse the shipped <head> (its styles), drop SW + self-heal, point the
@@ -98,6 +98,15 @@ async function gotoScreen(page, screen) {
   if (["library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "drill") return clickText(page, "Production practice");
+  if (screen === "recall") {
+    // Custom session → Recall (DE→EN flip) → Start, then reveal the first card so the
+    // swipe chips + verdict stamps are visible.
+    await clickText(page, "Custom session");
+    await clickText(page, "Recall");
+    await clickText(page, "Start session");
+    await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
+    await new Promise(r => setTimeout(r, 700));
+  }
 }
 
 async function run() {
@@ -114,7 +123,9 @@ async function run() {
       await new Promise(r => setTimeout(r, 500));
       try { await gotoScreen(page, screen); } catch (e) { console.warn(`  (${screen}: ${e.message})`); }
       const file = path.join(OUT, `${screen}.png`);
-      await page.screenshot({ path: file, fullPage: true });
+      // SHOOT_FULL=0 captures just the viewport (shows fixed elements — e.g. bottom nav —
+      // in their real pinned position, which fullPage screenshots misplace).
+      await page.screenshot({ path: file, fullPage: process.env.SHOOT_FULL !== "0" });
       console.log("shot:", path.relative(ROOT, file));
       await page.close();
     }

@@ -73,6 +73,16 @@ const MODE_SUMMARY_LABELS = {
   audio: "audio",
 };
 const modeSummaryLabel = (mode) => MODE_SUMMARY_LABELS[mode] || mode;
+
+// The home hero launches the learner's preferred acquisition mode (set in onboarding,
+// then tracked as they use the app). Only these whole-library modes are eligible; any
+// other setup mode (articles/plurals/etc.) falls back to production.
+const HERO_MODES = {
+  production: { sup: "Build mastery", title: "Production practice", icon: "keyboard" },
+  vocab: { sup: "Quick recall", title: "Recognition practice", icon: "layers" },
+  dictation: { sup: "Train your ear", title: "Dictation practice", icon: "volume" },
+  audio: { sup: "Hands-free", title: "Audio review", icon: "headphones" },
+};
 const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) => `${arr.length} ${modeSummaryLabel(m)}`).join(" · ");
 
 // CEFR level of a vocab card. New content sets `level` explicitly; older cards derive a
@@ -456,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.45";
+const APP_VERSION = "2026.06.11.46";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -718,7 +728,18 @@ function App() {
   const [feedback, setFeedback] = useState(null); // "correct" | "wrong" | null — drives answer-feedback animation
   const [showSetup, setShowSetup] = useState(false);
   const [setupCat, setSetupCat] = useState(null);
-  const [setupMode, setSetupMode] = useState("vocab");
+  // Preferred mode persists across reloads: seeded from the onboarding choice, then
+  // updated as the learner picks modes, so the hero CTA always reflects their default.
+  const [setupMode, setSetupMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ad-mode-v1");
+      if (saved) return saved;
+      // No stored mode → honour the onboarding choice if any, else default to production
+      // (the app's core mastery mode — unchanged behaviour for existing users).
+      return JSON.parse(localStorage.getItem("ad-onboarding-pref-v1") || "{}").preferredMode || "production";
+    } catch (e) { return "production"; }
+  });
+  useEffect(() => { try { localStorage.setItem("ad-mode-v1", setupMode); } catch (e) {} }, [setupMode]);
   const [sessLen, setSessLen] = useState(15);
   const [category, setCategory] = useState("");
   const [input, setInput] = useState("");
@@ -3181,17 +3202,19 @@ function App() {
 
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
-          <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", "production", n); }}
+          {(() => { const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production"; return (
+          <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}
             style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 16, padding: "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -8px rgba(255,204,0,0.45)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-              <IconBadge name="keyboard" size={36} color="#0A0A0A" bg="#0A0A0A18" />
+              <IconBadge name={hm.icon} size={36} color="#0A0A0A" bg="#0A0A0A18" />
               <span>
-                <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800 }}>Build mastery · one tap</span>
-                <span style={{ display: "block", fontFamily: FN, fontSize: 16, marginTop: 2 }}>Production practice</span>
+                <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800 }}>{hm.sup} · one tap</span>
+                <span style={{ display: "block", fontFamily: FN, fontSize: 16, marginTop: 2 }}>{hm.title}</span>
               </span>
             </span>
             <Icon name="arrowRight" size={20} />
           </button>
+          ); })()}
 
           <div style={{ display: "grid", gridTemplateColumns: lastSession ? "1fr 1fr" : "1fr", gap: 10 }}>
             {lastSession && <button type="button" onClick={() => lastSession.cat === "__due__" ? startDueReview() : startSession(lastSession.cat, lastSession.m, lastSession.count)}

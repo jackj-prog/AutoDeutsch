@@ -34,8 +34,10 @@ try {
 }
 
 const argv = process.argv.slice(2);
-const ALL = ["home", "library", "stats", "browse", "tutor", "drill", "recall"];
+const ALL = ["home", "library", "stats", "browse", "tutor", "drill", "recall", "setup", "settings"];
 const screens = argv.length ? (argv.includes("all") ? ALL : argv) : ["home"];
+// SHOOT_PERSONA = first | daily (default) | advanced. The "onboarding" screen ignores it.
+const PERSONA = process.env.SHOOT_PERSONA || "daily";
 
 // Harness HTML: reuse the shipped <head> (its styles), drop SW + self-heal, point the
 // two React tags at local UMD builds, load data.js/app.js as-is (same origin, file://).
@@ -52,30 +54,39 @@ async function buildHarness() {
 </body></html>`, "utf8");
 }
 
-// Deterministic learner so panels render with content, not empty states.
-function seedState() {
+// Deterministic learner state per persona, so screens render as a real user would see
+// them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
+// data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
+function seedState({ persona, mode }) {
+  localStorage.clear();
+  if (persona === "onboarding") return;
+  localStorage.setItem("ad-onboarding-v1", "done");
+  if (mode) localStorage.setItem("ad-mode-v1", mode); // SHOOT_MODE: verify the dynamic hero
+  if (persona === "first") return;
+  const adv = persona === "advanced";
   const z = n => String(n).padStart(2, "0");
   const key = (d = new Date()) => `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
   const DAY = 86400000, today = key();
-  localStorage.setItem("ad-onboarding-v1", "done");
   localStorage.setItem("gfc-goal-v7", "20");
-  localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: today, count: 12, streak: 6 }));
+  localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: today, count: adv ? 23 : 12, streak: adv ? 48 : 6 }));
   const trend = {};
-  for (let i = 13; i >= 0; i--) {
+  for (let i = 29; i >= 0; i--) {
     const k = key(new Date(Date.now() - i * DAY));
-    const a = 8 + ((i * 7) % 18);
-    trend[k] = { attempts: a, correct: Math.round(a * (0.65 + (i % 5) * 0.06)), totalMs: a * 6400, timed: a };
+    const a = (adv ? 22 : 8) + ((i * 7) % 16);
+    trend[k] = { attempts: a, correct: Math.round(a * ((adv ? 0.82 : 0.65) + (i % 5) * 0.04)), totalMs: a * (adv ? 5200 : 6400), timed: a };
   }
   localStorage.setItem("gfc-stats-v7", JSON.stringify(trend));
   const prog = {};
   const mk = (box, correct, incorrect, pstreak, masteredAt) => ({
-    stats: { attempts: correct + incorrect, correct, incorrect, lastSeen: Date.now() - 2 * DAY, avgTime: 7200, timedAttempts: correct, currentStreak: pstreak, productionStreak: pstreak, masteredAt },
+    stats: { attempts: correct + incorrect, correct, incorrect, lastSeen: Date.now() - 2 * DAY, avgTime: adv ? 4800 : 7200, timedAttempts: correct, currentStreak: pstreak, productionStreak: pstreak, masteredAt },
     srs: { box, lastReviewed: Date.now() - (box >= 3 ? 20 : 1) * DAY },
   });
-  ["Greetings & Basics", "Work & Study", "Electrical Engineering", "Travel & Directions"].forEach((c, ci) => {
-    for (let i = 0; i < 8; i++) {
-      const box = (ci + i) % 6, mastered = (ci + i) % 4 === 0;
-      prog[`production::${c}::seed${ci}_${i}`] = mk(box, 5 + i, i % 3, mastered ? 5 : i % 5, mastered ? Date.now() - (i % 20) * DAY : null);
+  const cats = ["Greetings & Basics", "Work & Study", "Electrical Engineering", "Travel & Directions"];
+  const per = adv ? 18 : 8;
+  cats.forEach((c, ci) => {
+    for (let i = 0; i < per; i++) {
+      const box = (ci + i) % 6, mastered = adv ? (ci + i) % 2 === 0 : (ci + i) % 4 === 0;
+      prog[`production::${c}::seed${ci}_${i}`] = mk(box, 5 + i, i % 3, mastered ? 5 : i % 5, mastered ? Date.now() - (i % 24) * DAY : null);
       prog[`vocab::${c}::seed${ci}_${i}`] = mk(box, 4 + i, 1, 0, null);
     }
   });
@@ -84,8 +95,10 @@ function seedState() {
 
 async function clickText(page, txt) {
   const ok = await page.evaluate((t) => {
+    const lc = t.toLowerCase();
     const el = [...document.querySelectorAll("button,[role=button]")]
-      .find(e => (e.textContent || "").trim().toLowerCase().includes(t.toLowerCase()));
+      .find(e => (e.textContent || "").trim().toLowerCase().includes(lc)
+        || (e.getAttribute("aria-label") || "").trim().toLowerCase() === lc);
     if (el) { el.click(); return true; }
     return false;
   }, txt);
@@ -94,10 +107,12 @@ async function clickText(page, txt) {
 }
 
 async function gotoScreen(page, screen) {
-  if (screen === "home") return;
+  if (screen === "home" || screen === "onboarding") return;
   if (["library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "drill") return clickText(page, "Production practice");
+  if (screen === "setup") return clickText(page, "Custom session");
+  if (screen === "settings") return clickText(page, "Settings");
   if (screen === "recall") {
     // Custom session → Recall (DE→EN flip) → Start, then reveal the first card so the
     // swipe chips + verdict stamps are visible.
@@ -117,7 +132,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState);
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

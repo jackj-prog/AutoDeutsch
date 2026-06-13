@@ -493,7 +493,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.63";
+const APP_VERSION = "2026.06.11.64";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -743,7 +743,7 @@ function UmlautBar({ onInsert }) {
 // celebration peaks. Pure CSS particles, no library; honours reduced-motion. Particles
 // explode from the centre and arc down via per-particle CSS custom properties.
 const CONFETTI_COLORS = ["#FFCC00", "#DD0000", "#F0EDE5", "#4ADE80", "#FFD93B"];
-function Confetti({ count = 46 }) {
+function Confetti({ count = 46, top = "40%" }) {
   const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const pieces = useMemo(() => Array.from({ length: count }, (_, i) => {
     const angle = Math.random() * Math.PI * 2;
@@ -765,7 +765,7 @@ function Confetti({ count = 46 }) {
     <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
       {pieces.map((p, i) => (
         <span key={i} style={{
-          position: "absolute", left: `${p.left}%`, top: "40%",
+          position: "absolute", left: `${p.left}%`, top,
           width: p.size, height: p.round ? p.size : p.size * 0.5,
           background: p.color, borderRadius: p.round ? "50%" : 1.5,
           "--tx": `${p.tx}px`, "--ty": `${p.ty}px`, "--rot": `${p.rot}deg`,
@@ -2913,6 +2913,7 @@ function App() {
 
       {/* ── MASTERY TOAST — slides down when a word is mastered (5 production in a row).
           Lighter than the centre celebrations because it can fire several times a session. ── */}
+      {masteryBurst && <div style={{ position: "fixed", inset: 0, zIndex: 124, pointerEvents: "none" }}><Confetti count={30} top="5%" /></div>}
       {masteryBurst && (
         <div role="status" aria-label={`Mastered ${masteryBurst.de}`} style={{ position: "fixed", top: "max(12px, env(safe-area-inset-top))", left: "50%", transform: "translateX(-50%)", zIndex: 125, width: "calc(100% - 32px)", maxWidth: 420, pointerEvents: "none", display: "flex", justifyContent: "center" }}>
           <div className="ad-toast" style={{ display: "flex", alignItems: "center", gap: 11, background: "linear-gradient(135deg, #0F1A11 0%, #0F0F0F 70%)", border: `1px solid ${G}66`, borderRadius: 14, padding: "10px 16px 10px 11px", boxShadow: `0 14px 44px -12px ${G}66, 0 8px 24px rgba(0,0,0,.5)`, maxWidth: 360, minWidth: 0 }}>

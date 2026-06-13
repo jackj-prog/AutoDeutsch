@@ -150,6 +150,7 @@ async function gotoScreen(page, screen) {
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
+  if (screen === "konj1") { await clickText(page, "Verb Trainer"); await clickText(page, "Konjunktiv I"); await clickText(page, "Start session"); return; }
   if (screen === "mastery" || screen === "correct" || screen === "capital") {
     // First card is the seeded due card (der Bahnhof). Type its answer — lowercased for
     // the 'capital' case to verify the capitalisation flag.

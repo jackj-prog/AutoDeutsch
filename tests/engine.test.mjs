@@ -173,6 +173,29 @@ test("every verb carries a Konjunktiv II form", () => {
   VERBS.forEach(v => assert.ok(typeof v.kj2 === "string" && v.kj2.trim().length > 0, `${v.v} missing kj2`));
 });
 
+test("makeVerbQ konjunktiv1 is a 3rd-person typed KI question; sein → sei", () => {
+  const { makeVerbQ, VERBS } = vm.runInContext("({ makeVerbQ, VERBS })", ctx);
+  for (let i = 0; i < 25; i++) {
+    const q = makeVerbQ("konjunktiv1");
+    assert.equal(q.tense, "Konjunktiv I");
+    assert.ok(["er", "sie"].includes(q.pron), `pron: ${q.pron}`);
+    assert.equal(q.opts, undefined); // typed, not multiple choice
+  }
+  assert.equal(makeVerbQ("konjunktiv1", VERBS.find(v => v.v === "sein")).correct, "sei");
+  assert.equal(makeVerbQ("konjunktiv1", VERBS.find(v => v.v === "haben")).correct, "habe");
+  assert.equal(makeVerbQ("konjunktiv1", VERBS.find(v => v.v === "nehmen")).correct, "nehme"); // no ablaut
+});
+
+test("every verb carries a regular Konjunktiv I form (sein excepted)", () => {
+  const { VERBS } = vm.runInContext("({ VERBS })", ctx);
+  VERBS.forEach(v => {
+    assert.ok(typeof v.ki === "string" && v.ki.trim().length > 0, `${v.v} missing ki`);
+    if (v.v === "sein") return;
+    const base = v.ki.split(" ")[0]; // strip separable prefix
+    assert.ok(base.endsWith("e"), `${v.v} KI "${v.ki}" should end in -e`);
+  });
+});
+
 test("checkMatch accepts either Konjunktiv II alternative", () => {
   assert.equal(checkMatch("ginge", "ginge / würde gehen"), "exact");
   assert.equal(checkMatch("würde gehen", "ginge / würde gehen"), "exact");

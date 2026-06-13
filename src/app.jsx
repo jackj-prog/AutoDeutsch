@@ -167,6 +167,11 @@ function makeVerbQ(tense = "present", pick) {
     const p = Math.random() < 0.5 ? "ich" : "er";
     return { verb: vb.v, en: vb.en, pron: p, correct: vb.pt, tense: "Präteritum", hint: `${vb.v} → ${vb.pt}` };
   }
+  if (tense === "konjunktiv1") {
+    // Konjunktiv I lives in the 3rd person singular (indirect speech): "Er sagt, sie sei…".
+    const p = Math.random() < 0.5 ? "er" : "sie";
+    return { verb: vb.v, en: vb.en, pron: p, correct: vb.ki, tense: "Konjunktiv I", hint: `indirect speech — „…, ${p} ${vb.ki} …" (reported)` };
+  }
   if (tense === "konjunktiv2") {
     // ich/er share the KII form too. `kj2` may carry "/" alternatives (synthetic form
     // and würde + Infinitiv) — checkMatch accepts any of them.
@@ -481,7 +486,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.60";
+const APP_VERSION = "2026.06.11.61";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1956,7 +1961,7 @@ function App() {
       // Weakness-aware draw: aggregate saved per-conjugation stats for the selected tense
       // into one entry per verb, then weight the random draw with perfMultiplier so verbs
       // you struggle with come up more often (same soft boost as vocab, max 1.8x).
-      const tenseLabel = { present: "Präsens", perfekt: "Perfekt", praeteritum: "Präteritum", konjunktiv2: "Konjunktiv II" }[verbTense];
+      const tenseLabel = { present: "Präsens", perfekt: "Perfekt", praeteritum: "Präteritum", konjunktiv1: "Konjunktiv I", konjunktiv2: "Konjunktiv II" }[verbTense];
       const aggByVerb = {};
       Object.entries(prog).forEach(([k, v]) => {
         if (!k.startsWith("verb::")) return;
@@ -3016,10 +3021,11 @@ function App() {
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Tense</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[["present", "Präsens"], ["perfekt", "Perfekt"], ["praeteritum", "Präteritum"], ["konjunktiv2", "Konjunktiv II"]].map(([t, l]) => (
+                  {[["present", "Präsens"], ["perfekt", "Perfekt"], ["praeteritum", "Präteritum"], ["konjunktiv1", "Konjunktiv I"], ["konjunktiv2", "Konjunktiv II"]].map(([t, l]) => (
                     <button key={t} onClick={() => setVerbTense(t)} style={{ minWidth: 0, padding: "9px 10px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: verbTense === t ? A : "transparent", color: verbTense === t ? "#0A0A0A" : TD, border: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{l}</button>
                   ))}
                 </div>
+                {verbTense === "konjunktiv1" && <div style={{ fontSize: 10.5, color: TD, marginTop: 6, lineHeight: 1.4 }}>Reported speech (indirekte Rede), 3rd person: „Er sagt, sie sei/habe/gehe…". Regular for all verbs except sein → sei.</div>}
                 {verbTense === "konjunktiv2" && <div style={{ fontSize: 10.5, color: TD, marginTop: 6, lineHeight: 1.4 }}>Polite requests & hypotheticals: wäre, hätte, könnte… Typed — both the irregular form and „würde + Infinitiv" count where natural.</div>}
               </div>
             )}

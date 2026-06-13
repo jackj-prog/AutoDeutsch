@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.41";
+const APP_VERSION = "2026.06.11.42";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -2117,6 +2117,16 @@ function App() {
     speak(card.de);
     if (result === "exact") scheduleAutoAdvance(nextCard);
   };
+  // "I don't know" on a typed card: reveal + count as wrong. Blanking is the honest
+  // demote signal (and re-queues the card via the in-session retry), instead of forcing
+  // a fake guess just to see the answer.
+  const revealTyped = () => {
+    if (answered) return;
+    const card = cards[idx];
+    setInput(""); setInputResult("wrong"); setAnswered(true);
+    record(false, card, Date.now() - tStart);
+    speak(card.de);
+  };
   const submitCloze = () => {
     if (answered) return;
     const card = cards[idx]; const result = checkMatch(input, card.a);
@@ -3566,7 +3576,9 @@ function App() {
                   placeholder="Type in German…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                   style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
                 <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitTyped} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-              </div></>
+              </div>
+              <button type="button" onClick={revealTyped} style={{ marginTop: 10, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button>
+              </>
                 : <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
               {KeyHint({ text: "Enter to submit · Enter again for next" })}
             </div>

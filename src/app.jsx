@@ -466,7 +466,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.46";
+const APP_VERSION = "2026.06.11.47";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3632,11 +3632,11 @@ function App() {
             </div>
           </div>
         ) : (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey}
               onClick={() => { if (swipeMovedRef.current) return; revealCard(); }}
               onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
-              style={{ flex: 1, perspective: 900, cursor: !flipped ? "pointer" : "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
+              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: !flipped ? "pointer" : "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
               {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
               <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>GOT IT</div>
               <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${R}`, color: "#F87171", borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>AGAIN</div>

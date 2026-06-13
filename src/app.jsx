@@ -456,7 +456,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.40";
+const APP_VERSION = "2026.06.11.41";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -1764,11 +1764,30 @@ function App() {
       setCategory(isAll ? "All Categories" : cat);
       const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
       const pool = filterPool(rawPool);
-      const getMult = c => sessionMultiplier(prog[`${m}::${c._cat}::${c.de}`], sessDiff);
-      const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(`${m}::${c._cat}::${c.de}`));
-      // Front-load due reviews: they land while attention is freshest, and an
-      // abandoned session still services SRS debt before fresh material.
-      const sel = [...sh(seeded), ...weightedSelect(rest, count - seeded.length, getMult)];
+      const pk = c => `${m}::${c._cat}::${c.de}`;
+      const getMult = c => sessionMultiplier(prog[pk(c)], sessDiff);
+      const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(pk(c)));
+      const need = count - seeded.length;
+      // New-card pacing: a session must not flood the coming days' review queue (the
+      // classic SRS burnout failure). Reviews (due + in-progress) fill the session
+      // first; never-seen cards take an adaptive share that *shrinks as due-load grows*
+      // (newCap proportional to the non-due remainder), so a backlog day stays mostly
+      // review. The cap relaxes to more new cards only when there isn't enough review
+      // material, so a fresh category still fills the session.
+      const isNew = c => normalizeEntry(prog[pk(c)]).stats.attempts === 0;
+      const newRest = rest.filter(isNew);
+      const seenRest = rest.filter(c => !isNew(c));
+      const newCap = Math.ceil(need * 0.5);
+      const newPick = weightedSelect(newRest, Math.min(newCap, need), getMult);
+      const seenPick = weightedSelect(seenRest, need - newPick.length, getMult);
+      let restPick = [...seenPick, ...newPick];
+      if (restPick.length < need) {
+        const used = new Set(restPick.map(pk));
+        restPick = restPick.concat(weightedSelect(newRest.filter(c => !used.has(pk(c))), need - restPick.length, getMult));
+      }
+      // Front-load due reviews: they land while attention is freshest, and an abandoned
+      // session still services SRS debt before fresh material.
+      const sel = [...sh(seeded), ...sh(restPick)];
       setCards(sel);
       setScreen("cards"); setTStart(Date.now());
       if (m === "dictation") {

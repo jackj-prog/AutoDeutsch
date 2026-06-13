@@ -468,7 +468,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.53";
+const APP_VERSION = "2026.06.11.54";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3272,6 +3272,23 @@ function App() {
 
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
+          {/* Mode selector — every practice mode is visible and one tap to switch, right
+              here on the main screen (no buried setup modal). Selecting updates the hero. */}
+          <div>
+            <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 7, paddingLeft: 2 }}>Practice mode</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
+              {[["vocab", "Recall", "layers"], ["production", "Production", "keyboard"], ["dictation", "Dictation", "volume"], ["audio", "Audio", "headphones"]].map(([m, label, icon]) => {
+                const on = (HERO_MODES[setupMode] ? setupMode : "production") === m;
+                return (
+                  <button key={m} type="button" aria-pressed={on} onClick={() => setSetupMode(m)}
+                    style={{ background: on ? `${A}1A` : "#0F0F0F", border: `1px solid ${on ? A : HAIR}`, borderRadius: 12, padding: "10px 4px 8px", cursor: "pointer", display: "grid", justifyItems: "center", gap: 5, fontFamily: "inherit", transition: "background .15s, border-color .15s" }}>
+                    <Icon name={icon} size={18} style={{ color: on ? A : TD }} />
+                    <span style={{ fontSize: 10, fontWeight: 800, color: on ? A : TD, lineHeight: 1 }}>{label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           {(() => { const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production"; return (
           <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}
             style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 16, padding: "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -8px rgba(255,204,0,0.45)" }}>

@@ -513,7 +513,48 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.75";
+const APP_VERSION = "2026.06.11.76";
+
+// ── Sound cues ───────────────────────────────────────────────────────────────
+// Synthesized with Web Audio — no asset files, so it stays fully offline with zero
+// deps. A silent trainer feels cheap next to Duolingo/Memrise; these subtle cues
+// complete the multi-sensory reward already carried by the bloom, confetti & haptics.
+// Optional via a Settings toggle (default on); the context is created lazily on the
+// first answer tap so it never trips the browser autoplay policy.
+const SFX_KEY = "ad-sfx-v1";
+let __sfxOn = (() => { try { return localStorage.getItem(SFX_KEY) !== "0"; } catch (e) { return true; } })();
+const sfxEnabled = () => __sfxOn;
+const setSfxEnabled = (v) => { __sfxOn = !!v; try { localStorage.setItem(SFX_KEY, v ? "1" : "0"); } catch (e) {} };
+let __actx = null;
+function __audioCtx() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!__actx) __actx = new AC();
+    if (__actx.state === "suspended") __actx.resume().catch(() => {});
+    return __actx;
+  } catch (e) { return null; }
+}
+function __blip(ctx, freq, startAt, dur, peak, type) {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type || "sine"; o.frequency.value = freq;
+  o.connect(g); g.connect(ctx.destination);
+  const t = ctx.currentTime + startAt;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.start(t); o.stop(t + dur + 0.03);
+}
+const SFX = {
+  correct: (c) => { __blip(c, 660, 0, 0.13, 0.15); __blip(c, 988, 0.06, 0.17, 0.12); },                 // E5 → B5, bright lift
+  wrong: (c) => { __blip(c, 196, 0, 0.2, 0.1, "triangle"); __blip(c, 146, 0.04, 0.22, 0.09, "triangle"); }, // soft, low, non-punitive
+  win: (c) => { [523, 659, 784, 1047].forEach((f, i) => __blip(c, f, i * 0.085, 0.26, 0.12)); },         // C-E-G-C major arpeggio
+};
+function playSfx(name) {
+  if (!__sfxOn) return;
+  const ctx = __audioCtx(); if (!ctx) return;
+  try { (SFX[name] || (() => {}))(ctx); } catch (e) {}
+}
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -880,6 +921,9 @@ function App() {
   // Auto-advance after exact-correct answers (1s). Persisted; default on.
   const [autoAdvance, setAutoAdvance] = useState(() => { try { return localStorage.getItem("gfc-autoadv-v1") !== "0"; } catch (e) { return true; } });
   const toggleAutoAdvance = () => setAutoAdvance(v => { const n = !v; try { localStorage.setItem("gfc-autoadv-v1", n ? "1" : "0"); } catch (e) {} return n; });
+  // Sound effects (synthesized cues on correct/wrong/celebrate). Default on.
+  const [sfxOn, setSfxOn] = useState(() => sfxEnabled());
+  const toggleSfx = () => setSfxOn(v => { const n = !v; setSfxEnabled(n); if (n) playSfx("correct"); return n; });
   // Audio mode state
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPauseLen, setAudioPauseLen] = useState(3500); // ms between utterances
@@ -942,6 +986,7 @@ function App() {
   const celebrateTimerRef = useRef(null);
   const showCelebration = useCallback((c) => {
     setCelebration(c);
+    playSfx("win");
     try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([35, 55, 35]); } catch (e) {}
     if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current);
     celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2700);
@@ -955,6 +1000,11 @@ function App() {
     big: n >= 100 ? "Legendary." : n >= 30 ? "Unstoppable." : n >= 14 ? "On fire." : "You're on a roll!",
     sub: "Keep it alive — come back tomorrow", subIcon: null,
   }), [showCelebration]);
+  // Session-complete flourish: a short arpeggio when you reach the results having cleared
+  // every card (graded modes only). Fires once on entering the screen.
+  useEffect(() => {
+    if (screen === "results" && failed.length === 0 && mode !== "audio") playSfx("win");
+  }, [screen]); // eslint-disable-line react-hooks/exhaustive-deps
   const [lastSession, setLastSession] = useState(null);
   // Detect whether localStorage actually writes (false in Safari private mode / quota exhausted)
   const [storageOK, setStorageOK] = useState(true);
@@ -1525,6 +1575,7 @@ function App() {
   const triggerFeedback = (kind) => {
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
     setFeedback(kind);
+    playSfx(kind);
     try {
       const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!reduce && navigator.vibrate) navigator.vibrate(kind === "wrong" ? 35 : 12);
@@ -3270,6 +3321,10 @@ function App() {
               Auto-advance on correct: {autoAdvance ? "On" : "Off"}
             </button>
             <div style={{ fontSize: 11, color: TD, marginTop: 6, lineHeight: 1.45 }}>Correct answers move on by themselves after a second. Wrong or near-miss answers always stop for review.</div>
+            <button onClick={toggleSfx} style={{ width: "100%", marginTop: 10, padding: "11px 12px", borderRadius: 10, fontSize: 12, fontWeight: 800, cursor: "pointer", background: sfxOn ? `${A}22` : "#0A0A0A", color: sfxOn ? A : TD, border: `1px solid ${sfxOn ? A : B}`, textAlign: "left", fontFamily: "inherit" }}>
+              Sound effects: {sfxOn ? "On" : "Off"}
+            </button>
+            <div style={{ fontSize: 11, color: TD, marginTop: 6, lineHeight: 1.45 }}>Subtle cues on correct, wrong, and session-complete. Spoken German pronunciation is always on.</div>
           </div>
 
           {/* Daily goal — cards-per-day target shown on home's streak row */}

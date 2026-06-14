@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.74";
+const APP_VERSION = "2026.06.11.75";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3476,8 +3476,9 @@ function App() {
 
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
-          {/* Mode selector — every practice mode is visible and one tap to switch, right
-              here on the main screen (no buried setup modal). Selecting updates the hero. */}
+          {/* Mode + Level grouped into one "quick session" tuning block, so the gold hero
+              below reads as the single primary action — not the third of three stacked steps. */}
+          <div style={{ background: "#0C0C0C", border: `1px solid ${HAIR}`, borderRadius: 14, padding: "12px 12px 13px", display: "grid", gap: 13 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 7, paddingLeft: 2 }}>Practice mode</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
@@ -3508,6 +3509,7 @@ function App() {
                 );
               })}
             </div>
+          </div>
           </div>
           {(() => { const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production"; return (
           <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}

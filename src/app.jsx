@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.79";
+const APP_VERSION = "2026.06.11.80";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3459,7 +3459,7 @@ function App() {
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG }} />
           <button onClick={() => { setShowSettings(true); setImportError(""); setUpdateCheckMsg(""); }} aria-label="Settings"
             style={{ position: "absolute", top: 10, right: 10, background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 9, color: TD, cursor: "pointer", padding: 7, lineHeight: 1 }}><Icon name="settings" size={16} /></button>
-          <div style={{ fontSize: 10, color: A, fontWeight: 800, letterSpacing: 2.5, marginBottom: 8, textTransform: "uppercase" }}>Learn German</div>
+          <div style={{ fontSize: 10, color: A, fontWeight: 800, letterSpacing: 2.5, marginBottom: 8, textTransform: "uppercase" }}>{(() => { const h = new Date().getHours(); return h < 5 ? "Gute Nacht" : h < 11 ? "Guten Morgen" : h < 18 ? "Guten Tag" : "Guten Abend"; })()}</div>
           <h1 style={{ fontFamily: FN, fontSize: 40, margin: "0 0 8px", fontWeight: 800, lineHeight: 1, color: T, display: "flex", alignItems: "center", letterSpacing: -0.5 }}>
             <img src="icons/icon-192x192.png" alt="" style={{ width: 50, height: 50, mixBlendMode: "screen", marginLeft: -11, marginRight: -9, marginTop: -2 }} />
             <span>utodeutsch</span>

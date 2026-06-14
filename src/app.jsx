@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.76";
+const APP_VERSION = "2026.06.11.77";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2964,8 +2964,12 @@ function App() {
         .ad-bloom { position:absolute; inset:0; border-radius:20px; pointer-events:none; z-index:4; opacity:0; mix-blend-mode:screen; background:radial-gradient(circle at 50% 52%, rgba(74,222,128,.42), rgba(74,222,128,0) 70%); animation:ad-bloom .62s ease-out forwards; }
         @keyframes ad-answer-pop { 0%{opacity:0;transform:scale(.82)} 60%{opacity:1;transform:scale(1.04)} 100%{transform:scale(1)} }
         .ad-answer-pop { animation:ad-answer-pop .42s cubic-bezier(.2,.7,.3,1.3) both; }
+        @keyframes ad-screen-in { from { opacity:0; transform:translateY(9px) } to { opacity:1; transform:translateY(0) } }
+        .ad-screen-in { animation: ad-screen-in .28s cubic-bezier(.22,.61,.36,1) both; }
+        @keyframes ad-tab-pop { 0%{transform:scale(1)} 40%{transform:scale(1.24)} 100%{transform:scale(1)} }
+        .ad-tab-pop { animation: ad-tab-pop .34s cubic-bezier(.2,.7,.3,1.3); display:inline-flex; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -3410,7 +3414,7 @@ function App() {
       </div>}
 
       {/* ── HOME ── */}
-      {screen === "home" && <div style={{ padding: "12px 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
+      {screen === "home" && <div className="ad-screen-in" style={{ padding: "12px 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
         {/* Streak Freeze used — reassure the user their streak survived a missed day */}
         {freezeNotice && (
           <button onClick={() => setFreezeNotice(null)}
@@ -3644,7 +3648,7 @@ function App() {
       {/* ── TRAIN TAB — promoted from a buried Home section to its own destination. Home is
           the daily vocab loop; targeted grammar & skill drills live here, one tap from the
           nav instead of a long scroll. Prioritised list: one Focus, coverage, all drills. ── */}
-      {screen === "train" && <div style={{ padding: "0 20px 8px" }}>
+      {screen === "train" && <div className="ad-screen-in" style={{ padding: "0 20px 8px" }}>
         <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 16 }}>
           <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Training</div>
           <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Targeted grammar &amp; skill drills</div>
@@ -3710,7 +3714,7 @@ function App() {
       </div>}
 
       {/* ── LIBRARY TAB — themed, collapsible groups instead of a flat 36-card wall ── */}
-      {screen === "library" && <div style={{ padding: "0 20px 8px" }}>
+      {screen === "library" && <div className="ad-screen-in" style={{ padding: "0 20px 8px" }}>
         <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10 }}>
           <div>
             <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Library</div>
@@ -3791,7 +3795,7 @@ function App() {
 
       {/* ── AI TUTOR ── */}
       {screen === "tutor" && (
-        <div style={{ padding: "0 16px calc(max(16px, env(safe-area-inset-bottom)) + 64px)", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+        <div className="ad-screen-in" style={{ padding: "0 16px calc(max(16px, env(safe-area-inset-bottom)) + 64px)", minHeight: DVH, display: "flex", flexDirection: "column" }}>
           <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
             <button onClick={() => { const r = tutorReturnRef.current || "home"; tutorReturnRef.current = "home"; setScreen(r); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
             <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>AI Tutor</div>
@@ -3905,7 +3909,7 @@ function App() {
         const panel = { background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV };
         const flagBar = <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />;
         return (
-          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
+          <div className="ad-screen-in" style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
             <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14 }}>
               <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Statistics</div>
               <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your numbers, level by level</div>
@@ -4649,7 +4653,7 @@ function App() {
                 <button key={id} type="button" aria-current={active ? "page" : undefined}
                   onClick={() => { if (id === "tutor") tutorReturnRef.current = "home"; setScreen(id); }}
                   style={{ background: "transparent", border: "none", cursor: "pointer", padding: "10px 0 6px", display: "grid", justifyItems: "center", gap: 4, color: active ? A : TD, fontFamily: "inherit" }}>
-                  <Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} />
+                  <span className={active ? "ad-tab-pop" : undefined} style={{ display: "inline-flex" }}><Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} /></span>
                   <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 0.4 }}>{label}</span>
                 </button>
               );

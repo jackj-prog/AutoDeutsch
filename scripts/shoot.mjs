@@ -153,7 +153,7 @@ async function clickText(page, txt) {
     return false;
   }, txt);
   if (!ok) throw new Error(`no clickable matching "${txt}"`);
-  await new Promise(r => setTimeout(r, 650));
+  await new Promise(r => setTimeout(r, process.env.SHOOT_FASTNAV ? +process.env.SHOOT_FASTNAV : 650));
 }
 
 async function gotoScreen(page, screen) {

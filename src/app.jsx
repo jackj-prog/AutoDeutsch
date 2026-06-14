@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.66";
+const APP_VERSION = "2026.06.11.67";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -857,6 +857,7 @@ function App() {
   const [category, setCategory] = useState("");
   const [input, setInput] = useState("");
   const [inputResult, setInputResult] = useState(null);
+  const [bloom, setBloom] = useState(0); // counter; bumps on a correct typed answer to retrigger the green bloom
   const [sel, setSel] = useState(null);
   const [tStart, setTStart] = useState(0);
   const [lastElapsed, setLastElapsed] = useState(0); // NEW: for automaticity display
@@ -2339,6 +2340,7 @@ function App() {
     const card = cards[idx]; const target = mode === "vocab" ? card.en : card.de;
     const result = checkMatch(input, target);
     setInputResult(result); setAnswered(true);
+    if (result === "exact" || result === "capital" || result === "eszett") setBloom(b => b + 1);
     record(result !== "wrong", card, Date.now() - tStart);
     speak(card.de);
     if (result === "exact") scheduleAutoAdvance(nextCard);
@@ -2907,8 +2909,12 @@ function App() {
         @keyframes ad-toast-in { from { opacity:0; transform:translateY(-16px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
         @keyframes ad-toast-out { to { opacity:0; transform:translateY(-10px) } }
         .ad-toast { animation: ad-toast-in .36s cubic-bezier(.2,.7,.3,1.3) both, ad-toast-out .36s ease 1.85s forwards; }
+        @keyframes ad-bloom { 0%{opacity:0;transform:scale(.55)} 22%{opacity:.5} 100%{opacity:0;transform:scale(1.35)} }
+        .ad-bloom { position:absolute; inset:0; border-radius:20px; pointer-events:none; z-index:4; opacity:0; mix-blend-mode:screen; background:radial-gradient(circle at 50% 52%, rgba(74,222,128,.42), rgba(74,222,128,0) 70%); animation:ad-bloom .62s ease-out forwards; }
+        @keyframes ad-answer-pop { 0%{opacity:0;transform:scale(.82)} 60%{opacity:1;transform:scale(1.04)} 100%{transform:scale(1)} }
+        .ad-answer-pop { animation:ad-answer-pop .42s cubic-bezier(.2,.7,.3,1.3) both; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -3885,6 +3891,7 @@ function App() {
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 1 auto", maxHeight: answered ? 560 : 260, margin: answered ? "auto 0" : undefined, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: answered ? "auto" : "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
+              {answered && (inputResult === "exact" || inputResult === "capital" || inputResult === "eszett") && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
               {mode === "dictation" ? (
                 <button onClick={() => speak(card.de)} style={{ background: `${A}10`, border: `1.5px solid ${A}55`, borderRadius: 999, padding: "16px 26px", color: A, fontSize: 15, cursor: "pointer", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 10 }}>
                   <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
@@ -3894,7 +3901,7 @@ function App() {
               )}
               {answered && <>
                 {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
-                <div style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
+                <div className={inputResult === "wrong" ? undefined : "ad-answer-pop"} style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}

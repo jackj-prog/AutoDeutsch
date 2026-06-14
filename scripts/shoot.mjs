@@ -160,7 +160,7 @@ async function gotoScreen(page, screen) {
     const answer = screen === "capital" ? "der bahnhof" : screen === "eszett" ? "die Strasse" : "der Bahnhof";
     await page.evaluate((a) => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, a); i.dispatchEvent(new Event("input", { bubbles: true })); } }, answer);
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
-    await new Promise(r => setTimeout(r, 550));
+    await new Promise(r => setTimeout(r, +process.env.SHOOT_HOLD || 550));
     return;
   }
   if (screen === "goal" || screen === "streak") {

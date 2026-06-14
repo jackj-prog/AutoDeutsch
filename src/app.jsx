@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.71";
+const APP_VERSION = "2026.06.11.72";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3516,6 +3516,37 @@ function App() {
           </button>
           ); })()}
 
+          {/* Next topic — a guided path through the 36 categories. Surfaces the first topic
+              (in curriculum order) you haven't fully mastered, so "study a specific topic"
+              is findable from the launch flow and progresses systematically, not at random. */}
+          {(() => {
+            const ordered = libGroups.flatMap(g => g.cats);
+            const next = ordered.find(c => { const s = getCatStats(c); return s.total > 0 && s.mastered < s.total; });
+            if (!next) return null;
+            const s = getCatStats(next);
+            const mPct = s.total ? (s.mastered / s.total) * 100 : 0;
+            const pPct = s.total ? (s.productionSeen / s.total) * 100 : 0;
+            return (
+              <button type="button" onClick={() => openSetup(next, HERO_MODES[setupMode] ? setupMode : "production")}
+                style={{ width: "100%", background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 62%)", color: T, border: `1px solid ${A}3D`, borderRadius: 14, padding: "12px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 11, fontFamily: "inherit", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: FLAG, opacity: 0.85 }} />
+                <IconBadge name={categoryIcons[next] || "book"} size={34} color={A} bg={`${A}10`} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", color: A, fontSize: 10, fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase" }}>Next topic</span>
+                  <span style={{ display: "block", fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, marginTop: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{next}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
+                    <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}66`, borderRadius: 2, transition: "width .5s" }} />
+                      <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 2, transition: "width .5s" }} />
+                    </div>
+                    <span style={{ fontSize: 10, color: s.mastered ? G : TD, fontWeight: 800, flexShrink: 0 }}>★ {s.mastered}/{s.total}</span>
+                  </div>
+                </div>
+                <Icon name="arrowRight" size={16} color={A} />
+              </button>
+            );
+          })()}
+
           <div style={{ display: "grid", gridTemplateColumns: lastSession ? "1fr 1fr" : "1fr", gap: 10 }}>
             {lastSession && <button type="button" onClick={() => lastSession.cat === "__due__" ? startDueReview() : startSession(lastSession.cat, lastSession.m, lastSession.count)}
               style={{ width: "100%", background: "#0F0F0F", color: T, border: `1px solid ${A}36`, borderRadius: 12, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "inherit", fontWeight: 700 }}>
@@ -3659,7 +3690,7 @@ function App() {
                     const done = st.mastered >= st.total && st.total > 0;
                     const justMastered = newlyMasteredCats.has(cat);
                     return (
-                      <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat)} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
+                      <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat, HERO_MODES[setupMode] ? setupMode : "production")} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
                         {justMastered && <div style={{ position: "absolute", top: 7, right: 8, fontSize: 9, color: G, fontWeight: 900, letterSpacing: 0.8, textTransform: "uppercase" }}>New</div>}
                         <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
                           <IconBadge name={categoryIcons[cat] || "book"} size={26} color={done ? G : A} bg="#0A0A0A66" />

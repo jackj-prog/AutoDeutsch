@@ -160,6 +160,7 @@ async function gotoScreen(page, screen) {
   if (screen === "home" || screen === "onboarding" || screen === "freezeused") return;
   if (["train", "library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
+  if (screen === "libcat") { await clickText(page, "Library"); await new Promise(r => setTimeout(r, 300)); await clickText(page, "Greetings & Basics"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "drill") return clickText(page, "Production practice");
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");

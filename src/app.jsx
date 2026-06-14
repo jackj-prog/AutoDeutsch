@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.77";
+const APP_VERSION = "2026.06.11.78";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -549,11 +549,12 @@ const SFX = {
   correct: (c) => { __blip(c, 660, 0, 0.13, 0.15); __blip(c, 988, 0.06, 0.17, 0.12); },                 // E5 → B5, bright lift
   wrong: (c) => { __blip(c, 196, 0, 0.2, 0.1, "triangle"); __blip(c, 146, 0.04, 0.22, 0.09, "triangle"); }, // soft, low, non-punitive
   win: (c) => { [523, 659, 784, 1047].forEach((f, i) => __blip(c, f, i * 0.085, 0.26, 0.12)); },         // C-E-G-C major arpeggio
+  combo: (c, t) => { const f = 784 * Math.pow(1.18, t || 0); __blip(c, f, 0, 0.09, 0.09); __blip(c, f * 1.5, 0.05, 0.12, 0.07); }, // rising sparkle — pitches up as the streak deepens
 };
-function playSfx(name) {
+function playSfx(name, arg) {
   if (!__sfxOn) return;
   const ctx = __audioCtx(); if (!ctx) return;
-  try { (SFX[name] || (() => {}))(ctx); } catch (e) {}
+  try { (SFX[name] || (() => {}))(ctx, arg); } catch (e) {}
 }
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
@@ -1712,6 +1713,12 @@ function App() {
     };
     setProg(upd); save(upd);
     setStats(s => ({ c: s.c + (correct ? 1 : 0), w: s.w + (correct ? 0 : 1) }));
+    // Combo escalation: at the flame tiers (3·7·14·30 in a row) the streak audibly heats
+    // up — a rising sparkle + soft haptic that matches the chip's flame intensifying.
+    if (correct) {
+      const ci = [3, 7, 14, 30].indexOf(combo + 1);
+      if (ci >= 0) { playSfx("combo", ci); try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([8, 26, 8]); } catch (e) {} }
+    }
     setCombo(c => (correct ? c + 1 : 0));
     if (unlockedMastery) {
       const item = {

@@ -219,6 +219,28 @@ async function gotoScreen(page, screen) {
     }
     await new Promise(r => setTimeout(r, 500));
   }
+  if (screen === "drillbloom") {
+    // Article drill (der/die/das). Click "der" each card until a masculine noun lands
+    // correct, then return immediately so the screenshot catches the green bloom mid-flight.
+    await clickText(page, "der / die / das"); // opens the setup modal
+    await new Promise(r => setTimeout(r, 200));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 350));
+    for (let k = 0; k < 18; k++) {
+      const clicked = await page.evaluate(() => {
+        const b = [...document.querySelectorAll("button")].find(x => (x.textContent || "").trim() === "der");
+        if (b) { b.click(); return true; }
+        return false;
+      });
+      if (!clicked) break;
+      await new Promise(r => setTimeout(r, +process.env.SHOOT_HOLD || 130));
+      const correct = await page.evaluate(() => !!document.querySelector(".ad-bloom"));
+      if (correct) return; // bloom is animating — capture now
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(x => /^(Next|Weiter|Results)/.test((x.textContent || "").trim()))?.click());
+      await new Promise(r => setTimeout(r, 250));
+    }
+    return;
+  }
 }
 
 async function run() {

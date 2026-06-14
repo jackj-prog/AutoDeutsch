@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.70";
+const APP_VERSION = "2026.06.11.71";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3544,72 +3544,74 @@ function App() {
             <Icon name="arrowRight" size={16} />
           </button>
         </div>
-        {/* Training — a prioritised list, not a flat grid. The grid treated 7 specialised
-            drills as equal, unordered peers (no hierarchy, no "where to start", a dead 8th
-            cell). This surfaces one Focus (least-practised), shows real coverage, and keeps
-            every drill one tap away. */}
-        <div style={{ marginTop: 34 }}>
-          {(() => {
-            const DRILLS = [
-              { m: "article", c: "__all__", icon: "book", name: "Articles", desc: "der · die · das — noun gender" },
-              { m: "plural", c: "__all__", icon: "grid", name: "Plural Forms", desc: "Build the plural of any noun" },
-              { m: "verb", c: "__verb__", icon: "bolt", name: "Verb Trainer", desc: "Conjugate across every tense" },
-              { m: "cloze", c: "__grammar__", icon: "layers", name: "Grammar Cloze", desc: "Fill the gap in real sentences" },
-              { m: "sentence", c: "__sentence__", icon: "keyboard", name: "Sentence Builder", desc: "Master German word order" },
-              { m: "imperativ", c: "__imperativ__", icon: "target", name: "Imperative", desc: "Commands — du, ihr, Sie" },
-              { m: "listening", c: "__listening__", icon: "headphones", name: "Listening", desc: "Understand spoken dialogue" },
-            ];
-            const rows = DRILLS.map(d => {
-              const ts = trainingStats[d.m];
-              const pct = ts && ts.total > 0 ? (ts.seen / ts.total) * 100 : 0;
-              return { ...d, ts, pct, done: !!(ts && ts.total > 0 && ts.seen >= ts.total) };
-            });
-            const avg = Math.round(rows.reduce((a, d) => a + d.pct, 0) / rows.length);
-            const undone = rows.filter(d => !d.done);
-            const focus = undone.length ? undone.reduce((b, d) => d.pct < b.pct ? d : b, undone[0]).m : null;
-            const lenFor = (m) => Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : m === "plural" ? Math.max(pluralNouns.length, 5) : nouns.length);
-            return (<>
-              {SectionHead({ title: "Training", right: <span style={{ fontSize: 10, color: TD }}>Grammar &amp; skills</span>, style: { marginBottom: 10 } })}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 13 }}>
-                <div style={{ flex: 1, height: 5, background: "#0A0A0A", border: `1px solid ${HAIR}`, borderRadius: 4, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${Math.max(avg, 1.5)}%`, background: undone.length ? A : G, opacity: 0.9, borderRadius: 4, transition: "width .6s" }} />
-                </div>
-                <span style={{ fontSize: 11, color: T, fontWeight: 800, flexShrink: 0 }}>{undone.length ? `${avg}% explored` : "All explored ✓"}</span>
-              </div>
-              <div style={{ display: "grid", gap: 8 }}>
-                {rows.map(d => {
-                  const isFocus = d.m === focus;
-                  return (
-                    <button key={d.m} aria-label={`${d.name} — ${d.desc}`}
-                      onClick={() => { setSetupCat(d.c); setSetupMode(d.m); setSessLen(lenFor(d.m)); setShowSetup(true); }}
-                      style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", cursor: "pointer", fontFamily: "inherit",
-                        background: isFocus ? "linear-gradient(100deg, #1B1810 0%, #0E0E0E 60%)" : "linear-gradient(100deg, #141414 0%, #0E0E0E 100%)",
-                        border: `1px solid ${d.done ? `${G}44` : isFocus ? `${A}66` : HAIR}`, borderRadius: 14, padding: "13px 13px 12px", position: "relative", overflow: "hidden" }}>
-                      {isFocus && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: FLAG, opacity: 0.9 }} />}
-                      <IconBadge name={d.icon} size={38} color={d.done ? G : A} bg={`${A}0F`} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                          <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>{d.name}</span>
-                          {isFocus && <span style={{ fontSize: 8.5, fontWeight: 900, letterSpacing: 0.8, color: "#0A0A0A", background: A, borderRadius: 999, padding: "2px 7px", textTransform: "uppercase" }}>Focus</span>}
-                          {d.done && <Icon name="check" size={13} color={G} />}
-                        </div>
-                        <div style={{ fontSize: 11, color: TD, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.desc}</div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 7 }}>
-                          <div style={{ flex: 1, height: 4, background: "#000", borderRadius: 3, overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${d.pct}%`, background: d.done ? G : A, opacity: 0.85, borderRadius: 3, transition: "width .5s" }} />
-                          </div>
-                          {d.ts && <span style={{ fontSize: 9.5, color: TD, fontWeight: 800, flexShrink: 0 }}>{d.ts.seen}/{d.ts.total}</span>}
-                        </div>
-                      </div>
-                      <Icon name="arrowRight" size={15} color={isFocus ? A : TD} />
-                    </button>
-                  );
-                })}
-              </div>
-            </>);
-          })()}
-        </div>
+      </div>}
 
+      {/* ── TRAIN TAB — promoted from a buried Home section to its own destination. Home is
+          the daily vocab loop; targeted grammar & skill drills live here, one tap from the
+          nav instead of a long scroll. Prioritised list: one Focus, coverage, all drills. ── */}
+      {screen === "train" && <div style={{ padding: "0 20px 8px" }}>
+        <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 16 }}>
+          <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Training</div>
+          <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Targeted grammar &amp; skill drills</div>
+        </div>
+        {(() => {
+          const DRILLS = [
+            { m: "article", c: "__all__", icon: "book", name: "Articles", desc: "der · die · das — noun gender" },
+            { m: "plural", c: "__all__", icon: "grid", name: "Plural Forms", desc: "Build the plural of any noun" },
+            { m: "verb", c: "__verb__", icon: "bolt", name: "Verb Trainer", desc: "Conjugate across every tense" },
+            { m: "cloze", c: "__grammar__", icon: "layers", name: "Grammar Cloze", desc: "Fill the gap in real sentences" },
+            { m: "sentence", c: "__sentence__", icon: "keyboard", name: "Sentence Builder", desc: "Master German word order" },
+            { m: "imperativ", c: "__imperativ__", icon: "target", name: "Imperative", desc: "Commands — du, ihr, Sie" },
+            { m: "listening", c: "__listening__", icon: "headphones", name: "Listening", desc: "Understand spoken dialogue" },
+          ];
+          const rows = DRILLS.map(d => {
+            const ts = trainingStats[d.m];
+            const pct = ts && ts.total > 0 ? (ts.seen / ts.total) * 100 : 0;
+            return { ...d, ts, pct, done: !!(ts && ts.total > 0 && ts.seen >= ts.total) };
+          });
+          const avg = Math.round(rows.reduce((a, d) => a + d.pct, 0) / rows.length);
+          const undone = rows.filter(d => !d.done);
+          const focus = undone.length ? undone.reduce((b, d) => d.pct < b.pct ? d : b, undone[0]).m : null;
+          const lenFor = (m) => Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : m === "plural" ? Math.max(pluralNouns.length, 5) : nouns.length);
+          return (<>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              <div style={{ flex: 1, height: 6, background: "#0A0A0A", border: `1px solid ${HAIR}`, borderRadius: 4, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${Math.max(avg, 1.5)}%`, background: undone.length ? A : G, opacity: 0.9, borderRadius: 4, transition: "width .6s" }} />
+              </div>
+              <span style={{ fontSize: 11, color: T, fontWeight: 800, flexShrink: 0 }}>{undone.length ? `${avg}% explored` : "All explored ✓"}</span>
+            </div>
+            <div style={{ display: "grid", gap: 8 }}>
+              {rows.map(d => {
+                const isFocus = d.m === focus;
+                return (
+                  <button key={d.m} aria-label={`${d.name} — ${d.desc}`}
+                    onClick={() => { setSetupCat(d.c); setSetupMode(d.m); setSessLen(lenFor(d.m)); setShowSetup(true); }}
+                    style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", cursor: "pointer", fontFamily: "inherit",
+                      background: isFocus ? "linear-gradient(100deg, #1B1810 0%, #0E0E0E 60%)" : "linear-gradient(100deg, #141414 0%, #0E0E0E 100%)",
+                      border: `1px solid ${d.done ? `${G}44` : isFocus ? `${A}66` : HAIR}`, borderRadius: 14, padding: "13px 13px 12px", position: "relative", overflow: "hidden" }}>
+                    {isFocus && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: FLAG, opacity: 0.9 }} />}
+                    <IconBadge name={d.icon} size={38} color={d.done ? G : A} bg={`${A}0F`} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                        <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>{d.name}</span>
+                        {isFocus && <span style={{ fontSize: 8.5, fontWeight: 900, letterSpacing: 0.8, color: "#0A0A0A", background: A, borderRadius: 999, padding: "2px 7px", textTransform: "uppercase" }}>Focus</span>}
+                        {d.done && <Icon name="check" size={13} color={G} />}
+                      </div>
+                      <div style={{ fontSize: 11, color: TD, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.desc}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 7 }}>
+                        <div style={{ flex: 1, height: 4, background: "#000", borderRadius: 3, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: `${d.pct}%`, background: d.done ? G : A, opacity: 0.85, borderRadius: 3, transition: "width .5s" }} />
+                        </div>
+                        {d.ts && <span style={{ fontSize: 9.5, color: TD, fontWeight: 800, flexShrink: 0 }}>{d.ts.seen}/{d.ts.total}</span>}
+                      </div>
+                    </div>
+                    <Icon name="arrowRight" size={15} color={isFocus ? A : TD} />
+                  </button>
+                );
+              })}
+            </div>
+          </>);
+        })()}
       </div>}
 
       {/* ── LIBRARY TAB — themed, collapsible groups instead of a flat 36-card wall ── */}
@@ -4530,15 +4532,15 @@ function App() {
 
       {/* Spacer keeps tab-screen content clear of the fixed bottom nav — sized to the
           nav incl. the home-indicator safe area, so the last row is never clipped. */}
-      {["home", "library", "stats"].includes(screen) && <div style={{ height: "calc(72px + env(safe-area-inset-bottom))" }} />}
+      {["home", "train", "library", "stats"].includes(screen) && <div style={{ height: "calc(72px + env(safe-area-inset-bottom))" }} />}
       </div>
 
       {/* ── BOTTOM TAB NAVIGATION (hidden during sessions for focus) ── */}
-      {["home", "library", "stats", "tutor"].includes(screen) && (
+      {["home", "train", "library", "stats", "tutor"].includes(screen) && (
         <nav aria-label="Main navigation" style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 480, zIndex: 90, background: "rgba(9,9,9,0.86)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderTop: `1px solid ${HAIR}` }}>
           <div style={{ height: 2, background: FLAG, opacity: 0.5 }} />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-            {[["home", "Home", "home"], ["library", "Library", "book"], ["stats", "Stats", "chart"], ["tutor", "Tutor", "message"]].map(([id, label, icon]) => {
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
+            {[["home", "Home", "home"], ["library", "Library", "book"], ["train", "Train", "bolt"], ["stats", "Stats", "chart"], ["tutor", "Tutor", "message"]].map(([id, label, icon]) => {
               const active = screen === id;
               return (
                 <button key={id} type="button" aria-current={active ? "page" : undefined}

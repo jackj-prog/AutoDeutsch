@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="AutoDeutsch" />
@@ -24,6 +24,7 @@
       -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
       overscroll-behavior: none;
+      touch-action: manipulation;
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
       padding-left: env(safe-area-inset-left);
@@ -64,10 +65,24 @@
 <body>
   <div id="root"></div>
 
+  <!-- Block accidental pinch-zoom / double-tap zoom. iOS Safari ignores user-scalable=no
+       in-browser, so we also cancel the gesture events directly. Zoom adds no value to a
+       full-screen flash-card trainer and misfires constantly during fast swipe/typing. -->
+  <script>
+    document.addEventListener('gesturestart', function (e) { e.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturechange', function (e) { e.preventDefault(); }, { passive: false });
+    var __lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+      var now = Date.now();
+      if (now - __lastTouchEnd < 300) e.preventDefault();
+      __lastTouchEnd = now;
+    }, { passive: false });
+  </script>
+
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="data.js" integrity="sha512-goWybcZMamSUKgpHqOnCCrjnRqSkB47eUASC+McyRxFBmFmt8uUG5ow4Ob3h6UTCJ0wlP36WuCRKgrO29SHwOg=="></script>
-  <script src="app.js" integrity="sha512-ORbELMrVkNCEuPWB3QhEaHV8Oto9uYew288vXVobXWNumxYY/R1zwk+K/Ngd26jIQqKTgSPuIMPaaHbYIkuZnQ=="></script>
+  <script src="app.js" integrity="sha512-4Qps2C5tajxOTDyHJa2eEqj1nE5gJfiJrhK2VWp2mhsHxIp0zzjd25nE2KpLpU8WtvPc0dzCu7sqd6yGOWoJ5g=="></script>
 
   <!-- Boot-failure self-heal: if the app didn't mount (e.g. a cached data.js/app.js was
        blocked by an SRI mismatch after a deploy), purge CacheStorage once and reload so

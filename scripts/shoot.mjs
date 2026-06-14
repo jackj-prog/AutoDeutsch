@@ -57,7 +57,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -75,6 +75,7 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     return;
   }
   if (mode) localStorage.setItem("ad-mode-v1", mode); // SHOOT_MODE: verify the dynamic hero
+  if (level) localStorage.setItem("ad-level-v1", level); // SHOOT_LEVEL: verify level focus
   // Expand all Library groups so every category icon is visible for audits.
   localStorage.setItem("ad-lib-groups-v1", JSON.stringify({ "Everyday Life": true, "Out & About": true, "Work & Engineering": true, "Life Admin": true, "Language & Society": true, "More": true }));
   if (persona === "first") return;
@@ -228,7 +229,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

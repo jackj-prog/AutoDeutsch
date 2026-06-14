@@ -161,6 +161,26 @@ async function gotoScreen(page, screen) {
   if (["train", "library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "libcat") { await clickText(page, "Library"); await new Promise(r => setTimeout(r, 300)); await clickText(page, "Greetings & Basics"); await new Promise(r => setTimeout(r, 400)); return; }
+  if (screen === "resultswin") {
+    // Recall session graded all-correct (reveal → Got it) to reach the flawless results
+    // celebration (Perfect! + confetti).
+    await clickText(page, "Custom session");
+    await clickText(page, "Recall");
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => (b.textContent || "").trim() === "5")?.click());
+    await new Promise(r => setTimeout(r, 150));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 400));
+    for (let k = 0; k < 24; k++) {
+      const done = await page.evaluate(() => /accuracy/i.test(document.body.innerText) && !document.querySelector('[aria-label="Reveal answer"]'));
+      if (done) break;
+      await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
+      await new Promise(r => setTimeout(r, 180));
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /Got it/.test(b.textContent || ""))?.click());
+      await new Promise(r => setTimeout(r, 260));
+    }
+    await new Promise(r => setTimeout(r, 250));
+    return;
+  }
   if (screen === "drill") return clickText(page, "Production practice");
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");

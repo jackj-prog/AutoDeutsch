@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.72";
+const APP_VERSION = "2026.06.11.73";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -4465,14 +4465,22 @@ function App() {
         const totalAns = stats.c + stats.w;
         const acc = totalAns > 0 ? Math.round((stats.c / totalAns) * 100) : null;
         const good = failed.length === 0;
-        const heroColor = good ? G : A;
+        // Reward the finish: a flawless first pass (no repeats, 100%) or a strong cleared
+        // session earns confetti + a louder headline, so the completion moment is as alive
+        // as the in-session rewards instead of a flat "complete".
+        const flawless = rpt === 0 && acc === 100 && totalAns > 0;
+        const strong = good && acc != null && acc >= 85;
+        const party = (flawless || strong) && mode !== "audio";
+        const headline = mode === "audio" ? "Nice listening" : flawless ? "Perfect!" : strong ? "Strong session" : good ? "Session complete" : "Keep going";
+        const heroColor = good || party ? G : A;
         const modeLabel = mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode;
         const R1 = 50, C1 = 2 * Math.PI * R1;
         const goalPct = Math.min(1, dailyStats.count / Math.max(dailyGoal, 1));
         return (
-          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+          <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column", position: "relative" }}>
+            {party && <Confetti top="16%" />}
             <div style={{ paddingTop: "max(24px, env(safe-area-inset-top))", textAlign: "center", marginBottom: 16 }}>
-              <div style={{ fontSize: 11, color: heroColor, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase" }}>{good ? (mode === "audio" ? "Nice listening" : "Session complete") : "Keep going"}</div>
+              <div style={{ fontSize: 11, color: heroColor, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase" }}>{headline}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>{category}{rpt > 0 ? ` · Round ${rpt + 1}` : ""} · <span style={{ color: A, fontWeight: 700 }}>{modeLabel}</span></div>
             </div>
 

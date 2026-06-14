@@ -57,7 +57,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -127,6 +127,19 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
       ? mk(1, 2, 5, 0, null) // weak: incorrect 5, box 1
       : { stats: { attempts: 6, correct: 5, incorrect: 1, lastSeen: Date.now() - 25 * DAY, avgTime: 6000, timedAttempts: 5, currentStreak: 2, productionStreak: 2, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * DAY } }; // due (box 3, interval 7d, 25d ago)
   }));
+  if (training) {
+    // Varied training coverage so the redesigned Training list shows partial bars, a
+    // shifted Focus (plural = weakest), and a completed drill (verb = 100% → green check).
+    const seenMk = { stats: { attempts: 3, correct: 3, incorrect: 0, lastSeen: Date.now() - DAY, avgTime: 5000, timedAttempts: 3, currentStreak: 3, productionStreak: 0, masteredAt: null }, srs: { box: 2, lastReviewed: Date.now() - DAY } };
+    const addN = (n, fn) => { for (let i = 0; i < n; i++) prog[fn(i)] = seenMk; };
+    addN(140, i => `article::cat${i % 5}::an${i}`);
+    addN(50, i => `plural::cat${i % 5}::pn${i}`);
+    addN(60, i => `verb::__verb__::vstem${i}-ich-present`);
+    addN(115, i => `cloze::__grammar__::cz${i}`);
+    addN(30, i => `sentence::__sentence__::sn${i}`);
+    addN(10, i => `imperativ::__imperativ__::imp${i}::du`);
+    addN(44, i => `listening::__listening__::dlg${i}`);
+  }
   localStorage.setItem("gfc-v7", JSON.stringify(prog));
 }
 
@@ -222,7 +235,7 @@ async function gotoScreen(page, screen) {
   if (screen === "drillbloom") {
     // Article drill (der/die/das). Click "der" each card until a masculine noun lands
     // correct, then return immediately so the screenshot catches the green bloom mid-flight.
-    await clickText(page, "der / die / das"); // opens the setup modal
+    await clickText(page, "Articles"); // opens the setup modal
     await new Promise(r => setTimeout(r, 200));
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 350));
@@ -251,7 +264,7 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "" });
+      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1" });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

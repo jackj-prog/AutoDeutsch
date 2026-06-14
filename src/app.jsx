@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.78";
+const APP_VERSION = "2026.06.11.79";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -906,6 +906,7 @@ function App() {
   const [revealElapsed, setRevealElapsed] = useState(0);
   const [lastBoxMove, setLastBoxMove] = useState(null); // {from, to} SRS box move of the last answer
   const [combo, setCombo] = useState(0); // consecutive correct answers this session (momentum signal)
+  const sessionGains = useRef({ mastered: 0, learned: 0 }); // real SRS progress earned this session → shown on results
   // Sentence building
   const [sbPool, setSbPool] = useState([]);
   const [sbPicked, setSbPicked] = useState([]);
@@ -1691,6 +1692,10 @@ function App() {
     const prevBox = Math.max(0, Math.min(5, Math.floor(prev.srs.box || 0)));
     const newBox = nextBox(prev.srs.box, correct, prev.srs.lastReviewed, now);
     setLastBoxMove({ from: prevBox, to: newBox });
+    if (correct) {
+      if (unlockedMastery) sessionGains.current.mastered++;
+      if (prev.stats.attempts === 0) sessionGains.current.learned++;
+    }
     const upd = {
       ...prog,
       [key]: {
@@ -1996,6 +2001,7 @@ function App() {
     navLockRef.current = false;
     if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; }
     setCombo(0);
+    sessionGains.current = { mastered: 0, learned: 0 };
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setRpt(0); setIdx(0); setNewlyMastered([]); setMasteryBurst(null);
     setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setLastBoxMove(null);
@@ -4586,6 +4592,26 @@ function App() {
                     <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: `${G}12`, border: `1px solid ${G}33`, borderRadius: 999, padding: "6px 14px", color: G, fontSize: 13, fontWeight: 800 }}>✓ <CountUp value={stats.c} /></span>
                     <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: stats.w > 0 ? `${R}12` : "#141414", border: `1px solid ${stats.w > 0 ? `${R}33` : B}`, borderRadius: 999, padding: "6px 14px", color: stats.w > 0 ? "#F87171" : TD, fontSize: 13, fontWeight: 800 }}>✗ <CountUp value={stats.w} /></span>
                   </div>
+                  {/* Earned progress — real SRS gains (mastery crossings, new words), not points.
+                      Only shows when you actually moved the needle, so it always means something. */}
+                  {(() => {
+                    const g = sessionGains.current;
+                    const items = [
+                      g.mastered > 0 && { label: "Mastered ★", value: g.mastered, color: G },
+                      g.learned > 0 && { label: "New words", value: g.learned, color: A },
+                    ].filter(Boolean);
+                    if (!items.length) return null;
+                    return (
+                      <div style={{ display: "flex", justifyContent: "center", gap: 26, marginTop: 16, paddingTop: 14, borderTop: `1px solid ${B}66` }}>
+                        {items.map(it => (
+                          <div key={it.label} style={{ textAlign: "center" }}>
+                            <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: it.color, lineHeight: 1 }}>+<CountUp value={it.value} /></div>
+                            <div style={{ fontSize: 9, color: TD, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.7, marginTop: 4 }}>{it.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </>
               )}
               {/* Session → daily goal connection */}

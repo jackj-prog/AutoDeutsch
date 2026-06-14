@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.73";
+const APP_VERSION = "2026.06.11.74";
 
 // 100dvh tracks the *visible* viewport on mobile (no jump when the URL bar collapses);
 // fall back to 100vh where dvh is unsupported (pre-2022 browsers).
@@ -3052,29 +3052,36 @@ function App() {
           </div>
 
           <div style={{ padding: "0 18px 14px", overflowY: "auto" }}>
-            {setupIsLibrary && (
-              <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Mode</div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[
-                    ["vocab", "Recall", "DE → EN"],
-                    ["production", "Production", "EN → DE"],
-                    ["dictation", "Dictation", "Hear → type"],
-                    ["audio", "Audio", "Hands-free"],
-                    ...(setupCanUseArticles ? [["article", "Articles", "der/die/das"]] : []),
-                    ...(setupCanUsePlural ? [["plural", "Plurals", "die … ?"]] : []),
-                  ].map(([m, label, sub]) => {
-                    const on = setupMode === m;
-                    return (
-                      <button key={m} onClick={() => setSetupMode(m)} style={{ minWidth: 0, padding: "9px 8px", borderRadius: 9, border: "none", background: on ? A : "transparent", color: on ? "#0A0A0A" : T, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
-                        <span style={{ display: "block", fontSize: 12, fontWeight: 900, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
-                        <span style={{ display: "block", marginTop: 2, fontSize: 9, color: on ? "#0A0A0A" : TD, fontWeight: 800, opacity: on ? 0.8 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{sub}</span>
-                      </button>
-                    );
-                  })}
+            {setupIsLibrary && (() => {
+              // Two distinct things, no longer a flat list: "Review this topic" (vocab modes)
+              // and "Grammar drills" (article/plural, scoped to THIS topic's nouns — the
+              // category-specific complement to the all-topics Train tab).
+              const gridStyle = { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 };
+              const lbl = { fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 };
+              const btn = ([m, label, sub]) => {
+                const on = setupMode === m;
+                return (
+                  <button key={m} onClick={() => setSetupMode(m)} style={{ minWidth: 0, padding: "9px 8px", borderRadius: 9, border: "none", background: on ? A : "transparent", color: on ? "#0A0A0A" : T, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+                    <span style={{ display: "block", fontSize: 12, fontWeight: 900, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
+                    <span style={{ display: "block", marginTop: 2, fontSize: 9, color: on ? "#0A0A0A" : TD, fontWeight: 800, opacity: on ? 0.8 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{sub}</span>
+                  </button>
+                );
+              };
+              const drills = [
+                ...(setupCanUseArticles ? [["article", "Articles", "der/die/das"]] : []),
+                ...(setupCanUsePlural ? [["plural", "Plurals", "die … ?"]] : []),
+              ];
+              return (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={lbl}>Review this topic</div>
+                  <div style={gridStyle}>{[["vocab", "Recall", "DE → EN"], ["production", "Production", "EN → DE"], ["dictation", "Dictation", "Hear → type"], ["audio", "Audio", "Hands-free"]].map(btn)}</div>
+                  {drills.length > 0 && (<>
+                    <div style={{ ...lbl, marginTop: 14 }}>Grammar drills · this topic</div>
+                    <div style={gridStyle}>{drills.map(btn)}</div>
+                  </>)}
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {setupMode === "audio" && setupIsLibrary && (
               <>

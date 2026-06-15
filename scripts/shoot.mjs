@@ -185,7 +185,17 @@ async function gotoScreen(page, screen) {
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }
-  if (screen === "konj1") { await clickText(page, "Verb Trainer"); await clickText(page, "Konjunktiv I"); await clickText(page, "Start session"); return; }
+  if (screen === "konj1") { await clickText(page, "Train"); await clickText(page, "Verb Trainer"); await clickText(page, "Konjunktiv I"); await clickText(page, "Start session"); return; }
+  if (screen === "traindrill") {
+    // Generic Train-tab drill capture. SHOOT_DRILL = tile label (e.g. "Grammar Cloze").
+    await clickText(page, "Train");
+    await new Promise(r => setTimeout(r, 300));
+    await clickText(page, process.env.SHOOT_DRILL || "Grammar Cloze");
+    await new Promise(r => setTimeout(r, 300));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 700));
+    return;
+  }
   if (screen === "mastery" || screen === "correct" || screen === "capital" || screen === "eszett") {
     // First card is the seeded due card (der Bahnhof). Type its answer — lowercased for
     // the 'capital' case to verify the capitalisation flag.

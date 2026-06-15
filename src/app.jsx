@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.81";
+const APP_VERSION = "2026.06.11.82";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1950,7 +1950,7 @@ function App() {
       const p = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
       if (v.stats.attempts > 0 || p.stats.attempts > 0) L.seen++;
       if (p.stats.attempts > 0) L.production++;
-      if (p.stats.productionStreak >= MASTERY_STREAK) L.mastered++;
+      if (p.stats.productionStreak >= MASTERY_STREAK || p.stats.masteredAt) L.mastered++;
     });
     const boxes = [0, 0, 0, 0, 0, 0];
     let attempts = 0, correct = 0, entries = 0;
@@ -4679,11 +4679,11 @@ function App() {
       </div>
 
       {/* ── BOTTOM TAB NAVIGATION (hidden during sessions for focus) ── */}
-      {["home", "train", "library", "stats", "tutor"].includes(screen) && (
+      {["home", "train", "library", "stats"].includes(screen) && (
         <nav aria-label="Main navigation" style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 480, zIndex: 90, background: "rgba(9,9,9,0.86)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderTop: `1px solid ${HAIR}` }}>
           <div style={{ height: 2, background: FLAG, opacity: 0.5 }} />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-            {[["home", "Home", "home"], ["library", "Library", "book"], ["train", "Train", "bolt"], ["stats", "Stats", "chart"], ["tutor", "Tutor", "message"]].map(([id, label, icon]) => {
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
+            {[["home", "Home", "home"], ["library", "Library", "book"], ["train", "Train", "bolt"], ["stats", "Stats", "chart"]].map(([id, label, icon]) => {
               const active = screen === id;
               return (
                 <button key={id} type="button" aria-current={active ? "page" : undefined}

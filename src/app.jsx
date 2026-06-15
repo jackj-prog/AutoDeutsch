@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.80";
+const APP_VERSION = "2026.06.11.81";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4023,7 +4023,10 @@ function App() {
       })()}
 
       {/* ── FLIP CARD SCREEN (vocab/production) ── */}
-      {screen === "cards" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+      {/* Production/dictation cards size to content (tall answered summary scrolls the page);
+          the vocab/recall FLIP card needs a fixed-height container so its 1-1-auto, absolutely-
+          positioned faces have a height to fill — minHeight alone collapses it to a strip. */}
+      {screen === "cards" && card && <div style={{ padding: "0 20px", minHeight: DVH, height: (mode === "production" || mode === "dictation") ? undefined : DVH, display: "flex", flexDirection: "column" }}>
         {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 

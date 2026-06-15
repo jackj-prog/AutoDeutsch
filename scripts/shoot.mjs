@@ -229,6 +229,34 @@ async function gotoScreen(page, screen) {
     await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
     await new Promise(r => setTimeout(r, 700));
   }
+  if (screen === "recallfront") {
+    // The un-revealed front of a recall card (German prompt, "Tap to reveal").
+    await clickText(page, "Custom session");
+    await clickText(page, "Recall");
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 600));
+  }
+  if (screen === "recallswipe") {
+    // Reveal, then drag the card right and hold — surfaces the GOT IT verdict stamp mid-swipe.
+    await clickText(page, "Custom session");
+    await clickText(page, "Recall");
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 400));
+    await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
+    await new Promise(r => setTimeout(r, 650));
+    const box = await page.evaluate(() => {
+      const el = document.querySelector('[aria-label="Answer revealed"]');
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+    });
+    if (box) {
+      await page.mouse.move(box.x, box.y);
+      await page.mouse.down();
+      for (let i = 1; i <= 6; i++) { await page.mouse.move(box.x + i * 22, box.y); await new Promise(r => setTimeout(r, 25)); }
+      await new Promise(r => setTimeout(r, 120));
+    }
+  }
   if (screen === "results") {
     // Drive a short production session to completion (all wrong) to reach the results screen.
     await clickText(page, "Custom session");

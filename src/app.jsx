@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.82";
+const APP_VERSION = "2026.06.11.83";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1969,7 +1969,15 @@ function App() {
     const perWeek = recent28 / 4;
     const b2Remaining = Math.max(0, levels.B2.total - levels.B2.mastered);
     const b2WeeksLeft = perWeek > 0 ? b2Remaining / perWeek : null;
-    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft };
+    // "Journey to B2" is cumulative across the WHOLE curriculum (A1→B2), not B2-only — a
+    // novice climbs from 0 by mastering the lower levels first, so progress is real from
+    // day one instead of stuck near 0% until they reach advanced words.
+    const journeyTotal = LEVELS.reduce((s, l) => s + levels[l].total, 0);
+    const journeyMastered = LEVELS.reduce((s, l) => s + levels[l].mastered, 0);
+    const journeyPct = journeyTotal ? (journeyMastered / journeyTotal) * 100 : 0;
+    const journeyRemaining = Math.max(0, journeyTotal - journeyMastered);
+    const journeyWeeksLeft = perWeek > 0 ? journeyRemaining / perWeek : null;
+    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft };
   }, [prog]);
 
   const openSetup = (cat, dm) => {
@@ -3019,7 +3027,7 @@ function App() {
           Lighter than the centre celebrations because it can fire several times a session. ── */}
       {masteryBurst && <div style={{ position: "fixed", inset: 0, zIndex: 124, pointerEvents: "none" }}><Confetti count={30} top="5%" /></div>}
       {masteryBurst && (
-        <div role="status" aria-label={`Mastered ${masteryBurst.de}`} style={{ position: "fixed", top: "max(12px, env(safe-area-inset-top))", left: "50%", transform: "translateX(-50%)", zIndex: 125, width: "calc(100% - 32px)", maxWidth: 420, pointerEvents: "none", display: "flex", justifyContent: "center" }}>
+        <div role="status" aria-label={`Mastered ${masteryBurst.de}`} style={{ position: "fixed", top: "calc(env(safe-area-inset-top) + 70px)", left: "50%", transform: "translateX(-50%)", zIndex: 125, width: "calc(100% - 32px)", maxWidth: 420, pointerEvents: "none", display: "flex", justifyContent: "center" }}>
           <div className="ad-toast" style={{ display: "flex", alignItems: "center", gap: 11, background: "linear-gradient(135deg, #0F1A11 0%, #0F0F0F 70%)", border: `1px solid ${G}66`, borderRadius: 14, padding: "10px 16px 10px 11px", boxShadow: `0 14px 44px -12px ${G}66, 0 8px 24px rgba(0,0,0,.5)`, maxWidth: 360, minWidth: 0 }}>
             <div style={{ width: 38, height: 38, borderRadius: 11, background: `${G}18`, border: `1px solid ${G}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <Icon name="trophy" size={20} style={{ color: G }} />
@@ -3466,6 +3474,28 @@ function App() {
           </h1>
           <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
         </div>
+
+        {/* Journey to B2 — the north-star, surfaced compactly. The 4 segments (A1→B2) fill
+            as you master each level, so a novice sees the climb start from day one. Taps to Stats. */}
+        {(() => {
+          const pct = deepStats.journeyPct;
+          return (
+            <button type="button" onClick={() => setScreen("stats")} aria-label="Journey to B2 — open stats"
+              style={{ width: "100%", marginTop: 14, marginBottom: 4, background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", display: "block", padding: 0, textAlign: "left" }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Journey to B2</span>
+                <span style={{ fontSize: 11, color: G, fontWeight: 800 }}>{pct > 0 && pct < 10 ? pct.toFixed(1) : Math.round(pct)}%</span>
+              </div>
+              <div style={{ display: "flex", gap: 4 }}>
+                {LEVELS.map(l => { const L = deepStats.levels[l]; const m = L.total ? (L.mastered / L.total) * 100 : 0; return (
+                  <div key={l} style={{ flex: 1, height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", border: `1px solid ${HAIR}` }}>
+                    <div style={{ height: "100%", width: `${m}%`, background: G, borderRadius: 3, transition: "width .5s" }} />
+                  </div>
+                ); })}
+              </div>
+            </button>
+          );
+        })()}
 
         {SectionHead({ title: "Today", style: { margin: "2px 0 10px" } })}
         {/* Today panel: goal ring + streak + last-7-days activity */}
@@ -3919,6 +3949,7 @@ function App() {
         const boxLabels = ["1d", "2d", "4d", "7d", "14d", "30d"];
         const overallAcc = ds.attempts > 0 ? Math.round((ds.correct / ds.attempts) * 100) : null;
         const b2Months = ds.b2WeeksLeft != null ? ds.b2WeeksLeft / 4.345 : null;
+        const journeyMonths = ds.journeyWeeksLeft != null ? ds.journeyWeeksLeft / 4.345 : null;
         const panel = { background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV };
         const flagBar = <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />;
         return (
@@ -3930,11 +3961,15 @@ function App() {
 
             {ProgressHub()}
 
-            {/* Path to B2: per-level vocabulary funnel */}
+            {/* Journey to B2 — cumulative across the whole A1→B2 curriculum */}
             <div style={panel}>
               {flagBar}
-              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 3, paddingTop: 4 }}>PATH TO B2</div>
-              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>Vocabulary mastered per CEFR level (★ = 5 production answers in a row)</div>
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 8, paddingTop: 4 }}>JOURNEY TO B2</div>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 9, marginBottom: 2 }}>
+                <span style={{ fontFamily: FN, fontSize: 40, fontWeight: 800, color: G, lineHeight: 0.9 }}>{ds.journeyPct > 0 && ds.journeyPct < 10 ? ds.journeyPct.toFixed(1) : Math.round(ds.journeyPct)}%</span>
+                <span style={{ fontSize: 13, color: TD, fontWeight: 700, paddingBottom: 5 }}>of the way there</span>
+              </div>
+              <div style={{ fontSize: 11.5, color: TD, marginBottom: 16 }}><span style={{ color: T, fontWeight: 800 }}>{ds.journeyMastered.toLocaleString()}</span> of {ds.journeyTotal.toLocaleString()} words mastered across all of A1–B2 — every level counts, so start with the basics and climb</div>
               {LEVELS.map(l => {
                 const L = ds.levels[l];
                 const seenPct = L.total ? (L.seen / L.total) * 100 : 0;
@@ -3954,10 +3989,14 @@ function App() {
                 );
               })}
               <div style={{ marginTop: 12, padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
-                {ds.perWeek > 0 ? (
-                  <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace the remaining <span style={{ color: T, fontWeight: 800 }}>{ds.b2Remaining}</span> B2 words take about <span style={{ color: A, fontWeight: 800 }}>{b2Months >= 18 ? `${(b2Months / 12).toFixed(1)} years` : `${b2Months.toFixed(1)} months`}</span>.</>
+                {ds.perWeek > 0 && journeyMonths != null ? (
+                  journeyMonths <= 36 ? (
+                    <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace you're about <span style={{ color: A, fontWeight: 800 }}>{journeyMonths >= 18 ? `${(journeyMonths / 12).toFixed(1)} years` : `${Math.round(journeyMonths)} months`}</span> from B2 — keep it up.</>
+                  ) : (
+                    <>You're mastering ~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span> ({ds.recent28} in the last 4 weeks). Push that higher and your time to B2 drops fast — every extra word a week compounds.</>
+                  )
                 ) : (
-                  <>Master a few words in production mode to unlock a pace projection toward B2.</>
+                  <>Master a few words in production mode to start your pace toward B2.</>
                 )}
               </div>
             </div>
@@ -3966,7 +4005,7 @@ function App() {
             <div style={panel}>
               {flagBar}
               <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 3, paddingTop: 4 }}>MEMORY STRENGTH</div>
-              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>Cards per spaced-repetition box (review interval)</div>
+              <div style={{ fontSize: 11, color: TD, marginBottom: 14 }}>How many words sit at each memory stage — further right means it sticks for longer</div>
               <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 90 }}>
                 {ds.boxes.map((n, i) => (
                   <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, height: "100%", justifyContent: "flex-end" }}>
@@ -4348,7 +4387,7 @@ function App() {
 
       {/* ── SENTENCE BUILDER ── */}
       {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
-        {Header({ extra: <span style={{ color: BL, marginRight: 6 }}>Build</span> })}
+        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
           <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16 }}>

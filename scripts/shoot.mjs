@@ -107,8 +107,10 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
   const per = adv ? 18 : 8;
   cats.forEach((c, ci) => {
     for (let i = 0; i < per; i++) {
-      const box = (ci + i) % 6, mastered = adv ? (ci + i) % 2 === 0 : (ci + i) % 4 === 0;
-      prog[`production::${c}::seed${ci}_${i}`] = mk(box, 5 + i, i % 3, mastered ? 5 : i % 5, mastered ? Date.now() - (i % 24) * DAY : null);
+      const box = (ci + i) % 6;
+      // Practice volume only — these synthetic ids aren't real vocab, so they must NOT claim
+      // mastery (that would inflate all-time/journey numbers vs the real per-level counts).
+      prog[`production::${c}::seed${ci}_${i}`] = mk(box, 5 + i, i % 3, i % 5, null);
       prog[`vocab::${c}::seed${ci}_${i}`] = mk(box, 4 + i, 1, 0, null);
     }
   });
@@ -125,6 +127,8 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     ri++;
     prog[`production::${c}::${de}`] = ri % 4 === 0
       ? mk(1, 2, 5, 0, null) // weak: incorrect 5, box 1
+      : ri % 2 === 0
+      ? mk(5, 9, 0, 6, Date.now() - (ri % 18) * DAY) // mastered: box 5, productionStreak 6, masteredAt set
       : { stats: { attempts: 6, correct: 5, incorrect: 1, lastSeen: Date.now() - 25 * DAY, avgTime: 6000, timedAttempts: 5, currentStreak: 2, productionStreak: 2, masteredAt: null }, srs: { box: 3, lastReviewed: Date.now() - 25 * DAY } }; // due (box 3, interval 7d, 25d ago)
   }));
   if (training) {

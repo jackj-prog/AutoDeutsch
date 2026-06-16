@@ -518,7 +518,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.86";
+const APP_VERSION = "2026.06.11.87";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3040,8 +3040,10 @@ function App() {
         .ad-screen-in { animation: ad-screen-in .28s cubic-bezier(.22,.61,.36,1) both; }
         @keyframes ad-tab-pop { 0%{transform:scale(1)} 40%{transform:scale(1.24)} 100%{transform:scale(1)} }
         .ad-tab-pop { animation: ad-tab-pop .34s cubic-bezier(.2,.7,.3,1.3); display:inline-flex; }
+        @keyframes ad-pulse { 0%,100%{ transform:scale(1); opacity:.55 } 55%{ transform:scale(1.35); opacity:0 } }
+        .ad-pulse { animation: ad-pulse 2.1s ease-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -3566,10 +3568,24 @@ function App() {
                 <span style={{ fontSize: 12, color: G, fontWeight: 800, flexShrink: 0 }}>{Math.round(clPct)}%</span>
                 <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)" }} />
               </div>
-              <div style={{ height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative" }}>
-                <div style={{ position: "absolute", inset: 0, width: `${clSeenPct}%`, background: `${LC[cl]}33`, borderRadius: 3 }} />
-                <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: G, borderRadius: 3, transition: "width .5s" }} />
-              </div>
+              {curIdx === -1 ? (
+                <div style={{ height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                  <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: G, borderRadius: 3 }} />
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: 3 }}>
+                  {[1, 2, 3, 4, 5].map(n => {
+                    const done = n <= CL.chaptersDone;
+                    const current = n === CL.chaptersDone + 1;
+                    const within = current && CL.chapterSize ? Math.max(0, Math.min(1, (CL.mastered - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
+                    return (
+                      <div key={n} style={{ flex: 1, height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative", boxShadow: current ? `0 0 0 1px ${LC[cl]}66` : "none" }}>
+                        <div style={{ position: "absolute", inset: 0, width: done ? "100%" : `${within * 100}%`, background: done ? G : LC[cl], borderRadius: 3, transition: "width .5s" }} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </button>
           );
         })()}
@@ -4069,11 +4085,38 @@ function App() {
                     </div>
                     <div style={{ fontFamily: FN, fontSize: 27, fontWeight: 800, color: G, lineHeight: 1, flexShrink: 0 }}>{Math.round(clPct)}%</div>
                   </div>
-                  <div style={{ height: 9, background: "#0A0A0A", borderRadius: 4, overflow: "hidden", marginBottom: 9, position: "relative" }}>
-                    <div style={{ position: "absolute", inset: 0, width: `${clSeenPct}%`, background: `${LEVEL_COLORS[cl]}33`, borderRadius: 4, transition: "width .6s" }} />
-                    <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: `linear-gradient(90deg, ${LEVEL_COLORS[cl]}, ${G})`, borderRadius: 4, transition: "width .6s" }} />
-                    {!allDone && [1, 2, 3, 4].map(i => <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${i * (100 / CHAPTERS)}%`, width: 2, background: "#0A0A0A", zIndex: 2 }} />)}
-                  </div>
+                  {/* Chapter trail — the 5 chapters of this level as a path you walk: completed
+                      (checked), the current one as a ring you're filling (pulsing), and what's ahead. */}
+                  {!allDone && (
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12, padding: "2px 2px 0" }}>
+                      {(() => {
+                        const within = CL.chapterSize ? Math.max(0, Math.min(1, (CL.mastered - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
+                        const els = [];
+                        for (let n = 1; n <= CHAPTERS; n++) {
+                          const done = n <= CL.chaptersDone;
+                          const current = n === CL.chaptersDone + 1;
+                          els.push(
+                            <div key={`n${n}`} style={{ position: "relative", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              {current && <div className="ad-pulse" style={{ position: "absolute", inset: -5, borderRadius: "50%", border: `2px solid ${LEVEL_COLORS[cl]}` }} />}
+                              <div style={{ width: current ? 30 : 24, height: current ? 30 : 24, borderRadius: "50%", padding: current ? 2.5 : 0, background: done ? G : current ? `conic-gradient(${LEVEL_COLORS[cl]} ${within * 360}deg, ${HAIR} 0deg)` : "#0A0A0A", border: done ? `2px solid ${G}` : current ? "none" : `2px solid ${HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: current ? `0 0 14px -3px ${LEVEL_COLORS[cl]}` : "none" }}>
+                                {current ? (
+                                  <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "#0E0E0E", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <span style={{ fontFamily: FN, fontSize: 12, fontWeight: 900, color: LEVEL_COLORS[cl] }}>{n}</span>
+                                  </div>
+                                ) : done ? <Icon name="check" size={12} color="#0A0A0A" /> : <span style={{ fontFamily: FN, fontSize: 11, fontWeight: 800, color: TD }}>{n}</span>}
+                              </div>
+                            </div>
+                          );
+                          if (n < CHAPTERS) els.push(
+                            <div key={`c${n}`} style={{ flex: 1, height: 3, background: "#0A0A0A", borderRadius: 2, margin: "0 3px", overflow: "hidden", position: "relative" }}>
+                              <div style={{ position: "absolute", inset: 0, width: done ? "100%" : "0%", background: G, transition: "width .5s" }} />
+                            </div>
+                          );
+                        }
+                        return els;
+                      })()}
+                    </div>
+                  )}
                   <div style={{ display: "flex", gap: 14, marginBottom: 14, fontSize: 10.5, color: TD, fontWeight: 700 }}>
                     <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${LEVEL_COLORS[cl]}66`, marginRight: 5 }} />{CL.seen} learning</span>
                     <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: G, marginRight: 5 }} />{CL.mastered} mastered</span>

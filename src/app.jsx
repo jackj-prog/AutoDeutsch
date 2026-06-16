@@ -513,7 +513,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.83";
+const APP_VERSION = "2026.06.11.84";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3475,23 +3475,28 @@ function App() {
           <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
         </div>
 
-        {/* Journey to B2 — the north-star, surfaced compactly. The 4 segments (A1→B2) fill
-            as you master each level, so a novice sees the climb start from day one. Taps to Stats. */}
+        {/* Journey rank — your current CEFR level + progress toward the next, surfaced as a
+            tappable identity (matches the Stats roadmap). Novice sees a clear rank + climb. */}
         {(() => {
-          const pct = deepStats.journeyPct;
+          const LC = { A1: G, A2: BL, B1: A, B2: R };
+          const TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
+          const curIdx = LEVELS.findIndex(l => deepStats.levels[l].mastered < deepStats.levels[l].total);
+          const cl = curIdx === -1 ? LEVELS[LEVELS.length - 1] : LEVELS[curIdx];
+          const CL = deepStats.levels[cl];
+          const clPct = CL.total ? (CL.mastered / CL.total) * 100 : 0;
+          const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
           return (
-            <button type="button" onClick={() => setScreen("stats")} aria-label="Journey to B2 — open stats"
-              style={{ width: "100%", marginTop: 14, marginBottom: 4, background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", display: "block", padding: 0, textAlign: "left" }}>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Journey to B2</span>
-                <span style={{ fontSize: 11, color: G, fontWeight: 800 }}>{pct > 0 && pct < 10 ? pct.toFixed(1) : Math.round(pct)}%</span>
+            <button type="button" onClick={() => setScreen("stats")} aria-label={`Level ${cl} ${TITLES[cl]} — open your journey`}
+              style={{ width: "100%", marginTop: 14, marginBottom: 4, background: "linear-gradient(100deg, #131313 0%, #0E0E0E 70%)", border: `1px solid ${HAIR}`, borderRadius: 13, padding: "11px 13px 12px", cursor: "pointer", fontFamily: "inherit", display: "block", textAlign: "left" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                <span style={{ width: 28, height: 28, borderRadius: 9, background: `${LC[cl]}1A`, border: `1px solid ${LC[cl]}`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: FN, fontSize: 12, fontWeight: 900, color: LC[cl], flexShrink: 0 }}>{cl}</span>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 800, color: T }}>{TITLES[cl]}<span style={{ color: TD, fontWeight: 600, fontSize: 11 }}> · journey to B2</span></span>
+                <span style={{ fontSize: 12, color: G, fontWeight: 800, flexShrink: 0 }}>{Math.round(clPct)}%</span>
+                <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)" }} />
               </div>
-              <div style={{ display: "flex", gap: 4 }}>
-                {LEVELS.map(l => { const L = deepStats.levels[l]; const m = L.total ? (L.mastered / L.total) * 100 : 0; return (
-                  <div key={l} style={{ flex: 1, height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", border: `1px solid ${HAIR}` }}>
-                    <div style={{ height: "100%", width: `${m}%`, background: G, borderRadius: 3, transition: "width .5s" }} />
-                  </div>
-                ); })}
+              <div style={{ height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                <div style={{ position: "absolute", inset: 0, width: `${clSeenPct}%`, background: `${LC[cl]}33`, borderRadius: 3 }} />
+                <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: G, borderRadius: 3, transition: "width .5s" }} />
               </div>
             </button>
           );
@@ -3961,45 +3966,100 @@ function App() {
 
             {ProgressHub()}
 
-            {/* Journey to B2 — cumulative across the whole A1→B2 curriculum */}
-            <div style={panel}>
-              {flagBar}
-              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 8, paddingTop: 4 }}>JOURNEY TO B2</div>
-              <div style={{ display: "flex", alignItems: "flex-end", gap: 9, marginBottom: 2 }}>
-                <span style={{ fontFamily: FN, fontSize: 40, fontWeight: 800, color: G, lineHeight: 0.9 }}>{ds.journeyPct > 0 && ds.journeyPct < 10 ? ds.journeyPct.toFixed(1) : Math.round(ds.journeyPct)}%</span>
-                <span style={{ fontSize: 13, color: TD, fontWeight: 700, paddingBottom: 5 }}>of the way there</span>
-              </div>
-              <div style={{ fontSize: 11.5, color: TD, marginBottom: 16 }}><span style={{ color: T, fontWeight: 800 }}>{ds.journeyMastered.toLocaleString()}</span> of {ds.journeyTotal.toLocaleString()} words mastered across all of A1–B2 — every level counts, so start with the basics and climb</div>
-              {LEVELS.map(l => {
-                const L = ds.levels[l];
-                const seenPct = L.total ? (L.seen / L.total) * 100 : 0;
-                const mPct = L.total ? (L.mastered / L.total) * 100 : 0;
-                return (
-                  <div key={l} style={{ marginBottom: 12 }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 5 }}>
-                      <span style={{ fontSize: 11, fontWeight: 900, color: LEVEL_COLORS[l], border: `1px solid ${LEVEL_COLORS[l]}55`, borderRadius: 6, padding: "1px 7px" }}>{l}</span>
-                      <span style={{ fontSize: 11, color: TD, flex: 1 }}>{L.seen} seen · {L.production} produced</span>
-                      <span style={{ fontSize: 12, fontWeight: 800, color: L.mastered ? G : TD }}>★ {L.mastered}<span style={{ color: TD, fontWeight: 700 }}> / {L.total}</span></span>
+            {/* ── Your German Journey: a CEFR roadmap (rank · current focus · milestones · path) ── */}
+            {(() => {
+              const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
+              const curIdx = LEVELS.findIndex(l => ds.levels[l].mastered < ds.levels[l].total);
+              const allDone = curIdx === -1;
+              const cl = allDone ? LEVELS[LEVELS.length - 1] : LEVELS[curIdx];
+              const nextLevel = allDone ? null : (LEVELS[LEVELS.indexOf(cl) + 1] || null);
+              const CL = ds.levels[cl];
+              const clPct = CL.total ? (CL.mastered / CL.total) * 100 : 0;
+              const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
+              const clRemaining = Math.max(0, CL.total - CL.mastered);
+              const jp = ds.journeyPct > 0 && ds.journeyPct < 10 ? ds.journeyPct.toFixed(1) : Math.round(ds.journeyPct);
+              return (
+                <div style={panel}>
+                  {flagBar}
+                  <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 14, paddingTop: 4 }}>YOUR JOURNEY TO B2</div>
+
+                  {/* Current-level rank hero */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+                    <div style={{ width: 56, height: 56, borderRadius: 16, background: `${LEVEL_COLORS[cl]}1A`, border: `1.5px solid ${LEVEL_COLORS[cl]}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: `0 0 20px -7px ${LEVEL_COLORS[cl]}` }}>
+                      <span style={{ fontFamily: FN, fontSize: 21, fontWeight: 900, color: LEVEL_COLORS[cl], lineHeight: 1 }}>{cl}</span>
                     </div>
-                    <div style={{ height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative" }}>
-                      <div style={{ position: "absolute", inset: 0, width: `${seenPct}%`, background: `${LEVEL_COLORS[l]}33`, borderRadius: 3 }} />
-                      <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 3 }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 9.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>{allDone ? "Top level reached" : "You're at"}</div>
+                      <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: T, lineHeight: 1.1 }}>{LEVEL_TITLES[cl]}</div>
+                      <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{CL.mastered.toLocaleString()} / {CL.total.toLocaleString()} {cl} words mastered</div>
                     </div>
+                    <div style={{ fontFamily: FN, fontSize: 27, fontWeight: 800, color: G, lineHeight: 1, flexShrink: 0 }}>{Math.round(clPct)}%</div>
                   </div>
-                );
-              })}
-              <div style={{ marginTop: 12, padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
-                {ds.perWeek > 0 && journeyMonths != null ? (
-                  journeyMonths <= 36 ? (
-                    <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace you're about <span style={{ color: A, fontWeight: 800 }}>{journeyMonths >= 18 ? `${(journeyMonths / 12).toFixed(1)} years` : `${Math.round(journeyMonths)} months`}</span> from B2 — keep it up.</>
-                  ) : (
-                    <>You're mastering ~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span> ({ds.recent28} in the last 4 weeks). Push that higher and your time to B2 drops fast — every extra word a week compounds.</>
-                  )
-                ) : (
-                  <>Master a few words in production mode to start your pace toward B2.</>
-                )}
-              </div>
-            </div>
+                  <div style={{ height: 8, background: "#0A0A0A", borderRadius: 4, overflow: "hidden", marginBottom: 9, position: "relative" }}>
+                    <div style={{ position: "absolute", inset: 0, width: `${clSeenPct}%`, background: `${LEVEL_COLORS[cl]}33`, borderRadius: 4, transition: "width .6s" }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: `linear-gradient(90deg, ${LEVEL_COLORS[cl]}, ${G})`, borderRadius: 4, transition: "width .6s" }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 14, marginBottom: 14, fontSize: 10.5, color: TD, fontWeight: 700 }}>
+                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${LEVEL_COLORS[cl]}66`, marginRight: 5 }} />{CL.seen} learning</span>
+                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: G, marginRight: 5 }} />{CL.mastered} mastered</span>
+                  </div>
+                  <div style={{ fontSize: 11.5, color: TD, marginBottom: 18, lineHeight: 1.5 }}>
+                    {allDone ? <>You've mastered every level — the full B2 vocabulary is locked in. 🏁</>
+                      : nextLevel ? <>Master <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> more {cl} words to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel} · {LEVEL_TITLES[nextLevel]}</span></>
+                      : <>Master <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> more {cl} words to complete your journey to B2</>}
+                  </div>
+
+                  {/* The roadmap — 4 CEFR stages, you-are-here */}
+                  {LEVELS.map((l, i) => {
+                    const L = ds.levels[l];
+                    const mPct = L.total ? (L.mastered / L.total) * 100 : 0;
+                    const sPct = L.total ? (L.seen / L.total) * 100 : 0;
+                    const done = L.total > 0 && L.mastered >= L.total;
+                    const isCurrent = l === cl && !allDone;
+                    const reached = i <= LEVELS.indexOf(cl);
+                    const last = i === LEVELS.length - 1;
+                    return (
+                      <div key={l} style={{ display: "flex", alignItems: "center", gap: 11, opacity: reached || mPct > 0 ? 1 : 0.45 }}>
+                        <div style={{ position: "relative", width: 20, alignSelf: "stretch", display: "flex", justifyContent: "center", flexShrink: 0 }}>
+                          {!last && <div style={{ position: "absolute", top: "50%", bottom: -6, width: 2, background: done ? G : `${HAIR}` }} />}
+                          <div style={{ alignSelf: "center", width: done || isCurrent ? 16 : 12, height: done || isCurrent ? 16 : 12, borderRadius: "50%", background: done ? G : isCurrent ? LEVEL_COLORS[l] : "#0A0A0A", border: `2px solid ${done ? G : isCurrent ? LEVEL_COLORS[l] : HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, boxShadow: isCurrent ? `0 0 12px -1px ${LEVEL_COLORS[l]}` : "none" }}>
+                            {done && <Icon name="check" size={9} color="#0A0A0A" />}
+                          </div>
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, padding: "9px 0" }}>
+                          <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
+                            <span style={{ fontSize: 11, fontWeight: 900, color: LEVEL_COLORS[l] }}>{l}</span>
+                            <span style={{ fontSize: 12, color: isCurrent ? T : TD, fontWeight: isCurrent ? 800 : 600, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{LEVEL_TITLES[l]}{isCurrent ? " — you are here" : ""}</span>
+                            <span style={{ fontSize: 10.5, color: done ? G : TD, fontWeight: 800, flexShrink: 0 }}>{done ? "Complete" : `${Math.round(mPct)}%`}</span>
+                          </div>
+                          <div style={{ height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", marginTop: 5, position: "relative" }}>
+                            <div style={{ position: "absolute", inset: 0, width: `${sPct}%`, background: `${LEVEL_COLORS[l]}33`, borderRadius: 2 }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: done ? G : LEVEL_COLORS[l], borderRadius: 2, transition: "width .5s" }} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Overall backdrop + pace */}
+                  <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}66`, display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
+                    <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>Whole journey · A1 → B2</span>
+                    <span style={{ fontSize: 12.5, color: G, fontWeight: 800 }}>{jp}% · {ds.journeyMastered.toLocaleString()} / {ds.journeyTotal.toLocaleString()} words</span>
+                  </div>
+                  <div style={{ padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
+                    {ds.perWeek > 0 && journeyMonths != null ? (
+                      journeyMonths <= 36 ? (
+                        <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace you're about <span style={{ color: A, fontWeight: 800 }}>{journeyMonths >= 18 ? `${(journeyMonths / 12).toFixed(1)} years` : `${Math.round(journeyMonths)} months`}</span> from B2 — keep it up.</>
+                      ) : (
+                        <>You're mastering ~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span> ({ds.recent28} in the last 4 weeks). Push that higher and your time to B2 drops fast — every extra word a week compounds.</>
+                      )
+                    ) : (
+                      <>Master a few words in production mode to start your pace toward B2.</>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* SRS box histogram */}
             <div style={panel}>

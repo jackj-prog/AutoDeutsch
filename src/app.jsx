@@ -487,6 +487,7 @@ const PAL = {
 // and the rank-up celebration so the progression reads as one system.
 const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
 const LEVEL_COLOR = { A1: PAL.G, A2: PAL.BL, B1: PAL.A, B2: PAL.R };
+const CHAPTERS = 5; // each CEFR level is divided into this many chapters (checkpoint milestones)
 // Flame "heat" by count — used for both the day streak and the in-session combo. As the
 // number climbs the flame shifts from brand gold toward fiery orange, grows, glows, and
 // flickers, so being on a roll/streak looks like it. Returns { color, glow, boost, anim }.
@@ -517,7 +518,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.85";
+const APP_VERSION = "2026.06.11.86";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -991,6 +992,7 @@ function App() {
   const [celebration, setCelebration] = useState(null);
   const [rankUp, setRankUp] = useState(null); // {from, to} — a full CEFR level was just completed
   const prevLevelRef = useRef(null);
+  const prevChaptersRef = useRef(null);
   const celebrateTimerRef = useRef(null);
   const showCelebration = useCallback((c) => {
     setCelebration(c);
@@ -1986,21 +1988,48 @@ function App() {
     // Current CEFR level = the lowest level not yet fully mastered (your rank).
     let currentLevel = LEVELS[LEVELS.length - 1];
     for (const l of LEVELS) { if (levels[l].mastered < levels[l].total) { currentLevel = l; break; } }
-    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel };
+    // Chapters: each level is split into CHAPTERS equal-size chunks so a checkpoint lands every
+    // ~20% of a level (every few weeks) instead of only at full level completion.
+    let chaptersDoneTotal = 0;
+    LEVELS.forEach(l => {
+      const L = levels[l];
+      L.chapterSize = Math.max(1, Math.ceil(L.total / CHAPTERS));
+      L.chaptersDone = Math.min(CHAPTERS, Math.floor(L.mastered / L.chapterSize));
+      chaptersDoneTotal += L.chaptersDone;
+    });
+    const curL = levels[currentLevel];
+    const currentChapter = Math.min(CHAPTERS, curL.chaptersDone + 1); // 1-indexed chapter you're working on
+    const chapterMasteredInto = curL.mastered - curL.chaptersDone * curL.chapterSize; // mastered within current chapter
+    const chapterRemaining = Math.max(0, curL.chapterSize - chapterMasteredInto); // words to finish current chapter
+    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel, chaptersDoneTotal, currentChapter, chapterRemaining };
   }, [prog]);
 
-  // Rank-up: when your CEFR level advances (you mastered an entire level), throw the
-  // big celebration. Fires only on an upward transition during play, never on first load.
+  // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
+  // CHAPTER checkpoint when you finish a chapter mid-level. Fires only on upward transitions
+  // during play (prevLevelRef seeds on first load so nothing fires on open). Level-up wins
+  // when the last chapter and the level complete on the same answer.
   useEffect(() => {
-    const cl = deepStats.currentLevel;
-    const prev = prevLevelRef.current;
-    if (prev && cl !== prev && LEVELS.indexOf(cl) > LEVELS.indexOf(prev)) {
-      setRankUp({ from: prev, to: cl });
-      playSfx("win");
-      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([40, 60, 40, 60, 90]); } catch (e) {}
+    const cl = deepStats.currentLevel, ch = deepStats.chaptersDoneTotal;
+    const prevL = prevLevelRef.current, prevC = prevChaptersRef.current;
+    const reduce = () => { try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
+    if (prevL != null) {
+      if (LEVELS.indexOf(cl) > LEVELS.indexOf(prevL)) {
+        setRankUp({ from: prevL, to: cl });
+        playSfx("win");
+        try { if (!reduce() && navigator.vibrate) navigator.vibrate([40, 60, 40, 60, 90]); } catch (e) {}
+      } else if (prevC != null && ch > prevC) {
+        const lvl = prevL, n = deepStats.levels[lvl].chaptersDone;
+        showCelebration({
+          color: LEVEL_COLOR[lvl] || A, icon: "check", tag: `${lvl} · Chapter ${n} complete`,
+          big: `Chapter ${n} of ${CHAPTERS} done!`,
+          sub: `${CHAPTERS - n} chapter${CHAPTERS - n === 1 ? "" : "s"} to rank up`, subIcon: null,
+        });
+        try { if (!reduce() && navigator.vibrate) navigator.vibrate([25, 40, 25]); } catch (e) {}
+      }
     }
     prevLevelRef.current = cl;
-  }, [deepStats.currentLevel]);
+    prevChaptersRef.current = ch;
+  }, [deepStats.currentLevel, deepStats.chaptersDoneTotal]);
 
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
@@ -3533,7 +3562,7 @@ function App() {
               style={{ width: "100%", marginTop: 14, marginBottom: 4, background: "linear-gradient(100deg, #131313 0%, #0E0E0E 70%)", border: `1px solid ${HAIR}`, borderRadius: 13, padding: "11px 13px 12px", cursor: "pointer", fontFamily: "inherit", display: "block", textAlign: "left" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                 <span style={{ width: 28, height: 28, borderRadius: 9, background: `${LC[cl]}1A`, border: `1px solid ${LC[cl]}`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: FN, fontSize: 12, fontWeight: 900, color: LC[cl], flexShrink: 0 }}>{cl}</span>
-                <span style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 800, color: T }}>{TITLES[cl]}<span style={{ color: TD, fontWeight: 600, fontSize: 11 }}> · journey to B2</span></span>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 800, color: T }}>{TITLES[cl]}<span style={{ color: TD, fontWeight: 600, fontSize: 11 }}> · {curIdx === -1 ? "journey to B2" : `Chapter ${deepStats.currentChapter} of ${CHAPTERS}`}</span></span>
                 <span style={{ fontSize: 12, color: G, fontWeight: 800, flexShrink: 0 }}>{Math.round(clPct)}%</span>
                 <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)" }} />
               </div>
@@ -4020,6 +4049,8 @@ function App() {
               const clPct = CL.total ? (CL.mastered / CL.total) * 100 : 0;
               const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
               const clRemaining = Math.max(0, CL.total - CL.mastered);
+              const curChapter = Math.min(CHAPTERS, CL.chaptersDone + 1);
+              const chRemaining = Math.max(0, CL.chapterSize - (CL.mastered - CL.chaptersDone * CL.chapterSize));
               const jp = ds.journeyPct > 0 && ds.journeyPct < 10 ? ds.journeyPct.toFixed(1) : Math.round(ds.journeyPct);
               return (
                 <div style={panel}>
@@ -4032,15 +4063,16 @@ function App() {
                       <span style={{ fontFamily: FN, fontSize: 21, fontWeight: 900, color: LEVEL_COLORS[cl], lineHeight: 1 }}>{cl}</span>
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 9.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>{allDone ? "Top level reached" : "You're at"}</div>
+                      <div style={{ fontSize: 9.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>{allDone ? "Top level reached" : `You're at · Chapter ${curChapter} of ${CHAPTERS}`}</div>
                       <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: T, lineHeight: 1.1 }}>{LEVEL_TITLES[cl]}</div>
                       <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{CL.mastered.toLocaleString()} / {CL.total.toLocaleString()} {cl} words mastered</div>
                     </div>
                     <div style={{ fontFamily: FN, fontSize: 27, fontWeight: 800, color: G, lineHeight: 1, flexShrink: 0 }}>{Math.round(clPct)}%</div>
                   </div>
-                  <div style={{ height: 8, background: "#0A0A0A", borderRadius: 4, overflow: "hidden", marginBottom: 9, position: "relative" }}>
+                  <div style={{ height: 9, background: "#0A0A0A", borderRadius: 4, overflow: "hidden", marginBottom: 9, position: "relative" }}>
                     <div style={{ position: "absolute", inset: 0, width: `${clSeenPct}%`, background: `${LEVEL_COLORS[cl]}33`, borderRadius: 4, transition: "width .6s" }} />
                     <div style={{ position: "absolute", inset: 0, width: `${clPct}%`, background: `linear-gradient(90deg, ${LEVEL_COLORS[cl]}, ${G})`, borderRadius: 4, transition: "width .6s" }} />
+                    {!allDone && [1, 2, 3, 4].map(i => <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${i * (100 / CHAPTERS)}%`, width: 2, background: "#0A0A0A", zIndex: 2 }} />)}
                   </div>
                   <div style={{ display: "flex", gap: 14, marginBottom: 14, fontSize: 10.5, color: TD, fontWeight: 700 }}>
                     <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${LEVEL_COLORS[cl]}66`, marginRight: 5 }} />{CL.seen} learning</span>
@@ -4048,8 +4080,7 @@ function App() {
                   </div>
                   <div style={{ fontSize: 11.5, color: TD, marginBottom: 18, lineHeight: 1.5 }}>
                     {allDone ? <>You've mastered every level — the full B2 vocabulary is locked in. 🏁</>
-                      : nextLevel ? <>Master <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> more {cl} words to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel} · {LEVEL_TITLES[nextLevel]}</span></>
-                      : <>Master <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> more {cl} words to complete your journey to B2</>}
+                      : <>Master <span style={{ color: T, fontWeight: 800 }}>{chRemaining.toLocaleString()}</span> more to finish <span style={{ color: LEVEL_COLORS[cl], fontWeight: 800 }}>Chapter {curChapter}</span>{nextLevel ? <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel}</span></> : <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to complete B2</>}</>}
                   </div>
 
                   {/* The roadmap — 4 CEFR stages, you-are-here */}

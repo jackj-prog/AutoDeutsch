@@ -483,6 +483,10 @@ const PAL = {
   A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
   G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#97938B", BL: "#60A5FA", CARD: "#151515",
 };
+// CEFR level identity — title + accent — shared by the home rank card, the Stats roadmap,
+// and the rank-up celebration so the progression reads as one system.
+const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
+const LEVEL_COLOR = { A1: PAL.G, A2: PAL.BL, B1: PAL.A, B2: PAL.R };
 // Flame "heat" by count — used for both the day streak and the in-session combo. As the
 // number climbs the flame shifts from brand gold toward fiery orange, grows, glows, and
 // flickers, so being on a roll/streak looks like it. Returns { color, glow, boost, anim }.
@@ -513,7 +517,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.84";
+const APP_VERSION = "2026.06.11.85";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -985,6 +989,8 @@ function App() {
   // Non-blocking full-screen celebration (daily goal reached, streak milestone).
   // { color, icon, tag, big, sub, subIcon } | null
   const [celebration, setCelebration] = useState(null);
+  const [rankUp, setRankUp] = useState(null); // {from, to} — a full CEFR level was just completed
+  const prevLevelRef = useRef(null);
   const celebrateTimerRef = useRef(null);
   const showCelebration = useCallback((c) => {
     setCelebration(c);
@@ -1977,8 +1983,24 @@ function App() {
     const journeyPct = journeyTotal ? (journeyMastered / journeyTotal) * 100 : 0;
     const journeyRemaining = Math.max(0, journeyTotal - journeyMastered);
     const journeyWeeksLeft = perWeek > 0 ? journeyRemaining / perWeek : null;
-    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft };
+    // Current CEFR level = the lowest level not yet fully mastered (your rank).
+    let currentLevel = LEVELS[LEVELS.length - 1];
+    for (const l of LEVELS) { if (levels[l].mastered < levels[l].total) { currentLevel = l; break; } }
+    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel };
   }, [prog]);
+
+  // Rank-up: when your CEFR level advances (you mastered an entire level), throw the
+  // big celebration. Fires only on an upward transition during play, never on first load.
+  useEffect(() => {
+    const cl = deepStats.currentLevel;
+    const prev = prevLevelRef.current;
+    if (prev && cl !== prev && LEVELS.indexOf(cl) > LEVELS.indexOf(prev)) {
+      setRankUp({ from: prev, to: cl });
+      playSfx("win");
+      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([40, 60, 40, 60, 90]); } catch (e) {}
+    }
+    prevLevelRef.current = cl;
+  }, [deepStats.currentLevel]);
 
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
@@ -3023,6 +3045,27 @@ function App() {
         </div>
       )}
 
+      {/* ── RANK-UP — the big moment when you complete a whole CEFR level. Full-screen so it
+          lands as a real milestone, with the new level badge front and centre. ── */}
+      {rankUp && (() => { const lc = LEVEL_COLOR[rankUp.to] || A; return (
+        <div role="dialog" aria-modal="true" aria-label={`Reached ${LEVEL_TITLES[rankUp.to]}`} onClick={() => setRankUp(null)}
+          style={{ position: "fixed", inset: 0, zIndex: 132, background: "rgba(0,0,0,0.93)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 30, textAlign: "center" }}>
+          <Confetti count={54} top="16%" />
+          <div className="ad-screen-in" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ fontSize: 11, color: lc, fontWeight: 900, letterSpacing: 4, textTransform: "uppercase", marginBottom: 20 }}>Level up</div>
+            <div style={{ position: "relative", marginBottom: 24, width: 116, height: 116, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div className="ad-goal-ring" style={{ position: "absolute", inset: 0, borderRadius: 30, border: `2px solid ${lc}` }} />
+              <div style={{ width: 116, height: 116, borderRadius: 30, background: `${lc}1A`, border: `2px solid ${lc}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 56px -8px ${lc}` }}>
+                <span style={{ fontFamily: FN, fontSize: 46, fontWeight: 900, color: lc, lineHeight: 1 }}>{rankUp.to}</span>
+              </div>
+            </div>
+            <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 800, color: T, lineHeight: 1.12 }}>You've reached {LEVEL_TITLES[rankUp.to]}!</div>
+            <div style={{ fontSize: 13.5, color: TD, marginTop: 11, maxWidth: 300, lineHeight: 1.5 }}>You mastered every {rankUp.from} word. {rankUp.to === "B2" ? "That's the full B2 vocabulary — independent fluency. 🏁" : `On to ${LEVEL_TITLES[rankUp.to]} on the road to B2.`}</div>
+          </div>
+          <button type="button" onClick={() => setRankUp(null)} style={{ marginTop: 38, background: lc, color: "#0A0A0A", border: "none", borderRadius: 14, padding: "15px 46px", fontFamily: FN, fontSize: 16, fontWeight: 800, cursor: "pointer" }}>Weiter →</button>
+        </div>
+      ); })()}
+
       {/* ── MASTERY TOAST — slides down when a word is mastered (5 production in a row).
           Lighter than the centre celebrations because it can fire several times a session. ── */}
       {masteryBurst && <div style={{ position: "fixed", inset: 0, zIndex: 124, pointerEvents: "none" }}><Confetti count={30} top="5%" /></div>}
@@ -4019,7 +4062,7 @@ function App() {
                     const reached = i <= LEVELS.indexOf(cl);
                     const last = i === LEVELS.length - 1;
                     return (
-                      <div key={l} style={{ display: "flex", alignItems: "center", gap: 11, opacity: reached || mPct > 0 ? 1 : 0.45 }}>
+                      <button key={l} type="button" onClick={() => { setSessLevel(l); setScreen("home"); }} aria-label={`Practice ${l} ${LEVEL_TITLES[l]}`} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left", padding: 0, opacity: reached || mPct > 0 ? 1 : 0.45 }}>
                         <div style={{ position: "relative", width: 20, alignSelf: "stretch", display: "flex", justifyContent: "center", flexShrink: 0 }}>
                           {!last && <div style={{ position: "absolute", top: "50%", bottom: -6, width: 2, background: done ? G : `${HAIR}` }} />}
                           <div style={{ alignSelf: "center", width: done || isCurrent ? 16 : 12, height: done || isCurrent ? 16 : 12, borderRadius: "50%", background: done ? G : isCurrent ? LEVEL_COLORS[l] : "#0A0A0A", border: `2px solid ${done ? G : isCurrent ? LEVEL_COLORS[l] : HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, boxShadow: isCurrent ? `0 0 12px -1px ${LEVEL_COLORS[l]}` : "none" }}>
@@ -4037,7 +4080,8 @@ function App() {
                             <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: done ? G : LEVEL_COLORS[l], borderRadius: 2, transition: "width .5s" }} />
                           </div>
                         </div>
-                      </div>
+                        <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
+                      </button>
                     );
                   })}
 

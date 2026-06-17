@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.91";
+const APP_VERSION = "2026.06.11.92";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -741,6 +741,21 @@ const IconBadge = React.memo(({ name, color = PAL.A, bg, size = 32 }) => (
     <Icon name={name} size={Math.max(15, size - 15)} />
   </span>
 ));
+
+// Progress nav icon — three ascending bars. When the tab is active they rise from the
+// baseline in sequence (keyed remount replays it), signifying progress/growth.
+const ProgressIcon = React.memo(({ size = 21, color = PAL.TD, active }) => {
+  const bars = [{ x: 4, h: 7 }, { x: 10, h: 12 }, { x: 16, h: 17 }];
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: "block" }}>
+      {bars.map((b, i) => (
+        <rect key={(active ? "a" : "s") + i} x={b.x} y={21 - b.h} width="4" height={b.h} rx="1.4" fill={color}
+          className={active ? "ad-bar-rise" : undefined}
+          style={active ? { transformBox: "fill-box", transformOrigin: "bottom", animationDelay: `${i * 0.12}s` } : undefined} />
+      ))}
+    </svg>
+  );
+});
 
 // ── Hoisted stateless components — defined once at module scope instead of
 // re-created every App render. The three heaviest-used components in the tree. ──
@@ -922,6 +937,12 @@ function Confetti({ count = 46, top = "40%" }) {
 
 function App() {
   const [screen, setScreen] = useState("home");
+  const screenRef = useRef("home");
+  screenRef.current = screen; // current screen, readable synchronously from callbacks/timers
+  // Milestone celebrations (streak / goal / chapter / rank-up) are held in this queue while
+  // the player is in a session and only played once they're back on the calm home screen, so
+  // nothing interrupts active play. Drained serially by the flush effect below.
+  const celebQueueRef = useRef([]);
   const [mode, setMode] = useState("vocab");
   const [cards, setCards] = useState([]);
   const [idx, setIdx] = useState(0);
@@ -1070,13 +1091,8 @@ function App() {
   const prevLevelRef = useRef(null);
   const prevChaptersRef = useRef(null);
   const celebrateTimerRef = useRef(null);
-  const showCelebration = useCallback((c) => {
-    setCelebration(c);
-    playSfx("win");
-    try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([35, 55, 35]); } catch (e) {}
-    if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current);
-    celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2300);
-  }, []);
+  // Queue a celebration instead of showing it now; the flush effect plays it on home.
+  const showCelebration = useCallback((c) => { celebQueueRef.current.push({ kind: "toast", payload: c }); }, []);
   const celebrateGoal = useCallback((d) => showCelebration({
     color: "#4ADE80", icon: "check", tag: "Daily goal reached", big: `${d.count} cards today`,
     sub: `${d.streak}-day streak going strong`, subIcon: "flame",
@@ -1818,9 +1834,8 @@ function App() {
         masteredAt: now,
       };
       setNewlyMastered(list => list.some(x => x.id === key) ? list : [...list, item]);
-      setMasteryBurst(item);
-      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([18, 40, 18]); } catch (e) {}
-      window.setTimeout(() => setMasteryBurst(cur => cur?.id === key ? null : cur), 2300);
+      // The in-session mastery toast is intentionally suppressed — celebrations are held until
+      // home. Mastery is still recapped on the results screen ("+N Mastered ★") and the Library.
     }
     // ── In-session retry (learning step) ──
     // A wrong card re-queues ~4 positions ahead in the SAME session, while the correction
@@ -2081,31 +2096,42 @@ function App() {
   }, [prog]);
 
   // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
-  // CHAPTER checkpoint when you finish a chapter mid-level. Fires only on upward transitions
-  // during play (prevLevelRef seeds on first load so nothing fires on open). Level-up wins
-  // when the last chapter and the level complete on the same answer.
+  // CHAPTER checkpoint when you finish a chapter mid-level. Detected on upward transitions
+  // (prevLevelRef seeds on first load so nothing fires on open); both are QUEUED and played
+  // back on home by the flush effect. Level-up wins when the last chapter completes the level.
   useEffect(() => {
     const cl = deepStats.currentLevel, ch = deepStats.chaptersDoneTotal;
     const prevL = prevLevelRef.current, prevC = prevChaptersRef.current;
-    const reduce = () => { try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
     if (prevL != null) {
       if (LEVELS.indexOf(cl) > LEVELS.indexOf(prevL)) {
-        setRankUp({ from: prevL, to: cl });
-        playSfx("win");
-        try { if (!reduce() && navigator.vibrate) navigator.vibrate([40, 60, 40, 60, 90]); } catch (e) {}
+        celebQueueRef.current.push({ kind: "rankup", payload: { from: prevL, to: cl } });
       } else if (prevC != null && ch > prevC) {
         const lvl = prevL, n = deepStats.levels[lvl].chaptersDone;
-        showCelebration({
+        celebQueueRef.current.push({ kind: "toast", payload: {
           color: LEVEL_COLOR[lvl] || A, icon: "check", tag: `${lvl} · Chapter ${n} complete`,
           big: `Chapter ${n} of ${CHAPTERS} done!`,
           sub: `${CHAPTERS - n} chapter${CHAPTERS - n === 1 ? "" : "s"} to rank up`, subIcon: null,
-        });
-        try { if (!reduce() && navigator.vibrate) navigator.vibrate([25, 40, 25]); } catch (e) {}
+        } });
       }
     }
     prevLevelRef.current = cl;
     prevChaptersRef.current = ch;
   }, [deepStats.currentLevel, deepStats.chaptersDoneTotal]);
+
+  // Flush queued celebrations once back on home, one at a time (toast auto-dismisses → next;
+  // rank-up waits for the user to tap through → next). Nothing plays during a session.
+  useEffect(() => {
+    if (screen !== "home" || celebration || rankUp || !celebQueueRef.current.length) return;
+    const t = setTimeout(() => {
+      if (screenRef.current !== "home" || !celebQueueRef.current.length) return;
+      const item = celebQueueRef.current.shift();
+      playSfx("win");
+      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate(item.kind === "rankup" ? [40, 60, 40, 60, 90] : [35, 55, 35]); } catch (e) {}
+      if (item.kind === "rankup") { setRankUp(item.payload); }
+      else { setCelebration(item.payload); if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current); celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2300); }
+    }, 480);
+    return () => clearTimeout(t);
+  }, [screen, celebration, rankUp]);
 
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
@@ -3119,8 +3145,10 @@ function App() {
         .ad-tab-pop { animation: ad-tab-pop .34s cubic-bezier(.2,.7,.3,1.3); display:inline-flex; }
         @keyframes ad-pulse { 0%,100%{ transform:scale(1); opacity:.55 } 55%{ transform:scale(1.35); opacity:0 } }
         .ad-pulse { animation: ad-pulse 2.1s ease-out infinite; }
+        @keyframes ad-bar-rise { from { transform:scaleY(0); opacity:.4 } to { transform:scaleY(1); opacity:1 } }
+        .ad-bar-rise { animation: ad-bar-rise .5s cubic-bezier(.2,.8,.3,1) both; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -4122,13 +4150,12 @@ function App() {
         return (
           <div className="ad-screen-in" style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
             <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14 }}>
-              <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Statistics</div>
-              <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your numbers, level by level</div>
+              <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Progress</div>
+              <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your journey to B2, level by level</div>
             </div>
 
-            {ProgressHub()}
-
-            {/* ── Your German Journey: a CEFR roadmap (rank · current focus · milestones · path) ── */}
+            {/* ── Your German Journey: a CEFR roadmap (rank · current focus · milestones · path) — the
+                striking lead element of the screen, so it sits up top before the recent-performance hub ── */}
             {(() => {
               const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
               const curIdx = LEVELS.findIndex(l => ds.levels[l].mastered < ds.levels[l].total);
@@ -4252,6 +4279,8 @@ function App() {
                 </div>
               );
             })()}
+
+            {ProgressHub()}
 
             {/* SRS box histogram */}
             <div style={panel}>
@@ -4982,13 +5011,15 @@ function App() {
         <nav aria-label="Main navigation" style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 480, zIndex: 90, background: "rgba(9,9,9,0.86)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderTop: `1px solid ${HAIR}` }}>
           <div style={{ height: 2, background: FLAG, opacity: 0.5 }} />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-            {[["home", "Home", "home"], ["library", "Library", "book"], ["train", "Train", "bolt"], ["stats", "Stats", "chart"]].map(([id, label, icon]) => {
+            {[["home", "Home", "home"], ["library", "Library", "book"], ["train", "Train", "bolt"], ["stats", "Progress", "chart"]].map(([id, label, icon]) => {
               const active = screen === id;
               return (
                 <button key={id} type="button" aria-current={active ? "page" : undefined}
                   onClick={() => { if (id === "tutor") tutorReturnRef.current = "home"; setScreen(id); }}
                   style={{ background: "transparent", border: "none", cursor: "pointer", padding: "10px 0 6px", display: "grid", justifyItems: "center", gap: 4, color: active ? A : TD, fontFamily: "inherit" }}>
-                  <span className={active ? "ad-tab-pop" : undefined} style={{ display: "inline-flex" }}><Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} /></span>
+                  {id === "stats"
+                    ? <span style={{ display: "inline-flex" }}><ProgressIcon size={21} color={active ? A : TD} active={active} /></span>
+                    : <span className={active ? "ad-tab-pop" : undefined} style={{ display: "inline-flex" }}><Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} /></span>}
                   <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 0.4 }}>{label}</span>
                 </button>
               );

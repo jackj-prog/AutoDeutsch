@@ -162,7 +162,8 @@ async function clickText(page, txt) {
 
 async function gotoScreen(page, screen) {
   if (screen === "home" || screen === "onboarding" || screen === "freezeused") return;
-  if (["train", "library", "stats", "tutor"].includes(screen)) return clickText(page, screen);
+  if (screen === "stats") return clickText(page, "Progress"); // the Stats tab is labelled "Progress"
+  if (["train", "library", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "libcat") { await clickText(page, "Library"); await new Promise(r => setTimeout(r, 300)); await clickText(page, "Greetings & Basics"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "resultswin") {
@@ -231,7 +232,12 @@ async function gotoScreen(page, screen) {
       if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "x"); i.dispatchEvent(new Event("input", { bubbles: true })); }
     });
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
-    await new Promise(r => setTimeout(r, 600)); // celebration is mid-animation
+    await new Promise(r => setTimeout(r, 600));
+    if (process.env.SHOOT_HOME) {
+      // Celebrations are suspended until home — go back and let the queue flush there.
+      await clickText(page, "Back");
+      await new Promise(r => setTimeout(r, 1100)); // 480ms flush delay + toast slide-in
+    }
   }
   if (screen === "answered") {
     // Production session → submit a wrong answer so the answered-state feedback

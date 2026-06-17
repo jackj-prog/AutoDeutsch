@@ -198,6 +198,18 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 300));
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 700));
+    if (process.env.SHOOT_ANSWER) {
+      // Reveal the answered state (grammar note): type into a typed drill, else click the
+      // first multiple-choice option.
+      const typed = await page.evaluate(() => {
+        const i = document.querySelector('input[lang="de"]');
+        if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "x"); i.dispatchEvent(new Event("input", { bubbles: true })); return true; }
+        return false;
+      });
+      if (typed) await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+      else await page.evaluate(() => { const g = document.querySelector('[style*="grid-template-columns"]'); const b = g && g.querySelector("button"); if (b) b.click(); });
+      await new Promise(r => setTimeout(r, 600));
+    }
     return;
   }
   if (screen === "mastery" || screen === "correct" || screen === "capital" || screen === "eszett") {

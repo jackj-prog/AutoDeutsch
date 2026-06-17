@@ -518,6 +518,47 @@ function genderRule(noun, article) {
   }
   return { text: `No reliable ending rule here — learn it as a unit: ${article} ${noun}.`, kind: "tip" };
 }
+// Plural patterns — derived from the actual singular→plural transformation, so it's always
+// accurate. Teaches the five German plural classes (+ umlaut).
+function pluralRule(sg, pl) {
+  if (!sg || !pl) return null;
+  const s = String(sg).replace(/^(der|die|das)\s+/i, "").trim();
+  const p = String(pl).replace(/^(die|der|das)\s+/i, "").trim();
+  const deU = x => x.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u");
+  const cnt = x => (x.toLowerCase().match(/[äöü]/g) || []).length;
+  const umlaut = cnt(p) > cnt(s);
+  const u = umlaut ? ", plus an umlaut (a→ä, o→ö, u→ü)" : "";
+  let suffix = null;
+  if (p.length >= s.length && deU(p).slice(0, deU(s).length) === deU(s)) suffix = p.slice(s.length);
+  if (deU(p) === deU(s)) return { kind: "rule", text: `Plural unchanged${umlaut ? " except for an umlaut" : ""} — typical of nouns ending in -er, -en or -el.` };
+  if (suffix === "nen") return { kind: "rule", text: "Adds -nen — feminine nouns ending in -in." };
+  if (suffix === "n" || suffix === "en") return { kind: "rule", text: `Adds -${suffix}${u} — the most common plural, especially feminine nouns and nouns ending in -e.` };
+  if (suffix === "e") return { kind: "rule", text: `Adds -e${u} — common for masculine and neuter nouns.` };
+  if (suffix === "er") return { kind: "rule", text: `Adds -er${u} — common for neuter nouns and a few masculine ones.` };
+  if (suffix === "s") return { kind: "rule", text: "Adds -s — usually loanwords or words ending in a vowel." };
+  return { kind: "tip", text: `Plural: ${p}${umlaut ? " (note the umlaut)" : ""} — learn this form with the word.` };
+}
+// Verb patterns — weak (regular) vs strong (ablaut), plus the Perfekt auxiliary.
+function verbRule(vb) {
+  if (!vb || !vb.v) return null;
+  const stem = vb.v.replace(/e?n$/, "");
+  const weak = vb.pt === stem + "te" || vb.pt === stem + "ete";
+  const aux = vb.aux === "sein" ? "sein (motion / change of state)" : "haben";
+  if (weak) return { kind: "rule", text: `Regular (weak) verb — keeps its stem, just adds endings (Präteritum ${vb.pt}). Perfekt with ${aux}.` };
+  const part = String(vb.pf || "").split(" ").pop();
+  return { kind: "exception", text: `Strong verb — the stem vowel changes: ${vb.v} → ${vb.pt} → ${part}. Perfekt with ${aux}. Best learned by heart.` };
+}
+// Shared renderer so gender / plural / verb explanations read as one consistent "why" system.
+const GrammarNote = ({ note }) => {
+  if (!note) return null;
+  const c = note.kind === "exception" ? PAL.A : note.kind === "tip" ? PAL.BL : PAL.G;
+  const label = note.kind === "exception" ? "Watch out" : note.kind === "tip" ? "Tip" : "Why";
+  return (
+    <div style={{ marginTop: 11, padding: "9px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${c}`, fontSize: 11.5, color: PAL.TD, lineHeight: 1.5, textAlign: "left", maxWidth: 320, marginLeft: "auto", marginRight: "auto" }}>
+      <span style={{ color: c, fontWeight: 800 }}>{label}</span>{"  "}{note.text}
+    </div>
+  );
+};
 // Flame "heat" by count — used for both the day streak and the in-session combo. As the
 // number climbs the flame shifts from brand gold toward fiery orange, grows, glows, and
 // flickers, so being on a roll/streak looks like it. Returns { color, glow, boost, anim }.
@@ -548,7 +589,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.88";
+const APP_VERSION = "2026.06.11.89";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4410,6 +4451,7 @@ function App() {
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
                 <SpeakBtn text={card.pl} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                <GrammarNote note={pluralRule(card.de, card.pl)} />
                 {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
                   <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
                     {highlightExample(card.ex, card.noun).map((p, i) => p.hl
@@ -4438,7 +4480,8 @@ function App() {
                 : <div style={{ fontSize: 15, color: T, fontWeight: 600 }}>{card.pron} ___?</div>}
               <div style={{ fontSize: 12, color: TD, marginTop: 4 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontSize: 13, color: G, fontWeight: 700 }}>{card.pron} {card.correct}</div>
-                <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div><SpeakBtn text={`${card.pron} ${card.correct}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}</>}
+                <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div><SpeakBtn text={`${card.pron} ${card.correct}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                <GrammarNote note={verbRule(VERBS.find(v => v.v === card.verb))} /></>}
             </>}
             {mode === "imperativ" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Imperative — {card._person === "sie" ? "Sie" : card._person}</div>
@@ -4560,16 +4603,13 @@ function App() {
           )}
           {mode === "article" && answered && (() => {
             const gr = genderRule(card.noun, card.article);
-            const rc = gr ? (gr.kind === "exception" ? A : gr.kind === "rule" ? G : BL) : TD;
             return (<>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
                 {["der", "die", "das"].map((art, i) => { const isC = art === card.article; const wasS = i === sel;
                   return (<div key={i} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, background: isC ? "#0A1A0A" : wasS ? "#1A0000" : SH, border: `2px solid ${isC ? G : wasS ? R : B}`, color: isC ? G : wasS ? R : TD, fontFamily: FN, textAlign: "center" }}>{art}{isC ? " ✓" : wasS ? " ✗" : ""}</div>);
                 })}
               </div>
-              {gr && <div style={{ marginTop: 12, padding: "10px 13px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${rc}`, fontSize: 12, color: TD, lineHeight: 1.55, textAlign: "left" }}>
-                <span style={{ color: rc, fontWeight: 800 }}>{gr.kind === "exception" ? "Exception" : gr.kind === "rule" ? "Why" : "Tip"}</span>{"  "}{gr.text}
-              </div>}
+              <GrammarNote note={gr} />
             </>);
           })()}
           {mode === "verb" && !answered && card.opts && (

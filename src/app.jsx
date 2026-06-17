@@ -488,6 +488,36 @@ const PAL = {
 const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
 const LEVEL_COLOR = { A1: PAL.G, A2: PAL.BL, B1: PAL.A, B2: PAL.R };
 const CHAPTERS = 5; // each CEFR level is divided into this many chapters (checkpoint milestones)
+// ── German gender patterns ───────────────────────────────────────────────────
+// Turns the article drill (and any noun reveal) from rote guessing into learning the
+// ~80% of gender that's predictable from the noun's ending. We always compare against the
+// real article, so we never assert a wrong gender — a mismatch becomes an "exception" lesson.
+// Only high-reliability suffixes are listed; the two broad ones (-er, -e) are hedged.
+const GENDER_NAME = { der: "masculine", die: "feminine", das: "neuter" };
+const GENDER_RULES = [
+  { s: "-chen", g: "das", re: /chen$/ }, { s: "-lein", g: "das", re: /lein$/ },
+  { s: "-ung", g: "die", re: /ung$/ }, { s: "-heit / -keit", g: "die", re: /(heit|keit)$/ },
+  { s: "-schaft", g: "die", re: /schaft$/ }, { s: "-tät", g: "die", re: /t[äa]t$/ },
+  { s: "-tion / -sion", g: "die", re: /(tion|sion)$/ }, { s: "-ik", g: "die", re: /ik$/ },
+  { s: "-ur", g: "die", re: /ur$/ }, { s: "-enz / -anz", g: "die", re: /(enz|anz)$/ },
+  { s: "-ie", g: "die", re: /ie$/ }, { s: "-ismus", g: "der", re: /ismus$/ },
+  { s: "-ling", g: "der", re: /ling$/ }, { s: "-ant", g: "der", re: /ant$/ },
+  { s: "-ist", g: "der", re: /ist$/ }, { s: "-or", g: "der", re: /or$/ },
+  { s: "-ment / -tum", g: "das", re: /(ment|tum)$/ }, { s: "-um", g: "das", re: /um$/ },
+  { s: "-ma", g: "das", re: /ma$/ },
+  { s: "-er", g: "der", re: /er$/, hedge: true }, { s: "-e", g: "die", re: /e$/, hedge: true },
+];
+function genderRule(noun, article) {
+  if (!noun || !GENDER_NAME[article]) return null;
+  const n = noun.toLowerCase().replace(/[^a-zäöüß]/g, "");
+  for (const r of GENDER_RULES) {
+    if (r.re.test(n)) {
+      if (r.g === article) return { text: `Nouns ending in ${r.s} are ${r.hedge ? "usually " : ""}${GENDER_NAME[r.g]} → ${article}.`, kind: "rule" };
+      return { text: `${r.s} nouns are usually ${GENDER_NAME[r.g]}, but ${noun} is ${article} — a common exception worth memorising.`, kind: "exception" };
+    }
+  }
+  return { text: `No reliable ending rule here — learn it as a unit: ${article} ${noun}.`, kind: "tip" };
+}
 // Flame "heat" by count — used for both the day streak and the in-session combo. As the
 // number climbs the flame shifts from brand gold toward fiery orange, grows, glows, and
 // flickers, so being on a roll/streak looks like it. Returns { color, glow, boost, anim }.
@@ -518,7 +548,7 @@ const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.87";
+const APP_VERSION = "2026.06.11.88";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4528,13 +4558,20 @@ function App() {
               {["der", "die", "das"].map((art, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: FN }}>{art}</button>)}
             </div>
           )}
-          {mode === "article" && answered && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-              {["der", "die", "das"].map((art, i) => { const isC = art === card.article; const wasS = i === sel;
-                return (<div key={i} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, background: isC ? "#0A1A0A" : wasS ? "#1A0000" : SH, border: `2px solid ${isC ? G : wasS ? R : B}`, color: isC ? G : wasS ? R : TD, fontFamily: FN, textAlign: "center" }}>{art}{isC ? " ✓" : wasS ? " ✗" : ""}</div>);
-              })}
-            </div>
-          )}
+          {mode === "article" && answered && (() => {
+            const gr = genderRule(card.noun, card.article);
+            const rc = gr ? (gr.kind === "exception" ? A : gr.kind === "rule" ? G : BL) : TD;
+            return (<>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                {["der", "die", "das"].map((art, i) => { const isC = art === card.article; const wasS = i === sel;
+                  return (<div key={i} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, background: isC ? "#0A1A0A" : wasS ? "#1A0000" : SH, border: `2px solid ${isC ? G : wasS ? R : B}`, color: isC ? G : wasS ? R : TD, fontFamily: FN, textAlign: "center" }}>{art}{isC ? " ✓" : wasS ? " ✗" : ""}</div>);
+                })}
+              </div>
+              {gr && <div style={{ marginTop: 12, padding: "10px 13px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${rc}`, fontSize: 12, color: TD, lineHeight: 1.55, textAlign: "left" }}>
+                <span style={{ color: rc, fontWeight: 800 }}>{gr.kind === "exception" ? "Exception" : gr.kind === "rule" ? "Why" : "Tip"}</span>{"  "}{gr.text}
+              </div>}
+            </>);
+          })()}
           {mode === "verb" && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px", borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: FN }}>{opt}</button>)}

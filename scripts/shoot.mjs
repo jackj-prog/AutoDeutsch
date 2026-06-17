@@ -298,6 +298,8 @@ async function gotoScreen(page, screen) {
   if (screen === "drillbloom") {
     // Article drill (der/die/das). Click "der" each card until a masculine noun lands
     // correct, then return immediately so the screenshot catches the green bloom mid-flight.
+    await clickText(page, "Train"); // Training drills live in the Train tab
+    await new Promise(r => setTimeout(r, 300));
     await clickText(page, "Articles"); // opens the setup modal
     await new Promise(r => setTimeout(r, 200));
     await clickText(page, "Start session");

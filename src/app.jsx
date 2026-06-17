@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.90";
+const APP_VERSION = "2026.06.11.91";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1075,7 +1075,7 @@ function App() {
     playSfx("win");
     try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate([35, 55, 35]); } catch (e) {}
     if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current);
-    celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2700);
+    celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2300);
   }, []);
   const celebrateGoal = useCallback((d) => showCelebration({
     color: "#4ADE80", icon: "check", tag: "Daily goal reached", big: `${d.count} cards today`,
@@ -2502,7 +2502,9 @@ function App() {
     const stamp = correct ? swipeRightRef.current : swipeLeftRef.current;
     if (stamp) stamp.style.opacity = 1;
     handleFlipAnswer(correct);
-    window.setTimeout(() => { resetSwipeVisuals(); nextCard(); }, 240);
+    // Reset happens inside nextCard's hidden window (not here): clearing the transform while
+    // the card is still visible would snap the old card back to centre for one frame.
+    window.setTimeout(() => { nextCard(); }, 240);
   };
   const onCardPointerUp = () => {
     const s = swipeDrag.current;
@@ -2577,6 +2579,7 @@ function App() {
     navLockRef.current = true;
     setVis(false); setFeedback(null);
     setTimeout(() => {
+      resetSwipeVisuals(); // card is hidden (vis=false) now, so clearing the swipe transform can't flash
       setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
@@ -3129,22 +3132,19 @@ function App() {
         {feedback === "correct" ? "Richtig" : feedback === "wrong" ? "Falsch" : ""}
       </div>
 
-      {/* ── CELEBRATION OVERLAY (goal / streak) — non-blocking; taps pass through ── */}
+      {/* ── MILESTONE TOAST (goal / streak / chapter) — a top, non-blocking slide-in so it
+          celebrates without covering the card or interrupting a session. Big full-screen
+          confetti is reserved for the rare rank-up. ── */}
       {celebration && (
-        <div role="status" aria-label={celebration.tag} style={{ position: "fixed", inset: 0, zIndex: 130, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", padding: 24 }}>
-          <Confetti />
-          <div className="ad-goal" style={{ position: "relative", background: "linear-gradient(160deg, #16190E 0%, #121212 72%)", border: `1px solid ${celebration.color}55`, borderRadius: 22, padding: "26px 30px 24px", textAlign: "center", boxShadow: `0 0 70px -12px ${celebration.color}66, 0 24px 60px rgba(0,0,0,.55)`, maxWidth: 320 }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, borderTopLeftRadius: 22, borderTopRightRadius: 22 }} />
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14, position: "relative", height: 64 }}>
-              <div className="ad-goal-ring" style={{ position: "absolute", top: 0, width: 64, height: 64, borderRadius: "50%", border: `2px solid ${celebration.color}` }} />
-              <div style={{ width: 64, height: 64, borderRadius: "50%", background: `${celebration.color}16`, border: `2px solid ${celebration.color}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 34px ${celebration.color}55` }}>
-                <Icon name={celebration.icon} size={34} stroke={celebration.icon === "check" ? 3 : 2} style={{ color: celebration.color }} />
-              </div>
+        <div role="status" aria-label={celebration.tag} style={{ position: "fixed", top: "calc(env(safe-area-inset-top) + 70px)", left: "50%", transform: "translateX(-50%)", zIndex: 130, width: "calc(100% - 28px)", maxWidth: 420, pointerEvents: "none", display: "flex", justifyContent: "center" }}>
+          <div className="ad-toast" style={{ display: "flex", alignItems: "center", gap: 12, background: "linear-gradient(135deg, #15170E 0%, #0F0F0F 72%)", border: `1px solid ${celebration.color}66`, borderRadius: 14, padding: "10px 16px 10px 11px", boxShadow: `0 16px 46px -12px ${celebration.color}55, 0 8px 24px rgba(0,0,0,.5)`, maxWidth: 380, minWidth: 0 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: `${celebration.color}1A`, border: `1px solid ${celebration.color}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: `0 0 18px -5px ${celebration.color}77` }}>
+              <Icon name={celebration.icon} size={22} stroke={celebration.icon === "check" ? 3 : 2} style={{ color: celebration.color }} />
             </div>
-            <div style={{ fontSize: 11, color: celebration.color, fontWeight: 900, letterSpacing: 2.4, textTransform: "uppercase", marginBottom: 7 }}>{celebration.tag}</div>
-            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, color: T, lineHeight: 1.1 }}>{celebration.big}</div>
-            <div style={{ fontSize: 13, color: TD, marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6 }}>
-              {celebration.subIcon && <Icon name={celebration.subIcon} size={15} style={{ color: A }} />} {celebration.sub}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 9.5, color: celebration.color, fontWeight: 900, letterSpacing: 1.2, textTransform: "uppercase", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{celebration.tag}</div>
+              <div style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, lineHeight: 1.15, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{celebration.big}</div>
+              {celebration.sub && <div style={{ fontSize: 10.5, color: TD, marginTop: 1, display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{celebration.subIcon && <Icon name={celebration.subIcon} size={12} style={{ color: A, flexShrink: 0 }} />}{celebration.sub}</div>}
             </div>
           </div>
         </div>

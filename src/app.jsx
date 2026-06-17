@@ -586,10 +586,15 @@ const ELEV = "0 8px 30px -14px rgba(0,0,0,0.8)";
 const APP_BG = "radial-gradient(125% 48% at 50% -6%, rgba(255,200,40,0.10) 0%, rgba(255,200,40,0.02) 28%, #090909 60%)";
 const HERO_GRAD = "linear-gradient(155deg, #2A210B 0%, #1A160E 42%, #100F0C 100%)";
 const PANEL_GRAD = "linear-gradient(180deg, #1D1D1D 0%, #141414 100%)";
+// One neutral gradient for every study card (recall / production / dictation / all drills /
+// sentence / audio), so the focal surface is consistent across modes. The German tricolour
+// shows through the thin top accent bar each card carries, not the background.
+const CARD_GRAD = "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)";
+const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL.A} 66%)`;
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.89";
+const APP_VERSION = "2026.06.11.90";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2801,8 +2806,6 @@ function App() {
   const G = "#4ADE80", R = "#DD0000", T = "#F0EDE5", TD = "#8A857D", BL = "#60A5FA";
   const dailyGoalPct = Math.min(1, dailyStats.count / Math.max(dailyGoal, 1));
   const FN = `'Montserrat',sans-serif`, BD = `'Montserrat',sans-serif`;
-  const FGRAD = "linear-gradient(145deg, #111 0%, #1A0808 50%, #1A1400 100%)";
-  const FGRAD2 = "linear-gradient(145deg, #0A0A0A 0%, #180808 60%, #181200 100%)";
   const FLAG = `linear-gradient(90deg, #050505 0 33%, ${R} 33% 66%, ${A} 66%)`;
   const SOFT_PANEL = "linear-gradient(180deg, #171717 0%, #101010 100%)";
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
@@ -4320,7 +4323,7 @@ function App() {
 
         {(mode === "production" || mode === "dictation") ? (
           <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", opacity: vis ? 1 : 0 }}>
-            <div className="ad-elev" style={{ background: "linear-gradient(160deg, #121212 0%, #0E0E0E 100%)", border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", maxHeight: answered ? "none" : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+            <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", maxHeight: answered ? "none" : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               {answered && (inputResult === "exact" || inputResult === "capital" || inputResult === "eszett") && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
               {mode === "dictation" ? (
@@ -4376,13 +4379,13 @@ function App() {
               <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>GOT IT</div>
               <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${R}`, color: "#F87171", borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>AGAIN</div>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
-                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
                 </div>
-                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(160deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${A}1F`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
+                <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
                   <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
@@ -4422,7 +4425,7 @@ function App() {
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
             {answeredCorrect && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
             {mode === "article" && <>
@@ -4645,7 +4648,8 @@ function App() {
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <div className="ad-elev" style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16 }}>
+          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: CARD_ACCENT, opacity: 0.7 }} />
             <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Build the sentence</div>
             <div style={{ fontSize: 14, color: TD, marginBottom: 16, lineHeight: 1.4 }}>"{card.en}"</div>
             <div style={{ minHeight: 52, padding: "12px 14px", borderRadius: 12, border: `2px dashed ${sbChecked ? (sbCorrect ? G : R) : B}`, background: "#0A0A0A44", display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
@@ -4742,7 +4746,8 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16, fontWeight: 700 }}>
                 {category}
               </div>
-              <div style={{ background: FGRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "40px 24px", width: "100%", textAlign: "center", marginBottom: 18 }}>
+              <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "40px 24px", width: "100%", textAlign: "center", marginBottom: 18, position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: CARD_ACCENT, opacity: 0.7 }} />
                 <div style={{ fontFamily: FN, fontSize: 32, color: T, fontWeight: 700, marginBottom: 14, lineHeight: 1.2 }}>
                   {cards[idx].de}
                 </div>

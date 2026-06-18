@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.7";
+const APP_VERSION = "2026.06.18.8";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4397,6 +4397,7 @@ function App() {
       {/* ── STATS DEEP-DIVE ── */}
       {screen === "stats" && (() => {
         const ds = deepStats;
+        const isFresh = ds.attempts === 0; // brand-new user → show an aspirational preview, not a wall of zeros
         const LEVEL_COLORS = { A1: G, A2: BL, B1: A, B2: R };
         const maxBox = Math.max(1, ...ds.boxes);
         const boxLabels = ["1d", "2d", "4d", "7d", "14d", "30d"];
@@ -4541,6 +4542,32 @@ function App() {
               );
             })()}
 
+            {isFresh ? (
+              /* Aspirational empty state — a brand-new user has no data, so instead of four
+                 panels of zeros we preview what this screen becomes and invite the first session. */
+              <div style={panel}>
+                {flagBar}
+                <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 10, paddingTop: 4 }}>YOUR PROGRESS, LIVE</div>
+                <div style={{ fontFamily: FN, fontSize: 17, fontWeight: 800, color: T, lineHeight: 1.25, marginBottom: 6 }}>This is where your climb to B2 takes shape.</div>
+                <div style={{ fontSize: 12, color: TD, lineHeight: 1.5, marginBottom: 8 }}>Answer your first cards and this screen fills in — every session moves the bars up.</div>
+                {[
+                  { icon: "target", label: "Accuracy", desc: "How often you nail it first try" },
+                  { icon: "bolt", label: "Recall speed", desc: "How fast the word comes back" },
+                  { icon: "chart", label: "Memory strength", desc: "How long each word will stick" },
+                  { icon: "flame", label: "Day streak", desc: "Your daily momentum" },
+                ].map(r => (
+                  <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: `1px solid ${HAIR}` }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 9, background: `${A}14`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon name={r.icon} size={15} style={{ color: A }} /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12.5, color: T, fontWeight: 700 }}>{r.label}</div>
+                      <div style={{ fontSize: 10.5, color: TD }}>{r.desc}</div>
+                    </div>
+                    <span style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: TD, opacity: 0.35 }}>—</span>
+                  </div>
+                ))}
+                <Btn bg={A} color="#0A0A0A" onClick={() => startSession("__all__", "vocab", 12)} style={{ marginTop: 16, fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Start your first session →</Btn>
+              </div>
+            ) : (<>
             {ProgressHub()}
 
             {/* SRS box histogram */}
@@ -4599,6 +4626,7 @@ function App() {
                 );
               })}
             </div>
+            </>)}
           </div>
         );
       })()}

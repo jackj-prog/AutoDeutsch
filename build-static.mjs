@@ -65,5 +65,21 @@ index = dataRe.test(index)
   : index.replace(appRe, `${dataTag}\n${appTag}`);
 await writeFile(INDEX_FILE, index, "utf8");
 
+// ── 6. Bump the service-worker cache key so every deploy invalidates the offline cache.
+// The SW precaches app.js/data.js/index.html under CACHE_NAME and only re-installs when its
+// own bytes change; if the key is stale a returning user keeps the previous bundle forever.
+// Deriving it from a hash of the shipped app.js + data.js makes it change iff the content
+// does — so "bump CACHE_NAME when deploying" can no longer be forgotten.
+const SW_FILE = "service-worker.js";
+const buildHash = createHash("sha256").update(output + dataJs).digest("hex").slice(0, 12);
+const cacheName = `autodeutsch-${buildHash}`;
+let sw = await readFile(SW_FILE, "utf8");
+const cacheRe = /const CACHE_NAME = '[^']*';/;
+if (!cacheRe.test(sw)) throw new Error("Could not find CACHE_NAME in service-worker.js");
+const swChanged = !sw.includes(`'${cacheName}'`);
+sw = sw.replace(cacheRe, `const CACHE_NAME = '${cacheName}';`);
+await writeFile(SW_FILE, sw, "utf8");
+
 console.log(`Wrote ${OUTPUT_FILE} (${(output.length / 1024).toFixed(0)} KB) and ${DATA_OUTPUT} (${(dataJs.length / 1024).toFixed(0)} KB)`);
 console.log("Updated index.html SRI hashes");
+console.log(`Service-worker cache: ${cacheName}${swChanged ? " (bumped)" : " (unchanged)"}`);

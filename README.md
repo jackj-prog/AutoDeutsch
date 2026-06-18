@@ -13,7 +13,7 @@ export/import and a daily on-device backup snapshot).
 | `src/data.js` | **All learning content** (vocabulary, cloze, verbs, sentences, dialogues, imperatives). Pure data — see the editing rules in its header. |
 | `src/app.jsx` | The entire engine and UI (single React component tree, React 18 UMD). |
 | `data.js`, `app.js`, `index.html` | The shipped build. `index.html` pins both scripts with SRI hashes, so **never edit these by hand** — run the build. |
-| `service-worker.js` | Offline cache (network-first app shell). Bump `CACHE_NAME` when deploying. |
+| `service-worker.js` | Offline cache (network-first app shell). `CACHE_NAME` is auto-bumped by the build to a content hash. |
 
 ## Workflows
 
@@ -31,9 +31,10 @@ and `npm run build`, commit everything the build touched. Renaming a card's `de`
 orphans saved progress unless you add a stable `id` — the rules are documented at the
 top of `src/data.js`.
 
-**Deploying**: merge to `main` (GitHub Pages serves the repo). On meaningful releases,
-bump `CACHE_NAME` in `service-worker.js` and `APP_VERSION` in `src/app.jsx` so devices
-roll forward cleanly and you can confirm the running build in Settings.
+**Deploying**: run `npm run build` (compiles the engine, refreshes SRI, and auto-bumps the
+service-worker `CACHE_NAME` to a content hash so devices roll forward cleanly), then merge to
+`main` (GitHub Pages serves the repo). Bump `APP_VERSION` in `src/app.jsx` on meaningful
+releases so you can confirm the running build in Settings.
 
 CI runs validate + tests + the SRI check on every push.
 

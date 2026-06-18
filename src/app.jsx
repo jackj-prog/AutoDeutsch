@@ -557,14 +557,30 @@ function pluralRule(sg, pl) {
   if (suffix === "s") return { kind: "rule", text: "Adds -s — usually loanwords or words ending in a vowel." };
   return { kind: "tip", text: `Plural: ${p}${umlaut ? " (note the umlaut)" : ""} — learn this form with the word.` };
 }
-// Verb patterns — weak (regular) vs strong (ablaut), plus the Perfekt auxiliary.
+// Verb patterns — weak (regular) vs strong (ablaut) vs present-irregular, plus the Perfekt
+// auxiliary. The Präteritum alone is NOT enough to classify a verb: the modals (and sein)
+// keep a regular -te past yet change their stem in the PRESENT — "wollen → ich will",
+// "sein → ich bin". The old check looked only at the past and so labelled "wollen" a
+// "Regular (weak) verb — keeps its stem" on the very screen that had just drilled "ich will".
+// We now also compare the present ich-form's stem to the infinitive stem (data already in
+// VERBS[].pr) and surface the present irregularity first.
 function verbRule(vb) {
   if (!vb || !vb.v) return null;
   const stem = vb.v.replace(/e?n$/, "");
-  const weak = vb.pt === stem + "te" || vb.pt === stem + "ete";
+  const weakPast = vb.pt === stem + "te" || vb.pt === stem + "ete";
   const aux = vb.aux === "sein" ? "sein (motion / change of state)" : "haben";
-  if (weak) return { kind: "rule", text: `Regular (weak) verb — keeps its stem, just adds endings (Präteritum ${vb.pt}). Perfekt with ${aux}.` };
   const part = String(vb.pf || "").split(" ").pop();
+  const ichForm = (vb.pr && vb.pr.ich) ? vb.pr.ich : "";
+  // A separable verb's prefix detaches in the present ("ich kaufe ein"), so the ich-form
+  // carries a space. Flag that first — it's the salient pattern, not a stem irregularity.
+  if (/\s/.test(ichForm.trim())) return { kind: "exception", text: `Separable verb — the prefix splits off and moves to the end in the present (ich ${ichForm}). Präteritum ${vb.pt}, Perfekt ${part}, with ${aux}.` };
+  // ich-form minus its -e ending; for a regular/strong verb this equals the infinitive stem
+  // (ich mache→mach, ich fahre→fahr). For modals & sein it doesn't (ich will, ich bin), so the
+  // Präteritum alone (wollte = woll+te) would wrongly read as "regular, keeps its stem".
+  const ichStem = ichForm.replace(/e$/, "");
+  const presentChanges = ichStem && ichStem !== stem;
+  if (presentChanges) return { kind: "exception", text: `Irregular present — the stem changes (ich ${ichForm})${weakPast ? `, even though the past is the regular -te form (${vb.pt})` : ` (${vb.v} → ${vb.pt} → ${part})`}. Perfekt with ${aux}. Best learned by heart.` };
+  if (weakPast) return { kind: "rule", text: `Regular (weak) verb — keeps its stem, just adds endings (Präteritum ${vb.pt}). Perfekt with ${aux}.` };
   return { kind: "exception", text: `Strong verb — the stem vowel changes: ${vb.v} → ${vb.pt} → ${part}. Perfekt with ${aux}. Best learned by heart.` };
 }
 // Shared renderer so gender / plural / verb explanations read as one consistent "why" system.

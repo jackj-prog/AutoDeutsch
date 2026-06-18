@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.98";
+const APP_VERSION = "2026.06.11.99";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2558,7 +2558,7 @@ function App() {
     const past = swipeMovedRef.current && Math.abs(s.dx) > 90;
     if (past && !navLockRef.current) {
       if (flipped) flyCardOff(s.dx > 0, nextCard);  // revealed → only action is advance
-      else if (s.dx > 0) gotIt();                    // front, right → "got it"
+      else if (s.dx > 0) { gotIt(); if (!autoAdvance) snapCardBack(); } // right → "got it"; study mode flips, so spring the drag back
       else { notSure(); snapCardBack(); }            // front, left → "not sure"
     } else {
       snapCardBack();
@@ -2781,6 +2781,18 @@ function App() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
+
+  // Lock page scrolling while in a single-card session (Recall / typed / drills / sentence).
+  // These screens are exactly one viewport tall, so any scroll is an accidental drag that
+  // fights the swipe gestures — the single most annoying thing about swiping. The document
+  // is pinned; internal scrollers (e.g. a long listening transcript) still scroll on their own.
+  useEffect(() => {
+    const lock = ["cards", "drill", "sentence"].includes(screen);
+    const html = document.documentElement, body = document.body;
+    if (lock) { html.style.overflow = "hidden"; body.style.overflow = "hidden"; }
+    else { html.style.overflow = ""; body.style.overflow = ""; }
+    return () => { html.style.overflow = ""; body.style.overflow = ""; };
+  }, [screen]);
 
   // Precompute all category stats in one pass — avoids 19×N recomputation on every render.
   const catStats = useMemo(() => {
@@ -3689,7 +3701,7 @@ function App() {
       </div>}
 
       {/* ── HOME ── */}
-      {screen === "home" && <div className="ad-screen-in" style={{ padding: "12px 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
+      {screen === "home" && <div className="ad-screen-in" style={{ padding: "max(12px, env(safe-area-inset-top)) 20px max(56px, calc(env(safe-area-inset-bottom) + 36px))" }}>
         {/* Streak Freeze used — reassure the user their streak survived a missed day */}
         {freezeNotice && (
           <button onClick={() => setFreezeNotice(null)}
@@ -4480,7 +4492,7 @@ function App() {
           <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
             <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Swipe right if you got it, left if not sure" : "Answer revealed"} onKeyDown={handleRevealKey}
               onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
-              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", position: "relative", touchAction: "pan-y" }}>
+              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", position: "relative", touchAction: "none" }}>
               {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
               <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "GOT IT"}</div>
               <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${flipped ? G : A}`, color: flipped ? "#86EFAC" : A, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "NOT SURE"}</div>

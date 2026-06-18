@@ -4537,7 +4537,12 @@ function App() {
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {HintBtn({ hint: card.hint })}
-                {showEx ? (
+                {/* Vocabulary-in-context: every card carries an example sentence, so show it by
+                    default once answered (target word highlighted) instead of hiding it behind a
+                    tap. Turns isolated word→word recall into "seen in a real sentence", and fills
+                    the space the keyboard vacates on answer. Suppressed only on the fast
+                    correct+auto-advance path, where the card flies off before it can be read. */}
+                {!skipSummary && card.ex && (
                   <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}`, textAlign: "center", maxWidth: "92%" }}>
                     <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, fontStyle: "italic" }}>
                       {highlightExample(card.ex, card.de).map((p, i) => p.hl
@@ -4547,7 +4552,7 @@ function App() {
                     </div>
                     {card.exEn && <div style={{ fontSize: 11, color: TD, lineHeight: 1.45, marginTop: 5, opacity: 0.7 }}>{card.exEn}</div>}
                   </div>
-                ) : <button onClick={() => setShowEx(true)} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 11, cursor: "pointer", fontWeight: 600, opacity: 0.7, letterSpacing: 1.2, padding: "6px 8px", }}>Show example</button>}
+                )}
               </>}
             </div>
             <div style={{ marginTop: answered ? "auto" : undefined, paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>

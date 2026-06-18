@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.93";
+const APP_VERSION = "2026.06.11.94";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -947,6 +947,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const [flyOff, setFlyOff] = useState(false); // amplifies the card's exit into a "fly away" on advance (non-flip cards)
   const [answered, setAnswered] = useState(false);
   const [stats, setStats] = useState({ c: 0, w: 0 });
   const [failed, setFailed] = useState([]);
@@ -2550,17 +2551,34 @@ function App() {
     }
   };
   // ── Auto-advance on exact-correct answers ──
-  // A correct answer needs no review stop: after a 1s glance at the green state the
-  // session moves on by itself, saving one tap per correct card (the majority of taps
-  // in a session). Wrong and "close" answers still stop for inspection. Toggleable in
-  // Settings; any manual advance or leaving the screen cancels the pending timer.
+  // A correct answer needs no review stop, so the card flies away on its own — but not
+  // before the pronunciation has finished, since hearing the word is the value of getting
+  // it right. speakThenAdvance speaks the answer and advances when the utterance ends
+  // (onend), floored at ~0.7s so a silent/instant device still gives a beat, and hard-
+  // capped so a browser that never fires onend can't strand the session. Wrong and "close"
+  // answers still stop for inspection. Toggleable in Settings; any manual advance or
+  // leaving the screen bumps the token, voiding every pending fire for this answer.
   const autoAdvTimerRef = useRef(null);
-  const scheduleAutoAdvance = (advanceFn) => {
-    if (!autoAdvance) return;
-    if (autoAdvTimerRef.current) clearTimeout(autoAdvTimerRef.current);
-    autoAdvTimerRef.current = setTimeout(() => { autoAdvTimerRef.current = null; advanceFn(); }, 1000);
+  const autoAdvTokenRef = useRef(0);
+  const speakThenAdvance = (text, advanceFn) => {
+    if (!autoAdvance) { if (text) speak(text); return; }
+    const token = ++autoAdvTokenRef.current;
+    const startedAt = Date.now();
+    // Floor so a silent/instant device still gives a beat; a length-based estimate
+    // (~70ms/char, the same heuristic the dialogue player uses) is the PRIMARY timer so a
+    // browser that never fires onend still advances promptly. onend, when it fires, advances
+    // earlier — but never before the floor — so audio is heard out without over-waiting.
+    const MIN_MS = 650;
+    const est = Math.min(2600, Math.max(MIN_MS, (text ? text.length : 6) * 70 + 550));
+    const fire = () => { if (autoAdvTokenRef.current !== token) return; advanceFn(); };
+    const scheduleFire = (delay) => { if (autoAdvTimerRef.current) clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = setTimeout(fire, Math.max(0, delay)); };
+    scheduleFire(est);
+    speakWith(text).then(() => {
+      if (autoAdvTokenRef.current !== token) return;
+      scheduleFire(MIN_MS - (Date.now() - startedAt));
+    });
   };
-  const cancelAutoAdvance = () => { if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; } };
+  const cancelAutoAdvance = () => { autoAdvTokenRef.current++; if (autoAdvTimerRef.current) { clearTimeout(autoAdvTimerRef.current); autoAdvTimerRef.current = null; } };
 
   const submitTyped = () => {
     if (answered) return;
@@ -2569,8 +2587,7 @@ function App() {
     setInputResult(result); setAnswered(true);
     if (result === "exact" || result === "capital" || result === "eszett") setBloom(b => b + 1);
     record(result !== "wrong", card, Date.now() - tStart);
-    speak(card.de);
-    if (result === "exact") scheduleAutoAdvance(nextCard);
+    if (result === "exact") speakThenAdvance(card.de, nextCard); else speak(card.de);
   };
   // "I don't know" on a typed card: reveal + count as wrong. Blanking is the honest
   // demote signal (and re-queues the card via the in-session retry), instead of forcing
@@ -2587,15 +2604,14 @@ function App() {
     const card = cards[idx]; const result = checkMatch(input, card.a);
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
-    if (result === "exact") scheduleAutoAdvance(nextDrill);
+    if (result === "exact") speakThenAdvance(card.a, nextDrill);
   };
   const submitPlural = () => {
     if (answered) return;
     const card = cards[idx]; const result = checkPlural(input, card.pl);
     setInputResult(result); setAnswered(true);
     record(result !== "wrong", card, Date.now() - tStart);
-    speak(card.pl);
-    if (result === "exact") scheduleAutoAdvance(nextDrill);
+    if (result === "exact") speakThenAdvance(card.pl, nextDrill); else speak(card.pl);
   };
   // "I don't know" on a typed drill (plural / cloze / imperativ / typed-verb): reveal the
   // answer and count it wrong — the same honest demote as revealTyped on production. Without
@@ -2616,9 +2632,13 @@ function App() {
     if (navLockRef.current) return;
     if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
+    // Production/dictation cards fly off on advance; Recall already flew its inner card via
+    // the swipe transform, so it keeps the gentle slide instead of double-animating.
+    if (mode === "production" || mode === "dictation") setFlyOff(true);
     setVis(false); setFeedback(null);
     setTimeout(() => {
       resetSwipeVisuals(); // card is hidden (vis=false) now, so clearing the swipe transform can't flash
+      setFlyOff(false);
       setFlipped(false); setAnswered(false); setShowEx(false); setShowHint(false); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
@@ -2634,10 +2654,13 @@ function App() {
     else if (mode === "listening") correct = oi === card.correctIdx;
     else correct = false;
     record(correct, card, Date.now() - tStart);
-    // Only speak when there's something meaningful to say. In verb mode the full
-    // "pron + conjugation" is the natural utterance. Other modes don't emit speech here.
-    if (mode === "verb" && card.pron && card.correct) speak(`${card.pron} ${card.correct}`);
-    if (correct) scheduleAutoAdvance(nextDrill);
+    // Speak the answer where there's something meaningful to hear: the full "pron +
+    // conjugation" for verbs, "article + noun" for genders (so a correct der/die/das is
+    // reinforced aloud). Listening has no extra utterance — the clip already played.
+    const audio = (mode === "verb" && card.pron && card.correct) ? `${card.pron} ${card.correct}`
+      : mode === "article" ? `${card.article} ${card.noun}` : "";
+    if (correct) speakThenAdvance(audio, nextDrill);
+    else if (mode === "verb" && card.pron && card.correct) speak(`${card.pron} ${card.correct}`);
   };
 
   const nextDrill = () => {
@@ -2645,8 +2668,10 @@ function App() {
     if (navLockRef.current) return;
     if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
+    setFlyOff(true);
     setVis(false); setFeedback(null);
     setTimeout(() => {
+      setFlyOff(false);
       setAnswered(false); setSel(null); setInput(""); setInputResult(null); setShowHint(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
       setIdx(i => Math.min(i + 1, Math.max(cardsLenRef.current - 1, 0)));
       setTStart(Date.now());
@@ -2657,14 +2682,16 @@ function App() {
   // Sentence building
   const sbTapWord = (word, i) => { if (sbChecked) return; const np = [...sbPool]; np.splice(i, 1); setSbPool(np); setSbPicked(p => [...p, word]); };
   const sbUntapWord = (word, i) => { if (sbChecked) return; const np = [...sbPicked]; np.splice(i, 1); setSbPicked(np); setSbPool(p => [...p, word]); };
-  const sbCheck = () => { const card = cards[idx]; const isCorrect = sbPicked.join(" ") === card.correct.join(" "); setSbChecked(true); setSbCorrect(isCorrect); record(isCorrect, card, Date.now() - tStart); if (isCorrect) scheduleAutoAdvance(sbNext); };
+  const sbCheck = () => { const card = cards[idx]; const isCorrect = sbPicked.join(" ") === card.correct.join(" "); setSbChecked(true); setSbCorrect(isCorrect); record(isCorrect, card, Date.now() - tStart); if (isCorrect) speakThenAdvance(card.correct.join(" "), sbNext); };
   const sbNext = () => {
     cancelAutoAdvance();
     if (navLockRef.current) return;
     if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
+    setFlyOff(true);
     setVis(false); setFeedback(null);
     setTimeout(() => {
+      setFlyOff(false);
       const next = cards[Math.min(idx + 1, cards.length - 1)];
       if (next) setSbPool(sh([...next.correct]));
       setSbPicked([]); setSbChecked(false); setSbCorrect(false); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
@@ -2852,7 +2879,7 @@ function App() {
   const SOFT_PANEL = "linear-gradient(180deg, #171717 0%, #101010 100%)";
   // Shared class for the card content wrapper: directional slide on advance (is-out, keyed on
   // vis) + answer-feedback shake/pop (keyed on feedback). The two are mutually exclusive by vis.
-  const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : " is-out");
+  const cardCls = "ad-card-enter" + (vis ? (feedback === "wrong" ? " ad-shake" : feedback === "correct" ? " ad-pop" : "") : (flyOff ? " is-fly" : " is-out"));
   // Each category maps to a distinct, literal glyph (audited for collisions + recognisability).
   const categoryIcons = { "Greetings & Basics": "hand", "Numbers & Time": "clock", "Family & People": "users", "Food & Drink": "utensils", "Around the House": "home", "Body & Health": "heart", "Colours & Descriptions": "palette", "Common Verbs": "bolt", "Weather & Nature": "cloud", "Travel & Directions": "map", "Shopping & Money": "cart", "Emotions & Opinions": "smile", "Everyday Actions": "calendar", "Work & Study": "briefcase", "Connectors & Structure": "link", "Abstract & Advanced": "layers", "Media & Communication": "megaphone", "Sport & Leisure": "trophy", "Technology & Digital": "chip", "Admin & Bureaucracy": "file", "Housing & Renting": "key", "Banking & Finance": "bank", "Driving & Traffic": "car", "Cooking & Kitchen": "pot", "Idioms & Slang": "quote", "Electrical Engineering": "bolt", "Maths & Statistics": "chart", "Engineering Workplace": "wrench", "Health & Doctor": "medical", "Clothing & Style": "shirt", "Nature & Outdoors": "leaf", "Small Talk & Social": "message", "Restaurant & Dining Out": "wine", "Opinions & Argument": "scale", "Emails & Phone": "mail", "Character & Personality": "user" };
   // What one tap of a review button actually drills: the largest mode bucket, capped at 20.
@@ -2909,7 +2936,7 @@ function App() {
 
   // NEW: Automaticity badge shown after answer
   const SpeedBadge = ({ ms }) => {
-    if (!ms || !answered) return null;
+    if (!ms || !answered || skipSummary) return null;
     const { text, color } = speedLabel(ms);
     return (<div style={{ fontSize: 11, color, fontWeight: 600, marginTop: 6, textAlign: "center" }}>{text} ({(ms / 1000).toFixed(1)}s)</div>);
   };
@@ -3129,6 +3156,7 @@ function App() {
         .ad-pop { animation: ad-pop 420ms ease-out; }
         .ad-card-enter { opacity: 1; transform: translateX(0); transition: opacity .18s ease, transform .26s cubic-bezier(.22,.61,.36,1); }
         .ad-card-enter.is-out { opacity: 0; transform: translateX(26px); }
+        .ad-card-enter.is-fly { opacity: 0; transform: translateX(118%) rotate(5deg); transition: opacity .22s ease-in, transform .3s cubic-bezier(.4,0,.7,.2); }
         .ad-spark { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ad-draw 950ms ease-out forwards; }
         .ad-input { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
         .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
@@ -3163,7 +3191,7 @@ function App() {
         @media (prefers-reduced-motion: reduce) {
           .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise { animation: none; }
           .ad-card-enter { transition: opacity .12s ease; }
-          .ad-card-enter.is-out { transform: none; }
+          .ad-card-enter.is-out, .ad-card-enter.is-fly { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
         }
       `}</style>
@@ -4475,7 +4503,7 @@ function App() {
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
-                {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
+                {!skipSummary && card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
                   <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
                     {highlightExample(card.ex, card.noun).map((p, i) => p.hl
                       ? <span key={i} style={{ color: A, fontWeight: 600, fontStyle: "normal" }}>{p.text}</span>
@@ -4496,8 +4524,8 @@ function App() {
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
                 <SpeakBtn text={card.pl} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
-                <GrammarNote note={pluralRule(card.de, card.pl)} />
-                {card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
+                {!skipSummary && <GrammarNote note={pluralRule(card.de, card.pl)} />}
+                {!skipSummary && card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
                   <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
                     {highlightExample(card.ex, card.noun).map((p, i) => p.hl
                       ? <span key={i} style={{ color: A, fontWeight: 600, fontStyle: "normal" }}>{p.text}</span>
@@ -4514,7 +4542,7 @@ function App() {
                 {inputResult === "wrong" ? <>{input && <><span style={{ color: R }}>Your answer: {input}</span><br /></>}<span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   inputResult === "capital" ? <span style={{ color: A }}>✓ Right — mind the capitalisation ({card.a})</span> :
                   inputResult === "eszett" ? <span style={{ color: A }}>✓ Right — mind ß vs ss ({card.a})</span> :
-                  <span style={{ color: G }}>Correct! ✓</span>}{" "}{card.h}
+                  <span style={{ color: G }}>Correct! ✓</span>}{" "}{!skipSummary && card.h}
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </div>}
             </>}
@@ -4525,8 +4553,8 @@ function App() {
                 : <div style={{ fontSize: 15, color: T, fontWeight: 600 }}>{card.pron} ___?</div>}
               <div style={{ fontSize: 12, color: TD, marginTop: 4 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontSize: 13, color: G, fontWeight: 700 }}>{card.pron} {card.correct}</div>
-                <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div><SpeakBtn text={`${card.pron} ${card.correct}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
-                <GrammarNote note={verbRule(VERBS.find(v => v.v === card.verb))} /></>}
+                {!skipSummary && <div style={{ fontSize: 11, color: TD, marginTop: 4 }}>{card.hint}</div>}<SpeakBtn text={`${card.pron} ${card.correct}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+                {!skipSummary && <GrammarNote note={verbRule(VERBS.find(v => v.v === card.verb))} />}</>}
             </>}
             {mode === "imperativ" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Imperative — {card._person === "sie" ? "Sie" : card._person}</div>
@@ -4549,8 +4577,8 @@ function App() {
                   </div>
                 </div>
                 {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: R, marginTop: 6 }}>You: {input}</div>}
-                <div style={{ fontSize: 11, color: TD, marginTop: 8, fontStyle: "italic", textAlign: "center", padding: "0 6px" }}>„{card.ex}"</div>
-                <div style={{ fontSize: 11, color: BL, marginTop: 4, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}><Icon name="target" size={12} /> {card.hint}</div>
+                {!skipSummary && <div style={{ fontSize: 11, color: TD, marginTop: 8, fontStyle: "italic", textAlign: "center", padding: "0 6px" }}>„{card.ex}"</div>}
+                {!skipSummary && <div style={{ fontSize: 11, color: BL, marginTop: 4, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}><Icon name="target" size={12} /> {card.hint}</div>}
                 <SpeakBtn text={card[card._person]} />
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </>}
@@ -4625,10 +4653,10 @@ function App() {
           {mode === "imperativ" && !answered && (
             <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
+              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") speakThenAdvance(target, nextDrill); else speak(target); } }}
                 placeholder={card._person === "sie" ? "e.g. kommen Sie" : "Type the imperative…"} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
-              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
+              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") speakThenAdvance(target, nextDrill); else speak(target); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
             </div>
             <button type="button" onClick={revealDrill} style={{ marginBottom: 16, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
@@ -4657,7 +4685,7 @@ function App() {
                   return (<div key={i} style={{ padding: "16px", borderRadius: 14, fontSize: 18, fontWeight: 700, background: isC ? "#0A1A0A" : wasS ? "#1A0000" : SH, border: `2px solid ${isC ? G : wasS ? R : B}`, color: isC ? G : wasS ? R : TD, fontFamily: FN, textAlign: "center" }}>{art}{isC ? " ✓" : wasS ? " ✗" : ""}</div>);
                 })}
               </div>
-              <GrammarNote note={gr} />
+              {!skipSummary && <GrammarNote note={gr} />}
             </>);
           })()}
           {mode === "verb" && !answered && card.opts && (
@@ -4675,10 +4703,10 @@ function App() {
           {mode === "verb" && !answered && !card.opts && (
             <><UmlautBar onInsert={insertChar} />
             <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
+              <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); const say = `${card.pron} ${card.correct}`; if (result === "exact") speakThenAdvance(say, nextDrill); else speak(say); } }}
                 placeholder={`${card.pron} …`} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
-              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
+              <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); const say = `${card.pron} ${card.correct}`; if (result === "exact") speakThenAdvance(say, nextDrill); else speak(say); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
             </div>
             <button type="button" onClick={revealDrill} style={{ width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}

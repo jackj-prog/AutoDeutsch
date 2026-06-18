@@ -16,6 +16,10 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body, #root { height: 100%; }
+    /* The app is a single vertical column — never allow a horizontal scrollbar. Grid/flex
+       children all truncate (minmax(0,1fr) + ellipsis), so this only clips the odd sub-pixel
+       edge rather than hiding real content. */
+    html, body { overflow-x: hidden; max-width: 100%; }
     body {
       /* Match the app's top-glow start colour so the notch / status-bar area blends with
          the app background instead of showing a flat seam. The app fills edge-to-edge
@@ -83,7 +87,7 @@
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="data.js" integrity="sha512-goWybcZMamSUKgpHqOnCCrjnRqSkB47eUASC+McyRxFBmFmt8uUG5ow4Ob3h6UTCJ0wlP36WuCRKgrO29SHwOg=="></script>
-  <script src="app.js" integrity="sha512-YAGCfa4ANkZTlcFk24qCYHR3H6FuV45LLyplYiNgV/qB4PqKxeu18QCqNUvj7voX4SHZZOpZoiCaMgvwdO6o3Q=="></script>
+  <script src="app.js" integrity="sha512-GEIPPzmFJTh3asTwZLTIAv7IAG9pYmxMbA/pfYUdn7g1ZlVYKEbdEqw0EEqaSp+JOhjJt5DyBDgw1LVmQCaI7A=="></script>
 
   <!-- Boot-failure self-heal: if the app didn't mount (e.g. a cached data.js/app.js was
        blocked by an SRI mismatch after a deploy), purge CacheStorage once and reload so

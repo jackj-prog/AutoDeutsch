@@ -372,13 +372,29 @@ async function run() {
   try {
     for (const screen of screens) {
       const page = await browser.newPage();
-      await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+      await page.setViewport({ width: +(process.env.SHOOT_WIDTH || 390), height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
       await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));
       try { await gotoScreen(page, screen); } catch (e) { console.warn(`  (${screen}: ${e.message})`); }
+      if (process.env.SHOOT_OVERFLOW) {
+        const report = await page.evaluate(() => {
+          const vw = document.documentElement.clientWidth;
+          const out = [];
+          document.querySelectorAll("*").forEach(el => {
+            const r = el.getBoundingClientRect();
+            if (r.right > vw + 1 && r.width <= vw + 40) {
+              const txt = (el.textContent || "").trim().slice(0, 40);
+              out.push(`+${Math.round(r.right - vw)}px past edge | <${el.tagName.toLowerCase()}> "${txt}"`);
+            }
+          });
+          return { vw, docScroll: document.documentElement.scrollWidth, items: out.slice(0, 12) };
+        });
+        console.log(`OVERFLOW @${report.vw}px (docScrollWidth=${report.docScroll}):`);
+        report.items.forEach(i => console.log("  " + i));
+      }
       const file = path.join(OUT, `${screen}.png`);
       // SHOOT_FULL=0 captures just the viewport (shows fixed elements — e.g. bottom nav —
       // in their real pinned position, which fullPage screenshots misplace).

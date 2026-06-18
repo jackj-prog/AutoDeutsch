@@ -71,7 +71,7 @@ await writeFile(INDEX_FILE, index, "utf8");
 // Deriving it from a hash of the shipped app.js + data.js makes it change iff the content
 // does — so "bump CACHE_NAME when deploying" can no longer be forgotten.
 const SW_FILE = "service-worker.js";
-const buildHash = createHash("sha256").update(output + dataJs).digest("hex").slice(0, 12);
+const buildHash = createHash("sha256").update(output + dataJs + index).digest("hex").slice(0, 12);
 const cacheName = `autodeutsch-${buildHash}`;
 let sw = await readFile(SW_FILE, "utf8");
 const cacheRe = /const CACHE_NAME = '[^']*';/;

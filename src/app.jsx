@@ -60,6 +60,25 @@ function normalizeEntry(p) {
 
 const isMasteredEntry = (entry) => normalizeEntry(entry).stats.productionStreak >= MASTERY_STREAK;
 
+// Layered mastery. A word climbs Encountered → Learning → Strong → Mastered. The PUBLIC
+// progress narrative (journey %, CEFR rank, chapters) advances on STRONG — a genuine
+// "you reliably know this" signal: its SRS card survived a 7-day+ gap (box ≥ 3) OR you
+// produced it correctly three times running. That moves in days, so an engaged learner
+// sees real progress instead of a stuck 0%. MASTERED (5 production-correct in a row) stays
+// the rigorous completionist ★ layer on top, untouched. Strength uses the best evidence
+// across a word's recall + production entries.
+const STRONG_BOX = 3;       // SRS box 3 = a 7-day interval already survived
+const STRONG_PSTREAK = 3;   // …or three production-correct answers in a row
+function wordStrength(vEntry, pEntry) {
+  const v = normalizeEntry(vEntry), p = normalizeEntry(pEntry);
+  const attempts = v.stats.attempts + p.stats.attempts;
+  const bestBox = Math.max(v.srs.box || 0, p.srs.box || 0);
+  const pStreak = p.stats.productionStreak || 0;
+  const mastered = pStreak >= MASTERY_STREAK || !!p.stats.masteredAt;
+  const strong = mastered || bestBox >= STRONG_BOX || pStreak >= STRONG_PSTREAK;
+  return { attempts, seen: attempts > 0, strong, mastered };
+}
+
 // Deterministic id from any card shape. An explicit `id` (see src/data.js editing
 // rules) wins, so content strings can be corrected without orphaning progress.
 const cardId = (card) => card.id || card._id || card.de || card.q || card.a || (card.article && card.noun ? `${card.article} ${card.noun}` : null) || (card.verb ? `${card.verb}-${card.pron}-${card.tense}` : null) || (card.correct && card.correct.join(" ")) || "unknown";
@@ -2041,16 +2060,15 @@ function App() {
   // from masteredAt timestamps (cards mastered in the last 28 days → weekly rate).
   const deepStats = useMemo(() => {
     const levels = {};
-    LEVELS.forEach(l => { levels[l] = { total: 0, seen: 0, production: 0, mastered: 0 }; });
+    LEVELS.forEach(l => { levels[l] = { total: 0, seen: 0, strong: 0, mastered: 0 }; });
     allVocab().forEach(w => {
       const L = levels[cardLevel(w)];
       if (!L) return;
       L.total++;
-      const v = normalizeEntry(prog[`vocab::${w._cat}::${w.de}`]);
-      const p = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
-      if (v.stats.attempts > 0 || p.stats.attempts > 0) L.seen++;
-      if (p.stats.attempts > 0) L.production++;
-      if (p.stats.productionStreak >= MASTERY_STREAK || p.stats.masteredAt) L.mastered++;
+      const s = wordStrength(prog[`vocab::${w._cat}::${w.de}`], prog[`production::${w._cat}::${w.de}`]);
+      if (s.seen) L.seen++;
+      if (s.strong) L.strong++;
+      if (s.mastered) L.mastered++;
     });
     const boxes = [0, 0, 0, 0, 0, 0];
     let attempts = 0, correct = 0, entries = 0;
@@ -2069,31 +2087,37 @@ function App() {
     const perWeek = recent28 / 4;
     const b2Remaining = Math.max(0, levels.B2.total - levels.B2.mastered);
     const b2WeeksLeft = perWeek > 0 ? b2Remaining / perWeek : null;
-    // "Journey to B2" is cumulative across the WHOLE curriculum (A1→B2), not B2-only — a
-    // novice climbs from 0 by mastering the lower levels first, so progress is real from
-    // day one instead of stuck near 0% until they reach advanced words.
+    // "Journey to B2" is cumulative across the WHOLE curriculum (A1→B2), not B2-only, and now
+    // advances on STRONG (not full mastery) — a novice climbs from 0 the first day they make a
+    // word stick, instead of staring at ~0% until they 5-streak it. Mastered ★ is tracked
+    // alongside as the deeper achievement layer.
     const journeyTotal = LEVELS.reduce((s, l) => s + levels[l].total, 0);
+    const journeyStrong = LEVELS.reduce((s, l) => s + levels[l].strong, 0);
     const journeyMastered = LEVELS.reduce((s, l) => s + levels[l].mastered, 0);
-    const journeyPct = journeyTotal ? (journeyMastered / journeyTotal) * 100 : 0;
-    const journeyRemaining = Math.max(0, journeyTotal - journeyMastered);
-    const journeyWeeksLeft = perWeek > 0 ? journeyRemaining / perWeek : null;
-    // Current CEFR level = the lowest level not yet fully mastered (your rank).
+    const journeyPct = journeyTotal ? (journeyStrong / journeyTotal) * 100 : 0;
+    const journeyRemaining = Math.max(0, journeyTotal - journeyStrong);
+    // Pace projection stays about full mastery (it reads off masteredAt timestamps) — an
+    // honestly-labelled "you've fully mastered N words" stretch goal beneath the strong rank.
+    const masteryRemaining = Math.max(0, journeyTotal - journeyMastered);
+    const journeyWeeksLeft = perWeek > 0 ? masteryRemaining / perWeek : null;
+    // Current CEFR level = the lowest level not yet fully STRONG (your rank). Reaching it for a
+    // level ranks you up — achievable in days, not the months full mastery used to demand.
     let currentLevel = LEVELS[LEVELS.length - 1];
-    for (const l of LEVELS) { if (levels[l].mastered < levels[l].total) { currentLevel = l; break; } }
+    for (const l of LEVELS) { if (levels[l].strong < levels[l].total) { currentLevel = l; break; } }
     // Chapters: each level is split into CHAPTERS equal-size chunks so a checkpoint lands every
-    // ~20% of a level (every few weeks) instead of only at full level completion.
+    // ~20% of a level. Chapters fill on STRONG too, so a checkpoint is reachable in days.
     let chaptersDoneTotal = 0;
     LEVELS.forEach(l => {
       const L = levels[l];
       L.chapterSize = Math.max(1, Math.ceil(L.total / CHAPTERS));
-      L.chaptersDone = Math.min(CHAPTERS, Math.floor(L.mastered / L.chapterSize));
+      L.chaptersDone = Math.min(CHAPTERS, Math.floor(L.strong / L.chapterSize));
       chaptersDoneTotal += L.chaptersDone;
     });
     const curL = levels[currentLevel];
     const currentChapter = Math.min(CHAPTERS, curL.chaptersDone + 1); // 1-indexed chapter you're working on
-    const chapterMasteredInto = curL.mastered - curL.chaptersDone * curL.chapterSize; // mastered within current chapter
-    const chapterRemaining = Math.max(0, curL.chapterSize - chapterMasteredInto); // words to finish current chapter
-    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel, chaptersDoneTotal, currentChapter, chapterRemaining };
+    const chapterStrongInto = curL.strong - curL.chaptersDone * curL.chapterSize; // strong within current chapter
+    const chapterRemaining = Math.max(0, curL.chapterSize - chapterStrongInto); // words to finish current chapter
+    return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyStrong, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel, chaptersDoneTotal, currentChapter, chapterRemaining };
   }, [prog]);
 
   // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
@@ -2799,7 +2823,7 @@ function App() {
     const out = {};
     CATS.forEach(cat => {
       const ws = V[cat];
-      let seen = 0, productionSeen = 0, mastered = 0, almost = 0;
+      let seen = 0, productionSeen = 0, strong = 0, mastered = 0, almost = 0;
       let recognitionAttempts = 0, recognitionCorrect = 0, productionAttempts = 0, productionCorrect = 0;
       let totalRecallMs = 0, timedAttempts = 0;
       const masteredCards = [];
@@ -2808,8 +2832,10 @@ function App() {
         const vk = `vocab::${cat}::${w.de}`, pk = `production::${cat}::${w.de}`;
         const recognition = normalizeEntry(prog[vk]);
         const production = normalizeEntry(prog[pk]);
+        const strength = wordStrength(prog[vk], prog[pk]);
         if (recognition.stats.attempts > 0 || production.stats.attempts > 0) seen++;
         if (production.stats.attempts > 0) productionSeen++;
+        if (strength.strong) strong++;
         if (isMasteredEntry(production)) {
           mastered++;
           masteredCards.push(w);
@@ -2827,6 +2853,7 @@ function App() {
         total: ws.length,
         seen,
         productionSeen,
+        strong,
         mastered,
         almost,
         recognitionAccuracy: recognitionAttempts ? Math.round((recognitionCorrect / recognitionAttempts) * 100) : null,
@@ -2837,7 +2864,7 @@ function App() {
     });
     return out;
   }, [prog]);
-  const getCatStats = cat => catStats[cat] || { total: 0, seen: 0, productionSeen: 0, mastered: 0, almost: 0, recognitionAccuracy: null, productionAccuracy: null, avgRecall: null, masteredCards: [] };
+  const getCatStats = cat => catStats[cat] || { total: 0, seen: 0, productionSeen: 0, strong: 0, mastered: 0, almost: 0, recognitionAccuracy: null, productionAccuracy: null, avgRecall: null, masteredCards: [] };
   const newlyMasteredCats = useMemo(() => new Set(newlyMastered.map(x => x.cat).filter(cat => CATS.includes(cat))), [newlyMastered]);
 
   // Progress summaries per training mode. "Seen" counts an item as completed when
@@ -3283,7 +3310,7 @@ function App() {
               </div>
             </div>
             <div style={{ fontFamily: FN, fontSize: 28, fontWeight: 800, color: T, lineHeight: 1.12 }}>You've reached {LEVEL_TITLES[rankUp.to]}!</div>
-            <div style={{ fontSize: 13.5, color: TD, marginTop: 11, maxWidth: 300, lineHeight: 1.5 }}>You mastered every {rankUp.from} word. {rankUp.to === "B2" ? "That's the full B2 vocabulary — independent fluency. 🏁" : `On to ${LEVEL_TITLES[rankUp.to]} on the road to B2.`}</div>
+            <div style={{ fontSize: 13.5, color: TD, marginTop: 11, maxWidth: 300, lineHeight: 1.5 }}>You've got every {rankUp.from} word solid. {rankUp.to === "B2" ? "That's the full B2 vocabulary within reach — keep mastering to lock it in. 🏁" : `On to ${LEVEL_TITLES[rankUp.to]} on the road to B2.`}</div>
           </div>
           <button type="button" onClick={() => setRankUp(null)} style={{ marginTop: 38, background: lc, color: "#0A0A0A", border: "none", borderRadius: 14, padding: "15px 46px", fontFamily: FN, fontSize: 16, fontWeight: 800, cursor: "pointer" }}>Weiter →</button>
         </div>
@@ -3738,7 +3765,7 @@ function App() {
             <img src="icons/icon-192x192.png" alt="" style={{ width: 50, height: 50, mixBlendMode: "screen", marginLeft: -11, marginRight: -9, marginTop: -2 }} />
             <span>utodeutsch</span>
           </h1>
-          <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{totalL} mastered</span></p>
+          <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{deepStats.journeyStrong.toLocaleString()} learned</span>{totalL > 0 && <span style={{ color: TD }}> · {totalL.toLocaleString()} ★</span>}</p>
         </div>
 
         {/* Journey rank — your current CEFR level + progress toward the next, surfaced as a
@@ -3746,10 +3773,10 @@ function App() {
         {(() => {
           const LC = { A1: G, A2: BL, B1: A, B2: R };
           const TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
-          const curIdx = LEVELS.findIndex(l => deepStats.levels[l].mastered < deepStats.levels[l].total);
+          const curIdx = LEVELS.findIndex(l => deepStats.levels[l].strong < deepStats.levels[l].total);
           const cl = curIdx === -1 ? LEVELS[LEVELS.length - 1] : LEVELS[curIdx];
           const CL = deepStats.levels[cl];
-          const clPct = CL.total ? (CL.mastered / CL.total) * 100 : 0;
+          const clPct = CL.total ? (CL.strong / CL.total) * 100 : 0;
           const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
           return (
             <button type="button" onClick={() => setScreen("stats")} aria-label={`Level ${cl} ${TITLES[cl]} — open your journey`}
@@ -3769,7 +3796,7 @@ function App() {
                   {[1, 2, 3, 4, 5].map(n => {
                     const done = n <= CL.chaptersDone;
                     const current = n === CL.chaptersDone + 1;
-                    const within = current && CL.chapterSize ? Math.max(0, Math.min(1, (CL.mastered - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
+                    const within = current && CL.chapterSize ? Math.max(0, Math.min(1, (CL.strong - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
                     return (
                       <div key={n} style={{ flex: 1, height: 6, background: "#0A0A0A", borderRadius: 3, overflow: "hidden", position: "relative", boxShadow: current ? `0 0 0 1px ${LC[cl]}66` : "none" }}>
                         <div style={{ position: "absolute", inset: 0, width: done ? "100%" : `${within * 100}%`, background: done ? G : LC[cl], borderRadius: 3, transition: "width .5s" }} />
@@ -3917,9 +3944,10 @@ function App() {
               is findable from the launch flow and progresses systematically, not at random. */}
           {(() => {
             const ordered = libGroups.flatMap(g => g.cats);
-            const next = ordered.find(c => { const s = getCatStats(c); return s.total > 0 && s.mastered < s.total; });
+            const next = ordered.find(c => { const s = getCatStats(c); return s.total > 0 && s.strong < s.total; });
             if (!next) return null;
             const s = getCatStats(next);
+            const strongPct = s.total ? (s.strong / s.total) * 100 : 0;
             const mPct = s.total ? (s.mastered / s.total) * 100 : 0;
             const pPct = s.total ? (s.productionSeen / s.total) * 100 : 0;
             return (
@@ -3932,10 +3960,11 @@ function App() {
                   <span style={{ display: "block", fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, marginTop: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{next}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
                     <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
-                      <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}66`, borderRadius: 2, transition: "width .5s" }} />
+                      <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}33`, borderRadius: 2, transition: "width .5s" }} />
+                      <div style={{ position: "absolute", inset: 0, width: `${strongPct}%`, background: `${A}CC`, borderRadius: 2, transition: "width .5s" }} />
                       <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 2, transition: "width .5s" }} />
                     </div>
-                    <span style={{ fontSize: 10, color: s.mastered ? G : TD, fontWeight: 800, flexShrink: 0 }}>★ {s.mastered}/{s.total}</span>
+                    <span style={{ fontSize: 10, color: s.strong ? A : TD, fontWeight: 800, flexShrink: 0 }}>{s.strong}/{s.total}{s.mastered > 0 && <span style={{ color: G }}> · {s.mastered}★</span>}</span>
                   </div>
                 </div>
                 <Icon name="arrowRight" size={16} color={A} />
@@ -4057,9 +4086,10 @@ function App() {
           {libGroups.map((g, gi) => {
             const agg = g.cats.reduce((a, cat) => {
               const st = getCatStats(cat);
-              return { total: a.total + st.total, mastered: a.mastered + st.mastered, prod: a.prod + st.productionSeen };
-            }, { total: 0, mastered: 0, prod: 0 });
+              return { total: a.total + st.total, strong: a.strong + st.strong, mastered: a.mastered + st.mastered, prod: a.prod + st.productionSeen };
+            }, { total: 0, strong: 0, mastered: 0, prod: 0 });
             const open = openGroups[g.name] ?? (gi === 0);
+            const strongPct = agg.total ? (agg.strong / agg.total) * 100 : 0;
             const mPct = agg.total ? (agg.mastered / agg.total) * 100 : 0;
             const pPct = agg.total ? (agg.prod / agg.total) * 100 : 0;
             const groupGlow = g.cats.some(cat => newlyMasteredCats.has(cat));
@@ -4071,10 +4101,11 @@ function App() {
                     <Icon name="chevron" size={15} style={{ color: open ? A : TD, transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform .18s ease" }} />
                     <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.name}</span>
                     <span style={{ fontSize: 10, color: TD, fontWeight: 700, flexShrink: 0 }}>{g.cats.length} topics</span>
-                    <span style={{ fontSize: 10, color: agg.mastered ? G : TD, fontWeight: 800, flexShrink: 0 }}>★ {agg.mastered}/{agg.total}</span>
+                    <span style={{ fontSize: 10, color: agg.strong ? A : TD, fontWeight: 800, flexShrink: 0 }}>{agg.strong}/{agg.total}{agg.mastered > 0 && <span style={{ color: G }}> · {agg.mastered}★</span>}</span>
                   </div>
                   <div style={{ height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative", marginTop: 9 }}>
-                    <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}66`, borderRadius: 2, transition: "width .5s" }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${pPct}%`, background: `${A}33`, borderRadius: 2, transition: "width .5s" }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${strongPct}%`, background: `${A}CC`, borderRadius: 2, transition: "width .5s" }} />
                     <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, borderRadius: 2, transition: "width .5s" }} />
                   </div>
                 </button>
@@ -4082,8 +4113,9 @@ function App() {
                   {g.cats.map(cat => {
                     const st = getCatStats(cat);
                     const productionPct = st.total > 0 ? (st.productionSeen / st.total) * 100 : 0;
+                    const strongPct = st.total > 0 ? (st.strong / st.total) * 100 : 0;
                     const masteredPct = st.total > 0 ? (st.mastered / st.total) * 100 : 0;
-                    const done = st.mastered >= st.total && st.total > 0;
+                    const done = st.strong >= st.total && st.total > 0;
                     const justMastered = newlyMasteredCats.has(cat);
                     return (
                       <button key={cat} className={justMastered ? "ad-category-mastered" : undefined} onClick={() => openSetup(cat, HERO_MODES[setupMode] ? setupMode : "production")} style={{ background: justMastered ? `linear-gradient(155deg, ${G}14, #101010 42%)` : "linear-gradient(180deg, #171717 0%, #0D0D0D 100%)", border: `1px solid ${justMastered ? G : done ? `${G}66` : HAIR}`, borderRadius: 12, padding: "11px 12px 10px", textAlign: "left", cursor: "pointer", transition: "all 0.15s, transform 0.1s", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", gap: 9 }}>
@@ -4093,13 +4125,14 @@ function App() {
                           <span style={{ fontFamily: FN, fontSize: 13, color: T, lineHeight: 1.15, fontWeight: 800, minWidth: 0 }}>{cat}</span>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          {/* Dual-layer bar: gold = production progress, green fill = mastered */}
+                          {/* Tri-layer bar: faint = seen, gold = learned (strong), green = mastered ★ */}
                           <div style={{ flex: 1, height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
-                            <div style={{ position: "absolute", inset: 0, width: `${productionPct}%`, background: `${A}66`, borderRadius: 2, transition: "width 0.5s" }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${productionPct}%`, background: `${A}33`, borderRadius: 2, transition: "width 0.5s" }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${strongPct}%`, background: `${A}CC`, borderRadius: 2, transition: "width 0.5s" }} />
                             <div style={{ position: "absolute", inset: 0, width: `${masteredPct}%`, background: G, borderRadius: 2, transition: "width 0.5s" }} />
                           </div>
-                          <span style={{ fontSize: 10, color: st.mastered ? G : st.productionSeen ? A : TD, fontWeight: 800, flexShrink: 0 }}>
-                            {st.total ? `★ ${st.mastered}/${st.total}` : ""}
+                          <span style={{ fontSize: 10, color: st.strong ? A : st.productionSeen ? `${A}99` : TD, fontWeight: 800, flexShrink: 0 }}>
+                            {st.total ? `${st.strong}/${st.total}` : ""}
                           </span>
                         </div>
                       </button>
@@ -4248,16 +4281,16 @@ function App() {
                 striking lead element of the screen, so it sits up top before the recent-performance hub ── */}
             {(() => {
               const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
-              const curIdx = LEVELS.findIndex(l => ds.levels[l].mastered < ds.levels[l].total);
+              const curIdx = LEVELS.findIndex(l => ds.levels[l].strong < ds.levels[l].total);
               const allDone = curIdx === -1;
               const cl = allDone ? LEVELS[LEVELS.length - 1] : LEVELS[curIdx];
               const nextLevel = allDone ? null : (LEVELS[LEVELS.indexOf(cl) + 1] || null);
               const CL = ds.levels[cl];
-              const clPct = CL.total ? (CL.mastered / CL.total) * 100 : 0;
+              const clPct = CL.total ? (CL.strong / CL.total) * 100 : 0;
               const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
-              const clRemaining = Math.max(0, CL.total - CL.mastered);
+              const clRemaining = Math.max(0, CL.total - CL.strong);
               const curChapter = Math.min(CHAPTERS, CL.chaptersDone + 1);
-              const chRemaining = Math.max(0, CL.chapterSize - (CL.mastered - CL.chaptersDone * CL.chapterSize));
+              const chRemaining = Math.max(0, CL.chapterSize - (CL.strong - CL.chaptersDone * CL.chapterSize));
               const jp = ds.journeyPct > 0 && ds.journeyPct < 10 ? ds.journeyPct.toFixed(1) : Math.round(ds.journeyPct);
               return (
                 <div style={panel}>
@@ -4272,7 +4305,7 @@ function App() {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 9.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>{allDone ? "Top level reached" : `You're at · Chapter ${curChapter} of ${CHAPTERS}`}</div>
                       <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: T, lineHeight: 1.1 }}>{LEVEL_TITLES[cl]}</div>
-                      <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{CL.mastered.toLocaleString()} / {CL.total.toLocaleString()} {cl} words mastered</div>
+                      <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{CL.strong.toLocaleString()} / {CL.total.toLocaleString()} {cl} words learned{CL.mastered > 0 && <span style={{ color: G }}> · {CL.mastered.toLocaleString()} ★</span>}</div>
                     </div>
                     <div style={{ fontFamily: FN, fontSize: 27, fontWeight: 800, color: G, lineHeight: 1, flexShrink: 0 }}>{Math.round(clPct)}%</div>
                   </div>
@@ -4281,7 +4314,7 @@ function App() {
                   {!allDone && (
                     <div style={{ display: "flex", alignItems: "center", marginBottom: 12, padding: "2px 2px 0" }}>
                       {(() => {
-                        const within = CL.chapterSize ? Math.max(0, Math.min(1, (CL.mastered - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
+                        const within = CL.chapterSize ? Math.max(0, Math.min(1, (CL.strong - CL.chaptersDone * CL.chapterSize) / CL.chapterSize)) : 0;
                         const els = [];
                         for (let n = 1; n <= CHAPTERS; n++) {
                           const done = n <= CL.chaptersDone;
@@ -4309,25 +4342,27 @@ function App() {
                     </div>
                   )}
                   <div style={{ display: "flex", gap: 14, marginBottom: 14, fontSize: 10.5, color: TD, fontWeight: 700 }}>
-                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${LEVEL_COLORS[cl]}66`, marginRight: 5 }} />{CL.seen} learning</span>
-                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: G, marginRight: 5 }} />{CL.mastered} mastered</span>
+                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${LEVEL_COLORS[cl]}66`, marginRight: 5 }} />{CL.seen} seen</span>
+                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: LEVEL_COLORS[cl], marginRight: 5 }} />{CL.strong} learned</span>
+                    <span><span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: G, marginRight: 5 }} />{CL.mastered} mastered ★</span>
                   </div>
                   <div style={{ fontSize: 11.5, color: TD, marginBottom: 18, lineHeight: 1.5 }}>
-                    {allDone ? <>You've mastered every level — the full B2 vocabulary is locked in. 🏁</>
-                      : <>Master <span style={{ color: T, fontWeight: 800 }}>{chRemaining.toLocaleString()}</span> more to finish <span style={{ color: LEVEL_COLORS[cl], fontWeight: 800 }}>Chapter {curChapter}</span>{nextLevel ? <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel}</span></> : <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to complete B2</>}</>}
+                    {allDone ? <>You've made every level solid — the full B2 vocabulary is locked in. 🏁</>
+                      : <>Learn <span style={{ color: T, fontWeight: 800 }}>{chRemaining.toLocaleString()}</span> more to finish <span style={{ color: LEVEL_COLORS[cl], fontWeight: 800 }}>Chapter {curChapter}</span>{nextLevel ? <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel}</span></> : <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to complete B2</>}</>}
                   </div>
 
                   {/* The roadmap — 4 CEFR stages, you-are-here */}
                   {LEVELS.map((l, i) => {
                     const L = ds.levels[l];
+                    const strongPct = L.total ? (L.strong / L.total) * 100 : 0;
                     const mPct = L.total ? (L.mastered / L.total) * 100 : 0;
                     const sPct = L.total ? (L.seen / L.total) * 100 : 0;
-                    const done = L.total > 0 && L.mastered >= L.total;
+                    const done = L.total > 0 && L.strong >= L.total;
                     const isCurrent = l === cl && !allDone;
                     const reached = i <= LEVELS.indexOf(cl);
                     const last = i === LEVELS.length - 1;
                     return (
-                      <button key={l} type="button" onClick={() => { setSessLevel(l); setScreen("home"); }} aria-label={`Practice ${l} ${LEVEL_TITLES[l]}`} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left", padding: 0, opacity: reached || mPct > 0 ? 1 : 0.45 }}>
+                      <button key={l} type="button" onClick={() => { setSessLevel(l); setScreen("home"); }} aria-label={`Practice ${l} ${LEVEL_TITLES[l]}`} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left", padding: 0, opacity: reached || strongPct > 0 ? 1 : 0.45 }}>
                         <div style={{ position: "relative", width: 20, alignSelf: "stretch", display: "flex", justifyContent: "center", flexShrink: 0 }}>
                           {!last && <div style={{ position: "absolute", top: "50%", bottom: -6, width: 2, background: done ? G : `${HAIR}` }} />}
                           <div style={{ alignSelf: "center", width: done || isCurrent ? 16 : 12, height: done || isCurrent ? 16 : 12, borderRadius: "50%", background: done ? G : isCurrent ? LEVEL_COLORS[l] : "#0A0A0A", border: `2px solid ${done ? G : isCurrent ? LEVEL_COLORS[l] : HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, boxShadow: isCurrent ? `0 0 12px -1px ${LEVEL_COLORS[l]}` : "none" }}>
@@ -4338,11 +4373,12 @@ function App() {
                           <div style={{ display: "flex", alignItems: "baseline", gap: 7 }}>
                             <span style={{ fontSize: 11, fontWeight: 900, color: LEVEL_COLORS[l] }}>{l}</span>
                             <span style={{ fontSize: 12, color: isCurrent ? T : TD, fontWeight: isCurrent ? 800 : 600, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{LEVEL_TITLES[l]}{isCurrent ? " — you are here" : ""}</span>
-                            <span style={{ fontSize: 10.5, color: done ? G : TD, fontWeight: 800, flexShrink: 0 }}>{done ? "Complete" : `${Math.round(mPct)}%`}</span>
+                            <span style={{ fontSize: 10.5, color: done ? G : TD, fontWeight: 800, flexShrink: 0 }}>{done ? "Complete" : `${Math.round(strongPct)}%`}</span>
                           </div>
                           <div style={{ height: 4, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", marginTop: 5, position: "relative" }}>
                             <div style={{ position: "absolute", inset: 0, width: `${sPct}%`, background: `${LEVEL_COLORS[l]}33`, borderRadius: 2 }} />
-                            <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: done ? G : LEVEL_COLORS[l], borderRadius: 2, transition: "width .5s" }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${strongPct}%`, background: done ? G : LEVEL_COLORS[l], borderRadius: 2, transition: "width .5s" }} />
+                            <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, opacity: 0.9, borderRadius: 2, transition: "width .5s" }} />
                           </div>
                         </div>
                         <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
@@ -4353,17 +4389,17 @@ function App() {
                   {/* Overall backdrop + pace */}
                   <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}66`, display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
                     <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>Whole journey · A1 → B2</span>
-                    <span style={{ fontSize: 12.5, color: G, fontWeight: 800 }}>{jp}% · {ds.journeyMastered.toLocaleString()} / {ds.journeyTotal.toLocaleString()} words</span>
+                    <span style={{ fontSize: 12.5, color: G, fontWeight: 800 }}>{jp}% · {ds.journeyStrong.toLocaleString()} / {ds.journeyTotal.toLocaleString()} words</span>
                   </div>
                   <div style={{ padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
                     {ds.perWeek > 0 && journeyMonths != null ? (
                       journeyMonths <= 36 ? (
-                        <>You mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace you're about <span style={{ color: A, fontWeight: 800 }}>{journeyMonths >= 18 ? `${(journeyMonths / 12).toFixed(1)} years` : `${Math.round(journeyMonths)} months`}</span> from B2 — keep it up.</>
+                        <>You fully mastered <span style={{ color: T, fontWeight: 800 }}>{ds.recent28}</span> words ★ in the last 4 weeks (~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span>). At this pace, locking in all of B2 is about <span style={{ color: A, fontWeight: 800 }}>{journeyMonths >= 18 ? `${(journeyMonths / 12).toFixed(1)} years` : `${Math.round(journeyMonths)} months`}</span> away — keep it up.</>
                       ) : (
-                        <>You're mastering ~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span> ({ds.recent28} in the last 4 weeks). Push that higher and your time to B2 drops fast — every extra word a week compounds.</>
+                        <>You're mastering ★ ~<span style={{ color: A, fontWeight: 800 }}>{ds.perWeek.toFixed(1)}/week</span> ({ds.recent28} in the last 4 weeks). Push that higher and your time to full B2 mastery drops fast — every extra word a week compounds.</>
                       )
                     ) : (
-                      <>Master a few words in production mode to start your pace toward B2.</>
+                      <>Master a few words in production mode (5 in a row ★) to start your pace toward B2.</>
                     )}
                   </div>
                 </div>

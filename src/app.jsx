@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.3";
+const APP_VERSION = "2026.06.18.4";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -765,7 +765,7 @@ const SOLID_ICONS = new Set(["flame", "play", "pause"]);
 const Icon = React.memo(({ name, size = 18, stroke = 2, style }) => {
   const solid = SOLID_ICONS.has(name);
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: "block", flexShrink: 0, ...style }}>
+    <svg data-ico={name} viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false" style={{ display: "block", flexShrink: 0, transformBox: "fill-box", transformOrigin: "center", ...style }}>
       <path d={ICONS[name] || ICONS.book} fill={solid ? "currentColor" : "none"} stroke={solid ? "none" : "currentColor"} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" fillRule="evenodd" clipRule="evenodd" />
     </svg>
   );
@@ -792,8 +792,40 @@ const ProgressIcon = React.memo(({ size = 21, color = PAL.TD, active }) => {
   );
 });
 
-// ── Hoisted stateless components — defined once at module scope instead of
-// re-created every App render. The three heaviest-used components in the tree. ──
+// ── Tap-driven icon micro-animations ──────────────────────────────────────────
+// Every icon-bearing button springs to life in-character when tapped — the energy the
+// Progress bars already have, extended app-wide. A single delegated listener (see the App
+// effect) runs the matching Web-Animations keyframe on the tapped icon's <svg>, so no call
+// site needs wiring and a React re-render mid-click can't cut the animation short (it lives
+// on the DOM node, not on a className). Single-path stroke icons can't truly morph, so the
+// vocabulary is transform-based: spin / drop / build / swing / pulse / beat, default pop.
+const ICO_ANIM = {
+  settings: "spin", refresh: "spin",
+  bolt: "drop",
+  home: "build", chart: "build", bank: "build", briefcase: "build", chip: "build",
+  book: "swing", key: "swing", hand: "swing", file: "swing", mail: "swing",
+  volume: "pulse", headphones: "pulse", megaphone: "pulse", message: "pulse", bell: "pulse",
+  heart: "beat", flame: "beat", trophy: "beat", flake: "beat",
+};
+const ICO_KEYFRAMES = {
+  spin:  [{ transform: "rotate(0deg)" }, { transform: "rotate(180deg)" }],
+  drop:  [{ transform: "translateY(-3px)", opacity: 0.5 }, { transform: "translateY(2px)", opacity: 1 }, { transform: "translateY(0)" }],
+  build: [{ transform: "translateY(3px) scale(0.8)", opacity: 0.3 }, { transform: "translateY(0) scale(1)", opacity: 1 }],
+  swing: [{ transform: "rotate(0deg)" }, { transform: "rotate(-16deg)" }, { transform: "rotate(11deg)" }, { transform: "rotate(0deg)" }],
+  pulse: [{ transform: "scale(1)" }, { transform: "scale(1.18)" }, { transform: "scale(1)" }],
+  beat:  [{ transform: "scale(1)" }, { transform: "scale(1.26)" }, { transform: "scale(0.94)" }, { transform: "scale(1)" }],
+  pop:   [{ transform: "scale(1)" }, { transform: "scale(1.28)" }, { transform: "scale(1)" }],
+};
+const ICO_TIMING = { spin: 500, drop: 430, build: 420, swing: 540, pulse: 360, beat: 440, pop: 340 };
+const ICO_EASE = { spin: "cubic-bezier(.34,1.18,.4,1)", swing: "cubic-bezier(.36,.07,.19,.97)", pop: "cubic-bezier(.2,.7,.3,1.3)", beat: "ease-out", pulse: "ease-out", drop: "cubic-bezier(.3,1.5,.5,1)", build: "cubic-bezier(.2,.8,.3,1.1)" };
+function playIconTap(svg) {
+  if (!svg || typeof svg.animate !== "function") return;
+  const type = ICO_ANIM[svg.getAttribute("data-ico")] || "pop";
+  try { if (svg.__ico) svg.__ico.cancel(); } catch (e) {}
+  try { svg.__ico = svg.animate(ICO_KEYFRAMES[type], { duration: ICO_TIMING[type], easing: ICO_EASE[type] || "ease-out" }); } catch (e) {}
+}
+
+
 class RootErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -1307,6 +1339,23 @@ function App() {
       navigator.serviceWorker?.removeEventListener?.("controllerchange", updateOfflineReady);
       clearInterval(t);
     };
+  }, []);
+
+  // Tap animation for every icon-bearing button. One delegated capture-phase listener (so it
+  // fires even when the button's handler stops propagation) plays the icon's in-character
+  // Web-Animations keyframe. Skipped under reduced-motion. Mounted once.
+  useEffect(() => {
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onClick = (e) => {
+      if (reduce && reduce.matches) return;
+      const t = e.target;
+      const btn = t && t.closest ? t.closest('button, [role="button"]') : null;
+      if (!btn) return;
+      const svg = btn.querySelector('svg[data-ico]');
+      if (svg) playIconTap(svg);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   // Debounce the main progress write — it fires on every card answer and the prog object
@@ -5213,7 +5262,7 @@ function App() {
                   style={{ background: "transparent", border: "none", cursor: "pointer", padding: "10px 0 6px", display: "grid", justifyItems: "center", gap: 4, color: active ? A : TD, fontFamily: "inherit" }}>
                   {id === "stats"
                     ? <span style={{ display: "inline-flex" }}><ProgressIcon size={21} color={active ? A : TD} active={active} /></span>
-                    : <span className={active ? "ad-tab-pop" : undefined} style={{ display: "inline-flex" }}><Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} /></span>}
+                    : <span style={{ display: "inline-flex" }}><Icon name={icon} size={21} stroke={active ? 2.2 : 1.9} /></span>}
                   <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 0.4 }}>{label}</span>
                 </button>
               );

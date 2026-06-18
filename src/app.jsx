@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.6";
+const APP_VERSION = "2026.06.18.7";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -824,6 +824,15 @@ function playIconTap(svg) {
   try { if (svg.__ico) svg.__ico.cancel(); } catch (e) {}
   try { svg.__ico = svg.animate(ICO_KEYFRAMES[type], { duration: ICO_TIMING[type], easing: ICO_EASE[type] || "ease-out" }); } catch (e) {}
 }
+
+// One-tap session presets for a topic — collapse the multi-axis configurator into three
+// sensible starting shapes (mode · difficulty · length). The full controls stay one tap away
+// under "Advanced". `len` is capped to the topic's available card count at use.
+const SESSION_PRESETS = [
+  { key: "quick",    label: "Quick",    tag: "Recall",  mode: "vocab",      diff: "mixed", level: "all", len: 10, icon: "layers" },
+  { key: "standard", label: "Standard", tag: "Produce", mode: "production", diff: "mixed", level: "all", len: 15, icon: "keyboard" },
+  { key: "deep",     label: "Deep",     tag: "Hard",    mode: "production", diff: "hard",  level: "all", len: 20, icon: "bolt" },
+];
 
 
 class RootErrorBoundary extends React.Component {
@@ -1052,6 +1061,7 @@ function App() {
   const [vis, setVis] = useState(true);
   const [feedback, setFeedback] = useState(null); // "correct" | "wrong" | null — drives answer-feedback animation
   const [showSetup, setShowSetup] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false); // setup modal: full controls collapsed behind presets
   const [setupCat, setSetupCat] = useState(null);
   // Preferred mode persists across reloads: seeded from the onboarding choice, then
   // updated as the learner picks modes, so the hero CTA always reflects their default.
@@ -1357,6 +1367,9 @@ function App() {
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
   }, []);
+
+  // Collapse the setup modal's Advanced controls each time it opens (presets-first).
+  useEffect(() => { if (showSetup) setShowAdvanced(false); }, [showSetup]);
 
   // Debounce the main progress write — it fires on every card answer and the prog object
   // can grow to ~200KB. Writes less often during active sessions, flushes on page leave.
@@ -2273,15 +2286,16 @@ function App() {
   // Apply the "known" suppression and the CEFR level filter to a vocab pool. Both degrade
   // gracefully: if the level filter would leave nothing, it's dropped so a session can still
   // start; if every card is marked known, we fall back to the full pool rather than a dead end.
-  const filterPool = (pool) => {
+  const filterPool = (pool, levelOverride) => {
+    const lvl = levelOverride || setupLevel;
     const notKnown = pool.filter(c => !known.has(knownKey(c._cat, c.de)));
     const base = notKnown.length ? notKnown : pool;
-    if (setupLevel === "all") return base;
-    const leveled = base.filter(c => cardLevel(c) === setupLevel);
+    if (lvl === "all") return base;
+    const leveled = base.filter(c => cardLevel(c) === lvl);
     return leveled.length ? leveled : base;
   };
 
-  const startSession = (cat, m, count) => {
+  const startSession = (cat, m, count, opts = {}) => {
     setMode(m); setShowSetup(false); resetSessionState();
     // Remember this session for one-tap resume
     const label = cat === "__all__" ? "All Categories" : cat === "__grammar__" ? "Grammar Cloze" : cat === "__verb__" ? "Verb Trainer" : cat === "__sentence__" ? "Sentence Builder" : cat === "__imperativ__" ? "Imperative" : cat === "__listening__" ? "Listening Practice" : cat;
@@ -2292,9 +2306,10 @@ function App() {
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories" : cat);
       const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
-      const pool = filterPool(rawPool);
+      // Presets pass explicit diff/level so a one-tap start isn't raced by async setState.
+      const pool = filterPool(rawPool, opts.level);
       const pk = c => `${m}::${c._cat}::${c.de}`;
-      const getMult = c => sessionMultiplier(prog[pk(c)], sessDiff);
+      const getMult = c => sessionMultiplier(prog[pk(c)], opts.diff || sessDiff);
       const { seeded, rest } = seedDueFirst(pool, count, c => dueCards.has(pk(c)));
       const need = count - seeded.length;
       // New-card pacing: a session must not flood the coming days' review queue (the
@@ -3489,7 +3504,30 @@ function App() {
           </div>
 
           <div style={{ padding: "0 18px 14px", overflowY: "auto" }}>
-            {setupIsLibrary && (() => {
+            {/* Presets: three one-tap session shapes. The full configurator lives under Advanced
+                so a session starts in one tap instead of after five separate choices. */}
+            {setupIsLibrary && (
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 8 }}>
+                  {SESSION_PRESETS.map(p => {
+                    const len = Math.min(p.len, maxC);
+                    return (
+                      <button key={p.key} onClick={() => { setSetupMode(p.mode); setSessDiff(p.diff); setSessLevel(p.level); setSessLen(len); startSession(setupCat, p.mode, len, { diff: p.diff, level: p.level }); }}
+                        style={{ display: "grid", justifyItems: "center", gap: 6, padding: "13px 6px 11px", borderRadius: 13, cursor: "pointer", fontFamily: "inherit", background: "linear-gradient(180deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D` }}>
+                        <IconBadge name={p.icon} size={30} color={A} bg={`${A}12`} />
+                        <span style={{ fontSize: 12.5, fontWeight: 900, color: T }}>{p.label}</span>
+                        <span style={{ fontSize: 9.5, fontWeight: 800, color: TD, letterSpacing: 0.2 }}>{p.tag} · {len}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <button onClick={() => setShowAdvanced(v => !v)} aria-expanded={showAdvanced}
+                  style={{ width: "100%", marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 11.5, fontWeight: 800, letterSpacing: 0.3, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "6px 0" }}>
+                  {showAdvanced ? "Hide options" : "Advanced options"} <Icon name="chevron" size={13} style={{ transform: showAdvanced ? "rotate(180deg)" : "none", transition: "transform .18s" }} />
+                </button>
+              </div>
+            )}
+            {setupIsLibrary && showAdvanced && (() => {
               // Two distinct things, no longer a flat list: "Review this topic" (vocab modes)
               // and "Grammar drills" (article/plural, scoped to THIS topic's nouns — the
               // category-specific complement to the all-topics Train tab).
@@ -3520,7 +3558,7 @@ function App() {
               );
             })()}
 
-            {setupMode === "audio" && setupIsLibrary && (
+            {setupMode === "audio" && setupIsLibrary && showAdvanced && (
               <>
                 <div style={{ marginBottom: 14 }}>
                   <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Order</div>
@@ -3601,7 +3639,7 @@ function App() {
               </div>
             )}
 
-            {(((setupMode === "audio" || setupMode === "dictation") && setupIsLibrary) || setupCat === "__listening__") && deVoices.length > 1 && (
+            {(((setupMode === "audio" || setupMode === "dictation") && setupIsLibrary && showAdvanced) || setupCat === "__listening__") && deVoices.length > 1 && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>German voice</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -3628,7 +3666,7 @@ function App() {
               </div>
             )}
 
-            {setupIsLibrary && (
+            {setupIsLibrary && showAdvanced && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Difficulty</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
@@ -3639,7 +3677,7 @@ function App() {
               </div>
             )}
 
-            {setupIsLibrary && (
+            {setupIsLibrary && showAdvanced && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Level</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
@@ -3650,6 +3688,7 @@ function App() {
               </div>
             )}
 
+            {(!setupIsLibrary || showAdvanced) && (<>
             <div style={{ marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 9 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8 }}>Cards</div>
@@ -3670,12 +3709,13 @@ function App() {
               </div>
             </div>
             {sessLen > 40 && <p style={{ fontSize: 11, color: A, margin: "0 0 12px", lineHeight: 1.5, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, borderLeft: `3px solid ${A}` }}>Long session. Shorter repeated sessions build habit faster than one marathon.</p>}
+            </>)}
           </div>
 
-          <div style={{ padding: "12px 18px max(18px, env(safe-area-inset-bottom))", borderTop: `1px solid ${B}`, background: S, boxShadow: "0 -14px 22px rgba(0,0,0,0.28)" }}>
+          {(!setupIsLibrary || showAdvanced) && <div style={{ padding: "12px 18px max(18px, env(safe-area-inset-bottom))", borderTop: `1px solid ${B}`, background: S, boxShadow: "0 -14px 22px rgba(0,0,0,0.28)" }}>
             <div style={{ fontSize: 10, color: TD, marginBottom: 10, textAlign: "center" }}>Failed cards repeat until cleared.</div>
             <Btn bg={A} color="#0A0A0A" onClick={() => { const m = setupCat === "__grammar__" ? "cloze" : setupCat === "__verb__" ? "verb" : setupCat === "__sentence__" ? "sentence" : setupCat === "__imperativ__" ? "imperativ" : setupCat === "__listening__" ? "listening" : setupMode; startSession(setupCat, m, sessLen); }} style={{ fontFamily: FN, fontSize: 16 }}>Start session</Btn>
-          </div>
+          </div>}
         </div>
       </div>}
       {/* ── SETTINGS MODAL ── */}

@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.94";
+const APP_VERSION = "2026.06.11.95";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4387,13 +4387,13 @@ function App() {
       {/* Production/dictation cards size to content (tall answered summary scrolls the page);
           the vocab/recall FLIP card needs a fixed-height container so its 1-1-auto, absolutely-
           positioned faces have a height to fill — minHeight alone collapses it to a strip. */}
-      {screen === "cards" && card && <div style={{ padding: "0 20px", minHeight: DVH, height: (mode === "production" || mode === "dictation") ? undefined : DVH, display: "flex", flexDirection: "column" }}>
+      {screen === "cards" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         {(mode === "production" || mode === "dictation") ? (
-          <div className={cardCls} style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", opacity: vis ? 1 : 0 }}>
-            <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", maxHeight: answered ? "none" : 260, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+          <div className={cardCls} style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
+            <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", minHeight: 160, marginBottom: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               {answered && (inputResult === "exact" || inputResult === "capital" || inputResult === "eszett") && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
               {mode === "dictation" ? (
@@ -4426,7 +4426,7 @@ function App() {
                 ) : <button onClick={() => setShowEx(true)} style={{ marginTop: 10, background: "transparent", border: "none", color: TD, fontSize: 11, cursor: "pointer", fontWeight: 600, opacity: 0.7, letterSpacing: 1.2, padding: "6px 8px", }}>Show example</button>}
               </>}
             </div>
-            <div style={{ paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
+            <div style={{ marginTop: answered ? "auto" : undefined, paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
               {!answered ? <><UmlautBar onInsert={insertChar} /><div style={{ display: "flex", gap: 8 }}>
                 <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitTyped(); }}
                   placeholder="Type in German…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -4490,7 +4490,7 @@ function App() {
       </div>}
 
       {/* ── DRILL SCREEN (article/cloze/verb) ── */}
-      {screen === "drill" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+      {screen === "drill" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
@@ -4718,7 +4718,7 @@ function App() {
       </div>}
 
       {/* ── SENTENCE BUILDER ── */}
-      {screen === "sentence" && card && <div style={{ padding: "0 20px", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+      {screen === "sentence" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
         <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>

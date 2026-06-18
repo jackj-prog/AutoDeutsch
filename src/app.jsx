@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.95";
+const APP_VERSION = "2026.06.11.96";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2451,27 +2451,29 @@ function App() {
 
   // Card flip handlers
   const handleFlipAnswer = (correct) => { if (answered) return; setAnswered(true); record(correct, cards[idx], revealElapsed || (Date.now() - tStart)); };
-  const revealCard = () => {
-    if (!flipped && vis) {
-      setRevealElapsed(Date.now() - tStart);
-      setFlipped(true);
-      if (cards[idx]?.de) speak(cards[idx].de);
-    }
+  // ── Recall swipe model ──
+  // The German prompt is graded by the FIRST gesture, before any reveal:
+  //   swipe right / → / 2  = "I know it"  → count correct, card flies off, next card
+  //   swipe left  / ← / tap = "I don't know" → count wrong, card flips to the answer
+  // Needing the answer IS the demote signal, so revealing always counts wrong. Once
+  // revealed, the only thing left is to move on, so any swipe (or Enter) advances.
+  const doReveal = () => {
+    if (flipped || !vis || answered || navLockRef.current) return;
+    setRevealElapsed(Date.now() - tStart);
+    handleFlipAnswer(false);
+    setFlipped(true);
+    if (cards[idx]?.de) speak(cards[idx].de);
   };
   const handleRevealKey = e => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      revealCard();
-    }
+    if (flipped) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); nextCard(); } return; }
+    if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); knowCard(); }
+    else if (e.key === "ArrowLeft" || e.key === "1" || e.key === "Enter" || e.key === " ") { e.preventDefault(); doReveal(); }
   };
 
-  // ── Tinder-style swipe grading on the flip card ──
-  // Once the answer is revealed, dragging the card right grades "Got it", left "Again",
-  // and auto-advances — one gesture instead of two taps. The drag is applied
-  // imperatively (ref styles), so pointermove never causes a React re-render.
+  // Drag is applied imperatively (ref styles), so pointermove never causes a re-render.
   const swipeRef = useRef(null);
-  const swipeLeftRef = useRef(null);   // "AGAIN" stamp, fades in while dragging left
-  const swipeRightRef = useRef(null);  // "GOT IT" stamp, fades in while dragging right
+  const swipeLeftRef = useRef(null);   // left stamp ("REVEAL" on the front, "NEXT" once flipped)
+  const swipeRightRef = useRef(null);  // right stamp ("GOT IT" / "NEXT")
   const swipeMovedRef = useRef(false); // suppresses click-to-reveal right after a drag
   const swipeDrag = useRef({ active: false, startX: 0, startY: 0, dx: 0 });
   // pointermove can fire several times per frame; we only stash the latest dx and apply
@@ -2496,9 +2498,39 @@ function App() {
     if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
     if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
   };
+  // Fly the flip card off-screen, then run `after` (typically nextCard).
+  const flyCardOff = (right, after) => {
+    if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
+    const el = swipeRef.current;
+    if (el) {
+      el.style.willChange = "transform";
+      el.style.transition = "transform .26s cubic-bezier(.4,.0,.7,.2), opacity .26s ease-in";
+      el.style.transform = `translate3d(${right ? 640 : -640}px,0,0) rotate(${right ? 18 : -18}deg)`;
+      el.style.opacity = "0";
+    }
+    const stamp = right ? swipeRightRef.current : swipeLeftRef.current;
+    if (stamp) stamp.style.opacity = 1;
+    // Reset happens inside nextCard's hidden window (not here): clearing the transform while
+    // the card is still visible would snap the old card back to centre for one frame.
+    window.setTimeout(after, 240);
+  };
+  const snapCardBack = () => {
+    const el = swipeRef.current;
+    if (el) { el.style.transition = "transform .2s cubic-bezier(.22,.61,.36,1)"; el.style.transform = "translate3d(0,0,0)"; el.style.opacity = ""; }
+    if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
+    if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
+    window.setTimeout(() => { const e2 = swipeRef.current; if (e2 && !swipeDrag.current.active) e2.style.willChange = ""; }, 220);
+  };
+  // Front, "I know it": grade correct and fly the card away without ever revealing.
+  const knowCard = () => {
+    if (flipped || answered || !vis || navLockRef.current) return;
+    handleFlipAnswer(true);
+    flyCardOff(true, nextCard);
+  };
   const onCardPointerDown = (e) => {
     swipeMovedRef.current = false;
-    if (!flipped || answered) return;
+    if (navLockRef.current) return;
+    if (answered && !flipped) return; // mid know-fly-off — nothing to grab
     swipeDrag.current = { active: true, startX: e.clientX, startY: e.clientY, dx: 0 };
     const el = swipeRef.current;
     if (el) { el.style.transition = "none"; el.style.willChange = "transform"; } // promote to its own layer up front
@@ -2513,42 +2545,40 @@ function App() {
     s.dx = dx;
     if (!swipeRafRef.current) swipeRafRef.current = requestAnimationFrame(applySwipeFrame);
   };
-  // Single grading path for flip cards — used by the swipe release, the small
-  // Again/Got-it chips, and the 1/2 keyboard shortcuts. Flies the card off,
-  // records the answer and auto-advances; there is no post-answer stop anymore.
-  const swipeGrade = (correct) => {
-    if (!flipped || answered) return;
-    if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
-    const el = swipeRef.current;
-    if (el) {
-      el.style.willChange = "transform";
-      el.style.transition = "transform .26s cubic-bezier(.4,.0,.7,.2), opacity .26s ease-in";
-      el.style.transform = `translate3d(${correct ? 620 : -620}px,0,0) rotate(${correct ? 18 : -18}deg)`;
-      el.style.opacity = "0";
-    }
-    const stamp = correct ? swipeRightRef.current : swipeLeftRef.current;
-    if (stamp) stamp.style.opacity = 1;
-    handleFlipAnswer(correct);
-    // Reset happens inside nextCard's hidden window (not here): clearing the transform while
-    // the card is still visible would snap the old card back to centre for one frame.
-    window.setTimeout(() => { nextCard(); }, 240);
-  };
   const onCardPointerUp = () => {
     const s = swipeDrag.current;
     if (!s.active) return;
     s.active = false;
     if (swipeRafRef.current) { cancelAnimationFrame(swipeRafRef.current); swipeRafRef.current = 0; }
-    if (swipeMovedRef.current && Math.abs(s.dx) > 90 && flipped && !answered) {
-      swipeGrade(s.dx > 0);
+    const past = swipeMovedRef.current && Math.abs(s.dx) > 90;
+    if (past && !navLockRef.current) {
+      if (flipped) flyCardOff(s.dx > 0, nextCard);  // revealed → only action is advance
+      else if (s.dx > 0) knowCard();                 // front, right → "I know it"
+      else { doReveal(); snapCardBack(); }           // front, left → reveal the answer
     } else {
-      const el = swipeRef.current;
-      if (el) { el.style.transition = "transform .2s cubic-bezier(.22,.61,.36,1)"; el.style.transform = "translate3d(0,0,0)"; }
-      if (swipeLeftRef.current) swipeLeftRef.current.style.opacity = 0;
-      if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
-      // Release the compositor hint once the spring-back settles (keeping will-change
-      // permanently would waste a layer per idle card).
-      window.setTimeout(() => { const e2 = swipeRef.current; if (e2 && !swipeDrag.current.active) e2.style.willChange = ""; }, 220);
+      snapCardBack();
     }
+  };
+  // ── Swipe-to-advance for the non-flip cards (production / drills / sentence) ──
+  // Once a card is answered the only thing left to do is move on, so a horizontal swipe
+  // flings it away (the same flyOff exit the Next button triggers) — matching the Recall
+  // feel without a second tap. Gesture-only: a tap (no travel) still falls through to the
+  // button underneath, so Hören / Show example / Next keep working.
+  const advStartRef = useRef(null);
+  const onAdvPointerDown = (e) => { advStartRef.current = { x: e.clientX, y: e.clientY, captured: false }; };
+  // Capture the pointer once a real horizontal travel begins so the release still lands on
+  // this card even if the finger/cursor has left it (mouse has no implicit capture). Taps
+  // never travel, so they never capture — buttons underneath keep working.
+  const onAdvPointerMove = (e) => {
+    const s = advStartRef.current;
+    if (!s || s.captured) return;
+    if (Math.abs(e.clientX - s.x) > 12) { s.captured = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {} }
+  };
+  const onAdvPointerUp = (ready, advanceFn) => (e) => {
+    const s = advStartRef.current; advStartRef.current = null;
+    if (!s || !ready || navLockRef.current) return;
+    const dx = e.clientX - s.x, dy = e.clientY - s.y;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) advanceFn();
   };
   // ── Auto-advance on exact-correct answers ──
   // A correct answer needs no review stop, so the card flies away on its own — but not
@@ -2724,14 +2754,16 @@ function App() {
       if (inField) return;
       if (e.key === " ") {
         if (screen === "audio") { e.preventDefault(); audioPlaying ? audioPause() : audioResume(); return; }
-        // The reveal panel handles its own Space when focused (role=button) — skip to avoid double fire.
+        // The card handles its own Space when focused (role=button) — skip to avoid double fire.
         const onRevealEl = e.target && e.target.getAttribute && e.target.getAttribute("role") === "button";
-        if (flipMode && !flipped && !onRevealEl) { e.preventDefault(); revealCard(); }
+        if (flipMode && flipped) { e.preventDefault(); nextCard(); }            // revealed → advance
+        else if (flipMode && !answered && !onRevealEl) { e.preventDefault(); doReveal(); }
         return;
       }
-      if (flipMode && flipped && !answered) {
-        if (e.key === "1") { e.preventDefault(); swipeGrade(false); }
-        else if (e.key === "2") { e.preventDefault(); swipeGrade(true); }
+      // Front of a Recall card: → / 2 = "I know it", ← / 1 = reveal (counts wrong).
+      if (flipMode && !flipped && !answered) {
+        if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); knowCard(); }
+        else if (e.key === "ArrowLeft" || e.key === "1") { e.preventDefault(); doReveal(); }
         return;
       }
       if (screen === "drill" && !answered && card) {
@@ -4392,7 +4424,7 @@ function App() {
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         {(mode === "production" || mode === "dictation") ? (
-          <div className={cardCls} style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
+          <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextCard)} style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", minHeight: 160, marginBottom: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
               {answered && (inputResult === "exact" || inputResult === "capital" || inputResult === "eszett") && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
@@ -4441,19 +4473,23 @@ function App() {
           </div>
         ) : (
           <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Reveal answer" : "Answer revealed"} onKeyDown={handleRevealKey}
-              onClick={() => { if (swipeMovedRef.current) return; revealCard(); }}
+            <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Swipe right if you know it, left to reveal" : "Answer revealed"} onKeyDown={handleRevealKey}
+              onClick={() => { if (swipeMovedRef.current) return; doReveal(); }}
               onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
-              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: !flipped ? "pointer" : "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
+              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
               {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
-              <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>GOT IT</div>
-              <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${R}`, color: "#F87171", borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>AGAIN</div>
+              <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "GOT IT"}</div>
+              <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${flipped ? G : A}`, color: flipped ? "#86EFAC" : A, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "REVEAL"}</div>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
-                  <div style={{ position: "absolute", bottom: 18, fontSize: 11, color: TD, letterSpacing: 1, fontWeight: 600, opacity: 0.65 }}>Tap to reveal</div>
+                  <div style={{ position: "absolute", bottom: 18, display: "flex", alignItems: "center", gap: 14, fontSize: 11, letterSpacing: 0.5, fontWeight: 700, opacity: 0.75 }}>
+                    <span style={{ color: A }}>← reveal</span>
+                    <span style={{ color: TD, opacity: 0.5 }}>swipe</span>
+                    <span style={{ color: G }}>know →</span>
+                  </div>
                 </div>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
@@ -4476,14 +4512,11 @@ function App() {
               </div>
             </div>
             <div style={{ paddingTop: 18, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
-              {/* Grading is swipe-first: the chips are a quiet fallback (desktop, accessibility). */}
-              {flipped && <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, opacity: answered ? 0.35 : 1, transition: "opacity .15s" }}>
-                <button onClick={() => swipeGrade(false)} disabled={answered} style={{ background: "transparent", border: `1px solid ${R}3D`, borderRadius: 999, padding: "10px 18px", color: "#F87171", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 7 }}><Icon name="arrowLeft" size={14} /> Again</button>
-                <span style={{ fontSize: 10, color: TD, fontWeight: 700, letterSpacing: 1.4, textTransform: "uppercase", opacity: 0.65 }}>swipe</span>
-                <button onClick={() => swipeGrade(true)} disabled={answered} style={{ background: "transparent", border: `1px solid ${G}44`, borderRadius: 999, padding: "10px 18px", color: "#86EFAC", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 7 }}>Got it <Icon name="arrowRight" size={14} /></button>
-              </div>}
-              {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Think of the answer, then tap</div>}
-              {KeyHint({ text: "Space to reveal · 1 Again · 2 Got it" })}
+              {/* Revealed = you didn't know it (already counted wrong); the only step left is
+                  to move on, so swipe in any direction or tap Next. */}
+              {flipped && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => nextCard()}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
+              {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Swipe <span style={{ color: G, fontWeight: 700 }}>right if you know it</span>, <span style={{ color: A, fontWeight: 700 }}>left to reveal</span></div>}
+              {KeyHint({ text: flipped ? "Enter or swipe to continue" : "→ know · ← reveal" })}
             </div>
           </div>
         )}
@@ -4494,7 +4527,7 @@ function App() {
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
-        <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
+        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextDrill)} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
           <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
             {answeredCorrect && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
@@ -4721,7 +4754,7 @@ function App() {
       {screen === "sentence" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
-        <div className={cardCls} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
+        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(sbChecked, sbNext)} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
           <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: CARD_ACCENT, opacity: 0.7 }} />
             <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Build the sentence</div>

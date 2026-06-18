@@ -167,8 +167,8 @@ async function gotoScreen(page, screen) {
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }
   if (screen === "libcat") { await clickText(page, "Library"); await new Promise(r => setTimeout(r, 300)); await clickText(page, "Greetings & Basics"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "resultswin") {
-    // Recall session graded all-correct (reveal → Got it) to reach the flawless results
-    // celebration (Perfect! + confetti).
+    // Recall session graded all-correct via the "I know it" gesture (→ / ArrowRight on the
+    // German front) to reach the flawless results celebration (Perfect! + confetti).
     await clickText(page, "Custom session");
     await clickText(page, "Recall");
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => (b.textContent || "").trim() === "5")?.click());
@@ -176,12 +176,10 @@ async function gotoScreen(page, screen) {
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 400));
     for (let k = 0; k < 24; k++) {
-      const done = await page.evaluate(() => /accuracy/i.test(document.body.innerText) && !document.querySelector('[aria-label="Reveal answer"]'));
+      const done = await page.evaluate(() => /accuracy/i.test(document.body.innerText));
       if (done) break;
-      await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
-      await new Promise(r => setTimeout(r, 180));
-      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /Got it/.test(b.textContent || ""))?.click());
-      await new Promise(r => setTimeout(r, 260));
+      await page.keyboard.press("ArrowRight"); // "I know it" → correct + fly off + next
+      await new Promise(r => setTimeout(r, 320));
     }
     await new Promise(r => setTimeout(r, 250));
     return;
@@ -217,6 +215,15 @@ async function gotoScreen(page, screen) {
       if (typed) await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
       else await page.evaluate(() => { const g = document.querySelector('[style*="grid-template-columns"]'); const b = g && g.querySelector("button"); if (b) b.click(); });
       await new Promise(r => setTimeout(r, 600));
+      if (process.env.SHOOT_SWIPEADV) {
+        // Swipe the answered card horizontally and confirm it advances (requirement A).
+        const before = await page.evaluate(() => (document.body.innerText.match(/(\d+)\s*\/\s*\d+/) || [])[1]);
+        const box = await page.evaluate(() => { const c = document.querySelector('.ad-elev'); if (!c) return null; const r = c.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; });
+        if (box) { await page.mouse.move(box.x, box.y); await page.mouse.down(); for (let i = 1; i <= 8; i++) { await page.mouse.move(box.x + i * 26, box.y); await new Promise(r => setTimeout(r, 16)); } await page.mouse.up(); }
+        await new Promise(r => setTimeout(r, 600));
+        const after = await page.evaluate(() => (document.body.innerText.match(/(\d+)\s*\/\s*\d+/) || [])[1]);
+        console.log(`swipe-advance: card ${before} -> ${after}`);
+      }
     }
     return;
   }
@@ -260,12 +267,12 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 700));
   }
   if (screen === "recall") {
-    // Custom session → Recall (DE→EN flip) → Start, then reveal the first card so the
-    // swipe chips + verdict stamps are visible.
+    // Custom session → Recall (DE→EN flip) → Start, then reveal the first card (tap = "I
+    // don't know") so the answer face + Next are visible.
     await clickText(page, "Custom session");
     await clickText(page, "Recall");
     await clickText(page, "Start session");
-    await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
+    await page.evaluate(() => (document.querySelector('[aria-label^="Swipe right"]') || document.querySelector('[role="button"]'))?.click());
     await new Promise(r => setTimeout(r, 700));
   }
   if (screen === "recallfront") {
@@ -276,15 +283,13 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 600));
   }
   if (screen === "recallswipe") {
-    // Reveal, then drag the card right and hold — surfaces the GOT IT verdict stamp mid-swipe.
+    // Drag the German FRONT right and hold — surfaces the green GOT IT ("I know it") stamp.
     await clickText(page, "Custom session");
     await clickText(page, "Recall");
     await clickText(page, "Start session");
-    await new Promise(r => setTimeout(r, 400));
-    await page.evaluate(() => document.querySelector('[aria-label="Reveal answer"]')?.click());
-    await new Promise(r => setTimeout(r, 650));
+    await new Promise(r => setTimeout(r, 500));
     const box = await page.evaluate(() => {
-      const el = document.querySelector('[aria-label="Answer revealed"]');
+      const el = document.querySelector('[aria-label^="Swipe right"]') || document.querySelector('[role="button"]');
       if (!el) return null;
       const r = el.getBoundingClientRect();
       return { x: r.x + r.width / 2, y: r.y + r.height / 2 };

@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.97";
+const APP_VERSION = "2026.06.11.98";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3193,7 +3193,7 @@ function App() {
         .ad-pop { animation: ad-pop 420ms ease-out; }
         .ad-card-enter { opacity: 1; transform: translateX(0); transition: opacity .18s ease, transform .26s cubic-bezier(.22,.61,.36,1); }
         .ad-card-enter.is-out { opacity: 0; transform: translateX(26px); }
-        .ad-card-enter.is-fly { opacity: 0; transform: translateX(118%) rotate(5deg); transition: opacity .22s ease-in, transform .3s cubic-bezier(.4,0,.7,.2); }
+        .ad-card-enter.is-fly { opacity: 0; transform: translateX(118%) rotate(5deg); transition: opacity .14s ease-in, transform .3s cubic-bezier(.4,0,.7,.2); }
         .ad-spark { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ad-draw 950ms ease-out forwards; }
         .ad-input { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
         .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
@@ -4477,11 +4477,10 @@ function App() {
             </div>
           </div>
         ) : (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", opacity: vis ? 1 : 0, transition: "opacity 0.15s" }}>
             <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Swipe right if you got it, left if not sure" : "Answer revealed"} onKeyDown={handleRevealKey}
-              onClick={() => { if (swipeMovedRef.current) return; notSure(); }}
               onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
-              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
+              style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", position: "relative", touchAction: "pan-y" }}>
               {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
               <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "GOT IT"}</div>
               <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${flipped ? G : A}`, color: flipped ? "#86EFAC" : A, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "NOT SURE"}</div>

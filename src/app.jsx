@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.92";
+const APP_VERSION = "2026.06.11.93";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2597,6 +2597,19 @@ function App() {
     speak(card.pl);
     if (result === "exact") scheduleAutoAdvance(nextDrill);
   };
+  // "I don't know" on a typed drill (plural / cloze / imperativ / typed-verb): reveal the
+  // answer and count it wrong — the same honest demote as revealTyped on production. Without
+  // this the only way to surrender a typed drill was to type gibberish, which the user hit.
+  const revealDrill = () => {
+    if (answered) return;
+    const card = cards[idx];
+    setInput(""); setInputResult("wrong"); setAnswered(true);
+    record(false, card, Date.now() - tStart);
+    if (mode === "plural") speak(card.pl);
+    else if (mode === "imperativ") speak(card[card._person]);
+    else if (mode === "verb" && card.pron && card.correct) speak(`${card.pron} ${card.correct}`);
+    // cloze stays silent, matching submitCloze.
+  };
 
   const nextCard = () => {
     cancelAutoAdvance();
@@ -4478,7 +4491,7 @@ function App() {
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <>
                 <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: inputResult === "wrong" ? R : G }}>{card.pl}</div>
-                {inputResult === "wrong" && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
+                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
@@ -4498,7 +4511,7 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Fill the gap</div>
               <div style={{ fontFamily: FN, fontSize: 20, textAlign: "center", lineHeight: 1.4 }}>{answered ? card.q.replace("___", card.a) : card.q}</div>
               {answered && <div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
-                {inputResult === "wrong" ? <><span style={{ color: R }}>Your answer: {input}</span><br /><span style={{ color: G }}>Correct: {card.a}</span><br /></> :
+                {inputResult === "wrong" ? <>{input && <><span style={{ color: R }}>Your answer: {input}</span><br /></>}<span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   inputResult === "capital" ? <span style={{ color: A }}>✓ Right — mind the capitalisation ({card.a})</span> :
                   inputResult === "eszett" ? <span style={{ color: A }}>✓ Right — mind ß vs ss ({card.a})</span> :
                   <span style={{ color: G }}>Correct! ✓</span>}{" "}{card.h}
@@ -4535,7 +4548,7 @@ function App() {
                     <span style={{ color: card._person === "sie" ? (inputResult === "wrong" ? R : G) : T, fontWeight: card._person === "sie" ? 700 : 500 }}>{card.sie}{card._person === "sie" ? " ←" : ""}</span>
                   </div>
                 </div>
-                {inputResult === "wrong" && <div style={{ fontSize: 11, color: R, marginTop: 6 }}>You: {input}</div>}
+                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: R, marginTop: 6 }}>You: {input}</div>}
                 <div style={{ fontSize: 11, color: TD, marginTop: 8, fontStyle: "italic", textAlign: "center", padding: "0 6px" }}>„{card.ex}"</div>
                 <div style={{ fontSize: 11, color: BL, marginTop: 4, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}><Icon name="target" size={12} /> {card.hint}</div>
                 <SpeakBtn text={card[card._person]} />
@@ -4591,30 +4604,33 @@ function App() {
 
           {mode === "cloze" && !answered && (
             <><UmlautBar onInsert={insertChar} />
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitCloze(); }}
                 placeholder="Type answer…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitCloze} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div></>
+            </div>
+            <button type="button" onClick={revealDrill} style={{ marginBottom: 16, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
           {mode === "plural" && !answered && (
             <><UmlautBar onInsert={insertChar} />
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitPlural(); }}
                 placeholder="die …" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (input.trim()) submitPlural(); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div></>
+            </div>
+            <button type="button" onClick={revealDrill} style={{ marginBottom: 16, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
           {mode === "imperativ" && !answered && (
             <><UmlautBar onInsert={insertChar} />
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
                 placeholder={card._person === "sie" ? "e.g. kommen Sie" : "Type the imperative…"} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; const target = card[card._person]; const result = checkMatch(input, target); setInputResult(result); setAnswered(true); record(result !== "wrong", card, Date.now() - tStart); speak(target); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div></>
+            </div>
+            <button type="button" onClick={revealDrill} style={{ marginBottom: 16, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
           {mode === "listening" && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
@@ -4658,12 +4674,13 @@ function App() {
           )}
           {mode === "verb" && !answered && !card.opts && (
             <><UmlautBar onInsert={insertChar} />
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
               <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) { setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); } }}
                 placeholder={`${card.pron} …`} autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                 style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
               <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={() => { if (!input.trim()) return; setAnswered(true); const result = checkMatch(input, card.correct); setInputResult(result); record(result !== "wrong", card, Date.now() - tStart); if (result === "exact") scheduleAutoAdvance(nextDrill); }} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
-            </div></>
+            </div>
+            <button type="button" onClick={revealDrill} style={{ width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
           <div style={{ marginTop: "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextDrill}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}

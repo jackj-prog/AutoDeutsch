@@ -199,6 +199,13 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 300));
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 700));
+    if (process.env.SHOOT_REVEAL) {
+      // Surrender a typed drill via "I don't know — reveal answer" to verify the revealed
+      // state (no dangling "You:" line, correct answer shown, advance enabled).
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /reveal answer/i.test(b.textContent || ""))?.click());
+      await new Promise(r => setTimeout(r, 600));
+      return;
+    }
     if (process.env.SHOOT_ANSWER) {
       // Reveal the answered state (grammar note): type into a typed drill, else click the
       // first multiple-choice option.

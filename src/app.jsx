@@ -594,7 +594,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.11.96";
+const APP_VERSION = "2026.06.11.97";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2453,21 +2453,32 @@ function App() {
   const handleFlipAnswer = (correct) => { if (answered) return; setAnswered(true); record(correct, cards[idx], revealElapsed || (Date.now() - tStart)); };
   // ── Recall swipe model ──
   // The German prompt is graded by the FIRST gesture, before any reveal:
-  //   swipe right / → / 2  = "I know it"  → count correct, card flies off, next card
-  //   swipe left  / ← / tap = "I don't know" → count wrong, card flips to the answer
-  // Needing the answer IS the demote signal, so revealing always counts wrong. Once
-  // revealed, the only thing left is to move on, so any swipe (or Enter) advances.
-  const doReveal = () => {
+  //   swipe right / → / 2  = "got it"   → count correct
+  //   swipe left  / ← / tap = "not sure" → count wrong
+  // What the gesture DOES depends on the auto-advance setting:
+  //   • auto-advance ON  → a correct "got it" flies straight off (no summary you'd skim
+  //     past); "not sure" flips to the answer to study.
+  //   • auto-advance OFF → BOTH directions flip to the answer, so you always see the
+  //     summary (the setting is the toggle for "show me my correct ones too").
+  // Either way the grade is the gesture's direction, and once revealed the only step
+  // left is to move on, so any swipe (or Enter) advances.
+  const revealGraded = (correct) => {
     if (flipped || !vis || answered || navLockRef.current) return;
     setRevealElapsed(Date.now() - tStart);
-    handleFlipAnswer(false);
+    handleFlipAnswer(correct);
     setFlipped(true);
     if (cards[idx]?.de) speak(cards[idx].de);
   };
+  const notSure = () => revealGraded(false);            // left / tap — always flips, counts wrong
+  const gotIt = () => {                                  // right — correct; flies off only if auto-advancing
+    if (flipped || answered || !vis || navLockRef.current) return;
+    if (autoAdvance) { handleFlipAnswer(true); flyCardOff(true, nextCard); }
+    else revealGraded(true);
+  };
   const handleRevealKey = e => {
     if (flipped) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); nextCard(); } return; }
-    if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); knowCard(); }
-    else if (e.key === "ArrowLeft" || e.key === "1" || e.key === "Enter" || e.key === " ") { e.preventDefault(); doReveal(); }
+    if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); gotIt(); }
+    else if (e.key === "ArrowLeft" || e.key === "1" || e.key === "Enter" || e.key === " ") { e.preventDefault(); notSure(); }
   };
 
   // Drag is applied imperatively (ref styles), so pointermove never causes a re-render.
@@ -2521,12 +2532,6 @@ function App() {
     if (swipeRightRef.current) swipeRightRef.current.style.opacity = 0;
     window.setTimeout(() => { const e2 = swipeRef.current; if (e2 && !swipeDrag.current.active) e2.style.willChange = ""; }, 220);
   };
-  // Front, "I know it": grade correct and fly the card away without ever revealing.
-  const knowCard = () => {
-    if (flipped || answered || !vis || navLockRef.current) return;
-    handleFlipAnswer(true);
-    flyCardOff(true, nextCard);
-  };
   const onCardPointerDown = (e) => {
     swipeMovedRef.current = false;
     if (navLockRef.current) return;
@@ -2553,8 +2558,8 @@ function App() {
     const past = swipeMovedRef.current && Math.abs(s.dx) > 90;
     if (past && !navLockRef.current) {
       if (flipped) flyCardOff(s.dx > 0, nextCard);  // revealed → only action is advance
-      else if (s.dx > 0) knowCard();                 // front, right → "I know it"
-      else { doReveal(); snapCardBack(); }           // front, left → reveal the answer
+      else if (s.dx > 0) gotIt();                    // front, right → "got it"
+      else { notSure(); snapCardBack(); }            // front, left → "not sure"
     } else {
       snapCardBack();
     }
@@ -2757,13 +2762,13 @@ function App() {
         // The card handles its own Space when focused (role=button) — skip to avoid double fire.
         const onRevealEl = e.target && e.target.getAttribute && e.target.getAttribute("role") === "button";
         if (flipMode && flipped) { e.preventDefault(); nextCard(); }            // revealed → advance
-        else if (flipMode && !answered && !onRevealEl) { e.preventDefault(); doReveal(); }
+        else if (flipMode && !answered && !onRevealEl) { e.preventDefault(); notSure(); }
         return;
       }
-      // Front of a Recall card: → / 2 = "I know it", ← / 1 = reveal (counts wrong).
+      // Front of a Recall card: → / 2 = "got it", ← / 1 = "not sure".
       if (flipMode && !flipped && !answered) {
-        if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); knowCard(); }
-        else if (e.key === "ArrowLeft" || e.key === "1") { e.preventDefault(); doReveal(); }
+        if (e.key === "ArrowRight" || e.key === "2") { e.preventDefault(); gotIt(); }
+        else if (e.key === "ArrowLeft" || e.key === "1") { e.preventDefault(); notSure(); }
         return;
       }
       if (screen === "drill" && !answered && card) {
@@ -4473,22 +4478,22 @@ function App() {
           </div>
         ) : (
           <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Swipe right if you know it, left to reveal" : "Answer revealed"} onKeyDown={handleRevealKey}
-              onClick={() => { if (swipeMovedRef.current) return; doReveal(); }}
+            <div ref={swipeRef} role={!flipped ? "button" : undefined} tabIndex={!flipped && vis ? 0 : -1} aria-label={!flipped ? "Swipe right if you got it, left if not sure" : "Answer revealed"} onKeyDown={handleRevealKey}
+              onClick={() => { if (swipeMovedRef.current) return; notSure(); }}
               onPointerDown={onCardPointerDown} onPointerMove={onCardPointerMove} onPointerUp={onCardPointerUp} onPointerCancel={onCardPointerUp}
               style={{ flex: "1 1 auto", maxHeight: 540, perspective: 900, cursor: "grab", opacity: vis ? 1 : 0, transition: "opacity 0.15s", position: "relative", touchAction: "pan-y" }}>
               {/* Swipe verdict stamps — opacity driven imperatively while dragging */}
               <div ref={swipeRightRef} style={{ position: "absolute", top: 18, left: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(-12deg)", border: `3px solid ${G}`, color: G, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "GOT IT"}</div>
-              <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${flipped ? G : A}`, color: flipped ? "#86EFAC" : A, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "REVEAL"}</div>
+              <div ref={swipeLeftRef} style={{ position: "absolute", top: 18, right: 14, zIndex: 6, opacity: 0, pointerEvents: "none", transform: "rotate(12deg)", border: `3px solid ${flipped ? G : A}`, color: flipped ? "#86EFAC" : A, borderRadius: 10, padding: "5px 13px", fontFamily: FN, fontWeight: 900, fontSize: 21, letterSpacing: 1.5, background: "#0A0A0AB8" }}>{flipped ? "NEXT" : "NOT SURE"}</div>
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
                   {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, display: "flex", alignItems: "center", gap: 14, fontSize: 11, letterSpacing: 0.5, fontWeight: 700, opacity: 0.75 }}>
-                    <span style={{ color: A }}>← reveal</span>
+                    <span style={{ color: A }}>← not sure</span>
                     <span style={{ color: TD, opacity: 0.5 }}>swipe</span>
-                    <span style={{ color: G }}>know →</span>
+                    <span style={{ color: G }}>got it →</span>
                   </div>
                 </div>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
@@ -4515,8 +4520,8 @@ function App() {
               {/* Revealed = you didn't know it (already counted wrong); the only step left is
                   to move on, so swipe in any direction or tap Next. */}
               {flipped && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => nextCard()}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
-              {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Swipe <span style={{ color: G, fontWeight: 700 }}>right if you know it</span>, <span style={{ color: A, fontWeight: 700 }}>left to reveal</span></div>}
-              {KeyHint({ text: flipped ? "Enter or swipe to continue" : "→ know · ← reveal" })}
+              {!flipped && vis && <div style={{ textAlign: "center", color: TD, fontSize: 12, paddingTop: 6 }}>Swipe <span style={{ color: G, fontWeight: 700 }}>right if you got it</span>, <span style={{ color: A, fontWeight: 700 }}>left if not sure</span></div>}
+              {KeyHint({ text: flipped ? "Enter or swipe to continue" : "→ got it · ← not sure" })}
             </div>
           </div>
         )}

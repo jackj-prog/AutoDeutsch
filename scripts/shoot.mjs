@@ -276,11 +276,25 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 700));
   }
   if (screen === "recallfront") {
-    // The un-revealed front of a recall card (German prompt, "Tap to reveal").
+    // The un-revealed front of a recall card (German prompt + swipe hints).
     await clickText(page, "Custom session");
     await clickText(page, "Recall");
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 600));
+  }
+  if (screen === "recallgot") {
+    // Full right-swipe ("got it") + release. With auto-advance ON the card flies off to
+    // the next; with SHOOT_AUTOADV=0 it flips to the answer (study mode). Logs which.
+    await clickText(page, "Custom session");
+    await clickText(page, "Recall");
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 500));
+    const box = await page.evaluate(() => { const el = document.querySelector('[aria-label^="Swipe right"]') || document.querySelector('[role="button"]'); if (!el) return null; const r = el.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; });
+    const before = await page.evaluate(() => (document.body.innerText.match(/(\d+)\s*\/\s*\d+/) || [])[1]);
+    if (box) { await page.mouse.move(box.x, box.y); await page.mouse.down(); for (let i = 1; i <= 7; i++) { await page.mouse.move(box.x + i * 18, box.y); await new Promise(r => setTimeout(r, 16)); } await page.mouse.up(); }
+    await new Promise(r => setTimeout(r, 700));
+    const state = await page.evaluate(() => ({ card: (document.body.innerText.match(/(\d+)\s*\/\s*\d+/) || [])[1], revealed: !!document.querySelector('[aria-label="Answer revealed"]') }));
+    console.log(`recallgot[autoadv=${process.env.SHOOT_AUTOADV === "0" ? "off" : "on"}]: card ${before} -> ${state.card}, revealed=${state.revealed}`);
   }
   if (screen === "recallswipe") {
     // Drag the German FRONT right and hold — surfaces the green GOT IT ("I know it") stamp.
@@ -360,6 +374,7 @@ async function run() {
       const page = await browser.newPage();
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
       await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1" });
+      if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
       await new Promise(r => setTimeout(r, 500));

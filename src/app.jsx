@@ -1089,15 +1089,22 @@ function App() {
   // NEW: Dialogue state
   const [dlgIdx, setDlgIdx] = useState(0);
   const [dlgRevealed, setDlgRevealed] = useState({});
+  // Listening-first (default on): the German line stays hidden until you've heard it, so a
+  // dialogue trains the ear instead of being read along. Toggle to "Read along" for the old
+  // always-visible behaviour; persisted across sessions.
+  const [dlgListenFirst, setDlgListenFirst] = useState(() => { try { return localStorage.getItem("gfc-dlg-listen-v1") !== "0"; } catch (e) { return true; } });
+  const toggleDlgListen = () => setDlgListenFirst(v => { const n = !v; try { localStorage.setItem("gfc-dlg-listen-v1", n ? "1" : "0"); } catch (e) {} return n; });
   // Token guards the sequential play-all loop: bumping it (nav/replay) stops the old loop.
   const dlgPlayRef = useRef(0);
   const dlgStopPlay = () => { dlgPlayRef.current++; try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} };
   const playDialogue = async (lines) => {
     const tok = ++dlgPlayRef.current;
-    for (const l of lines) {
+    for (let i = 0; i < lines.length; i++) {
       if (dlgPlayRef.current !== tok) return;
-      await speakWith(l.de);
+      await speakWith(lines[i].de);
       if (dlgPlayRef.current !== tok) return;
+      // Reveal each line only after it has been heard — keeps "Play all" listening-first.
+      setDlgRevealed(r => (r[i] ? r : { ...r, [i]: true }));
       await new Promise(r => setTimeout(r, 500));
     }
   };
@@ -4579,8 +4586,14 @@ function App() {
               <div style={{ width: "100%", height: "100%", transformStyle: "preserve-3d", transition: vis ? "transform 0.5s cubic-bezier(0.4,0,0.2,1)" : "none", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", position: "relative" }}>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
+                  {/* Top eyebrow — orients the otherwise-cavernous card (category · level on the
+                      left, difficulty on the right) so the single word reads as the centre of a
+                      composed three-zone card, not a word floating in black. */}
+                  <div style={{ position: "absolute", top: 15, left: 16, right: 15, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                    <span style={{ fontSize: 10, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 800, color: TD, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>{card._cat || category}<span style={{ color: A }}> · {cardLevel(card)}</span></span>
+                    {card.diff && <span style={{ flexShrink: 0, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</span>}
+                  </div>
                   <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
-                  {card.diff && <div style={{ position: "absolute", top: 13, right: 14, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</div>}
                   <div style={{ position: "absolute", bottom: 18, display: "flex", alignItems: "center", gap: 14, fontSize: 11, letterSpacing: 0.5, fontWeight: 700, opacity: 0.75 }}>
                     <span style={{ color: A }}>← not sure</span>
                     <span style={{ color: TD, opacity: 0.5 }}>swipe</span>
@@ -4897,7 +4910,12 @@ function App() {
                 <div style={{ fontFamily: FN, fontSize: 21, lineHeight: 1.15 }}>{dlg.title}</div>
                 <button onClick={() => playDialogue(dlg.lines)} aria-label="Play whole dialogue" style={{ display: "flex", alignItems: "center", gap: 6, background: `${A}14`, border: `1px solid ${A}44`, borderRadius: 999, color: A, fontSize: 11, fontWeight: 900, cursor: "pointer", padding: "7px 13px", flexShrink: 0 }}><Icon name="volume" size={13} /> Play all</button>
               </div>
-              <div style={{ fontSize: 10.5, color: TD, marginBottom: 14 }}>Tap a bubble to hear it{Object.keys(dlgRevealed).length === 0 ? " and reveal the English" : ""}.</div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14 }}>
+                <span style={{ fontSize: 10.5, color: TD }}>{dlgListenFirst ? "Listen, then tap a bubble to reveal it." : "Tap a bubble to hear it and reveal the English."}</span>
+                <button onClick={toggleDlgListen} aria-pressed={dlgListenFirst} style={{ display: "flex", alignItems: "center", gap: 5, flexShrink: 0, background: dlgListenFirst ? `${A}14` : "transparent", border: `1px solid ${dlgListenFirst ? A : HAIR}`, borderRadius: 999, color: dlgListenFirst ? A : TD, fontSize: 10, fontWeight: 800, letterSpacing: 0.3, cursor: "pointer", padding: "5px 11px" }}>
+                  <Icon name={dlgListenFirst ? "headphones" : "book"} size={12} /> {dlgListenFirst ? "Listen-first" : "Read-along"}
+                </button>
+              </div>
               <div style={{ flex: 1 }}>
                 {dlg.lines.map((line, i) => {
                   const right = i % 2 === 1; // second speaker sits right, chat-style
@@ -4915,7 +4933,9 @@ function App() {
                           fontFamily: "inherit",
                         }}>
                         <span style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
-                          <span style={{ fontSize: 14.5, color: T, lineHeight: 1.45, fontWeight: 600 }}>{line.de}</span>
+                          {(dlgListenFirst && !dlgRevealed[i])
+                            ? <span style={{ fontSize: 13.5, color: TD, lineHeight: 1.45, fontWeight: 600, fontStyle: "italic" }}>Tap to listen…</span>
+                            : <span style={{ fontSize: 14.5, color: T, lineHeight: 1.45, fontWeight: 600 }}>{line.de}</span>}
                           <Icon name="volume" size={12} stroke={2.2} style={{ color: A, opacity: 0.65, flexShrink: 0, alignSelf: "center" }} />
                         </span>
                         {dlgRevealed[i] && <span style={{ display: "block", fontSize: 12, color: BL, lineHeight: 1.4, marginTop: 6 }}>{line.en}</span>}

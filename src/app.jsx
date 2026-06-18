@@ -3877,28 +3877,49 @@ function App() {
           </div>
         </div>
 
-        {/* Today's work */}
-        {reviewQueueItems.length > 0 && (
-          <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 10, paddingTop: 2 }}>
-              <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
-              <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: `repeat(${reviewQueueItems.length}, minmax(0, 1fr))`, gap: 7 }}>
-              {reviewQueueItems.map(item => (
-                <button key={item.key} type="button" onClick={item.onClick}
-                  title={item.detail}
-                  style={{ minWidth: 0, background: `linear-gradient(180deg, ${item.color}14 0%, #0D0D0D 75%)`, color: T, border: `1px solid ${item.color}${item.key === "due" && item.count > 0 ? "55" : "2E"}`, boxShadow: item.key === "due" && item.count > 0 ? `0 6px 20px -8px ${item.color}55` : "none", borderRadius: 14, padding: "11px 7px 10px", textAlign: "center", cursor: "pointer", display: "grid", justifyItems: "center", gap: 6, fontFamily: "inherit" }}>
-                  <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
-                  <span style={{ fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title}</span>
-                  <span style={{ fontSize: 14, color: item.color, fontWeight: 800, lineHeight: 1 }}>{item.count}</span>
-                  {item.count > 0 && item.next && <span style={{ fontSize: 9.5, color: TD, lineHeight: 1, letterSpacing: 0.2 }}>{item.next}</span>}
+        {/* Today's work — the SRS return-trigger. When reviews are due they become the single
+            gold hero action (the one thing an SRS app should pull you back for); Weak/Almost sit
+            below as smaller secondary cells. The gold "new session" CTA further down demotes to a
+            quiet outline whenever Due is the hero, so there's only ever one gold focal point. */}
+        {reviewQueueItems.length > 0 && (() => {
+          const dueItem = reviewQueueItems.find(item => item.key === "due");
+          const otherItems = reviewQueueItems.filter(item => item.key !== "due");
+          return (
+            <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 11, paddingTop: 2 }}>
+                <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
+                <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
+              </div>
+              {dueItem && (
+                <button type="button" onClick={dueItem.onClick} title={dueItem.detail}
+                  style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 15, padding: "14px 16px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -10px rgba(255,204,0,0.5)", marginBottom: otherItems.length ? 8 : 0 }}>
+                  <IconBadge name="calendarCheck" size={36} color="#0A0A0A" bg="#0A0A0A18" />
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800 }}>Reviews due · lock them in before they slip</span>
+                    <span style={{ display: "block", fontFamily: FN, fontSize: 17, marginTop: 2 }}>Review {dueItem.count} word{dueItem.count === 1 ? "" : "s"}</span>
+                    {dueItem.next && <span style={{ display: "block", fontSize: 10.5, opacity: 0.7, fontWeight: 700, marginTop: 2 }}>{dueItem.next}</span>}
+                  </span>
+                  <Icon name="arrowRight" size={20} />
                 </button>
-              ))}
+              )}
+              {otherItems.length > 0 && (
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(${otherItems.length}, minmax(0, 1fr))`, gap: 7 }}>
+                  {otherItems.map(item => (
+                    <button key={item.key} type="button" onClick={item.onClick} title={item.detail}
+                      style={{ minWidth: 0, background: `linear-gradient(180deg, ${item.color}14 0%, #0D0D0D 75%)`, color: T, border: `1px solid ${item.color}2E`, borderRadius: 14, padding: "10px 7px 9px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 9, fontFamily: "inherit" }}>
+                      <IconBadge name={item.icon} size={26} color={item.color} bg="#0A0A0A66" />
+                      <span style={{ minWidth: 0 }}>
+                        <span style={{ display: "block", fontSize: 11, color: T, fontWeight: 800, lineHeight: 1 }}>{item.title} <span style={{ color: item.color }}>{item.count}</span></span>
+                        {item.next && <span style={{ display: "block", fontSize: 9.5, color: TD, lineHeight: 1.1, letterSpacing: 0.2, marginTop: 3 }}>{item.next}</span>}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
@@ -3937,19 +3958,25 @@ function App() {
             </div>
           </div>
           </div>
-          {(() => { const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production"; return (
-          <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}
-            style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 16, padding: "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -8px rgba(255,204,0,0.45)" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-              <IconBadge name={hm.icon} size={36} color="#0A0A0A" bg="#0A0A0A18" />
-              <span>
-                <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800 }}>{hm.sup} · one tap</span>
-                <span style={{ display: "block", fontFamily: FN, fontSize: 16, marginTop: 2 }}>{hm.title}</span>
+          {(() => {
+            const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production";
+            // When reviews are due, the gold Due hero above owns the spotlight — so this
+            // "new session" launch steps back to a calm outline. With nothing due, it's the
+            // primary gold action again.
+            const demoted = resolvedDue.total > 0;
+            return (
+            <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}
+              style={{ width: "100%", background: demoted ? "#0F0F0F" : "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: demoted ? T : "#0A0A0A", border: demoted ? `1px solid ${A}44` : "none", borderRadius: demoted ? 14 : 16, padding: demoted ? "13px 16px" : "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: demoted ? "none" : "0 12px 30px -8px rgba(255,204,0,0.45)" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+                <IconBadge name={hm.icon} size={demoted ? 30 : 36} color={demoted ? A : "#0A0A0A"} bg={demoted ? `${A}14` : "#0A0A0A18"} />
+                <span>
+                  <span style={{ display: "block", fontSize: demoted ? 10 : 11, opacity: demoted ? 1 : 0.74, fontWeight: 800, color: demoted ? A : "#0A0A0A" }}>{demoted ? "Or learn new words" : `${hm.sup} · one tap`}</span>
+                  <span style={{ display: "block", fontFamily: FN, fontSize: demoted ? 14 : 16, marginTop: 2 }}>{hm.title}</span>
+                </span>
               </span>
-            </span>
-            <Icon name="arrowRight" size={20} />
-          </button>
-          ); })()}
+              <Icon name="arrowRight" size={demoted ? 17 : 20} />
+            </button>
+            ); })()}
 
           {/* Next topic — a guided path through the 36 categories. Surfaces the first topic
               (in curriculum order) you haven't fully mastered, so "study a specific topic"

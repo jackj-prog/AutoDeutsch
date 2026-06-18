@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.4";
+const APP_VERSION = "2026.06.18.5";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -693,7 +693,7 @@ const LIB_GROUPS = [
 ];
 
 const ICONS = {
-  settings: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.5 3.5a7.5 7.5 0 0 0-.08-1.1l2.08-1.6-2-3.46-2.45 1a8.2 8.2 0 0 0-1.9-1.1L15.8 3h-4l-.35 2.74a8.2 8.2 0 0 0-1.9 1.1l-2.45-1-2 3.46 2.08 1.6a7.5 7.5 0 0 0 0 2.2L5.1 14.7l2 3.46 2.45-1a8.2 8.2 0 0 0 1.9 1.1L11.8 21h4l.35-2.74a8.2 8.2 0 0 0 1.9-1.1l2.45 1 2-3.46-2.08-1.6c.05-.36.08-.73.08-1.1Z",
+  settings: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2zM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
   play: "M8 5v14l11-7-11-7Z",
   pause: "M8 5h3v14H8V5Zm5 0h3v14h-3V5Z",
   skipBack: "M19 5v14l-9-7 9-7ZM5 5v14",

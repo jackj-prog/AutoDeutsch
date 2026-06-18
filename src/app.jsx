@@ -3042,7 +3042,11 @@ function App() {
     return (<button onClick={() => setShowHint(true)} style={{ marginTop: 6, background: "none", border: `1px solid ${BL}44`, borderRadius: 8, padding: "7px 12px", color: BL, fontSize: 11, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="target" size={13} /> Show hint</button>);
   };
 
-  // Per-card stats shown after answering
+  // Per-card verdict shown after answering. ONE calm block, not a stack of competing chips:
+  // a single SRS-outcome line (the genuinely useful "what happened to my schedule"), an
+  // optional slim mastery track for production, and a quiet "ask the tutor" link — all in one
+  // accent colour driven by whether the card moved up or down. The raw attempts/✓/✗ tally and
+  // "last seen" were debug noise on the most-seen screen in the app and have been removed.
   const CardStats = () => {
     if (!answered || !card || skipSummary) return null;
     const key = gk(card, category, mode);
@@ -3051,46 +3055,38 @@ function App() {
     const productionStreak = n.stats.productionStreak || 0;
     const mastered = productionStreak >= MASTERY_STREAK;
     const unlockedNow = mode === "production" && inputResult !== "wrong" && productionStreak === MASTERY_STREAK;
-    // "Last seen" helper — reinforces SRS intuition. Pulled from in-session ref, not prog.
-    const priorLastSeen = priorLastSeenRef.current[key];
-    let lastSeenLabel = null;
-    if (priorLastSeen && n.stats.attempts > 1) {
-      const daysAgo = Math.floor((Date.now() - priorLastSeen) / 86400000);
-      if (daysAgo >= 1) lastSeenLabel = `Last seen ${daysAgo}d ago`;
-      else {
-        const hoursAgo = Math.floor((Date.now() - priorLastSeen) / 3600000);
-        if (hoursAgo >= 1) lastSeenLabel = `Last seen ${hoursAgo}h ago`;
-      }
-    }
+    const up = lastBoxMove && lastBoxMove.to > lastBoxMove.from;
+    const down = lastBoxMove && lastBoxMove.to < lastBoxMove.from;
+    const box = lastBoxMove ? lastBoxMove.to : Math.max(0, Math.min(5, Math.floor(n.srs.box || 0)));
+    const days = SRS_INTERVALS[box];
+    const accent = up ? G : down ? "#F8A33A" : `${A}AA`;
+    const sched = up
+      ? `Locked in deeper — back in ${days} day${days === 1 ? "" : "s"}`
+      : down
+      ? `More practice needed — back in ${days} day${days === 1 ? "" : "s"}`
+      : `Memory level ${box + 1}/6 · review in ${days} day${days === 1 ? "" : "s"}`;
     return (
-      <>
-        {mode === "production" && (
-          <div className={unlockedNow ? "ad-mastery-pop" : undefined} style={{ margin: "8px auto 0", maxWidth: 230, borderRadius: 999, border: `1px solid ${mastered ? G : A}55`, background: mastered ? `${G}14` : `${A}10`, color: mastered ? G : A, fontSize: 11, fontWeight: 800, padding: "6px 10px", textAlign: "center" }}>
-            {mastered ? (unlockedNow ? "Mastery unlocked - 5 in a row" : "Mastered - 5 in a row") : `${productionStreak} / ${MASTERY_STREAK} production streak`}
-          </div>
-        )}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginTop: 8, fontSize: 11, color: TD, letterSpacing: 0.2 }}>
-          <span>Attempts {n.stats.attempts}</span>
-          <span style={{ opacity: 0.35 }}>•</span>
-          <span style={{ color: G }}>✓ {n.stats.correct}</span>
-          <span style={{ opacity: 0.35 }}>•</span>
-          <span style={{ color: R }}>✗ {n.stats.incorrect}</span>
+      <div className={unlockedNow ? "ad-mastery-pop" : undefined} style={{ margin: "12px auto 0", maxWidth: 290, background: "#0A0A0A66", border: `1px solid ${accent}2E`, borderLeft: `3px solid ${accent}`, borderRadius: 10, padding: "9px 13px", textAlign: "left" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 11.5, fontWeight: 700, color: up ? G : down ? "#F8A33A" : T, lineHeight: 1.35 }}>
+          <span aria-hidden="true" style={{ fontWeight: 900 }}>{up ? "↑" : down ? "↓" : "•"}</span>
+          <span>{sched}</span>
         </div>
-        {/* SRS legibility: show what this answer did to the review schedule */}
-        {lastBoxMove && lastBoxMove.to !== lastBoxMove.from && (
-          <div style={{ display: "flex", justifyContent: "center", marginTop: 7 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10.5, fontWeight: 800, borderRadius: 999, padding: "4px 11px", background: lastBoxMove.to > lastBoxMove.from ? `${G}12` : `${R}12`, border: `1px solid ${lastBoxMove.to > lastBoxMove.from ? G : R}33`, color: lastBoxMove.to > lastBoxMove.from ? G : "#F87171" }}>
-              {lastBoxMove.to > lastBoxMove.from
-                ? `↑ Memory level ${lastBoxMove.to}/5 · next review in ${SRS_INTERVALS[lastBoxMove.to]}d`
-                : `↓ Level ${lastBoxMove.to}/5 · reviews every ${SRS_INTERVALS[lastBoxMove.to]}d`}
-            </span>
+        {mode === "production" && (mastered ? (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, fontSize: 11, fontWeight: 800, color: G }}>
+            <Icon name="check" size={13} /> {unlockedNow ? "Mastery unlocked ★ — 5 in a row" : "Mastered ★"}
           </div>
-        )}
-        {lastSeenLabel && <div style={{ fontSize: 10, color: TD, marginTop: 4, textAlign: "center", opacity: 0.7 }}>{lastSeenLabel}</div>}
-        <button type="button" onClick={askTutorAboutCard} style={{ margin: "8px auto 0", display: "inline-flex", alignItems: "center", gap: 6, background: "transparent", border: `1px solid ${BL}44`, borderRadius: 999, padding: "6px 13px", color: BL, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
-          <Icon name="message" size={13} /> Why? Ask tutor
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: 7, marginTop: 8 }}>
+            <span style={{ display: "inline-flex", gap: 4 }}>
+              {[0, 1, 2, 3, 4].map(i => <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: i < productionStreak ? G : "#2A2A2A" }} />)}
+            </span>
+            <span style={{ fontSize: 10.5, color: TD, fontWeight: 700 }}>{productionStreak}/{MASTERY_STREAK} to mastery ★</span>
+          </div>
+        ))}
+        <button type="button" onClick={askTutorAboutCard} style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 9, background: "transparent", border: "none", padding: 0, color: TD, fontSize: 10.5, fontWeight: 700, cursor: "pointer", opacity: 0.85 }}>
+          <Icon name="message" size={12} /> Why? Ask the tutor
         </button>
-      </>
+      </div>
     );
   };
 
@@ -4639,13 +4635,13 @@ function App() {
             {mode === "cloze" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Fill the gap</div>
               <div style={{ fontFamily: FN, fontSize: 20, textAlign: "center", lineHeight: 1.4 }}>{answered ? card.q.replace("___", card.a) : card.q}</div>
-              {answered && <div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
+              {answered && <><div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
                 {inputResult === "wrong" ? <>{input && <><span style={{ color: R }}>Your answer: {input}</span><br /></>}<span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   inputResult === "capital" ? <span style={{ color: A }}>✓ Right — mind the capitalisation ({card.a})</span> :
                   inputResult === "eszett" ? <span style={{ color: A }}>✓ Right — mind ß vs ss ({card.a})</span> :
                   <span style={{ color: G }}>Correct! ✓</span>}{" "}{!skipSummary && card.h}
-                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
-              </div>}
+                {SpeedBadge({ ms: lastElapsed })}
+              </div>{CardStats()}</>}
             </>}
             {mode === "verb" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Conjugate — {card.tense}</div>

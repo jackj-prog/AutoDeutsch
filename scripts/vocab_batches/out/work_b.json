@@ -1,0 +1,227 @@
+{
+  "Work & Study": [
+    {"de":"das Stellenangebot","en":"job offer","pl":"die Stellenangebote","ex":"Ich habe ein interessantes Stellenangebot gefunden.","exEn":"I found an interesting job offer.","diff":"medium","level":"A2"},
+    {"de":"die Stellensuche","en":"job search","ex":"Die Stellensuche dauert oft mehrere Monate.","exEn":"The job search often takes several months.","diff":"medium","level":"A2"},
+    {"de":"die Teilzeitstelle","en":"part-time position","pl":"die Teilzeitstellen","ex":"Sie sucht eine Teilzeitstelle im Büro.","exEn":"She is looking for a part-time position in the office.","diff":"medium","level":"A2"},
+    {"de":"die Vollzeitstelle","en":"full-time position","pl":"die Vollzeitstellen","ex":"Er hat endlich eine Vollzeitstelle bekommen.","exEn":"He finally got a full-time position.","diff":"medium","level":"A2"},
+    {"de":"der Berufswunsch","en":"career aspiration","pl":"die Berufswünsche","ex":"Mein Berufswunsch ist Ingenieurin.","exEn":"My career aspiration is to be an engineer.","diff":"medium","level":"A2"},
+    {"de":"das Berufskolleg","en":"vocational college","pl":"die Berufskollegs","ex":"Nach der Schule geht er auf ein Berufskolleg.","exEn":"After school he goes to a vocational college.","diff":"medium","level":"A2"},
+    {"de":"das Diplom","en":"diploma","pl":"die Diplome","ex":"Sie hat ihr Diplom mit Auszeichnung gemacht.","exEn":"She got her diploma with honours.","diff":"medium","level":"A2"},
+    {"de":"das Fach","en":"subject","pl":"die Fächer","ex":"Mathe ist mein schwierigstes Fach.","exEn":"Maths is my most difficult subject.","diff":"easy","level":"A2"},
+    {"de":"die Fachhochschule","en":"university of applied sciences","pl":"die Fachhochschulen","ex":"Er studiert an einer Fachhochschule.","exEn":"He studies at a university of applied sciences.","diff":"medium","level":"A2"},
+    {"de":"die Fachhochschulreife","en":"technical college entrance qualification","ex":"Mit der Fachhochschulreife kann sie studieren.","exEn":"With the technical college entrance qualification she can study.","diff":"hard","level":"B1"},
+    {"de":"die Gesamtschule","en":"comprehensive school","pl":"die Gesamtschulen","ex":"Meine Tochter besucht eine Gesamtschule.","exEn":"My daughter attends a comprehensive school.","diff":"medium","level":"A2"},
+    {"de":"das Gymnasium","en":"grammar school","pl":"die Gymnasien","ex":"Er geht aufs Gymnasium.","exEn":"He goes to grammar school.","diff":"medium","level":"A2"},
+    {"de":"das Halbjahr","en":"half-year / term","pl":"die Halbjahre","ex":"Im zweiten Halbjahr gibt es viele Prüfungen.","exEn":"In the second term there are many exams.","diff":"medium","level":"A2"},
+    {"de":"die Hauptschule","en":"lower secondary school","pl":"die Hauptschulen","ex":"Nach der Hauptschule macht er eine Ausbildung.","exEn":"After lower secondary school he does an apprenticeship.","diff":"medium","level":"A2"},
+    {"de":"die Klassenarbeit","en":"class test","pl":"die Klassenarbeiten","ex":"Morgen schreiben wir eine Klassenarbeit.","exEn":"Tomorrow we are writing a class test.","diff":"medium","level":"A2"},
+    {"de":"das Lieblingsfach","en":"favourite subject","pl":"die Lieblingsfächer","ex":"Englisch ist mein Lieblingsfach.","exEn":"English is my favourite subject.","diff":"easy","level":"A2"},
+    {"de":"die Geschichte","en":"history","ex":"Geschichte finde ich sehr spannend.","exEn":"I find history very exciting.","diff":"easy","level":"A2"},
+    {"de":"die Kunst","en":"art","pl":"die Künste","ex":"Im Fach Kunst malen wir oft.","exEn":"In the subject art we often paint.","diff":"easy","level":"A2"},
+    {"de":"die Religion","en":"religious education / religion","ex":"Religion haben wir am Dienstag.","exEn":"We have religious education on Tuesday.","diff":"medium","level":"A2"},
+    {"de":"die Mathearbeit","en":"maths test","pl":"die Mathearbeiten","ex":"Die Mathearbeit war ziemlich schwer.","exEn":"The maths test was quite hard.","diff":"medium","level":"A2"},
+    {"de":"die Nachhilfe","en":"private tutoring","ex":"Er bekommt Nachhilfe in Mathe.","exEn":"He gets private tutoring in maths.","diff":"medium","level":"A2"},
+    {"de":"die Note","en":"grade / mark","pl":"die Noten","ex":"Sie hat eine gute Note bekommen.","exEn":"She got a good grade.","diff":"easy","level":"A2"},
+    {"de":"die Oberschule","en":"secondary school","pl":"die Oberschulen","ex":"Meine Kinder gehen auf die Oberschule.","exEn":"My children go to secondary school.","diff":"medium","level":"A2"},
+    {"de":"die Realschule","en":"intermediate secondary school","pl":"die Realschulen","ex":"Sie hat die Realschule abgeschlossen.","exEn":"She finished intermediate secondary school.","diff":"medium","level":"A2"},
+    {"de":"die Schulform","en":"type of school","pl":"die Schulformen","ex":"In Deutschland gibt es viele Schulformen.","exEn":"In Germany there are many types of school.","diff":"medium","level":"A2"},
+    {"de":"die Schulpflicht","en":"compulsory schooling","ex":"In Deutschland gilt die Schulpflicht.","exEn":"In Germany compulsory schooling applies.","diff":"hard","level":"B1"},
+    {"de":"das Schulsystem","en":"school system","pl":"die Schulsysteme","ex":"Das deutsche Schulsystem ist kompliziert.","exEn":"The German school system is complicated.","diff":"medium","level":"A2"},
+    {"de":"der Sportunterricht","en":"PE / sports lessons","ex":"Sportunterricht haben wir am Freitag.","exEn":"We have PE on Friday.","diff":"medium","level":"A2"},
+    {"de":"der Vokabeltest","en":"vocabulary test","pl":"die Vokabeltests","ex":"Heute schreiben wir einen Vokabeltest.","exEn":"Today we are writing a vocabulary test.","diff":"medium","level":"A2"},
+    {"de":"der Vortrag","en":"presentation / talk","pl":"die Vorträge","ex":"Sie hält einen Vortrag über Klimaschutz.","exEn":"She is giving a talk about climate protection.","diff":"medium","level":"A2"},
+    {"de":"das Schaubild","en":"chart / diagram","pl":"die Schaubilder","ex":"Das Schaubild zeigt die Verkaufszahlen.","exEn":"The chart shows the sales figures.","diff":"medium","level":"B1"},
+    {"de":"der Elternabend","en":"parents' evening","pl":"die Elternabende","ex":"Heute Abend ist Elternabend in der Schule.","exEn":"Tonight there is a parents' evening at the school.","diff":"medium","level":"A2"},
+    {"de":"der Elternsprechtag","en":"parent-teacher day","pl":"die Elternsprechtage","ex":"Am Elternsprechtag rede ich mit den Lehrern.","exEn":"On parent-teacher day I talk to the teachers.","diff":"medium","level":"A2"},
+    {"de":"die Kindertagesstätte","en":"day-care centre / nursery","pl":"die Kindertagesstätten","ex":"Unser Sohn geht in die Kindertagesstätte.","exEn":"Our son goes to the day-care centre.","diff":"medium","level":"A2"},
+    {"de":"absolvieren","en":"to complete (a course/degree)","ex":"Sie hat ein Praktikum absolviert.","exEn":"She completed an internship.","diff":"hard","level":"B1"},
+    {"de":"die Anstellung","en":"employment / job","pl":"die Anstellungen","ex":"Er sucht eine feste Anstellung.","exEn":"He is looking for permanent employment.","diff":"hard","level":"B1"},
+    {"de":"die Arbeitsstelle","en":"job / position","pl":"die Arbeitsstellen","ex":"Sie hat eine neue Arbeitsstelle gefunden.","exEn":"She found a new job.","diff":"medium","level":"B1"},
+    {"de":"die Arbeitsweise","en":"way of working","pl":"die Arbeitsweisen","ex":"Seine Arbeitsweise ist sehr genau.","exEn":"His way of working is very precise.","diff":"hard","level":"B1"},
+    {"de":"die Arbeitszeit","en":"working hours","pl":"die Arbeitszeiten","ex":"Meine Arbeitszeit ist sehr flexibel.","exEn":"My working hours are very flexible.","diff":"medium","level":"B1"},
+    {"de":"der Bachelor","en":"bachelor's degree","pl":"die Bachelor","ex":"Sie macht gerade ihren Bachelor.","exEn":"She is currently doing her bachelor's degree.","diff":"medium","level":"B1"},
+    {"de":"die Berufsbezeichnung","en":"job title","pl":"die Berufsbezeichnungen","ex":"Wie lautet Ihre Berufsbezeichnung?","exEn":"What is your job title?","diff":"hard","level":"B1"},
+    {"de":"die Berufserfahrung","en":"work experience","ex":"Für die Stelle braucht man viel Berufserfahrung.","exEn":"For the position you need a lot of work experience.","diff":"hard","level":"B1"},
+    {"de":"das Berufsleben","en":"professional life","ex":"Im Berufsleben ist Teamarbeit wichtig.","exEn":"In professional life teamwork is important.","diff":"hard","level":"B1"},
+    {"de":"die Betriebswirtschaft","en":"business administration","ex":"Sie studiert Betriebswirtschaft.","exEn":"She studies business administration.","diff":"hard","level":"B1"},
+    {"de":"das Bewerbungsschreiben","en":"letter of application","ex":"Ich schreibe gerade mein Bewerbungsschreiben.","exEn":"I am writing my letter of application right now.","diff":"hard","level":"B1"},
+    {"de":"die Gehaltsvorstellung","en":"desired salary","pl":"die Gehaltsvorstellungen","ex":"Nennen Sie bitte Ihre Gehaltsvorstellung.","exEn":"Please state your desired salary.","diff":"hard","level":"B1"},
+    {"de":"die Jobbezeichnung","en":"job title","pl":"die Jobbezeichnungen","ex":"Die Jobbezeichnung steht ganz oben im Vertrag.","exEn":"The job title is at the very top of the contract.","diff":"hard","level":"B1"},
+    {"de":"die Kommunikationsstärke","en":"strong communication skills","ex":"Für diesen Beruf braucht man Kommunikationsstärke.","exEn":"For this job you need strong communication skills.","diff":"hard","level":"B1"},
+    {"de":"der Maschinenbau","en":"mechanical engineering","ex":"Er studiert Maschinenbau an der Uni.","exEn":"He studies mechanical engineering at university.","diff":"hard","level":"B1"},
+    {"de":"die Qualifikation","en":"qualification","pl":"die Qualifikationen","ex":"Sie hat alle nötigen Qualifikationen.","exEn":"She has all the necessary qualifications.","diff":"medium","level":"B1"},
+    {"de":"die Teamfähigkeit","en":"ability to work in a team","ex":"Teamfähigkeit ist uns sehr wichtig.","exEn":"The ability to work in a team is very important to us.","diff":"hard","level":"B1"},
+    {"de":"die Umschulung","en":"retraining","pl":"die Umschulungen","ex":"Nach dem Unfall machte er eine Umschulung.","exEn":"After the accident he did a retraining course.","diff":"hard","level":"B1"},
+    {"de":"die Zusatzqualifikation","en":"additional qualification","pl":"die Zusatzqualifikationen","ex":"Eine Zusatzqualifikation verbessert deine Chancen.","exEn":"An additional qualification improves your chances.","diff":"hard","level":"B1"},
+    {"de":"die Zuverlässigkeit","en":"reliability","ex":"Zuverlässigkeit ist im Beruf sehr wichtig.","exEn":"Reliability is very important at work.","diff":"hard","level":"B1"},
+    {"de":"unbefristet","en":"permanent / indefinite (contract)","ex":"Sie hat einen unbefristeten Vertrag.","exEn":"She has a permanent contract.","diff":"hard","level":"B1"},
+    {"de":"die Festanstellung","en":"permanent position","pl":"die Festanstellungen","ex":"Er träumt von einer Festanstellung.","exEn":"He dreams of a permanent position.","diff":"hard","level":"B1"},
+    {"de":"abwechslungsreich","en":"varied","ex":"Die Arbeit ist sehr abwechslungsreich.","exEn":"The work is very varied.","diff":"hard","level":"B1"},
+    {"de":"eigenverantwortlich","en":"self-reliant / on one's own responsibility","ex":"Sie arbeitet sehr eigenverantwortlich.","exEn":"She works very independently and responsibly.","diff":"hard","level":"B1"}
+  ],
+  "Connectors & Structure": [
+    {"de":"statt","en":"instead of","ex":"Ich trinke Tee statt Kaffee.","exEn":"I drink tea instead of coffee.","diff":"medium","level":"A2"},
+    {"de":"anders","en":"different(ly)","ex":"Heute ist alles ganz anders.","exEn":"Today everything is completely different.","diff":"easy","level":"A2"},
+    {"de":"dieselbe","en":"the same (one)","ex":"Wir haben dieselbe Lehrerin.","exEn":"We have the same teacher.","diff":"medium","level":"A2"},
+    {"de":"selbst","en":"oneself / even","ex":"Das habe ich selbst gemacht.","exEn":"I did that myself.","diff":"medium","level":"A2"},
+    {"de":"zusätzlich","en":"additional / additionally","ex":"Wir brauchen zusätzlich zwei Helfer.","exEn":"We additionally need two helpers.","diff":"hard","level":"B1"},
+    {"de":"gleichzeitig","en":"at the same time","ex":"Er telefoniert und kocht gleichzeitig.","exEn":"He is on the phone and cooking at the same time.","diff":"medium","level":"B1"},
+    {"de":"daneben","en":"next to it / besides","ex":"Das Haus steht direkt daneben.","exEn":"The house is right next to it.","diff":"medium","level":"B1"},
+    {"de":"soweit","en":"as far as","ex":"Soweit ich weiß, kommt sie morgen.","exEn":"As far as I know, she is coming tomorrow.","diff":"hard","level":"B1"},
+    {"de":"seitdem","en":"since then","ex":"Seitdem haben wir uns nicht mehr gesehen.","exEn":"Since then we haven't seen each other again.","diff":"medium","level":"B1"},
+    {"de":"bisher","en":"so far / until now","ex":"Bisher läuft alles gut.","exEn":"So far everything is going well.","diff":"medium","level":"B1"}
+  ],
+  "Numbers & Time": [
+    {"de":"damals","en":"back then","ex":"Damals war ich noch ein Kind.","exEn":"Back then I was still a child.","diff":"medium","level":"A2"},
+    {"de":"die Vergangenheit","en":"the past","ex":"Denk nicht so viel an die Vergangenheit.","exEn":"Don't think so much about the past.","diff":"medium","level":"A2"},
+    {"de":"der Zeitpunkt","en":"point in time / moment","pl":"die Zeitpunkte","ex":"Zu diesem Zeitpunkt war ich nicht zu Hause.","exEn":"At that point in time I was not at home.","diff":"hard","level":"B1"},
+    {"de":"zeitlich","en":"in terms of time / time-related","ex":"Das passt zeitlich leider nicht.","exEn":"Unfortunately that doesn't fit in terms of time.","diff":"hard","level":"B1"},
+    {"de":"das Eintrittsdatum","en":"start date","pl":"die Eintrittsdaten","ex":"Bitte nennen Sie Ihr Eintrittsdatum.","exEn":"Please state your start date.","diff":"hard","level":"B1"},
+    {"de":"die Bürozeit","en":"office hours","pl":"die Bürozeiten","ex":"Bitte rufen Sie während der Bürozeit an.","exEn":"Please call during office hours.","diff":"medium","level":"B1"},
+    {"de":"der Urlaubstag","en":"day of leave / holiday day","pl":"die Urlaubstage","ex":"Ich habe noch zehn Urlaubstage übrig.","exEn":"I still have ten holiday days left.","diff":"medium","level":"B1"},
+    {"de":"der Terminkalender","en":"appointment calendar / diary","pl":"die Terminkalender","ex":"Mein Terminkalender ist diese Woche voll.","exEn":"My diary is full this week.","diff":"medium","level":"B1"}
+  ],
+  "Colours & Descriptions": [
+    {"de":"normal","en":"normal","ex":"Das ist völlig normal.","exEn":"That is completely normal.","diff":"easy","level":"A2"},
+    {"de":"verrückt","en":"crazy","ex":"Diese Idee ist total verrückt.","exEn":"This idea is totally crazy.","diff":"medium","level":"A2"},
+    {"de":"schrecklich","en":"terrible / dreadful","ex":"Das Wetter ist heute schrecklich.","exEn":"The weather is terrible today.","diff":"medium","level":"A2"},
+    {"de":"streng","en":"strict","ex":"Unser Lehrer ist sehr streng.","exEn":"Our teacher is very strict.","diff":"medium","level":"A2"},
+    {"de":"freiwillig","en":"voluntary / voluntarily","ex":"Sie hilft ganz freiwillig.","exEn":"She helps completely voluntarily.","diff":"medium","level":"A2"},
+    {"de":"ausreichend","en":"sufficient / adequate","ex":"Das Essen war ausreichend für alle.","exEn":"The food was sufficient for everyone.","diff":"medium","level":"A2"},
+    {"de":"befriedigend","en":"satisfactory","ex":"Seine Leistung war nur befriedigend.","exEn":"His performance was only satisfactory.","diff":"medium","level":"A2"},
+    {"de":"mangelhaft","en":"poor / deficient","ex":"Die Arbeit war leider mangelhaft.","exEn":"The work was unfortunately poor.","diff":"medium","level":"A2"},
+    {"de":"ungenügend","en":"insufficient / inadequate","ex":"Seine Note war ungenügend.","exEn":"His grade was inadequate.","diff":"medium","level":"A2"},
+    {"de":"olympisch","en":"Olympic","ex":"Sie träumt von einer olympischen Medaille.","exEn":"She dreams of an Olympic medal.","diff":"medium","level":"A2"},
+    {"de":"unten","en":"below / downstairs","ex":"Die Schuhe stehen unten im Flur.","exEn":"The shoes are downstairs in the hallway.","diff":"easy","level":"A2"},
+    {"de":"finanziell","en":"financial / financially","ex":"Sie ist finanziell unabhängig.","exEn":"She is financially independent.","diff":"hard","level":"B1"},
+    {"de":"individuell","en":"individual","ex":"Jeder Kurs wird individuell geplant.","exEn":"Every course is planned individually.","diff":"hard","level":"B1"},
+    {"de":"intern","en":"internal","ex":"Das ist eine interne Angelegenheit.","exEn":"That is an internal matter.","diff":"hard","level":"B1"},
+    {"de":"kommunikativ","en":"communicative","ex":"Sie ist sehr kommunikativ und offen.","exEn":"She is very communicative and open.","diff":"hard","level":"B1"},
+    {"de":"fließend","en":"fluent / fluently","ex":"Er spricht fließend Deutsch.","exEn":"He speaks fluent German.","diff":"medium","level":"B1"},
+    {"de":"englischsprachig","en":"English-speaking","ex":"Wir suchen einen englischsprachigen Kollegen.","exEn":"We are looking for an English-speaking colleague.","diff":"hard","level":"B1"},
+    {"de":"leistungsgerecht","en":"performance-based","ex":"Die Bezahlung ist leistungsgerecht.","exEn":"The pay is performance-based.","diff":"hard","level":"B1"},
+    {"de":"mittelständisch","en":"medium-sized (company)","ex":"Er arbeitet in einem mittelständischen Betrieb.","exEn":"He works in a medium-sized company.","diff":"hard","level":"B1"},
+    {"de":"traditionsreich","en":"steeped in tradition","ex":"Es ist ein traditionsreiches Unternehmen.","exEn":"It is a company steeped in tradition.","diff":"hard","level":"B1"},
+    {"de":"abhängig","en":"dependent","ex":"Das ist vom Wetter abhängig.","exEn":"That depends on the weather.","diff":"hard","level":"B1"},
+    {"de":"formell","en":"formal","ex":"Das Schreiben ist sehr formell.","exEn":"The letter is very formal.","diff":"medium","level":"A2","hint":"Nicht 'formula' (= die Formel)."}
+  ],
+  "Character & Personality": [
+    {"de":"aggressiv","en":"aggressive","ex":"Sein Hund ist manchmal aggressiv.","exEn":"His dog is sometimes aggressive.","diff":"medium","level":"A2"},
+    {"de":"unsympathisch","en":"unlikeable / off-putting","ex":"Der neue Chef wirkt etwas unsympathisch.","exEn":"The new boss seems a bit unlikeable.","diff":"medium","level":"A2"},
+    {"de":"unprofessionell","en":"unprofessional","ex":"Sein Verhalten war sehr unprofessionell.","exEn":"His behaviour was very unprofessional.","diff":"medium","level":"A2"},
+    {"de":"unfair","en":"unfair","ex":"Das finde ich total unfair.","exEn":"I find that totally unfair.","diff":"medium","level":"A2"}
+  ],
+  "Emotions & Opinions": [
+    {"de":"unzufrieden","en":"dissatisfied","ex":"Der Kunde war mit dem Service unzufrieden.","exEn":"The customer was dissatisfied with the service.","diff":"medium","level":"A2"},
+    {"de":"die Lust","en":"desire / inclination","ex":"Ich habe keine Lust auf Hausaufgaben.","exEn":"I don't feel like doing homework.","diff":"easy","level":"A2"},
+    {"de":"die Annahme","en":"assumption","pl":"die Annahmen","ex":"Das war nur eine falsche Annahme.","exEn":"That was just a wrong assumption.","diff":"hard","level":"B1"}
+  ],
+  "Common Verbs": [
+    {"de":"aufpassen","en":"to watch out / pay attention","ex":"Pass auf, das Auto kommt!","exEn":"Watch out, the car is coming!","diff":"easy","level":"A2"},
+    {"de":"beraten","en":"to advise","ex":"Der Arzt berät seine Patienten gut.","exEn":"The doctor advises his patients well.","diff":"medium","level":"A2"},
+    {"de":"lösen","en":"to solve","ex":"Kannst du diese Aufgabe lösen?","exEn":"Can you solve this task?","diff":"medium","level":"A2"},
+    {"de":"beherrschen","en":"to have a command of / master","ex":"Sie beherrscht drei Sprachen.","exEn":"She has a command of three languages.","diff":"hard","level":"B1"},
+    {"de":"beurteilen","en":"to assess / judge","ex":"Der Lehrer muss jeden Schüler fair beurteilen.","exEn":"The teacher has to assess every pupil fairly.","diff":"hard","level":"B1"},
+    {"de":"festlegen","en":"to set / fix / determine","ex":"Wir müssen einen Termin festlegen.","exEn":"We have to set a date.","diff":"hard","level":"B1"},
+    {"de":"fordern","en":"to demand / call for","ex":"Die Arbeiter fordern mehr Lohn.","exEn":"The workers demand higher wages.","diff":"hard","level":"B1"},
+    {"de":"leiten","en":"to lead / manage","ex":"Sie leitet eine große Abteilung.","exEn":"She manages a large department.","diff":"medium","level":"B1"},
+    {"de":"meistern","en":"to master / cope with","ex":"Er hat die schwierige Aufgabe gemeistert.","exEn":"He mastered the difficult task.","diff":"hard","level":"B1"},
+    {"de":"regeln","en":"to regulate / settle","ex":"Wir müssen das noch genau regeln.","exEn":"We still have to settle this precisely.","diff":"hard","level":"B1"},
+    {"de":"kümmern","en":"to take care of / look after","ex":"Ich kümmere mich um die Kinder.","exEn":"I take care of the children.","diff":"medium","level":"B1"},
+    {"de":"verabreden","en":"to arrange (to meet)","ex":"Wir haben uns für Samstag verabredet.","exEn":"We have arranged to meet on Saturday.","diff":"hard","level":"B1"},
+    {"de":"weiterhelfen","en":"to help further / assist","ex":"Vielleicht kann Ihnen mein Kollege weiterhelfen.","exEn":"Maybe my colleague can help you further.","diff":"medium","level":"B1"},
+    {"de":"spezialisieren","en":"to specialise","ex":"Die Firma hat sich auf Software spezialisiert.","exEn":"The company has specialised in software.","diff":"hard","level":"B1"},
+    {"de":"entnehmen","en":"to take from / gather from","ex":"Die Daten können Sie der Tabelle entnehmen.","exEn":"You can take the data from the table.","diff":"hard","level":"B1"},
+    {"de":"anrechnen","en":"to credit / count towards","ex":"Die Praktikumszeit kann man anrechnen.","exEn":"The internship time can be counted towards it.","diff":"hard","level":"B1"}
+  ],
+  "Everyday Actions": [
+    {"de":"hinfallen","en":"to fall down","ex":"Das Kind ist auf dem Spielplatz hingefallen.","exEn":"The child fell down on the playground.","diff":"easy","level":"A2"},
+    {"de":"umknicken","en":"to twist (one's ankle)","ex":"Beim Laufen bin ich umgeknickt.","exEn":"I twisted my ankle while running.","diff":"medium","level":"A2"},
+    {"de":"turnen","en":"to do gymnastics","ex":"Die Kinder turnen in der Halle.","exEn":"The children do gymnastics in the hall.","diff":"medium","level":"A2"}
+  ],
+  "Body & Health": [
+    {"de":"das Gipsbein","en":"leg in a cast","pl":"die Gipsbeine","ex":"Nach dem Unfall hatte er ein Gipsbein.","exEn":"After the accident he had a leg in a cast.","diff":"medium","level":"A2"},
+    {"de":"der Knöchel","en":"ankle","pl":"die Knöchel","ex":"Ich habe mir den Knöchel verstaucht.","exEn":"I sprained my ankle.","diff":"medium","level":"A2"},
+    {"de":"das Seniorenheim","en":"retirement home","pl":"die Seniorenheime","ex":"Meine Oma lebt in einem Seniorenheim.","exEn":"My grandma lives in a retirement home.","diff":"medium","level":"B1"}
+  ],
+  "Sport & Leisure": [
+    {"de":"der Volleyball","en":"volleyball","pl":"die Volleybälle","ex":"Am Strand spielen wir gern Volleyball.","exEn":"At the beach we like to play volleyball.","diff":"easy","level":"A2","hint":"Der Sport: das Volleyball(spiel), aber der Ball selbst: der Volleyball."},
+    {"de":"der Korb","en":"basket","pl":"die Körbe","ex":"Sie legt die Äpfel in den Korb.","exEn":"She puts the apples in the basket.","diff":"easy","level":"A2"}
+  ],
+  "Abstract & Advanced": [
+    {"de":"die Struktur","en":"structure","pl":"die Strukturen","ex":"Der Text hat eine klare Struktur.","exEn":"The text has a clear structure.","diff":"medium","level":"A2"},
+    {"de":"die Pflicht","en":"duty / obligation","pl":"die Pflichten","ex":"Es ist deine Pflicht, pünktlich zu sein.","exEn":"It is your duty to be on time.","diff":"medium","level":"A2"},
+    {"de":"die Planung","en":"planning","pl":"die Planungen","ex":"Die Planung des Projekts dauert lange.","exEn":"The planning of the project takes a long time.","diff":"medium","level":"A2"},
+    {"de":"die Variante","en":"variant / option","pl":"die Varianten","ex":"Es gibt zwei Varianten dieses Plans.","exEn":"There are two variants of this plan.","diff":"medium","level":"A2"},
+    {"de":"der Unterschied","en":"difference","pl":"die Unterschiede","ex":"Was ist der Unterschied zwischen den beiden?","exEn":"What is the difference between the two?","diff":"easy","level":"A2"},
+    {"de":"das Niveau","en":"level / standard","pl":"die Niveaus","ex":"Der Kurs ist auf hohem Niveau.","exEn":"The course is at a high level.","diff":"hard","level":"B1"},
+    {"de":"die Aufteilung","en":"division / allocation","pl":"die Aufteilungen","ex":"Die Aufteilung der Aufgaben war fair.","exEn":"The division of tasks was fair.","diff":"hard","level":"B1"},
+    {"de":"die Erstellung","en":"creation / preparation","ex":"Die Erstellung des Berichts dauert zwei Tage.","exEn":"The preparation of the report takes two days.","diff":"hard","level":"B1"},
+    {"de":"die Formulierung","en":"wording / phrasing","pl":"die Formulierungen","ex":"Achte auf die richtige Formulierung.","exEn":"Pay attention to the correct wording.","diff":"hard","level":"B1"},
+    {"de":"die Handlung","en":"action / plot","pl":"die Handlungen","ex":"Die Handlung des Films war spannend.","exEn":"The plot of the film was exciting.","diff":"hard","level":"B1"},
+    {"de":"die Verstärkung","en":"reinforcement / support","ex":"Das Team braucht dringend Verstärkung.","exEn":"The team urgently needs reinforcement.","diff":"hard","level":"B1"}
+  ],
+  "Maths & Statistics": [
+    {"de":"die Biologie","en":"biology","ex":"Biologie ist mein Lieblingsfach.","exEn":"Biology is my favourite subject.","diff":"medium","level":"A2"},
+    {"de":"die Chemie","en":"chemistry","ex":"Im Chemieunterricht machen wir Experimente.","exEn":"In chemistry class we do experiments.","diff":"medium","level":"A2"},
+    {"de":"die Physik","en":"physics","ex":"Physik ist schwer, aber interessant.","exEn":"Physics is hard but interesting.","diff":"medium","level":"A2"},
+    {"de":"die Erdkunde","en":"geography","ex":"In Erdkunde lernen wir über Länder.","exEn":"In geography we learn about countries.","diff":"medium","level":"A2"}
+  ],
+  "Admin & Bureaucracy": [
+    {"de":"das Bundesland","en":"federal state","pl":"die Bundesländer","ex":"Deutschland hat sechzehn Bundesländer.","exEn":"Germany has sixteen federal states.","diff":"medium","level":"A2"},
+    {"de":"der Integrationsverein","en":"integration association","pl":"die Integrationsvereine","ex":"Der Integrationsverein hilft neuen Familien.","exEn":"The integration association helps new families.","diff":"hard","level":"A2"},
+    {"de":"die Uniform","en":"uniform","pl":"die Uniformen","ex":"Die Polizisten tragen eine Uniform.","exEn":"The police officers wear a uniform.","diff":"medium","level":"A2"},
+    {"de":"die Tagesordnung","en":"agenda","pl":"die Tagesordnungen","ex":"Der erste Punkt auf der Tagesordnung ist das Budget.","exEn":"The first item on the agenda is the budget.","diff":"hard","level":"B1"},
+    {"de":"die Vorlage","en":"template","pl":"die Vorlagen","ex":"Benutze bitte diese Vorlage für den Brief.","exEn":"Please use this template for the letter.","diff":"medium","level":"A2"},
+    {"de":"der Auszug","en":"extract / statement","pl":"die Auszüge","ex":"Ich brauche einen Auszug aus dem Register.","exEn":"I need an extract from the register.","diff":"hard","level":"B1"},
+    {"de":"die Übersiedlung","en":"relocation / move","pl":"die Übersiedlungen","ex":"Die Übersiedlung in die neue Stadt war anstrengend.","exEn":"The relocation to the new city was exhausting.","diff":"hard","level":"B1"},
+    {"de":"die Geschäftsführung","en":"management","ex":"Die Geschäftsführung trifft sich am Montag.","exEn":"The management meets on Monday.","diff":"hard","level":"B1"},
+    {"de":"der Firmensitz","en":"company headquarters","pl":"die Firmensitze","ex":"Der Firmensitz ist in München.","exEn":"The company headquarters is in Munich.","diff":"hard","level":"B1"}
+  ],
+  "Banking & Finance": [
+    {"de":"das Finanzwesen","en":"finance","ex":"Sie arbeitet im Finanzwesen.","exEn":"She works in finance.","diff":"hard","level":"B1"},
+    {"de":"die Vergütung","en":"remuneration / pay","pl":"die Vergütungen","ex":"Die Vergütung ist sehr gut.","exEn":"The remuneration is very good.","diff":"hard","level":"B1"},
+    {"de":"der Steuerberater","en":"tax adviser","pl":"die Steuerberater","ex":"Mein Steuerberater macht die Steuererklärung.","exEn":"My tax adviser does the tax return.","diff":"hard","level":"B1"},
+    {"de":"das Steuerberatungsbüro","en":"tax consultancy firm","pl":"die Steuerberatungsbüros","ex":"Sie arbeitet in einem Steuerberatungsbüro.","exEn":"She works in a tax consultancy firm.","diff":"hard","level":"B1"}
+  ],
+  "Emails & Phone": [
+    {"de":"der Tippfehler","en":"typo","pl":"die Tippfehler","ex":"In der E-Mail war ein Tippfehler.","exEn":"There was a typo in the email.","diff":"medium","level":"A2"},
+    {"de":"das Briefpapier","en":"letter paper / stationery","ex":"Sie schreibt auf schönem Briefpapier.","exEn":"She writes on nice letter paper.","diff":"medium","level":"B1"},
+    {"de":"das Büromaterial","en":"office supplies","ex":"Wir müssen neues Büromaterial bestellen.","exEn":"We have to order new office supplies.","diff":"medium","level":"B1"},
+    {"de":"das Fax","en":"fax","pl":"die Faxe","ex":"Bitte schicken Sie mir ein Fax.","exEn":"Please send me a fax.","diff":"medium","level":"B1"},
+    {"de":"der Empfang","en":"reception","ex":"Bitte melden Sie sich am Empfang.","exEn":"Please report to the reception.","diff":"medium","level":"B1"},
+    {"de":"der Posteingang","en":"inbox","pl":"die Posteingänge","ex":"Im Posteingang sind zwanzig neue Mails.","exEn":"There are twenty new emails in the inbox.","diff":"medium","level":"B1"},
+    {"de":"die Kontaktdaten","en":"contact details","ex":"Bitte hinterlassen Sie Ihre Kontaktdaten.","exEn":"Please leave your contact details.","diff":"medium","level":"B1"},
+    {"de":"die Weiterleitung","en":"forwarding","pl":"die Weiterleitungen","ex":"Die Weiterleitung der E-Mail hat geklappt.","exEn":"The forwarding of the email worked.","diff":"hard","level":"B1"},
+    {"de":"beilegen","en":"to enclose / attach","ex":"Ich lege meinen Lebenslauf bei.","exEn":"I am enclosing my CV.","diff":"hard","level":"B1"},
+    {"de":"senden","en":"to send","ex":"Ich sende Ihnen die Unterlagen morgen.","exEn":"I will send you the documents tomorrow.","diff":"medium","level":"B1"},
+    {"de":"eingehen","en":"to come in / arrive (mail)","ex":"Ihre Bewerbung ist heute eingegangen.","exEn":"Your application arrived today.","diff":"hard","level":"B1"},
+    {"de":"einschreiben","en":"to register / enrol","ex":"Sie hat sich für den Kurs eingeschrieben.","exEn":"She enrolled for the course.","diff":"hard","level":"B1"}
+  ],
+  "Media & Communication": [
+    {"de":"die Rede","en":"speech","pl":"die Reden","ex":"Der Bürgermeister hielt eine kurze Rede.","exEn":"The mayor gave a short speech.","diff":"medium","level":"A2"},
+    {"de":"die Telekommunikation","en":"telecommunications","ex":"Er arbeitet in der Telekommunikation.","exEn":"He works in telecommunications.","diff":"hard","level":"B1"},
+    {"de":"das Catering","en":"catering","ex":"Eine Firma übernimmt das Catering für das Fest.","exEn":"A company takes care of the catering for the party.","diff":"medium","level":"B1"},
+    {"de":"der Konferenzraum","en":"conference room","pl":"die Konferenzräume","ex":"Das Meeting ist im großen Konferenzraum.","exEn":"The meeting is in the large conference room.","diff":"medium","level":"B1"}
+  ],
+  "Technology & Digital": [
+    {"de":"der PC","en":"PC / computer","pl":"die PCs","ex":"Mein PC ist sehr langsam geworden.","exEn":"My PC has become very slow.","diff":"easy","level":"A2"},
+    {"de":"das Original","en":"original","pl":"die Originale","ex":"Bitte bringen Sie das Original mit.","exEn":"Please bring the original with you.","diff":"medium","level":"B1"}
+  ],
+  "Around the House": [
+    {"de":"der Föhn","en":"hairdryer","pl":"die Föhne","ex":"Mein Föhn ist kaputt.","exEn":"My hairdryer is broken.","diff":"medium","level":"A2"},
+    {"de":"der Kamm","en":"comb","pl":"die Kämme","ex":"Wo ist mein Kamm?","exEn":"Where is my comb?","diff":"easy","level":"A2"}
+  ],
+  "Clothing & Style": [
+    {"de":"die Frisur","en":"hairstyle","pl":"die Frisuren","ex":"Deine neue Frisur sieht toll aus.","exEn":"Your new hairstyle looks great.","diff":"medium","level":"B1","hint":"Falscher Freund: nicht 'hairdresser' (= Friseur/Friseurin)."},
+    {"de":"färben","en":"to dye / colour","ex":"Sie färbt sich die Haare rot.","exEn":"She dyes her hair red.","diff":"medium","level":"B1"},
+    {"de":"zaubern","en":"to do magic / conjure","ex":"Der Zauberer kann tolle Tricks zaubern.","exEn":"The magician can conjure great tricks.","diff":"medium","level":"B1"}
+  ],
+  "Family & People": [
+    {"de":"der Teenager","en":"teenager","pl":"die Teenager","ex":"Ihre Tochter ist jetzt ein Teenager.","exEn":"Her daughter is now a teenager.","diff":"easy","level":"A2"},
+    {"de":"der Selbstständige","en":"self-employed person","pl":"die Selbstständigen","ex":"Als Selbstständiger arbeitet er von zu Hause.","exEn":"As a self-employed person he works from home.","diff":"hard","level":"B1"}
+  ],
+  "Engineering Workplace": [
+    {"de":"die Assistenz","en":"assistance / assistant role","ex":"Sie sucht eine Stelle in der Assistenz.","exEn":"She is looking for a job as an assistant.","diff":"hard","level":"B1"}
+  ]
+}

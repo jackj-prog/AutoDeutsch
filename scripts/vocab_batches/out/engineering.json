@@ -1,0 +1,142 @@
+{
+ "Engineering Workplace": [
+  {"de":"der Arbeitsauftrag","en":"work order / job assignment","pl":"die Arbeitsaufträge","ex":"Der Chef hat mir einen neuen Arbeitsauftrag gegeben.","exEn":"The boss gave me a new work order.","diff":"medium","level":"A2"},
+  {"de":"der Arbeitsbeginn","en":"start of work","ex":"Der Arbeitsbeginn ist um acht Uhr.","exEn":"Work starts at eight o'clock.","diff":"medium","level":"A2"},
+  {"de":"der Arbeitsschutz","en":"occupational safety","ex":"Der Arbeitsschutz ist im Betrieb sehr wichtig.","exEn":"Occupational safety is very important in the company.","diff":"medium","level":"A2"},
+  {"de":"der Außendienst","en":"field service / external service","ex":"Er arbeitet im Außendienst und ist viel unterwegs.","exEn":"He works in field service and is often on the road.","diff":"medium","level":"A2"},
+  {"de":"die Beauftragte","en":"representative / officer (female)","pl":"die Beauftragten","ex":"Die Beauftragte für Sicherheit kommt morgen.","exEn":"The safety officer is coming tomorrow.","diff":"hard","level":"B1"},
+  {"de":"bereitstellen","en":"to provide / make available","ex":"Die Firma stellt uns Werkzeug bereit.","exEn":"The company provides us with tools.","diff":"medium","level":"A2"},
+  {"de":"besprechen","en":"to discuss","ex":"Wir besprechen das Projekt im Meeting.","exEn":"We discuss the project in the meeting.","diff":"medium","level":"A2"},
+  {"de":"betätigen","en":"to operate / press","ex":"Bitte betätigen Sie den roten Knopf.","exEn":"Please operate the red button.","diff":"hard","level":"B1"},
+  {"de":"die Buchhaltung","en":"accounting / bookkeeping","ex":"Die Rechnung geht an die Buchhaltung.","exEn":"The invoice goes to accounting.","diff":"medium","level":"A2"},
+  {"de":"die Einweisung","en":"instruction / briefing","pl":"die Einweisungen","ex":"Vor der Arbeit gibt es eine kurze Einweisung.","exEn":"There is a short briefing before work.","diff":"hard","level":"B1"},
+  {"de":"der Entwurf","en":"draft / design","pl":"die Entwürfe","ex":"Der erste Entwurf ist fast fertig.","exEn":"The first draft is almost finished.","diff":"medium","level":"A2"},
+  {"de":"gestalten","en":"to design / shape","ex":"Wir gestalten das Büro neu.","exEn":"We are redesigning the office.","diff":"medium","level":"A2"},
+  {"de":"der Internetzugang","en":"internet access","ex":"Im Büro haben wir schnellen Internetzugang.","exEn":"In the office we have fast internet access.","diff":"medium","level":"A2"},
+  {"de":"die Kundenbetreuung","en":"customer support","ex":"Bei Problemen hilft die Kundenbetreuung.","exEn":"Customer support helps with problems.","diff":"medium","level":"A2"},
+  {"de":"die Nachbereitung","en":"follow-up / debriefing","ex":"Die Nachbereitung des Termins dauert eine Stunde.","exEn":"The follow-up to the meeting takes an hour.","diff":"hard","level":"B1"},
+  {"de":"die Personalabteilung","en":"personnel / HR department","pl":"die Personalabteilungen","ex":"Fragen zum Vertrag klärt die Personalabteilung.","exEn":"The HR department handles questions about the contract.","diff":"medium","level":"A2"},
+  {"de":"das Personalbüro","en":"personnel office","pl":"die Personalbüros","ex":"Das Personalbüro ist im zweiten Stock.","exEn":"The personnel office is on the second floor.","diff":"medium","level":"A2"},
+  {"de":"das Sekretariat","en":"secretary's office","pl":"die Sekretariate","ex":"Bitte melden Sie sich im Sekretariat.","exEn":"Please report to the secretary's office.","diff":"medium","level":"A2"},
+  {"de":"unbürokratisch","en":"unbureaucratic / red-tape-free","ex":"Die Firma hilft schnell und unbürokratisch.","exEn":"The company helps quickly and without red tape.","diff":"hard","level":"B1"},
+  {"de":"die Vorschrift","en":"regulation / rule","pl":"die Vorschriften","ex":"Wir müssen die Vorschriften genau befolgen.","exEn":"We have to follow the regulations exactly.","diff":"medium","level":"A2"},
+  {"de":"das Besprechungszimmer","en":"meeting room","pl":"die Besprechungszimmer","ex":"Das Meeting ist im großen Besprechungszimmer.","exEn":"The meeting is in the large meeting room.","diff":"medium","level":"B1"},
+  {"de":"der Büroalltag","en":"everyday office life","ex":"E-Mails gehören zum Büroalltag.","exEn":"Emails are part of everyday office life.","diff":"hard","level":"B1"},
+  {"de":"der Büroraum","en":"office space / office room","pl":"die Büroräume","ex":"Wir suchen einen größeren Büroraum.","exEn":"We are looking for a bigger office space.","diff":"medium","level":"B1"},
+  {"de":"die Dienstleistung","en":"service","pl":"die Dienstleistungen","ex":"Die Firma bietet viele Dienstleistungen an.","exEn":"The company offers many services.","diff":"medium","level":"B1"},
+  {"de":"der Kopierer","en":"photocopier","pl":"die Kopierer","ex":"Der Kopierer ist schon wieder kaputt.","exEn":"The photocopier is broken again.","diff":"medium","level":"B1"},
+  {"de":"mitdenken","en":"to think along / use one's head","ex":"Ein guter Mitarbeiter denkt immer mit.","exEn":"A good employee always thinks along.","diff":"hard","level":"B1"},
+  {"de":"die Reinigungsfirma","en":"cleaning company","pl":"die Reinigungsfirmen","ex":"Die Reinigungsfirma kommt jeden Abend.","exEn":"The cleaning company comes every evening.","diff":"medium","level":"B1"},
+  {"de":"der Reinigungsvertrag","en":"cleaning contract","pl":"die Reinigungsverträge","ex":"Der Reinigungsvertrag läuft noch ein Jahr.","exEn":"The cleaning contract runs for another year.","diff":"hard","level":"B1"},
+  {"de":"die Zusammenarbeit","en":"cooperation / collaboration","ex":"Die Zusammenarbeit im Team läuft sehr gut.","exEn":"The cooperation in the team is going very well.","diff":"medium","level":"B1"},
+  {"de":"zusammenarbeiten","en":"to work together / collaborate","ex":"Die zwei Abteilungen arbeiten eng zusammen.","exEn":"The two departments work closely together.","diff":"medium","level":"B1"}
+ ],
+ "Electrical Engineering": [
+  {"de":"die Elektrik","en":"electrics / electrical system","ex":"Die Elektrik im alten Haus ist kaputt.","exEn":"The electrics in the old house are broken.","diff":"medium","level":"A2"},
+  {"de":"die Mehrfachsteckdose","en":"power strip / multi-socket","pl":"die Mehrfachsteckdosen","ex":"Steck den Computer in die Mehrfachsteckdose.","exEn":"Plug the computer into the power strip.","diff":"hard","level":"A2"},
+  {"de":"der Kabelsalat","en":"cable tangle / mess of cables","ex":"Hinter dem Schreibtisch ist ein großer Kabelsalat.","exEn":"There's a big tangle of cables behind the desk.","diff":"hard","level":"B1","hint":"Literally 'cable salad' - a tangled mess of wires."},
+  {"de":"überlasten","en":"to overload","ex":"Zu viele Geräte überlasten die Steckdose.","exEn":"Too many devices overload the socket.","diff":"hard","level":"A2"},
+  {"de":"der Stromanbieter","en":"electricity provider","pl":"die Stromanbieter","ex":"Wir wechseln den Stromanbieter, weil er teuer ist.","exEn":"We're switching the electricity provider because it's expensive.","diff":"hard","level":"B1"},
+  {"de":"die Stromkosten","en":"electricity costs","ex":"Die Stromkosten sind dieses Jahr gestiegen.","exEn":"Electricity costs have risen this year.","diff":"medium","level":"B1"},
+  {"de":"der Verbrauch","en":"consumption","ex":"Der Verbrauch von Strom ist sehr hoch.","exEn":"The consumption of electricity is very high.","diff":"hard","level":"B1"},
+  {"de":"aufdrehen","en":"to turn on (a tap/valve)","ex":"Dreh bitte das Wasser auf.","exEn":"Please turn the water on.","diff":"medium","level":"B1"},
+  {"de":"zudrehen","en":"to turn off (a tap/valve)","ex":"Dreh den Hahn nach dem Duschen zu.","exEn":"Turn off the tap after showering.","diff":"medium","level":"B1"}
+ ],
+ "Body & Health": [
+  {"de":"der Brand","en":"fire / blaze","pl":"die Brände","ex":"Die Feuerwehr hat den Brand schnell gelöscht.","exEn":"The fire brigade put out the fire quickly.","diff":"medium","level":"A2"},
+  {"de":"die Brandbekämpfung","en":"firefighting","ex":"Die Brandbekämpfung dauerte mehrere Stunden.","exEn":"The firefighting lasted several hours.","diff":"hard","level":"B1"},
+  {"de":"der Brandfall","en":"event of a fire","ex":"Im Brandfall benutzen Sie bitte die Treppe.","exEn":"In the event of a fire, please use the stairs.","diff":"hard","level":"A2"},
+  {"de":"der Brandmelder","en":"smoke detector / fire alarm","pl":"die Brandmelder","ex":"Der Brandmelder piept, wenn es raucht.","exEn":"The smoke detector beeps when there is smoke.","diff":"medium","level":"A2"},
+  {"de":"der Brandschutz","en":"fire protection / fire safety","ex":"Der Brandschutz ist im Betrieb sehr wichtig.","exEn":"Fire safety is very important in the company.","diff":"medium","level":"A2"},
+  {"de":"brennen","en":"to burn","ex":"Vorsicht, die Kerze brennt noch.","exEn":"Careful, the candle is still burning.","diff":"easy","level":"A2"},
+  {"de":"der Feuerlöscher","en":"fire extinguisher","pl":"die Feuerlöscher","ex":"Der Feuerlöscher hängt neben der Tür.","exEn":"The fire extinguisher hangs next to the door.","diff":"medium","level":"A2"},
+  {"de":"die Flamme","en":"flame","pl":"die Flammen","ex":"Die Flamme der Kerze ist sehr klein.","exEn":"The flame of the candle is very small.","diff":"easy","level":"A2"},
+  {"de":"gefährden","en":"to endanger","ex":"Offenes Feuer kann Menschen gefährden.","exEn":"Open fire can endanger people.","diff":"hard","level":"A2"},
+  {"de":"der Rettungswagen","en":"ambulance","pl":"die Rettungswagen","ex":"Der Rettungswagen kam nach wenigen Minuten.","exEn":"The ambulance arrived after a few minutes.","diff":"medium","level":"A2"},
+  {"de":"rasieren","en":"to shave","ex":"Er rasiert sich jeden Morgen.","exEn":"He shaves every morning.","diff":"medium","level":"B1"},
+  {"de":"übergeben","en":"to hand over (sich übergeben: to be sick)","ex":"Sie übergibt dem Chef die Unterlagen.","exEn":"She hands the documents over to the boss.","diff":"hard","level":"B1","hint":"Reflexive 'sich übergeben' means to vomit."},
+  {"de":"ausschlafen","en":"to sleep in / have a lie-in","ex":"Am Wochenende kann ich endlich ausschlafen.","exEn":"At the weekend I can finally sleep in.","diff":"medium","level":"B1"}
+ ],
+ "Around the House": [
+  {"de":"der Aufzug","en":"lift / elevator","pl":"die Aufzüge","ex":"Wir nehmen den Aufzug in den vierten Stock.","exEn":"We take the lift to the fourth floor.","diff":"easy","level":"A2"},
+  {"de":"die Kerze","en":"candle","pl":"die Kerzen","ex":"Sie zündet eine Kerze auf dem Tisch an.","exEn":"She lights a candle on the table.","diff":"easy","level":"A2"},
+  {"de":"das Teelicht","en":"tea light","pl":"die Teelichter","ex":"Auf dem Tisch stehen viele kleine Teelichter.","exEn":"There are many small tea lights on the table.","diff":"medium","level":"A2"},
+  {"de":"die Energiekosten","en":"energy costs","ex":"Die Energiekosten sind im Winter höher.","exEn":"Energy costs are higher in winter.","diff":"medium","level":"B1"},
+  {"de":"die Energieverschwendung","en":"waste of energy","ex":"Licht am Tag ist reine Energieverschwendung.","exEn":"Light during the day is a pure waste of energy.","diff":"hard","level":"B1"},
+  {"de":"die Heizkosten","en":"heating costs","ex":"Die Heizkosten waren dieses Jahr sehr hoch.","exEn":"The heating costs were very high this year.","diff":"medium","level":"B1"},
+  {"de":"die Wärme","en":"warmth / heat","ex":"Im Winter genieße ich die Wärme zu Hause.","exEn":"In winter I enjoy the warmth at home.","diff":"medium","level":"B1"},
+  {"de":"kippen","en":"to tip / tilt","ex":"Ich kippe das Fenster zum Lüften.","exEn":"I tilt the window open to air the room.","diff":"medium","level":"B1"},
+  {"de":"anmachen","en":"to turn on / switch on","ex":"Mach bitte das Licht an.","exEn":"Please turn on the light.","diff":"easy","level":"A2"},
+  {"de":"drinnen","en":"inside / indoors","ex":"Bei Regen bleiben wir lieber drinnen.","exEn":"When it rains we'd rather stay inside.","diff":"easy","level":"A2"}
+ ],
+ "Common Verbs": [
+  {"de":"absetzen","en":"to drop off / set down","ex":"Ich setze dich am Bahnhof ab.","exEn":"I'll drop you off at the station.","diff":"hard","level":"A2"},
+  {"de":"angeben","en":"to state / indicate","ex":"Bitte geben Sie Ihren Namen an.","exEn":"Please state your name.","diff":"medium","level":"A2"},
+  {"de":"ausmachen","en":"to turn off / to matter","ex":"Mach bitte den Fernseher aus.","exEn":"Please turn off the television.","diff":"medium","level":"A2"},
+  {"de":"bewahren","en":"to keep / preserve","ex":"Bitte bewahren Sie die Ruhe.","exEn":"Please keep calm.","diff":"hard","level":"A2"},
+  {"de":"bewegen","en":"to move","ex":"Bitte bewegen Sie den Tisch nach links.","exEn":"Please move the table to the left.","diff":"medium","level":"A2"},
+  {"de":"danken","en":"to thank","ex":"Ich danke dir für deine Hilfe.","exEn":"I thank you for your help.","diff":"easy","level":"A2"},
+  {"de":"erlauben","en":"to allow / permit","ex":"Mein Chef erlaubt mir das Homeoffice.","exEn":"My boss allows me to work from home.","diff":"medium","level":"A2"},
+  {"de":"erwarten","en":"to expect","ex":"Wir erwarten morgen wichtige Gäste.","exEn":"We are expecting important guests tomorrow.","diff":"medium","level":"A2"},
+  {"de":"erwischen","en":"to catch / get hold of","ex":"Ich habe gerade noch den Bus erwischt.","exEn":"I just managed to catch the bus.","diff":"hard","level":"A2"},
+  {"de":"kennzeichnen","en":"to mark / label","ex":"Bitte kennzeichnen Sie die Pakete deutlich.","exEn":"Please label the parcels clearly.","diff":"hard","level":"A2"},
+  {"de":"nennen","en":"to name / call","ex":"Können Sie ein Beispiel nennen?","exEn":"Can you name an example?","diff":"medium","level":"A2"},
+  {"de":"reagieren","en":"to react / respond","ex":"Sie reagiert schnell auf E-Mails.","exEn":"She responds to emails quickly.","diff":"medium","level":"A2"},
+  {"de":"unterstützen","en":"to support","ex":"Die Kollegen unterstützen mich bei der Arbeit.","exEn":"My colleagues support me at work.","diff":"medium","level":"A2"},
+  {"de":"verabschieden","en":"to say goodbye / to pass (a law)","ex":"Wir verabschieden uns nach dem Treffen.","exEn":"We say goodbye after the meeting.","diff":"hard","level":"A2"},
+  {"de":"vermeiden","en":"to avoid","ex":"Wir wollen Fehler vermeiden.","exEn":"We want to avoid mistakes.","diff":"medium","level":"A2"},
+  {"de":"verwenden","en":"to use","ex":"Verwenden Sie bitte ein sauberes Tuch.","exEn":"Please use a clean cloth.","diff":"medium","level":"A2"},
+  {"de":"vorbereiten","en":"to prepare","ex":"Ich bereite die Präsentation vor.","exEn":"I am preparing the presentation.","diff":"medium","level":"A2"},
+  {"de":"heraussuchen","en":"to pick out / find","ex":"Ich suche dir die passenden Unterlagen heraus.","exEn":"I'll pick out the right documents for you.","diff":"hard","level":"A2"},
+  {"de":"abdrehen","en":"to turn off (gas/water)","ex":"Bitte dreh das Gas ab.","exEn":"Please turn off the gas.","diff":"hard","level":"B1"},
+  {"de":"abheften","en":"to file away","ex":"Ich hefte die Rechnungen ordentlich ab.","exEn":"I file the invoices away neatly.","diff":"hard","level":"B1"},
+  {"de":"ansehen","en":"to look at / watch","ex":"Wir sehen uns die Pläne genau an.","exEn":"We look at the plans closely.","diff":"medium","level":"B1"},
+  {"de":"senken","en":"to lower / reduce","ex":"Die Firma will die Kosten senken.","exEn":"The company wants to reduce costs.","diff":"medium","level":"B1"},
+  {"de":"mitschreiben","en":"to take notes","ex":"Ich schreibe im Meeting alles mit.","exEn":"I take notes on everything in the meeting.","diff":"medium","level":"A2"},
+  {"de":"hinfahren","en":"to drive/go there","ex":"Ich fahre morgen mit dem Auto hin.","exEn":"I'll drive there by car tomorrow.","diff":"medium","level":"A2"}
+ ],
+ "Colours & Descriptions": [
+  {"de":"bereit","en":"ready","ex":"Ich bin bereit für das Meeting.","exEn":"I am ready for the meeting.","diff":"easy","level":"A2"},
+  {"de":"deutlich","en":"clear / clearly","ex":"Bitte sprechen Sie laut und deutlich.","exEn":"Please speak loudly and clearly.","diff":"medium","level":"A2"},
+  {"de":"höflich","en":"polite","ex":"Sie ist immer höflich zu den Kunden.","exEn":"She is always polite to the customers.","diff":"easy","level":"A2"},
+  {"de":"offen","en":"open","ex":"Das Fenster steht den ganzen Tag offen.","exEn":"The window is open all day.","diff":"easy","level":"B1"},
+  {"de":"verboten","en":"forbidden / prohibited","ex":"Rauchen ist im Büro verboten.","exEn":"Smoking is forbidden in the office.","diff":"medium","level":"A2"},
+  {"de":"unnötig","en":"unnecessary","ex":"Das ist eine völlig unnötige Diskussion.","exEn":"That is a completely unnecessary discussion.","diff":"medium","level":"B1"},
+  {"de":"langfristig","en":"long-term","ex":"Wir denken langfristig und planen für Jahre.","exEn":"We think long-term and plan for years.","diff":"hard","level":"B1"},
+  {"de":"echt","en":"real / really","ex":"Das ist echt eine gute Idee.","exEn":"That's a really good idea.","diff":"easy","level":"A2"},
+  {"de":"stinksauer","en":"furious / really angry","ex":"Der Chef war stinksauer über den Fehler.","exEn":"The boss was furious about the mistake.","diff":"hard","level":"B1","hint":"Colloquial intensifier - stronger than 'sauer' (annoyed)."}
+ ],
+ "Numbers & Time": [
+  {"de":"die Million","en":"million","pl":"die Millionen","ex":"Die Stadt hat über eine Million Einwohner.","exEn":"The city has over a million inhabitants.","diff":"medium","level":"A2"},
+  {"de":"mehrmals","en":"several times","ex":"Ich habe heute mehrmals angerufen.","exEn":"I called several times today.","diff":"medium","level":"B1"}
+ ],
+ "Technology & Digital": [
+  {"de":"der Laptop","en":"laptop","pl":"die Laptops","ex":"Mein Laptop ist leider sehr langsam.","exEn":"My laptop is unfortunately very slow.","diff":"easy","level":"A2"},
+  {"de":"die Grafik","en":"graphic / chart","pl":"die Grafiken","ex":"Die Grafik zeigt die Verkaufszahlen.","exEn":"The graphic shows the sales figures.","diff":"medium","level":"A2"}
+ ],
+ "Media & Communication": [
+  {"de":"das Marketing","en":"marketing","ex":"Das Marketing plant eine neue Kampagne.","exEn":"Marketing is planning a new campaign.","diff":"medium","level":"A2"},
+  {"de":"der Werbeflyer","en":"advertising flyer","pl":"die Werbeflyer","ex":"Wir verteilen den Werbeflyer in der Stadt.","exEn":"We are handing out the advertising flyer in town.","diff":"medium","level":"A2"},
+  {"de":"die Werbeagentur","en":"advertising agency","pl":"die Werbeagenturen","ex":"Eine Werbeagentur gestaltet unsere Anzeigen.","exEn":"An advertising agency designs our ads.","diff":"hard","level":"A2"},
+  {"de":"die Privatnummer","en":"private (phone) number","pl":"die Privatnummern","ex":"Ich gebe meine Privatnummer nicht heraus.","exEn":"I don't give out my private number.","diff":"medium","level":"B1"}
+ ],
+ "Banking & Finance": [
+  {"de":"die Kontoverbindung","en":"bank account details","pl":"die Kontoverbindungen","ex":"Bitte schicken Sie mir Ihre Kontoverbindung.","exEn":"Please send me your bank account details.","diff":"hard","level":"A2"},
+  {"de":"die Versicherung","en":"insurance","pl":"die Versicherungen","ex":"Meine Versicherung zahlt den Schaden.","exEn":"My insurance pays for the damage.","diff":"medium","level":"A2"},
+  {"de":"das Vertragsende","en":"end of the contract","ex":"Zum Vertragsende kündige ich den Vertrag.","exEn":"I'll cancel the contract at the end of the contract.","diff":"hard","level":"B1"},
+  {"de":"die Vertragsnummer","en":"contract number","pl":"die Vertragsnummern","ex":"Geben Sie bitte Ihre Vertragsnummer an.","exEn":"Please provide your contract number.","diff":"medium","level":"B1"}
+ ],
+ "Work & Study": [
+  {"de":"der Vertrieb","en":"sales / distribution (department)","ex":"Er arbeitet im Vertrieb und verkauft Maschinen.","exEn":"He works in sales and sells machines.","diff":"hard","level":"A2"},
+  {"de":"das Verhalten","en":"behaviour / conduct","ex":"Ihr Verhalten im Team ist sehr freundlich.","exEn":"Her behaviour in the team is very friendly.","diff":"medium","level":"A2"},
+  {"de":"die Vermeidung","en":"avoidance / prevention","ex":"Zur Vermeidung von Unfällen tragen wir Helme.","exEn":"To prevent accidents we wear helmets.","diff":"hard","level":"A2"},
+  {"de":"die Hektik","en":"hectic rush / hustle","ex":"Vor dem Termin herrscht große Hektik.","exEn":"Before the appointment there is a big rush.","diff":"hard","level":"A2"},
+  {"de":"die Kraft","en":"strength / power / force","pl":"die Kräfte","ex":"Ich habe heute keine Kraft mehr.","exEn":"I have no strength left today.","diff":"medium","level":"A2"}
+ ],
+ "Abstract & Advanced": [
+  {"de":"die Weise","en":"way / manner","ex":"Auf diese Weise sparen wir viel Zeit.","exEn":"In this way we save a lot of time.","diff":"hard","level":"B1"}
+ ],
+ "Connectors & Structure": [
+  {"de":"indem","en":"by (doing something)","ex":"Wir sparen Strom, indem wir das Licht ausmachen.","exEn":"We save electricity by turning off the light.","diff":"hard","level":"B1","hint":"Subordinating conjunction expressing means/method."}
+ ]
+}

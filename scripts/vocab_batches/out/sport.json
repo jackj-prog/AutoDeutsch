@@ -1,0 +1,90 @@
+{
+  "Sport & Leisure": [
+    {"de":"das Basketball","en":"basketball","ex":"Wir spielen am Samstag Basketball.","exEn":"We play basketball on Saturday.","diff":"easy","level":"A1"},
+    {"de":"das Schach","en":"chess","ex":"Mein Opa spielt jeden Abend Schach.","exEn":"My grandpa plays chess every evening.","diff":"medium","level":"A2"},
+    {"de":"segeln","en":"to sail","ex":"Im Sommer segeln wir auf dem See.","exEn":"In summer we sail on the lake.","diff":"medium","level":"A2"},
+    {"de":"surfen","en":"to surf","ex":"Er lernt diesen Sommer surfen.","exEn":"He is learning to surf this summer.","diff":"medium","level":"A2"},
+    {"de":"das Spielfeld","en":"playing field / pitch","pl":"die Spielfelder","ex":"Die Spieler stehen schon auf dem Spielfeld.","exEn":"The players are already on the pitch.","diff":"medium","level":"A2"},
+    {"de":"das Sportergebnis","en":"sports result","pl":"die Sportergebnisse","ex":"Ich lese morgens die Sportergebnisse.","exEn":"I read the sports results in the morning.","diff":"medium","level":"A2"},
+    {"de":"der Sportplatz","en":"sports ground / sports field","pl":"die Sportplätze","ex":"Der Sportplatz liegt hinter der Schule.","exEn":"The sports ground is behind the school.","diff":"medium","level":"A2"},
+    {"de":"das Volleyballspiel","en":"volleyball game / volleyball match","pl":"die Volleyballspiele","ex":"Das Volleyballspiel beginnt um drei Uhr.","exEn":"The volleyball game starts at three o'clock.","diff":"medium","level":"A2"},
+    {"de":"die Umkleide","en":"changing room","pl":"die Umkleiden","ex":"Die Umkleide ist neben der Halle.","exEn":"The changing room is next to the hall.","diff":"medium","level":"A2"},
+    {"de":"der Schnupperkurs","en":"taster course / trial class","pl":"die Schnupperkurse","ex":"Ich mache einen Schnupperkurs im Tennis.","exEn":"I'm taking a taster course in tennis.","diff":"hard","level":"B1"},
+    {"de":"die Leidenschaft","en":"passion","pl":"die Leidenschaften","ex":"Fußball ist seine größte Leidenschaft.","exEn":"Football is his greatest passion.","diff":"hard","level":"B1"},
+    {"de":"der Ausgleich","en":"balance / counterbalance","pl":"die Ausgleiche","ex":"Sport ist ein guter Ausgleich zur Arbeit.","exEn":"Sport is a good counterbalance to work.","diff":"hard","level":"B1","hint":"Often used as 'ein Ausgleich zu' = a balance/break from something."},
+    {"de":"abschalten","en":"to switch off / to unwind","ex":"Beim Joggen kann ich gut abschalten.","exEn":"I can really unwind while jogging.","diff":"medium","level":"A2"}
+  ],
+  "Media & Communication": [
+    {"de":"die Band","en":"band (music group)","pl":"die Bands","ex":"Meine Band probt jeden Freitag.","exEn":"My band rehearses every Friday.","diff":"easy","level":"A1","hint":"Pronounced like English 'band'; plural is 'Bands'."},
+    {"de":"der Chor","en":"choir","pl":"die Chöre","ex":"Sie singt in einem großen Chor.","exEn":"She sings in a big choir.","diff":"medium","level":"A2"},
+    {"de":"das Event","en":"event","pl":"die Events","ex":"Das Event findet im Stadtpark statt.","exEn":"The event takes place in the city park.","diff":"medium","level":"A2"},
+    {"de":"das Gedicht","en":"poem","pl":"die Gedichte","ex":"Sie hat ein schönes Gedicht geschrieben.","exEn":"She wrote a beautiful poem.","diff":"medium","level":"A2"},
+    {"de":"das Open-Air-Konzert","en":"open-air concert","pl":"die Open-Air-Konzerte","ex":"Wir gehen heute zu einem Open-Air-Konzert.","exEn":"We're going to an open-air concert today.","diff":"medium","level":"A2"},
+    {"de":"der Poetry-Slam","en":"poetry slam","pl":"die Poetry-Slams","ex":"Beim Poetry-Slam tragen viele Leute Texte vor.","exEn":"At the poetry slam many people perform texts.","diff":"hard","level":"B1"},
+    {"de":"der Tango","en":"tango","pl":"die Tangos","ex":"Sie lernen zusammen Tango.","exEn":"They are learning the tango together.","diff":"medium","level":"A2"},
+    {"de":"die Regie","en":"direction (film/theatre)","ex":"Die Regie führte eine junge Frau.","exEn":"A young woman did the directing.","diff":"hard","level":"B1","hint":"'Regie führen' = to direct a film or play."},
+    {"de":"der Saal","en":"hall","pl":"die Säle","ex":"Der Saal war an dem Abend voll.","exEn":"The hall was full that evening.","diff":"medium","level":"A2"},
+    {"de":"der Einlass","en":"admission / entry","ex":"Der Einlass beginnt um sieben Uhr.","exEn":"Admission begins at seven o'clock.","diff":"hard","level":"B1"},
+    {"de":"das Freizeitangebot","en":"leisure activities on offer","pl":"die Freizeitangebote","ex":"Die Stadt hat ein großes Freizeitangebot.","exEn":"The city has a wide range of leisure activities.","diff":"hard","level":"B1"},
+    {"de":"die Freizeitaktivität","en":"leisure activity","pl":"die Freizeitaktivitäten","ex":"Schwimmen ist meine liebste Freizeitaktivität.","exEn":"Swimming is my favourite leisure activity.","diff":"medium","level":"A2"},
+    {"de":"das Freizeitvergnügen","en":"leisure pursuit / pastime","pl":"die Freizeitvergnügen","ex":"Wandern ist ein schönes Freizeitvergnügen.","exEn":"Hiking is a lovely pastime.","diff":"hard","level":"B1"},
+    {"de":"der Veranstaltungshinweis","en":"event listing / event notice","pl":"die Veranstaltungshinweise","ex":"Im Programm stehen viele Veranstaltungshinweise.","exEn":"There are many event listings in the programme.","diff":"hard","level":"B1"},
+    {"de":"veranstalten","en":"to organise / to hold (an event)","ex":"Der Verein veranstaltet ein Sommerfest.","exEn":"The club is organising a summer party.","diff":"medium","level":"A2"},
+    {"de":"unterhalten","en":"to entertain","ex":"Der Clown unterhält die Kinder gut.","exEn":"The clown entertains the children well.","diff":"medium","level":"A2","hint":"Reflexive 'sich unterhalten' = to chat/converse."}
+  ],
+  "Common Verbs": [
+    {"de":"ärgern","en":"to annoy","ex":"Sein Verhalten ärgert mich sehr.","exEn":"His behaviour annoys me a lot.","diff":"medium","level":"A2","hint":"Reflexive 'sich ärgern' = to be annoyed."},
+    {"de":"interessieren","en":"to interest","ex":"Sport interessiert mich überhaupt nicht.","exEn":"Sport doesn't interest me at all.","diff":"medium","level":"A2","hint":"Often reflexive: 'sich für etwas interessieren'."},
+    {"de":"konzentrieren","en":"to concentrate","ex":"Ich kann mich nicht gut konzentrieren.","exEn":"I can't concentrate well.","diff":"medium","level":"A2","hint":"Usually reflexive: 'sich konzentrieren auf'."},
+    {"de":"nähen","en":"to sew","ex":"Meine Mutter näht mir ein Kleid.","exEn":"My mother is sewing me a dress.","diff":"medium","level":"A2"},
+    {"de":"verbringen","en":"to spend (time)","ex":"Wir verbringen den Sommer am Meer.","exEn":"We spend the summer at the seaside.","diff":"medium","level":"A2"},
+    {"de":"verteilen","en":"to distribute / to hand out","ex":"Der Lehrer verteilt die Blätter.","exEn":"The teacher hands out the sheets.","diff":"medium","level":"A2"},
+    {"de":"mitfahren","en":"to come along (in a vehicle)","ex":"Darf ich mit dir mitfahren?","exEn":"May I ride along with you?","diff":"medium","level":"A2"}
+  ],
+  "Cooking & Kitchen": [
+    {"de":"der Grill","en":"barbecue / grill","pl":"die Grills","ex":"Wir machen den Grill im Garten an.","exEn":"We light the barbecue in the garden.","diff":"medium","level":"A2"},
+    {"de":"die Grillkohle","en":"barbecue charcoal","ex":"Wir brauchen noch Grillkohle für heute Abend.","exEn":"We still need charcoal for tonight.","diff":"medium","level":"A2"},
+    {"de":"der Grillplatz","en":"barbecue area","pl":"die Grillplätze","ex":"Im Park gibt es einen Grillplatz.","exEn":"There is a barbecue area in the park.","diff":"medium","level":"A2"},
+    {"de":"die Grillsoße","en":"barbecue sauce","pl":"die Grillsoßen","ex":"Reich mir bitte die Grillsoße.","exEn":"Pass me the barbecue sauce, please.","diff":"medium","level":"A2"},
+    {"de":"die Grillzange","en":"barbecue tongs","pl":"die Grillzangen","ex":"Mit der Grillzange wendet er das Fleisch.","exEn":"He turns the meat with the barbecue tongs.","diff":"medium","level":"A2"},
+    {"de":"das Geschirr","en":"crockery / dishes","ex":"Nach dem Essen spüle ich das Geschirr.","exEn":"After the meal I wash the dishes.","diff":"medium","level":"A2"},
+    {"de":"die Tischdecke","en":"tablecloth","pl":"die Tischdecken","ex":"Sie legt eine weiße Tischdecke auf.","exEn":"She lays out a white tablecloth.","diff":"medium","level":"A2"},
+    {"de":"die Tischdekoration","en":"table decoration","pl":"die Tischdekorationen","ex":"Die Tischdekoration ist sehr festlich.","exEn":"The table decoration is very festive.","diff":"hard","level":"B1"},
+    {"de":"die Verpackung","en":"packaging","pl":"die Verpackungen","ex":"Die Verpackung ist aus Papier.","exEn":"The packaging is made of paper.","diff":"medium","level":"A2"}
+  ],
+  "Food & Drink": [
+    {"de":"der Appetit","en":"appetite","ex":"Guten Appetit!","exEn":"Enjoy your meal!","diff":"easy","level":"A1","hint":"'Guten Appetit!' = enjoy your meal."},
+    {"de":"die Gastronomie","en":"gastronomy / catering trade","ex":"Sie arbeitet in der Gastronomie.","exEn":"She works in the catering trade.","diff":"hard","level":"B1"},
+    {"de":"knackig","en":"crunchy / crisp","ex":"Der Salat ist schön knackig.","exEn":"The salad is nice and crunchy.","diff":"medium","level":"A2"},
+    {"de":"gemischt","en":"mixed","ex":"Ich nehme einen gemischten Salat.","exEn":"I'll have a mixed salad.","diff":"easy","level":"A1"},
+    {"de":"asiatisch","en":"Asian","ex":"Heute Abend essen wir asiatisch.","exEn":"Tonight we're eating Asian food.","diff":"medium","level":"A2"}
+  ],
+  "Body & Health": [
+    {"de":"der Daumen","en":"thumb","pl":"die Daumen","ex":"Ich drücke dir die Daumen!","exEn":"I'll keep my fingers crossed for you!","diff":"easy","level":"A1","hint":"'Daumen drücken' = to keep one's fingers crossed."}
+  ],
+  "Around the House": [
+    {"de":"das Feuerzeug","en":"lighter","pl":"die Feuerzeuge","ex":"Hast du ein Feuerzeug dabei?","exEn":"Do you have a lighter with you?","diff":"medium","level":"A2"}
+  ],
+  "Family & People": [
+    {"de":"der Kumpel","en":"mate / buddy","pl":"die Kumpel","ex":"Er trifft sich mit seinen Kumpeln.","exEn":"He's meeting up with his mates.","diff":"medium","level":"A2","hint":"Informal word for a friend; plural also 'Kumpels'."}
+  ],
+  "Work & Study": [
+    {"de":"die Vorlesung","en":"lecture","pl":"die Vorlesungen","ex":"Die Vorlesung beginnt um neun Uhr.","exEn":"The lecture starts at nine o'clock.","diff":"medium","level":"A2"}
+  ],
+  "Colours & Descriptions": [
+    {"de":"ausgezeichnet","en":"excellent","ex":"Das Essen war ausgezeichnet.","exEn":"The food was excellent.","diff":"medium","level":"A2"},
+    {"de":"herrlich","en":"wonderful / glorious","ex":"Heute ist herrliches Wetter.","exEn":"The weather is glorious today.","diff":"medium","level":"A2"},
+    {"de":"wundervoll","en":"wonderful","ex":"Wir hatten einen wundervollen Tag.","exEn":"We had a wonderful day.","diff":"medium","level":"A2"},
+    {"de":"umfangreich","en":"extensive / comprehensive","ex":"Das Programm ist sehr umfangreich.","exEn":"The programme is very extensive.","diff":"hard","level":"B1"}
+  ],
+  "Travel & Directions": [
+    {"de":"entlang","en":"along","ex":"Wir gehen am Fluss entlang.","exEn":"We walk along the river.","diff":"medium","level":"A2","hint":"Often follows its noun: 'die Straße entlang'."},
+    {"de":"herum","en":"around","ex":"Die Kinder rennen um den Tisch herum.","exEn":"The children run around the table.","diff":"medium","level":"A2"},
+    {"de":"irgendwo","en":"somewhere","ex":"Mein Schlüssel liegt irgendwo hier.","exEn":"My key is somewhere here.","diff":"medium","level":"A2"},
+    {"de":"daheim","en":"at home","ex":"Am Wochenende bleibe ich gern daheim.","exEn":"At the weekend I like to stay at home.","diff":"medium","level":"A2","hint":"Southern German / Austrian for 'zu Hause'."}
+  ],
+  "Numbers & Time": [
+    {"de":"jährlich","en":"annually / yearly","ex":"Das Fest findet jährlich statt.","exEn":"The festival takes place annually.","diff":"medium","level":"A2"},
+    {"de":"jeweils","en":"each / in each case","ex":"Die Kurse dauern jeweils zwei Stunden.","exEn":"The courses last two hours each.","diff":"hard","level":"B1"}
+  ]
+}

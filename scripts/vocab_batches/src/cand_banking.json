@@ -1,0 +1,862 @@
+{
+ "Banking & Finance": [
+  {
+   "de": "die Aktivität",
+   "en_hint": "activity",
+   "level": "A2",
+   "pl_hint": "die Aktivitäten"
+  },
+  {
+   "de": "anfordern",
+   "en_hint": "to request",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Armut",
+   "en_hint": "poverty",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "aufheben",
+   "en_hint": "to cancel",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausdrucken",
+   "en_hint": "to print",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bankkarte",
+   "en_hint": "bank card",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bankleitzahl",
+   "en_hint": "sort code",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bankschalter",
+   "en_hint": "bank counter",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bar",
+   "en_hint": "in cash",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bargeldlos",
+   "en_hint": "cashless",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Basis",
+   "en_hint": "basis",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "begleichen",
+   "en_hint": "to settle",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "berechnen",
+   "en_hint": "to calculate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bestellnummer",
+   "en_hint": "order number",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der BIC",
+   "en_hint": "BIC",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Blick",
+   "en_hint": "view",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Broschüre",
+   "en_hint": "brochure",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "eigen",
+   "en_hint": "own",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Eingabe",
+   "en_hint": "input",
+   "level": "A2",
+   "pl_hint": "die Eingaben"
+  },
+  {
+   "de": "eingeben",
+   "en_hint": "to input",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "folgend",
+   "en_hint": "following",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "formulieren",
+   "en_hint": "to formulate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Geldstück",
+   "en_hint": "coin",
+   "level": "A2",
+   "pl_hint": "die Geldstücke"
+  },
+  {
+   "de": "die Girocard",
+   "en_hint": "girocard",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Hufeisen",
+   "en_hint": "horseshoe",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die IBAN",
+   "en_hint": "IBAN",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "indirekt",
+   "en_hint": "indirect",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Innenstadt",
+   "en_hint": "city centre",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "jederzeit",
+   "en_hint": "anytime",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kleeblatt",
+   "en_hint": "cloverleaf",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kleingeld",
+   "en_hint": "small change",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kontonummer",
+   "en_hint": "account number",
+   "level": "A2",
+   "pl_hint": "die Kontonummern"
+  },
+  {
+   "de": "kontrollieren",
+   "en_hint": "to monitor",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kreditinstitut",
+   "en_hint": "credit institute",
+   "level": "A2",
+   "pl_hint": "die Kreditinstitute"
+  },
+  {
+   "de": "die Kundennummer",
+   "en_hint": "customer number",
+   "level": "A2",
+   "pl_hint": "die Kundennummern"
+  },
+  {
+   "de": "die Kundenreferenz",
+   "en_hint": "customer reference",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Menge",
+   "en_hint": "amount",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "mobil",
+   "en_hint": "portable",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "monatlich",
+   "en_hint": "monthly",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Münze",
+   "en_hint": "coin",
+   "level": "A2",
+   "pl_hint": "die Münzen"
+  },
+  {
+   "de": "niemand",
+   "en_hint": "nobody",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Nulltarif",
+   "en_hint": "zero tariff rate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "nutzen",
+   "en_hint": "useage",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Pfennig",
+   "en_hint": "penny",
+   "level": "A2",
+   "pl_hint": "die Pfennige"
+  },
+  {
+   "de": "der Rechnungsbetrag",
+   "en_hint": "invoice amount",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Rechnungsnummer",
+   "en_hint": "invoice number",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "reich",
+   "en_hint": "rich",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Reichtum",
+   "en_hint": "wealth",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Respekt",
+   "en_hint": "respect",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Schein",
+   "en_hint": "bank note",
+   "level": "A2",
+   "pl_hint": "die Scheine"
+  },
+  {
+   "de": "schieben",
+   "en_hint": "to shut",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "schlachten",
+   "en_hint": "to rob",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Sparkonto",
+   "en_hint": "savings account",
+   "level": "A2",
+   "pl_hint": "die Sparkonten"
+  },
+  {
+   "de": "das Sparschwein",
+   "en_hint": "piggy bank",
+   "level": "A2",
+   "pl_hint": "die Sparschweine"
+  },
+  {
+   "de": "spätestens",
+   "en_hint": "at the latest",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "stecken",
+   "en_hint": "to put",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "stoßen",
+   "en_hint": "to encounter",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die TAN",
+   "en_hint": "TAN",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Überfall",
+   "en_hint": "robbery",
+   "level": "A2",
+   "pl_hint": "die Überfälle"
+  },
+  {
+   "de": "überfallen",
+   "en_hint": "to rob",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Überwachungskamera",
+   "en_hint": "CCTV",
+   "level": "A2",
+   "pl_hint": "die Überwachungskameras"
+  },
+  {
+   "de": "das Überweisungsformular",
+   "en_hint": "bank transfer form",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Versuch",
+   "en_hint": "attempt",
+   "level": "A2",
+   "pl_hint": "die Versuche"
+  },
+  {
+   "de": "weglaufen",
+   "en_hint": "to run away",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Zeitungsartikel",
+   "en_hint": "newspaper article",
+   "level": "A2",
+   "pl_hint": "die Zeitungsartikel"
+  },
+  {
+   "de": "zurückgeben",
+   "en_hint": "to return",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "abdecken",
+   "en_hint": "to cover",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "absichtlich",
+   "en_hint": "intentional",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "anfahren",
+   "en_hint": "to bump into",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ärztlich",
+   "en_hint": "medical",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "aufkommen",
+   "en_hint": "to pay",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausparken",
+   "en_hint": "to reverse out",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Außenspiegel",
+   "en_hint": "wing mirror",
+   "level": "B1",
+   "pl_hint": "die Außenspiegel"
+  },
+  {
+   "de": "die Automarke",
+   "en_hint": "car make",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Autoteil",
+   "en_hint": "car part",
+   "level": "B1",
+   "pl_hint": "die Autoteile"
+  },
+  {
+   "de": "die Autoversicherung",
+   "en_hint": "car insurance",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "beschädigen",
+   "en_hint": "to damage",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "betrunken",
+   "en_hint": "drunk",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Blinker",
+   "en_hint": "indicator",
+   "level": "B1",
+   "pl_hint": "die Blinker"
+  },
+  {
+   "de": "der Diebstahl",
+   "en_hint": "theft",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Dorf",
+   "en_hint": "village",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "einbrechen",
+   "en_hint": "to break in",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Einbruch",
+   "en_hint": "burglary",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Fahrerseite",
+   "en_hint": "driver's side",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "Freiwillige",
+   "en_hint": "volunteer",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "frustriert",
+   "en_hint": "frustrated",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Gebrauchtwagen",
+   "en_hint": "used vehicle",
+   "level": "B1",
+   "pl_hint": "die Gebrauchtwagen"
+  },
+  {
+   "de": "die Haftpflicht",
+   "en_hint": "liability",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Haftpflichtversicherung",
+   "en_hint": "liability insurance",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Hagel",
+   "en_hint": "hail",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kaskoversicherung",
+   "en_hint": "hull insurance",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kilometer",
+   "en_hint": "kilometre",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "korrekt",
+   "en_hint": "correct",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "krachen",
+   "en_hint": "to crash",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kratzer",
+   "en_hint": "scratch",
+   "level": "B1",
+   "pl_hint": "die Kratzer"
+  },
+  {
+   "de": "lenken",
+   "en_hint": "to steer",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "lohnen",
+   "en_hint": "to pay",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Motorhaube",
+   "en_hint": "bonnet",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "nachdenken",
+   "en_hint": "to think about",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Neuwagen",
+   "en_hint": "new vehicle",
+   "level": "B1",
+   "pl_hint": "die Neuwagen"
+  },
+  {
+   "de": "das Nummernschild",
+   "en_hint": "number plate",
+   "level": "B1",
+   "pl_hint": "die Nummernschilder"
+  },
+  {
+   "de": "der Oldtimer",
+   "en_hint": "vintage car",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "optimistisch",
+   "en_hint": "optimistic",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "parken",
+   "en_hint": "to park",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Parklücke",
+   "en_hint": "parking space",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Personenschaden",
+   "en_hint": "personal injury",
+   "level": "B1",
+   "pl_hint": "die Personenschäden"
+  },
+  {
+   "de": "quietschen",
+   "en_hint": "to screech",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "regulieren",
+   "en_hint": "to regulate",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Regulierung",
+   "en_hint": "regulation",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Rücklicht",
+   "en_hint": "tail light",
+   "level": "B1",
+   "pl_hint": "die Rücklichter"
+  },
+  {
+   "de": "die Rückscheibe",
+   "en_hint": "rear window",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "rutschen",
+   "en_hint": "to slide",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Sachschaden",
+   "en_hint": "property damage",
+   "level": "B1",
+   "pl_hint": "die Sachschäden"
+  },
+  {
+   "de": "der Schadensfall",
+   "en_hint": "damage claim",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Scheibe",
+   "en_hint": "windscreen",
+   "level": "B1",
+   "pl_hint": "die Scheiben"
+  },
+  {
+   "de": "der Scheinwerfer",
+   "en_hint": "headlight",
+   "level": "B1",
+   "pl_hint": "die Scheinwerfer"
+  },
+  {
+   "de": "der Schläger",
+   "en_hint": "bat",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "schwingen",
+   "en_hint": "to swing",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Sinn",
+   "en_hint": "meaning",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Sportwagen",
+   "en_hint": "sports car",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Stoßstange",
+   "en_hint": "bumper",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Straßenrand",
+   "en_hint": "roadside",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Straßenverkehr",
+   "en_hint": "traffic",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "Sport Utiliy Vehicle",
+   "en_hint": "sport utility vehicle",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Teilkaskoversicherung",
+   "en_hint": "partial coverage insurance",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "überraschen",
+   "en_hint": "to surprise",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "umfallen",
+   "en_hint": "to fall over",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "umso",
+   "en_hint": "all the",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Unfall",
+   "en_hint": "accident",
+   "level": "B1",
+   "pl_hint": "die Unfälle"
+  },
+  {
+   "de": "die Unfallgefahr",
+   "en_hint": "risk of accident",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "verletzen",
+   "en_hint": "to injure",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "versehentlich",
+   "en_hint": "accidental",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "versichern",
+   "en_hint": "to insure",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Versicherungsschutz",
+   "en_hint": "insurance cover",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "verursachen",
+   "en_hint": "to cause",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Vollkaskoversicherung",
+   "en_hint": "full comprehensive insurance",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorschreiben",
+   "en_hint": "to stipulate",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorsichtig",
+   "en_hint": "careful",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "wegfahren",
+   "en_hint": "to drive away",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Windschutzscheibe",
+   "en_hint": "windscreen",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zulassen",
+   "en_hint": "to allow",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zusammenstoßen",
+   "en_hint": "to collide",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Zusatzversicherung",
+   "en_hint": "additional insurance",
+   "level": "B1",
+   "pl_hint": ""
+  }
+ ]
+}

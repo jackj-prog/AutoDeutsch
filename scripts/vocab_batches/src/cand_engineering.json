@@ -1,0 +1,688 @@
+{
+ "Engineering Workplace": [
+  {
+   "de": "absetzen",
+   "en_hint": "to distribute",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "angeben",
+   "en_hint": "to indicate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Arbeitsauftrag",
+   "en_hint": "work order",
+   "level": "A2",
+   "pl_hint": "die Arbeitsaufträge"
+  },
+  {
+   "de": "der Arbeitsbeginn",
+   "en_hint": "start of work",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Arbeitsschutz",
+   "en_hint": "occupational safety",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Aufzug",
+   "en_hint": "lift",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Außendienst",
+   "en_hint": "sales representatives",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausmachen",
+   "en_hint": "to account for",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Beauftragte",
+   "en_hint": "agent",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bereit",
+   "en_hint": "ready",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bereitstellen",
+   "en_hint": "to make ready",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "besprechen",
+   "en_hint": "to discuss",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "betätigen",
+   "en_hint": "to operate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bewahren",
+   "en_hint": "to save from",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bewegen",
+   "en_hint": "to move",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Brand",
+   "en_hint": "fire",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Brandbekämpfung",
+   "en_hint": "fire fighting",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Brandfall",
+   "en_hint": "case of fire",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Brandmelder",
+   "en_hint": "fire alarm",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Brandschutz",
+   "en_hint": "fire prevention",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "brennen",
+   "en_hint": "to burn",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Buchhaltung",
+   "en_hint": "accountant",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "danken",
+   "en_hint": "to thank",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "deutlich",
+   "en_hint": "clearly",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "echt",
+   "en_hint": "really",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Einweisung",
+   "en_hint": "instruction",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Elektrik",
+   "en_hint": "electrics",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Entwurf",
+   "en_hint": "draft",
+   "level": "A2",
+   "pl_hint": "die Entwürfe"
+  },
+  {
+   "de": "erlauben",
+   "en_hint": "to allow",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "erwarten",
+   "en_hint": "to wait for",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "erwischen",
+   "en_hint": "to catch",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Feuerlöscher",
+   "en_hint": "fire extinguisher",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Flamme",
+   "en_hint": "flame",
+   "level": "A2",
+   "pl_hint": "die Flammen"
+  },
+  {
+   "de": "gefährden",
+   "en_hint": "to endanger",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "gestalten",
+   "en_hint": "to design",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Grafik",
+   "en_hint": "graphics",
+   "level": "A2",
+   "pl_hint": "die Grafiken"
+  },
+  {
+   "de": "die Hektik",
+   "en_hint": "rush",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "heraussuchen",
+   "en_hint": "to pick out",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "hinfahren",
+   "en_hint": "to go there",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "höflich",
+   "en_hint": "polite",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Internetzugang",
+   "en_hint": "internet access",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kabelsalat",
+   "en_hint": "cable tangle",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "kennzeichnen",
+   "en_hint": "to mark",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kerze",
+   "en_hint": "candle",
+   "level": "A2",
+   "pl_hint": "die Kerzen"
+  },
+  {
+   "de": "die Kontoverbindung",
+   "en_hint": "account connection",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kraft",
+   "en_hint": "power",
+   "level": "A2",
+   "pl_hint": "die Kräfte"
+  },
+  {
+   "de": "die Kundenbetreuung",
+   "en_hint": "customer support",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Laptop",
+   "en_hint": "laptop",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Marketing",
+   "en_hint": "marketing",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Mehrfachsteckdose",
+   "en_hint": "power strip",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "mitschreiben",
+   "en_hint": "to take notes",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Nachbereitung",
+   "en_hint": "follow-up",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "nennen",
+   "en_hint": "to name",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Personalabteilung",
+   "en_hint": "personnel department",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Personalbüro",
+   "en_hint": "personnel office",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "reagieren",
+   "en_hint": "to react",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Rettungswagen",
+   "en_hint": "ambulance",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Sekretariat",
+   "en_hint": "secretary's office",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Teelicht",
+   "en_hint": "tea light",
+   "level": "A2",
+   "pl_hint": "die Teelichter"
+  },
+  {
+   "de": "überlasten",
+   "en_hint": "to overload",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "unbürokratisch",
+   "en_hint": "unbureaucratic",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "unterstützen",
+   "en_hint": "to support",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "verabschieden",
+   "en_hint": "to adopt",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "verboten",
+   "en_hint": "to forbid",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Verhalten",
+   "en_hint": "behaviour",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "vermeiden",
+   "en_hint": "to avoid",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Vermeidung",
+   "en_hint": "avoidance",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Versicherung",
+   "en_hint": "insurance",
+   "level": "A2",
+   "pl_hint": "die Versicherungen"
+  },
+  {
+   "de": "der Vertrieb",
+   "en_hint": "sales",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "verwenden",
+   "en_hint": "to use",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorbereiten",
+   "en_hint": "to prepare",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Vorschrift",
+   "en_hint": "regulation",
+   "level": "A2",
+   "pl_hint": "die Vorschriften"
+  },
+  {
+   "de": "der Werbeflyer",
+   "en_hint": "flyer",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Werbeagentur",
+   "en_hint": "marketing agency",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "abdrehen",
+   "en_hint": "to change course",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "abheften",
+   "en_hint": "to file away",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "anmachen",
+   "en_hint": "to turn on",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ansehen",
+   "en_hint": "to look at",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "aufdrehen",
+   "en_hint": "to open",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausschlafen",
+   "en_hint": "to sleep in",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Besprechungszimmer",
+   "en_hint": "meeting room",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Büroalltag",
+   "en_hint": "office life",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Büroraum",
+   "en_hint": "office space",
+   "level": "B1",
+   "pl_hint": "die Büroräume"
+  },
+  {
+   "de": "die Dienstleistung",
+   "en_hint": "service",
+   "level": "B1",
+   "pl_hint": "die Dienstleistungen"
+  },
+  {
+   "de": "drinnen",
+   "en_hint": "inside",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Energiekosten",
+   "en_hint": "energy costs",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Energieverschwendung",
+   "en_hint": "waste of energy",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Heizkosten",
+   "en_hint": "heating costs",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "indem",
+   "en_hint": "by",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "kippen",
+   "en_hint": "to tilt",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kopierer",
+   "en_hint": "copying machine",
+   "level": "B1",
+   "pl_hint": "die Kopierer"
+  },
+  {
+   "de": "langfristig",
+   "en_hint": "long-term",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "mehrmals",
+   "en_hint": "multiple times",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Million",
+   "en_hint": "million",
+   "level": "B1",
+   "pl_hint": "die Millionen"
+  },
+  {
+   "de": "mitdenken",
+   "en_hint": "to follow a thought",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "offen",
+   "en_hint": "open",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Privatnummer",
+   "en_hint": "private number",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "rasieren",
+   "en_hint": "to shave",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Reinigungsfirma",
+   "en_hint": "cleaning company",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Reinigungsvertrag",
+   "en_hint": "cleaning contract",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "senken",
+   "en_hint": "to reduce",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "stinksauer",
+   "en_hint": "furious",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Stromanbieter",
+   "en_hint": "electricity provider",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Stromkosten",
+   "en_hint": "electricity costs",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "übergeben",
+   "en_hint": "to be sick",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "unnötig",
+   "en_hint": "unnecessary",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Verbrauch",
+   "en_hint": "use",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Vertragsende",
+   "en_hint": "contract end",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Vertragsnummer",
+   "en_hint": "contract number",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Wärme",
+   "en_hint": "warmth",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Weise",
+   "en_hint": "manner",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zudrehen",
+   "en_hint": "to turn off",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Zusammenarbeit",
+   "en_hint": "cooperation",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zusammenarbeiten",
+   "en_hint": "to work together",
+   "level": "B1",
+   "pl_hint": ""
+  }
+ ]
+}

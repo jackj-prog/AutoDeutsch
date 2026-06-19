@@ -1,0 +1,850 @@
+{
+ "Shopping & Money": [
+  {
+   "de": "die Accessoires",
+   "en_hint": "accessories",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "anhaben",
+   "en_hint": "to be wearing",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Apfelschorle",
+   "en_hint": "apple spritzer",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Aubergine",
+   "en_hint": "aubergine",
+   "level": "A2",
+   "pl_hint": "die Auberginen"
+  },
+  {
+   "de": "der Babyartikel",
+   "en_hint": "baby items",
+   "level": "A2",
+   "pl_hint": "die Babyartikel"
+  },
+  {
+   "de": "die Badesachen",
+   "en_hint": "swimwear",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bekleidung",
+   "en_hint": "clothing",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "blond",
+   "en_hint": "blond",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bummeln",
+   "en_hint": "to stroll",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bunt",
+   "en_hint": "colourful",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Camping",
+   "en_hint": "camping",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Champignon",
+   "en_hint": "mushroom",
+   "level": "A2",
+   "pl_hint": "die Champignons"
+  },
+  {
+   "de": "die Currywurst",
+   "en_hint": "currywurst",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Dame",
+   "en_hint": "lady",
+   "level": "A2",
+   "pl_hint": "die Damen"
+  },
+  {
+   "de": "darin",
+   "en_hint": "in it",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Ding",
+   "en_hint": "thing",
+   "level": "A2",
+   "pl_hint": "die Dinge"
+  },
+  {
+   "de": "der Duft",
+   "en_hint": "smell",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Duschgel",
+   "en_hint": "shower gel",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "egal",
+   "en_hint": "equal",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Ehepaar",
+   "en_hint": "married couple",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Elektronik",
+   "en_hint": "electronics",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Fahrradhelm",
+   "en_hint": "cycle helmet",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "fantastisch",
+   "en_hint": "fantastic",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Fast Food",
+   "en_hint": "fast food",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Flipflops",
+   "en_hint": "flip flops",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "frittieren",
+   "en_hint": "to fry",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Gemüselasagne",
+   "en_hint": "vegetable lasagne",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "gepunktet",
+   "en_hint": "spotty",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Glatze",
+   "en_hint": "bald head",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Gold",
+   "en_hint": "gold",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "griechisch",
+   "en_hint": "Greek",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Gulaschsuppe",
+   "en_hint": "goulash soup",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Haarpflege",
+   "en_hint": "hair care",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Hautpflege",
+   "en_hint": "skin care",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kosmetiktasche",
+   "en_hint": "cosmetic bag",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Küchengerät",
+   "en_hint": "kitchen appliance",
+   "level": "A2",
+   "pl_hint": "die Küchengeräte"
+  },
+  {
+   "de": "die Lieblingsfarbe",
+   "en_hint": "favourite colour",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "lockig",
+   "en_hint": "curly",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Make-up",
+   "en_hint": "make up",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Mineralwasser",
+   "en_hint": "mineral water",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Modegeschäft",
+   "en_hint": "fashion shop",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Modeschmuck",
+   "en_hint": "fashion jewellry",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "nachher",
+   "en_hint": "afterwards",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Naturkosmetik",
+   "en_hint": "natural cosmetics",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Navigationsgerät",
+   "en_hint": "navigation device",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Ofen",
+   "en_hint": "oven",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Ohrring",
+   "en_hint": "earring",
+   "level": "A2",
+   "pl_hint": "die Ohrringe"
+  },
+  {
+   "de": "die Parfümerie",
+   "en_hint": "perfumery",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Schafskäse",
+   "en_hint": "feta cheese",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Schaufenster",
+   "en_hint": "shop window",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "schlank",
+   "en_hint": "slim",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Schnitzel",
+   "en_hint": "schnitzel",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Schnurrbart",
+   "en_hint": "moustache",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Schrei",
+   "en_hint": "scream",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Schuhgröße",
+   "en_hint": "shoe size",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Shorts",
+   "en_hint": "shorts",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Silber",
+   "en_hint": "silver",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Snack",
+   "en_hint": "snack",
+   "level": "A2",
+   "pl_hint": "die Snacks"
+  },
+  {
+   "de": "die Spielwaren",
+   "en_hint": "toys",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Steak",
+   "en_hint": "steak",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "stehlen",
+   "en_hint": "to steal",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Süßigkeiten",
+   "en_hint": "sweets",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Tattoo",
+   "en_hint": "tattoo",
+   "level": "A2",
+   "pl_hint": "die Tattoos"
+  },
+  {
+   "de": "der Toaster",
+   "en_hint": "toaster",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ungarisch",
+   "en_hint": "Hungarian",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Vanilleeis",
+   "en_hint": "vanilla ice cream",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Wanderschuh",
+   "en_hint": "hiking shoes",
+   "level": "A2",
+   "pl_hint": "die Wanderschuhe"
+  },
+  {
+   "de": "der Wecker",
+   "en_hint": "alarm",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "wirklich",
+   "en_hint": "really",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "wunderbar",
+   "en_hint": "wonderful",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "zubereiten",
+   "en_hint": "to prepare",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Zucchini",
+   "en_hint": "zucchini",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "AGB",
+   "en_hint": "General T&C",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "anfassen",
+   "en_hint": "to touch",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Art",
+   "en_hint": "type",
+   "level": "B1",
+   "pl_hint": "die Arten"
+  },
+  {
+   "de": "die Artikelnummer",
+   "en_hint": "item number",
+   "level": "B1",
+   "pl_hint": "die Artikelnummern"
+  },
+  {
+   "de": "atmungsaktiv",
+   "en_hint": "breathable",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "aufmerksam",
+   "en_hint": "attentive",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Auftragsnummer",
+   "en_hint": "order number",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausliefern",
+   "en_hint": "to deliver",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bankeinzug",
+   "en_hint": "direct debit",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "bereits",
+   "en_hint": "already",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "beschädigt",
+   "en_hint": "damaged",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bestellhotline",
+   "en_hint": "order hotline",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bezahlvorgang",
+   "en_hint": "payment process",
+   "level": "B1",
+   "pl_hint": "die Bezahlvorgänge"
+  },
+  {
+   "de": "das Callcenter",
+   "en_hint": "call centre",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "dicht",
+   "en_hint": "thick",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "durchlässig",
+   "en_hint": "permeable",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ebenso",
+   "en_hint": "as well",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "eher",
+   "en_hint": "rather",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Eigentum",
+   "en_hint": "property",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Ergänzung",
+   "en_hint": "addition",
+   "level": "B1",
+   "pl_hint": "die Ergänzungen"
+  },
+  {
+   "de": "erhältlich",
+   "en_hint": "available",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "eventuell",
+   "en_hint": "possible",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "herstellen",
+   "en_hint": "to manufacture",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Herstellung",
+   "en_hint": "manufacture",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Impressum",
+   "en_hint": "imprint",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "irgendwie",
+   "en_hint": "somehow",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kauf",
+   "en_hint": "purchase",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kaufbestätigung",
+   "en_hint": "purchase confirmation",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kaufvertrag",
+   "en_hint": "sales contract",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kosmetik",
+   "en_hint": "cosmetics",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kundenbefragung",
+   "en_hint": "customer survey",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "kundenfreundlich",
+   "en_hint": "customer friendly",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Lager",
+   "en_hint": "warehouse",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "lieferbar",
+   "en_hint": "in stock",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Lieferbedingung",
+   "en_hint": "delivery conditions",
+   "level": "B1",
+   "pl_hint": "die Lieferbedingungen"
+  },
+  {
+   "de": "luftdurchlässig",
+   "en_hint": "breathable",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Mehrkosten",
+   "en_hint": "extra costs",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Nachnahme",
+   "en_hint": "cash on delivery",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Onlineeinkauf",
+   "en_hint": "online shopping",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Onlineshop",
+   "en_hint": "online shop",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Onlineshopping",
+   "en_hint": "online shopping",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Paketbote",
+   "en_hint": "parcel carrier",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Paketdienst",
+   "en_hint": "parcel service",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Porto",
+   "en_hint": "postage",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "portofrei",
+   "en_hint": "postage paid",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Portokosten",
+   "en_hint": "postage",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "produzieren",
+   "en_hint": "to produce",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Reklamation",
+   "en_hint": "complaint",
+   "level": "B1",
+   "pl_hint": "die Reklamationen"
+  },
+  {
+   "de": "die Retoure",
+   "en_hint": "return order",
+   "level": "B1",
+   "pl_hint": "die Retouren"
+  },
+  {
+   "de": "der Retourenschein",
+   "en_hint": "return order slip",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Rücksendung",
+   "en_hint": "return delivery",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Shopping",
+   "en_hint": "shopping",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "unverbindlich",
+   "en_hint": "non-binding",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "verpacken",
+   "en_hint": "to package",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Versand",
+   "en_hint": "shipping",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Versandkosten",
+   "en_hint": "shipping fee",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "versandkostenfrei",
+   "en_hint": "free of shipping costs",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Versandkostenpauschale",
+   "en_hint": "flat shipping rate",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Ware",
+   "en_hint": "goods",
+   "level": "B1",
+   "pl_hint": "die Waren"
+  },
+  {
+   "de": "der Warenkorb",
+   "en_hint": "basket",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Werktag",
+   "en_hint": "working day",
+   "level": "B1",
+   "pl_hint": "die Werktage"
+  },
+  {
+   "de": "wetterfest",
+   "en_hint": "waterproof",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "widerrufen",
+   "en_hint": "disclaimer",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Widerrufsrecht",
+   "en_hint": "right of revocation",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Zahlung",
+   "en_hint": "payment",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zurückschicken",
+   "en_hint": "to send back",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zurücksenden",
+   "en_hint": "to send back",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zurücktreten",
+   "en_hint": "to withdraw",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zustellen",
+   "en_hint": "to deliver",
+   "level": "B1",
+   "pl_hint": ""
+  }
+ ]
+}

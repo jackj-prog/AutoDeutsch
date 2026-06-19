@@ -1,0 +1,1108 @@
+{
+ "Work & Study": [
+  {
+   "de": "andere",
+   "en_hint": "other",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bleistift",
+   "en_hint": "pencil",
+   "level": "A1",
+   "pl_hint": "die Bleistifte"
+  },
+  {
+   "de": "der Deutschkurs",
+   "en_hint": "German course",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "endlich",
+   "en_hint": "finally",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Familienfoto",
+   "en_hint": "family photo",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Feiertag",
+   "en_hint": "public holiday",
+   "level": "A1",
+   "pl_hint": "die Feiertage"
+  },
+  {
+   "de": "der Gruß",
+   "en_hint": "greeting",
+   "level": "A1",
+   "pl_hint": "die Grüße"
+  },
+  {
+   "de": "die Hausaufgabe",
+   "en_hint": "homework",
+   "level": "A1",
+   "pl_hint": "die Hausaufgaben"
+  },
+  {
+   "de": "das Heft",
+   "en_hint": "booklet",
+   "level": "A1",
+   "pl_hint": "die Hefte"
+  },
+  {
+   "de": "knifflig",
+   "en_hint": "tricky",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kugelschreiber",
+   "en_hint": "ball-point pen",
+   "level": "A1",
+   "pl_hint": "die Kugelschreiber"
+  },
+  {
+   "de": "das Kursbuch",
+   "en_hint": "course book",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kursraum",
+   "en_hint": "classroom",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Landkarte",
+   "en_hint": "map",
+   "level": "A1",
+   "pl_hint": "die Landkarten"
+  },
+  {
+   "de": "die Liste",
+   "en_hint": "list",
+   "level": "A1",
+   "pl_hint": "die Listen"
+  },
+  {
+   "de": "das Papier",
+   "en_hint": "paper",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Papierkorb",
+   "en_hint": "waste paper bin",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Pause",
+   "en_hint": "break",
+   "level": "A1",
+   "pl_hint": "die Pausen"
+  },
+  {
+   "de": "das Problem",
+   "en_hint": "problem",
+   "level": "A1",
+   "pl_hint": "die Probleme"
+  },
+  {
+   "de": "der Projektor",
+   "en_hint": "projector",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Radiergummi",
+   "en_hint": "eraser",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Raum",
+   "en_hint": "room",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Sache",
+   "en_hint": "thing",
+   "level": "A1",
+   "pl_hint": "die Sachen"
+  },
+  {
+   "de": "die Seite",
+   "en_hint": "page",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Spaß",
+   "en_hint": "fun",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Spitzer",
+   "en_hint": "pencil sharpener",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Tabelle",
+   "en_hint": "table",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Tafel",
+   "en_hint": "black/white board",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Text",
+   "en_hint": "text",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "übermorgen",
+   "en_hint": "the day after tomorrow",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Übung",
+   "en_hint": "exercise",
+   "level": "A1",
+   "pl_hint": "die Übungen"
+  },
+  {
+   "de": "das Übungsbuch",
+   "en_hint": "exercise book",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorgestern",
+   "en_hint": "the day before yesterday",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Wochenende",
+   "en_hint": "weekend",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Wörterbuch",
+   "en_hint": "dictionary",
+   "level": "A1",
+   "pl_hint": "die Wörterbücher"
+  },
+  {
+   "de": "der Zettel",
+   "en_hint": "note",
+   "level": "A1",
+   "pl_hint": "die Zettel"
+  },
+  {
+   "de": "zusammen",
+   "en_hint": "together",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Arbeitstag",
+   "en_hint": "work day",
+   "level": "A1",
+   "pl_hint": "die Arbeitstage"
+  },
+  {
+   "de": "die Aushilfe",
+   "en_hint": "help",
+   "level": "A1",
+   "pl_hint": "die Aushilfen"
+  },
+  {
+   "de": "der Automechaniker",
+   "en_hint": "car mechanic",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Automechanikerin",
+   "en_hint": "car mechanic",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bäcker",
+   "en_hint": "baker",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bäckerin",
+   "en_hint": "baker",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "bald",
+   "en_hint": "soon",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "beruflich",
+   "en_hint": "professionally",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Bürokauffrau",
+   "en_hint": "office administrator",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bürokaufmann",
+   "en_hint": "office administrator",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Chefin",
+   "en_hint": "boss",
+   "level": "A1",
+   "pl_hint": "die Chefinnen"
+  },
+  {
+   "de": "das Computerprogramm",
+   "en_hint": "computer programme",
+   "level": "A1",
+   "pl_hint": "die Computerprogramme"
+  },
+  {
+   "de": "das Computersystem",
+   "en_hint": "computer system",
+   "level": "A1",
+   "pl_hint": "die Computersysteme"
+  },
+  {
+   "de": "dauern",
+   "en_hint": "to last",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "dreimal",
+   "en_hint": "three times",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "flexibel",
+   "en_hint": "flexible",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "freundlich",
+   "en_hint": "friendly",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Fußballspieler",
+   "en_hint": "football player",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Gitarre",
+   "en_hint": "guitar",
+   "level": "A1",
+   "pl_hint": "die Gitarren"
+  },
+  {
+   "de": "halbtags",
+   "en_hint": "halfdays",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Hausfrau",
+   "en_hint": "housewife",
+   "level": "A1",
+   "pl_hint": "die Hausfrauen"
+  },
+  {
+   "de": "der Hausmann",
+   "en_hint": "househusband",
+   "level": "A1",
+   "pl_hint": "die Hausmänner"
+  },
+  {
+   "de": "die Kantine",
+   "en_hint": "cantine",
+   "level": "A1",
+   "pl_hint": "die Kantinen"
+  },
+  {
+   "de": "kaputt",
+   "en_hint": "broken",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kassierer",
+   "en_hint": "cashier",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kassiererin",
+   "en_hint": "cashier",
+   "level": "A1",
+   "pl_hint": "die Kassiererinnen"
+  },
+  {
+   "de": "die Kauffrau",
+   "en_hint": "business woman",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kellnerin",
+   "en_hint": "waiter",
+   "level": "A1",
+   "pl_hint": "die Kellnerinnen"
+  },
+  {
+   "de": "der Koch",
+   "en_hint": "chef",
+   "level": "A1",
+   "pl_hint": "die Köche"
+  },
+  {
+   "de": "die Köchin",
+   "en_hint": "chef",
+   "level": "A1",
+   "pl_hint": "die Köchinnen"
+  },
+  {
+   "de": "korrigieren",
+   "en_hint": "to correct",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kraftfahrzeug",
+   "en_hint": "motor vehicle",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Krankenpfleger",
+   "en_hint": "nurse",
+   "level": "A1",
+   "pl_hint": "die Krankenpfleger"
+  },
+  {
+   "de": "die Krankenschwester",
+   "en_hint": "nurse",
+   "level": "A1",
+   "pl_hint": "die Krankenschwestern"
+  },
+  {
+   "de": "kreativ",
+   "en_hint": "people",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Mathematik",
+   "en_hint": "mathematics",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Mechaniker",
+   "en_hint": "mechanic",
+   "level": "A1",
+   "pl_hint": "die Mechaniker"
+  },
+  {
+   "de": "der Moment",
+   "en_hint": "moment",
+   "level": "A1",
+   "pl_hint": "die Momente"
+  },
+  {
+   "de": "der Musiklehrer",
+   "en_hint": "music teacher",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Musiklehrerin",
+   "en_hint": "music teacher",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Nachtdienst",
+   "en_hint": "night shift",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "organisieren",
+   "en_hint": "to organise",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Pizzafahrer",
+   "en_hint": "pizza driver",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Pizzeria",
+   "en_hint": "pizzeria",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Pflege",
+   "en_hint": "care",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "prüfen",
+   "en_hint": "to check",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "pünktlich",
+   "en_hint": "on time",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "rechnen",
+   "en_hint": "to calculate",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Reporter",
+   "en_hint": "reporter",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Roman",
+   "en_hint": "novel",
+   "level": "A1",
+   "pl_hint": "die Romane"
+  },
+  {
+   "de": "die Schülerin",
+   "en_hint": "schoolchild",
+   "level": "A1",
+   "pl_hint": "die Schülerinnen"
+  },
+  {
+   "de": "servieren",
+   "en_hint": "to serve",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Studentin",
+   "en_hint": "student",
+   "level": "A1",
+   "pl_hint": "die Studentinnen"
+  },
+  {
+   "de": "studieren",
+   "en_hint": "to study",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Taxifahrer",
+   "en_hint": "taxi driver",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Taxifahrerin",
+   "en_hint": "taxi driver",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Techniker",
+   "en_hint": "technician",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Telefon",
+   "en_hint": "telephone",
+   "level": "A1",
+   "pl_hint": "die Telefone"
+  },
+  {
+   "de": "der Traumberuf",
+   "en_hint": "dream job",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "unterrichten",
+   "en_hint": "to teach",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Wiederhören",
+   "en_hint": "talk again soon!",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Abitur",
+   "en_hint": "A-level",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ablegen",
+   "en_hint": "to take",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Abschluss",
+   "en_hint": "degree",
+   "level": "A2",
+   "pl_hint": "die Abschlüsse"
+  },
+  {
+   "de": "anbieten",
+   "en_hint": "to offer",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Architektur",
+   "en_hint": "architecture",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Ausland",
+   "en_hint": "abroad",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Autounfall",
+   "en_hint": "car accident",
+   "level": "A2",
+   "pl_hint": "die Autounfälle"
+  },
+  {
+   "de": "beenden",
+   "en_hint": "to end",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Beratung",
+   "en_hint": "counselling",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bereich",
+   "en_hint": "area",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Berufsausbildung",
+   "en_hint": "professional training",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Berufsschule",
+   "en_hint": "vocational college",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "besonders",
+   "en_hint": "especially",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Bildungsweg",
+   "en_hint": "course of education",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Büroorganisation",
+   "en_hint": "office administration",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Chaos",
+   "en_hint": "chaos",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Ende",
+   "en_hint": "end",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Energie",
+   "en_hint": "energy",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "enthalten",
+   "en_hint": "to contain",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "erforderlich",
+   "en_hint": "required",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Fitness",
+   "en_hint": "fitness",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "fliehen",
+   "en_hint": "to flee",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "fortgeschritten",
+   "en_hint": "advanced",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "genial",
+   "en_hint": "great",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "hoffentlich",
+   "en_hint": "hopefully",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "jobben",
+   "en_hint": "to do casual/part-time work",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kategorie",
+   "en_hint": "category",
+   "level": "A2",
+   "pl_hint": "die Kategorien"
+  },
+  {
+   "de": "kaufmännisch",
+   "en_hint": "business",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kommunikation",
+   "en_hint": "communication",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "kompakt",
+   "en_hint": "compact",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "kürzen",
+   "en_hint": "to shorten",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kursgebühr",
+   "en_hint": "course fee",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kurzprogramm",
+   "en_hint": "short program",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Lebensweg",
+   "en_hint": "journey through life",
+   "level": "A2",
+   "pl_hint": "die Lebenswege"
+  },
+  {
+   "de": "die Lehre",
+   "en_hint": "apprenticeship",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Lehrmaterial",
+   "en_hint": "teaching material",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Material",
+   "en_hint": "material",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "miserabel",
+   "en_hint": "miserable",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "mittlere",
+   "en_hint": "middle",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Prüfungstraining",
+   "en_hint": "exam training",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Realschulabschluss",
+   "en_hint": "secondary school certificate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "reisen",
+   "en_hint": "to travel",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "rhythmisch",
+   "en_hint": "rhythmical",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "schaffen",
+   "en_hint": "to succeed",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Schulzeit",
+   "en_hint": "school days",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Semester",
+   "en_hint": "term",
+   "level": "A2",
+   "pl_hint": "die Semester"
+  },
+  {
+   "de": "separat",
+   "en_hint": "separate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Situation",
+   "en_hint": "situation",
+   "level": "A2",
+   "pl_hint": "die Situationen"
+  },
+  {
+   "de": "städtisch",
+   "en_hint": "urban",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Terminplanung",
+   "en_hint": "scheduling",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Test",
+   "en_hint": "test",
+   "level": "A2",
+   "pl_hint": "die Tests"
+  },
+  {
+   "de": "das Thema",
+   "en_hint": "topic",
+   "level": "A2",
+   "pl_hint": "die Themen"
+  },
+  {
+   "de": "die Theorie",
+   "en_hint": "theory",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Trick",
+   "en_hint": "trick",
+   "level": "A2",
+   "pl_hint": "die Tricks"
+  },
+  {
+   "de": "umschreiben",
+   "en_hint": "to re-write",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "verlieben",
+   "en_hint": "to fall in love",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Vorbereitung",
+   "en_hint": "preparation",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Vorkenntnisse",
+   "en_hint": "prior knowledge",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Weiterbildung",
+   "en_hint": "further training",
+   "level": "A2",
+   "pl_hint": "die Weiterbildungen"
+  },
+  {
+   "de": "das Zeitmanagement",
+   "en_hint": "time management",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Zertifikat",
+   "en_hint": "certificate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Aushilfsjob",
+   "en_hint": "temporary job",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Auszubildende",
+   "en_hint": "trainee",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bedanken",
+   "en_hint": "to thank",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "bedienen",
+   "en_hint": "to serve",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "beeilen",
+   "en_hint": "to hurry",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "begründen",
+   "en_hint": "to justify",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Beratungsgespräch",
+   "en_hint": "consultation",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Berufsfeld",
+   "en_hint": "field of work",
+   "level": "A2",
+   "pl_hint": "die Berufsfelder"
+  },
+  {
+   "de": "bieten",
+   "en_hint": "to offer",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "eindecken",
+   "en_hint": "to inundate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "genug",
+   "en_hint": "enough",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Grundschule",
+   "en_hint": "primary school",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "handwerklich",
+   "en_hint": "manual",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Holz",
+   "en_hint": "wood",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "kostenfrei",
+   "en_hint": "free of charge",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Küchenhilfe",
+   "en_hint": "kitchen assistant",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Laufbahn",
+   "en_hint": "career path",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "lückenlos",
+   "en_hint": "seamless",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "melden",
+   "en_hint": "to notify",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Mittelschule",
+   "en_hint": "secondary school",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Muster",
+   "en_hint": "pattern",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "nötig",
+   "en_hint": "necessary",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "persönlich",
+   "en_hint": "personal",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "professionell",
+   "en_hint": "professional",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Reinigungsarbeiten",
+   "en_hint": "cleaning jobs",
+   "level": "A2",
+   "pl_hint": ""
+  }
+ ]
+}

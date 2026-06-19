@@ -1,0 +1,144 @@
+{
+  "Media & Communication": [
+    {"de":"anklicken","en":"to click (on)","ex":"Klick bitte auf den Link an.","exEn":"Please click on the link.","diff":"medium","level":"A2"},
+    {"de":"der Benutzername","en":"username","pl":"die Benutzernamen","ex":"Bitte gib deinen Benutzernamen ein.","exEn":"Please enter your username.","diff":"medium","level":"A2"},
+    {"de":"das Forum","en":"forum","pl":"die Foren","ex":"Ich habe meine Frage im Forum gestellt.","exEn":"I posted my question in the forum.","diff":"medium","level":"A2"},
+    {"de":"googeln","en":"to google","ex":"Ich google schnell die Adresse.","exEn":"I'll quickly google the address.","diff":"easy","level":"A2"},
+    {"de":"informieren","en":"to inform / find out about","ex":"Ich informiere mich über den Kurs.","exEn":"I am finding out about the course.","diff":"medium","level":"A2"},
+    {"de":"das Kennwort","en":"password","pl":"die Kennwörter","ex":"Ich habe mein Kennwort vergessen.","exEn":"I have forgotten my password.","diff":"medium","level":"A2"},
+    {"de":"mailen","en":"to email","ex":"Ich maile dir die Fotos heute Abend.","exEn":"I'll email you the photos tonight.","diff":"easy","level":"A2"},
+    {"de":"der Newsletter","en":"newsletter","pl":"die Newsletter","ex":"Ich habe den Newsletter abonniert.","exEn":"I have subscribed to the newsletter.","diff":"medium","level":"A2"},
+    {"de":"die Startseite","en":"homepage / start page","pl":"die Startseiten","ex":"Auf der Startseite findest du die Neuigkeiten.","exEn":"You'll find the news on the homepage.","diff":"medium","level":"A2"},
+    {"de":"das Symbol","en":"symbol / icon","pl":"die Symbole","ex":"Klick auf das Symbol oben rechts.","exEn":"Click on the icon at the top right.","diff":"medium","level":"A2"},
+    {"de":"die Politik","en":"politics","ex":"Er interessiert sich sehr für Politik.","exEn":"He is very interested in politics.","diff":"medium","level":"A2"},
+    {"de":"die Welt","en":"world","pl":"die Welten","ex":"Sie möchte die ganze Welt bereisen.","exEn":"She wants to travel the whole world.","diff":"easy","level":"A2"},
+    {"de":"die Wirtschaft","en":"economy","ex":"Die Wirtschaft wächst in diesem Jahr.","exEn":"The economy is growing this year.","diff":"hard","level":"B1"},
+    {"de":"das Magazin","en":"magazine","pl":"die Magazine","ex":"Im Magazin steht ein Artikel über Reisen.","exEn":"There's an article about travel in the magazine.","diff":"medium","level":"B1"},
+    {"de":"die Diskussion","en":"discussion","pl":"die Diskussionen","ex":"Die Diskussion im Fernsehen war sehr lebhaft.","exEn":"The discussion on TV was very lively.","diff":"medium","level":"B1"},
+    {"de":"diskutieren","en":"to discuss","ex":"Wir diskutieren oft über Politik.","exEn":"We often discuss politics.","diff":"medium","level":"A2"},
+    {"de":"die Dokumentation","en":"documentary","pl":"die Dokumentationen","ex":"Gestern lief eine Dokumentation über Tiere.","exEn":"There was a documentary about animals yesterday.","diff":"medium","level":"B1"},
+    {"de":"die DVD","en":"DVD","pl":"die DVDs","ex":"Wir schauen heute Abend eine DVD.","exEn":"We're watching a DVD tonight.","diff":"easy","level":"A2"},
+    {"de":"der Horrorfilm","en":"horror film","pl":"die Horrorfilme","ex":"Ich sehe mir keine Horrorfilme an.","exEn":"I don't watch horror films.","diff":"medium","level":"B1"},
+    {"de":"die Komödie","en":"comedy","pl":"die Komödien","ex":"Die Komödie hat uns zum Lachen gebracht.","exEn":"The comedy made us laugh.","diff":"medium","level":"B1"},
+    {"de":"der Krimi","en":"crime thriller / detective story","pl":"die Krimis","ex":"Am Sonntag schaue ich gern einen Krimi.","exEn":"On Sundays I like to watch a crime thriller.","diff":"medium","level":"B1"},
+    {"de":"die Detektivgeschichte","en":"detective story","pl":"die Detektivgeschichten","ex":"Sie liest am liebsten Detektivgeschichten.","exEn":"She likes to read detective stories best.","diff":"medium","level":"B1"},
+    {"de":"die Quizshow","en":"quiz show","pl":"die Quizshows","ex":"Die Quizshow läuft jeden Abend im Fernsehen.","exEn":"The quiz show is on TV every evening.","diff":"medium","level":"B1"},
+    {"de":"die Talkshow","en":"talk show","pl":"die Talkshows","ex":"In der Talkshow wurde über Sport geredet.","exEn":"They talked about sport on the talk show.","diff":"medium","level":"B1"},
+    {"de":"die Seifenoper","en":"soap opera","pl":"die Seifenopern","ex":"Meine Oma schaut jeden Tag eine Seifenoper.","exEn":"My grandma watches a soap opera every day.","diff":"medium","level":"B1"},
+    {"de":"die Soap","en":"soap opera","pl":"die Soaps","ex":"Diese Soap läuft schon seit zehn Jahren.","exEn":"This soap opera has been running for ten years.","diff":"medium","level":"B1"},
+    {"de":"der Spielfilm","en":"feature film","pl":"die Spielfilme","ex":"Heute Abend kommt ein Spielfilm im Ersten.","exEn":"There's a feature film on tonight.","diff":"medium","level":"B1"},
+    {"de":"der Zeichentrickfilm","en":"animated film / cartoon","pl":"die Zeichentrickfilme","ex":"Die Kinder lieben diesen Zeichentrickfilm.","exEn":"The children love this animated film.","diff":"medium","level":"B1"},
+    {"de":"die Reportage","en":"report / feature","pl":"die Reportagen","ex":"Die Reportage über Afrika war spannend.","exEn":"The report about Africa was exciting.","diff":"hard","level":"B1"},
+    {"de":"die Moderation","en":"presenting / hosting","ex":"Die Moderation der Sendung war professionell.","exEn":"The hosting of the show was professional.","diff":"hard","level":"B1"},
+    {"de":"die Übertragung","en":"broadcast / transmission","pl":"die Übertragungen","ex":"Die Übertragung des Spiels beginnt um acht.","exEn":"The broadcast of the match starts at eight.","diff":"hard","level":"B1"},
+    {"de":"die Unterhaltung","en":"entertainment / conversation","pl":"die Unterhaltungen","ex":"Das Fernsehen bietet gute Unterhaltung am Abend.","exEn":"Television offers good entertainment in the evening.","diff":"medium","level":"B1"},
+    {"de":"schalten","en":"to switch / change channel","ex":"Kannst du auf das andere Programm schalten?","exEn":"Can you switch to the other channel?","diff":"medium","level":"B1"},
+    {"de":"zappen","en":"to channel-surf","ex":"Er zappt den ganzen Abend durch die Sender.","exEn":"He channel-surfs through the stations all evening.","diff":"medium","level":"B1"},
+    {"de":"zuschauen","en":"to watch / look on","ex":"Wir schauen dem Spiel im Fernsehen zu.","exEn":"We watch the match on television.","diff":"medium","level":"A2"},
+    {"de":"anschauen","en":"to look at / watch","ex":"Wir schauen uns heute einen Film an.","exEn":"We're watching a film today.","diff":"medium","level":"B1"},
+    {"de":"nachschauen","en":"to look up / check","ex":"Ich schaue im Internet nach.","exEn":"I'll look it up on the internet.","diff":"medium","level":"A2"},
+    {"de":"herausfinden","en":"to find out","ex":"Ich möchte herausfinden, wann der Film beginnt.","exEn":"I want to find out when the film starts.","diff":"medium","level":"A2"},
+    {"de":"befragen","en":"to survey / question","ex":"Die Reporter befragen die Leute auf der Straße.","exEn":"The reporters survey people on the street.","diff":"hard","level":"B1"},
+    {"de":"objektiv","en":"objective","ex":"Ein guter Bericht muss objektiv sein.","exEn":"A good report has to be objective.","diff":"hard","level":"B1"},
+    {"de":"aktuell","en":"current / up-to-date","ex":"Die Nachrichten sind immer aktuell.","exEn":"The news is always up-to-date.","diff":"medium","level":"A2"},
+    {"de":"international","en":"international","ex":"Die Zeitung berichtet über internationale Themen.","exEn":"The newspaper reports on international topics.","diff":"medium","level":"A2"},
+    {"de":"mitreden","en":"to have a say / join in the conversation","ex":"Bei diesem Thema kann ich gut mitreden.","exEn":"I can have a real say on this topic.","diff":"hard","level":"B1"},
+    {"de":"die Mehrheit","en":"majority","pl":"die Mehrheiten","ex":"Die Mehrheit der Zuschauer war zufrieden.","exEn":"The majority of viewers were satisfied.","diff":"hard","level":"B1"},
+    {"de":"die Minderheit","en":"minority","pl":"die Minderheiten","ex":"Nur eine Minderheit war anderer Meinung.","exEn":"Only a minority had a different opinion.","diff":"hard","level":"B1"}
+  ],
+  "Sport & Leisure": [
+    {"de":"das Boxen","en":"boxing","ex":"Boxen ist ein harter Sport.","exEn":"Boxing is a tough sport.","diff":"medium","level":"B1"},
+    {"de":"das Eishockey","en":"ice hockey","ex":"Im Winter spielen wir gern Eishockey.","exEn":"In winter we like to play ice hockey.","diff":"medium","level":"B1"},
+    {"de":"der Eiskunstlauf","en":"figure skating","ex":"Eiskunstlauf sieht sehr elegant aus.","exEn":"Figure skating looks very elegant.","diff":"hard","level":"B1"},
+    {"de":"der Handball","en":"handball","pl":"die Handbälle","ex":"Mein Bruder spielt Handball im Verein.","exEn":"My brother plays handball in a club.","diff":"medium","level":"B1"},
+    {"de":"die Leichtathletik","en":"athletics / track and field","ex":"Sie trainiert Leichtathletik im Stadion.","exEn":"She trains athletics in the stadium.","diff":"hard","level":"B1"},
+    {"de":"der Skisport","en":"skiing (as a sport)","ex":"Der Skisport ist in den Alpen sehr beliebt.","exEn":"Skiing is very popular in the Alps.","diff":"medium","level":"B1"},
+    {"de":"der Fan","en":"fan","pl":"die Fans","ex":"Er ist ein großer Fan von dieser Mannschaft.","exEn":"He is a big fan of this team.","diff":"easy","level":"B1"},
+    {"de":"der Fußballclub","en":"football club","pl":"die Fußballclubs","ex":"Mein Vater ist Mitglied in einem Fußballclub.","exEn":"My father is a member of a football club.","diff":"medium","level":"B1"},
+    {"de":"das Stadion","en":"stadium","pl":"die Stadien","ex":"Das Stadion war am Samstag ausverkauft.","exEn":"The stadium was sold out on Saturday.","diff":"medium","level":"B1"},
+    {"de":"das Mittelfeld","en":"midfield","ex":"Er spielt im Mittelfeld der Mannschaft.","exEn":"He plays in the team's midfield.","diff":"hard","level":"B1"},
+    {"de":"die Rangliste","en":"league table / ranking","pl":"die Ranglisten","ex":"Unser Team steht oben in der Rangliste.","exEn":"Our team is at the top of the league table.","diff":"hard","level":"B1"},
+    {"de":"die Weltmeisterschaft","en":"World Championship / World Cup","pl":"die Weltmeisterschaften","ex":"Deutschland hat die Weltmeisterschaft gewonnen.","exEn":"Germany won the World Cup.","diff":"medium","level":"B1"},
+    {"de":"das Autorennen","en":"motor race","pl":"die Autorennen","ex":"Am Sonntag findet ein großes Autorennen statt.","exEn":"There's a big motor race on Sunday.","diff":"medium","level":"B1"},
+    {"de":"das Radrennen","en":"cycling race","pl":"die Radrennen","ex":"Das Radrennen geht durch die ganze Stadt.","exEn":"The cycling race goes through the whole city.","diff":"medium","level":"B1"},
+    {"de":"die Radtour","en":"bike tour / cycling trip","pl":"die Radtouren","ex":"Am Wochenende machen wir eine Radtour.","exEn":"At the weekend we're going on a bike tour.","diff":"easy","level":"A2"},
+    {"de":"siegen","en":"to win / be victorious","ex":"Unsere Mannschaft hat klar gesiegt.","exEn":"Our team won clearly.","diff":"medium","level":"B1"},
+    {"de":"schießen","en":"to shoot","ex":"Er hat ein Tor geschossen.","exEn":"He scored a goal.","diff":"medium","level":"B1"},
+    {"de":"die Runde","en":"round / lap","pl":"die Runden","ex":"Der Läufer dreht noch eine Runde im Stadion.","exEn":"The runner does another lap in the stadium.","diff":"medium","level":"B1"},
+    {"de":"motiviert","en":"motivated","ex":"Die Spieler sind heute sehr motiviert.","exEn":"The players are very motivated today.","diff":"medium","level":"B1"},
+    {"de":"der Treffpunkt","en":"meeting point","pl":"die Treffpunkte","ex":"Der Treffpunkt ist vor dem Stadion.","exEn":"The meeting point is in front of the stadium.","diff":"medium","level":"A2"},
+    {"de":"mitkommen","en":"to come along","ex":"Kommst du heute Abend mit ins Kino?","exEn":"Are you coming along to the cinema tonight?","diff":"easy","level":"A2"},
+    {"de":"mitmachen","en":"to take part / join in","ex":"Willst du beim Turnier mitmachen?","exEn":"Do you want to take part in the tournament?","diff":"easy","level":"A2"},
+    {"de":"unternehmen","en":"to do / undertake (an activity)","ex":"Was wollen wir am Wochenende unternehmen?","exEn":"What do we want to do at the weekend?","diff":"medium","level":"A2"},
+    {"de":"die Lieblingsbeschäftigung","en":"favourite pastime","pl":"die Lieblingsbeschäftigungen","ex":"Lesen ist meine Lieblingsbeschäftigung.","exEn":"Reading is my favourite pastime.","diff":"hard","level":"B1"},
+    {"de":"das Spielzeug","en":"toy","pl":"die Spielzeuge","ex":"Das Kind spielt mit seinem neuen Spielzeug.","exEn":"The child is playing with its new toy.","diff":"easy","level":"A2"},
+    {"de":"das Rätsel","en":"puzzle / riddle","pl":"die Rätsel","ex":"Ich löse gern ein Rätsel am Morgen.","exEn":"I like to solve a puzzle in the morning.","diff":"medium","level":"B1"},
+    {"de":"der Biergarten","en":"beer garden","pl":"die Biergärten","ex":"Im Sommer sitzen wir gern im Biergarten.","exEn":"In summer we like to sit in the beer garden.","diff":"medium","level":"B1"},
+    {"de":"der Flohmarkt","en":"flea market","pl":"die Flohmärkte","ex":"Auf dem Flohmarkt findet man oft Schätze.","exEn":"You often find treasures at the flea market.","diff":"medium","level":"A2"},
+    {"de":"das Straßenfest","en":"street party / festival","pl":"die Straßenfeste","ex":"Am Samstag gibt es ein großes Straßenfest.","exEn":"There's a big street festival on Saturday.","diff":"medium","level":"A2"},
+    {"de":"das Kulturcafé","en":"cultural café","pl":"die Kulturcafés","ex":"Im Kulturcafé gibt es jeden Freitag Musik.","exEn":"There's music every Friday at the cultural café.","diff":"medium","level":"A2"}
+  ],
+  "Shopping & Money": [
+    {"de":"aussuchen","en":"to choose / pick out","ex":"Such dir ein schönes Geschenk aus.","exEn":"Pick out a nice present for yourself.","diff":"medium","level":"A2"},
+    {"de":"tauschen","en":"to swap / exchange","ex":"Wollen wir die Plätze tauschen?","exEn":"Shall we swap seats?","diff":"medium","level":"A2"},
+    {"de":"gebraucht","en":"used / second-hand","ex":"Ich habe ein gebrauchtes Fahrrad gekauft.","exEn":"I bought a used bike.","diff":"medium","level":"A2"},
+    {"de":"der Veranstaltungstipp","en":"event tip / recommendation","pl":"die Veranstaltungstipps","ex":"In der Zeitung stehen viele Veranstaltungstipps.","exEn":"There are many event tips in the newspaper.","diff":"hard","level":"A2"}
+  ],
+  "Restaurant & Dining Out": [
+    {"de":"die Abendkasse","en":"box office (evening ticket sales)","pl":"die Abendkassen","ex":"Karten gibt es auch an der Abendkasse.","exEn":"Tickets are also available at the box office.","diff":"medium","level":"A2"},
+    {"de":"der Eintritt","en":"entry / admission","pl":"die Eintritte","ex":"Der Eintritt kostet zehn Euro.","exEn":"Admission costs ten euros.","diff":"easy","level":"A2"},
+    {"de":"die Kinokarte","en":"cinema ticket","pl":"die Kinokarten","ex":"Ich habe zwei Kinokarten gekauft.","exEn":"I bought two cinema tickets.","diff":"easy","level":"A2"},
+    {"de":"die Empfehlung","en":"recommendation","pl":"die Empfehlungen","ex":"Auf deine Empfehlung sehe ich mir den Film an.","exEn":"On your recommendation I'll watch the film.","diff":"medium","level":"A2"},
+    {"de":"das Würstchen","en":"sausage (small)","pl":"die Würstchen","ex":"Auf dem Fest gab es Würstchen mit Senf.","exEn":"At the festival there were sausages with mustard.","diff":"easy","level":"A2"},
+    {"de":"die Chips","en":"crisps / chips","ex":"Zum Film essen wir Chips.","exEn":"We're eating crisps with the film.","diff":"easy","level":"B1"},
+    {"de":"naschen","en":"to snack / nibble (on sweets)","ex":"Abends nasche ich gern Schokolade.","exEn":"In the evenings I like to nibble on chocolate.","diff":"medium","level":"B1"},
+    {"de":"kuscheln","en":"to cuddle / snuggle","ex":"Wir kuscheln auf dem Sofa und sehen fern.","exEn":"We cuddle on the sofa and watch TV.","diff":"medium","level":"B1"}
+  ],
+  "Emotions & Opinions": [
+    {"de":"begeistern","en":"to thrill / inspire enthusiasm","ex":"Der Film hat das Publikum begeistert.","exEn":"The film thrilled the audience.","diff":"hard","level":"B1"},
+    {"de":"beliebt","en":"popular","ex":"Diese Sendung ist sehr beliebt.","exEn":"This programme is very popular.","diff":"medium","level":"B1"},
+    {"de":"erfolgreich","en":"successful","ex":"Der Film war international erfolgreich.","exEn":"The film was successful internationally.","diff":"medium","level":"B1"},
+    {"de":"dramatisch","en":"dramatic","ex":"Das Ende des Films war sehr dramatisch.","exEn":"The end of the film was very dramatic.","diff":"hard","level":"B1"},
+    {"de":"romantisch","en":"romantic","ex":"Wir haben einen romantischen Film gesehen.","exEn":"We watched a romantic film.","diff":"medium","level":"B1"},
+    {"de":"prima","en":"great / excellent","ex":"Das Konzert war einfach prima.","exEn":"The concert was simply great.","diff":"easy","level":"A2"},
+    {"de":"flirten","en":"to flirt","ex":"Im Chat flirten die beiden ein bisschen.","exEn":"The two of them flirt a little in the chat.","diff":"medium","level":"A2"},
+    {"de":"die Langeweile","en":"boredom","ex":"Aus Langeweile habe ich den Fernseher angemacht.","exEn":"Out of boredom I turned on the TV.","diff":"hard","level":"B1"},
+    {"de":"die Zeitverschwendung","en":"waste of time","ex":"Diese Sendung ist reine Zeitverschwendung.","exEn":"This programme is a pure waste of time.","diff":"hard","level":"B1"}
+  ],
+  "Common Verbs": [
+    {"de":"starten","en":"to start / launch","ex":"Das Programm startet automatisch.","exEn":"The program starts automatically.","diff":"medium","level":"A2"},
+    {"de":"einsetzen","en":"to use / deploy","ex":"Im Unterricht setzen wir oft Videos ein.","exEn":"In class we often use videos.","diff":"hard","level":"B1"},
+    {"de":"entstehen","en":"to arise / come into being","ex":"So entsteht ein neuer Trend im Internet.","exEn":"That's how a new trend arises on the internet.","diff":"hard","level":"B1"},
+    {"de":"retten","en":"to rescue / save","ex":"Der Held rettet am Ende die Stadt.","exEn":"The hero saves the city in the end.","diff":"medium","level":"B1"},
+    {"de":"sinken","en":"to fall / decrease","ex":"Die Zuschauerzahlen sinken jedes Jahr.","exEn":"The viewer numbers fall every year.","diff":"hard","level":"A2"}
+  ],
+  "Numbers & Time": [
+    {"de":"demnächst","en":"soon / shortly","ex":"Der neue Film läuft demnächst im Kino.","exEn":"The new film is coming to cinemas soon.","diff":"hard","level":"B1"},
+    {"de":"zeitweise","en":"at times / temporarily","ex":"Zeitweise gab es Probleme mit dem Empfang.","exEn":"At times there were problems with the reception.","diff":"hard","level":"A2"},
+    {"de":"das Alter","en":"age","ex":"In welchem Alter darf man diesen Film sehen?","exEn":"At what age may you watch this film?","diff":"medium","level":"A2"},
+    {"de":"der Tagesablauf","en":"daily routine","pl":"die Tagesabläufe","ex":"Mein Tagesablauf ist meistens gleich.","exEn":"My daily routine is mostly the same.","diff":"hard","level":"B1"}
+  ],
+  "Maths & Statistics": [
+    {"de":"die Statistik","en":"statistics","pl":"die Statistiken","ex":"Die Statistik zeigt einen klaren Trend.","exEn":"The statistics show a clear trend.","diff":"hard","level":"B1"},
+    {"de":"doppelt","en":"double / twice","ex":"Die Karten kosten jetzt doppelt so viel.","exEn":"The tickets now cost twice as much.","diff":"medium","level":"B1"},
+    {"de":"die Reihenfolge","en":"order / sequence","pl":"die Reihenfolgen","ex":"Bitte beachte die richtige Reihenfolge.","exEn":"Please note the correct order.","diff":"medium","level":"A2"}
+  ],
+  "Connectors & Structure": [
+    {"de":"weshalb","en":"why / which is why","ex":"Ich weiß nicht, weshalb er nicht kommt.","exEn":"I don't know why he isn't coming.","diff":"hard","level":"B1"},
+    {"de":"oben","en":"above / at the top","ex":"Das Menü findest du oben auf der Seite.","exEn":"You'll find the menu at the top of the page.","diff":"easy","level":"A2"}
+  ],
+  "Colours & Descriptions": [
+    {"de":"die Rolle","en":"role / part","pl":"die Rollen","ex":"Sie spielt die Hauptrolle in dem Film.","exEn":"She plays the lead role in the film.","diff":"medium","level":"A2"},
+    {"de":"der Anstoß","en":"impulse / trigger","pl":"die Anstöße","ex":"Der Bericht gab den Anstoß zur Diskussion.","exEn":"The report gave the impulse for the discussion.","diff":"hard","level":"B1"}
+  ],
+  "Weather & Nature": [
+    {"de":"der Regenschirm","en":"umbrella","pl":"die Regenschirme","ex":"Nimm einen Regenschirm mit, es regnet.","exEn":"Take an umbrella, it's raining.","diff":"easy","level":"A2"}
+  ],
+  "Body & Health": [
+    {"de":"ungesund","en":"unhealthy","ex":"Zu viel fernsehen ist ungesund.","exEn":"Watching too much TV is unhealthy.","diff":"medium","level":"B1"}
+  ],
+  "Abstract & Advanced": [
+    {"de":"das Ereignis","en":"event / occurrence","pl":"die Ereignisse","ex":"Die Wahl war das wichtigste Ereignis des Jahres.","exEn":"The election was the most important event of the year.","diff":"hard","level":"B1"},
+    {"de":"der Mord","en":"murder","pl":"die Morde","ex":"Der Krimi handelt von einem Mord.","exEn":"The crime story is about a murder.","diff":"medium","level":"B1"}
+  ]
+}

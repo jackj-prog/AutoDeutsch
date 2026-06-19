@@ -1,0 +1,5067 @@
+{
+"Abstract & Advanced": [
+{
+"de": "die Vorstellung",
+"en": "idea / notion / conception",
+"pl": "die Vorstellungen",
+"ex": "Meine Vorstellung von Heimat hat sich völlig verändert.",
+"exEn": "My idea of home has completely changed.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Fernweh",
+"en": "wanderlust / longing for far-off places",
+"ex": "Beim Anblick der Bilder bekam ich sofort Fernweh.",
+"exEn": "Looking at the pictures, I immediately got wanderlust.",
+"diff": "hard",
+"level": "B2",
+"hint": "Opposite of Heimweh (homesickness)."
+},
+{
+"de": "die Identität",
+"en": "identity",
+"pl": "die Identitäten",
+"ex": "Die Sprache ist ein wichtiger Teil seiner Identität.",
+"exEn": "Language is an important part of his identity.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "komplex",
+"en": "complex",
+"ex": "Das Thema Integration ist ausgesprochen komplex.",
+"exEn": "The topic of integration is extremely complex.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Vertrautheit",
+"en": "familiarity / intimacy",
+"ex": "Mit der Zeit entstand eine angenehme Vertrautheit.",
+"exEn": "Over time a pleasant familiarity developed.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Vielfalt",
+"en": "diversity / variety",
+"ex": "Die kulturelle Vielfalt der Stadt begeistert mich.",
+"exEn": "The cultural diversity of the city delights me.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Auffassung",
+"en": "view / opinion / understanding",
+"pl": "die Auffassungen",
+"ex": "Nach meiner Auffassung sollten wir flexibler sein.",
+"exEn": "In my view we should be more flexible.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "erstaunlich",
+"en": "astonishing / remarkable",
+"ex": "Es ist erstaunlich, wie schnell sie die Sprache lernte.",
+"exEn": "It's astonishing how quickly she learned the language.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Sicht",
+"en": "view / perspective",
+"pl": "die Sichten",
+"ex": "Aus meiner Sicht ist diese Lösung die beste.",
+"exEn": "From my point of view this solution is the best.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Abstand",
+"en": "distance / gap",
+"pl": "die Abstände",
+"ex": "In Deutschland hält man oft einen größeren Abstand.",
+"exEn": "In Germany people often keep a greater distance.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "äußerst",
+"en": "extremely",
+"ex": "Das Gespräch verlief äußerst freundlich.",
+"exEn": "The conversation went extremely amicably.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "bedenken",
+"en": "to consider / bear in mind",
+"ex": "Man muss dabei viele Faktoren bedenken.",
+"exEn": "One has to bear many factors in mind.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "jeglich",
+"en": "any / each and every",
+"ex": "Jegliche Diskriminierung wird hier nicht geduldet.",
+"exEn": "Any form of discrimination is not tolerated here.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "vollkommen",
+"en": "completely / perfect(ly)",
+"ex": "Ich stimme dir vollkommen zu.",
+"exEn": "I completely agree with you.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Windeseile",
+"en": "breakneck speed",
+"ex": "Die Nachricht verbreitete sich in Windeseile.",
+"exEn": "The news spread at breakneck speed.",
+"diff": "hard",
+"level": "B2",
+"hint": "Almost only in the phrase 'in Windeseile'."
+},
+{
+"de": "entsprechend",
+"en": "corresponding / accordingly",
+"ex": "Er hat sich entsprechend den Erwartungen verhalten.",
+"exEn": "He behaved in accordance with expectations.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Position",
+"en": "position / stance",
+"pl": "die Positionen",
+"ex": "Beide Seiten vertraten eine klare Position.",
+"exEn": "Both sides held a clear position.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Faustregel",
+"en": "rule of thumb",
+"pl": "die Faustregeln",
+"ex": "Als Faustregel gilt: Höflichkeit öffnet jede Tür.",
+"exEn": "As a rule of thumb: politeness opens every door.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Merkformel",
+"en": "mnemonic / memory formula",
+"pl": "die Merkformeln",
+"ex": "Mit einer einfachen Merkformel kann man sich die Regel merken.",
+"exEn": "With a simple mnemonic you can remember the rule.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Spielregel",
+"en": "rule (of the game)",
+"pl": "die Spielregeln",
+"ex": "Man sollte die kulturellen Spielregeln kennen.",
+"exEn": "You should know the cultural rules of the game.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Schlüsselwort",
+"en": "keyword / key term",
+"pl": "die Schlüsselwörter",
+"ex": "Integration ist hier das Schlüsselwort.",
+"exEn": "Integration is the keyword here.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Desinteresse",
+"en": "lack of interest / indifference",
+"ex": "Sein Desinteresse an Politik überraschte mich.",
+"exEn": "His lack of interest in politics surprised me.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "inhaltsleer",
+"en": "empty / devoid of content",
+"ex": "Seine Rede war freundlich, aber inhaltsleer.",
+"exEn": "His speech was friendly but devoid of content.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "irreal",
+"en": "unreal",
+"ex": "Die ganze Situation wirkte fast irreal.",
+"exEn": "The whole situation seemed almost unreal.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Unverständnis",
+"en": "incomprehension / lack of understanding",
+"ex": "Ihre Reaktion stieß auf völliges Unverständnis.",
+"exEn": "Her reaction met with complete incomprehension.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "inmitten",
+"en": "in the midst of",
+"ex": "Inmitten der Menge fühlte er sich allein.",
+"exEn": "In the midst of the crowd he felt alone.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Odyssee",
+"en": "odyssey / long ordeal",
+"pl": "die Odysseen",
+"ex": "Die Wohnungssuche wurde zur wahren Odyssee.",
+"exEn": "The flat search turned into a real odyssey.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "scheitern",
+"en": "to fail / fall through",
+"ex": "Sein Versuch, sich einzuleben, scheiterte zunächst.",
+"exEn": "His attempt to settle in failed at first.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "verbergen",
+"en": "to hide / conceal",
+"ex": "Sie konnte ihre Enttäuschung kaum verbergen.",
+"exEn": "She could hardly hide her disappointment.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "unerwartet",
+"en": "unexpected(ly)",
+"ex": "Die Reaktion kam für alle völlig unerwartet.",
+"exEn": "The reaction came completely unexpectedly for everyone.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Härte",
+"en": "hardness / harshness",
+"ex": "Der Film zeigt das Leben in aller Härte.",
+"exEn": "The film shows life in all its harshness.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "geprägt",
+"en": "shaped / characterised (by)",
+"ex": "Seine Kindheit war von zwei Kulturen geprägt.",
+"exEn": "His childhood was shaped by two cultures.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "meinetwegen",
+"en": "for my sake / as far as I'm concerned",
+"ex": "Meinetwegen können wir gleich anfangen.",
+"exEn": "As far as I'm concerned, we can start right away.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verraten",
+"en": "to betray / give away (a secret)",
+"ex": "Sein Blick verriet, dass er log.",
+"exEn": "His look gave away that he was lying.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "anlegen",
+"en": "to design / set up (be wired for)",
+"ex": "Unser Gehirn ist dafür angelegt, mehrere Sprachen zu lernen.",
+"exEn": "Our brain is wired to learn several languages.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "auszahlen",
+"en": "to pay off (sich auszahlen = to be worth it)",
+"ex": "Der zusätzliche Aufwand hat sich am Ende ausgezahlt.",
+"exEn": "The extra effort paid off in the end.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "betroffen",
+"en": "affected / dismayed",
+"ex": "Von der Reform sind vor allem Familien betroffen.",
+"exEn": "Families in particular are affected by the reform.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "wahrnehmen",
+"en": "to perceive / take notice of",
+"ex": "Wir nehmen Farben und Geräusche unbewusst wahr.",
+"exEn": "We perceive colours and sounds unconsciously.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "deuten",
+"en": "to interpret / read (signs)",
+"ex": "Sie versuchte, seine Gesten richtig zu deuten.",
+"exEn": "She tried to interpret his gestures correctly.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "vorgeben",
+"en": "to pretend / to specify",
+"ex": "Er gab vor, alles verstanden zu haben.",
+"exEn": "He pretended to have understood everything.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "bestimmen",
+"en": "to determine / define",
+"ex": "Der Kontext bestimmt die Bedeutung eines Wortes.",
+"exEn": "The context determines the meaning of a word.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "eindeutig",
+"en": "clear / unambiguous",
+"ex": "Die Antwort war eindeutig und ließ keine Zweifel.",
+"exEn": "The answer was unambiguous and left no doubt.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "angemessen",
+"en": "appropriate / adequate",
+"ex": "Deine Reaktion ist der Situation angemessen.",
+"exEn": "Your reaction is appropriate to the situation.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "feststellen",
+"en": "to ascertain / establish",
+"ex": "Die Forscher stellten einen deutlichen Unterschied fest.",
+"exEn": "The researchers established a clear difference.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Defizit",
+"en": "deficit / shortcoming",
+"pl": "die Defizite",
+"ex": "Das Kind zeigte sprachliche Defizite.",
+"exEn": "The child showed linguistic deficits.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Prinzip",
+"en": "principle",
+"pl": "die Prinzipien",
+"ex": "Er hält stets an seinen Prinzipien fest.",
+"exEn": "He always sticks to his principles.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Verbesserung",
+"en": "improvement / correction",
+"pl": "die Verbesserungen",
+"ex": "Der Lehrer schlug einige Verbesserungen vor.",
+"exEn": "The teacher suggested a few improvements.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "erzeugen",
+"en": "to create / generate",
+"ex": "Bestimmte Wörter erzeugen sofort starke Emotionen.",
+"exEn": "Certain words immediately generate strong emotions.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hinnehmen",
+"en": "to accept / put up with",
+"ex": "Solche Vorwürfe muss ich nicht hinnehmen.",
+"exEn": "I don't have to put up with such accusations.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "vorkommen",
+"en": "to occur / happen",
+"ex": "Solche Missverständnisse kommen häufig vor.",
+"exEn": "Such misunderstandings occur frequently.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vorgehen",
+"en": "to proceed / take action",
+"ex": "Wir sollten bei dem Problem systematisch vorgehen.",
+"exEn": "We should proceed systematically with the problem.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "daherkommen",
+"en": "to come across / appear (as)",
+"ex": "Seine Argumente kamen erstaunlich überzeugend daher.",
+"exEn": "His arguments came across as surprisingly convincing.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Dringlichkeit",
+"en": "urgency",
+"ex": "Die Dringlichkeit des Problems wurde lange unterschätzt.",
+"exEn": "The urgency of the problem was long underestimated.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Macht",
+"en": "power",
+"pl": "die Mächte",
+"ex": "Sprache hat eine große Macht über unser Denken.",
+"exEn": "Language has great power over our thinking.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Last",
+"en": "burden / load",
+"pl": "die Lasten",
+"ex": "Die Verantwortung wurde für ihn zur schweren Last.",
+"exEn": "The responsibility became a heavy burden for him.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Gunst",
+"en": "favour / goodwill",
+"ex": "Er versuchte, die Gunst des Publikums zu gewinnen.",
+"exEn": "He tried to win the favour of the audience.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "gezeichnet",
+"en": "marked / scarred (gezeichnet sein)",
+"ex": "Ihr Gesicht war von Sorgen gezeichnet.",
+"exEn": "Her face was marked by worries.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hervorragend",
+"en": "outstanding / excellent",
+"ex": "Sie spricht hervorragend Deutsch und Französisch.",
+"exEn": "She speaks German and French outstandingly well.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "verwunderlich",
+"en": "surprising / astonishing",
+"ex": "Es ist nicht verwunderlich, dass er sich beschwert.",
+"exEn": "It's not surprising that he is complaining.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nichtssagend",
+"en": "meaningless / vacuous",
+"ex": "Seine Antwort war höflich, aber völlig nichtssagend.",
+"exEn": "His answer was polite but completely vacuous.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ratsam",
+"en": "advisable",
+"ex": "Es ist ratsam, das Gespräch in Ruhe zu führen.",
+"exEn": "It is advisable to have the conversation calmly.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Spielraum",
+"en": "leeway / room for manoeuvre",
+"pl": "die Spielräume",
+"ex": "Bei den Verhandlungen blieb wenig Spielraum.",
+"exEn": "There was little room for manoeuvre in the negotiations.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Austausch",
+"en": "exchange (of ideas)",
+"ex": "Ein offener Austausch fördert das gegenseitige Verständnis.",
+"exEn": "An open exchange promotes mutual understanding.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Resümee",
+"en": "summary / résumé (ein Resümee ziehen)",
+"pl": "die Resümees",
+"ex": "Am Ende der Sitzung zogen wir ein Resümee.",
+"exEn": "At the end of the meeting we drew a summary.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Teilthema",
+"en": "sub-topic",
+"pl": "die Teilthemen",
+"ex": "Jede Gruppe bearbeitet ein anderes Teilthema.",
+"exEn": "Each group works on a different sub-topic.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Naturerscheinung",
+"en": "natural phenomenon",
+"pl": "die Naturerscheinungen",
+"ex": "Ein Regenbogen ist eine faszinierende Naturerscheinung.",
+"exEn": "A rainbow is a fascinating natural phenomenon.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Zeiterscheinung",
+"en": "sign of the times / contemporary phenomenon",
+"pl": "die Zeiterscheinungen",
+"ex": "Anglizismen sind eine typische Zeiterscheinung.",
+"exEn": "Anglicisms are a typical sign of the times.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "lexikalisch",
+"en": "lexical",
+"ex": "Das Wörterbuch erklärt die lexikalische Bedeutung.",
+"exEn": "The dictionary explains the lexical meaning.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "instinktiv",
+"en": "instinctive(ly)",
+"ex": "Sie reagierte instinktiv auf die Gefahr.",
+"exEn": "She reacted instinctively to the danger.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "visuell",
+"en": "visual",
+"ex": "Er lernt am besten über visuelle Reize.",
+"exEn": "He learns best through visual stimuli.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "konkret",
+"en": "concrete / specific",
+"ex": "Können Sie ein konkretes Beispiel nennen?",
+"exEn": "Can you give a concrete example?",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "kommerziell",
+"en": "commercial",
+"ex": "Der Film war ein großer kommerzieller Erfolg.",
+"exEn": "The film was a great commercial success.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "passioniert",
+"en": "passionate / avid",
+"ex": "Sie ist eine passionierte Sammlerin alter Filme.",
+"exEn": "She is a passionate collector of old films.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "sicherlich",
+"en": "surely / certainly",
+"ex": "Du hast dich sicherlich nur verhört.",
+"exEn": "You surely just misheard.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "stets",
+"en": "always / constantly",
+"ex": "Er ist stets höflich zu seinen Kollegen.",
+"exEn": "He is always polite to his colleagues.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "allzu",
+"en": "all too / overly",
+"ex": "Sei nicht allzu streng mit dir selbst.",
+"exEn": "Don't be all too hard on yourself.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "voller",
+"en": "full of",
+"ex": "Der Text steckt voller versteckter Anspielungen.",
+"exEn": "The text is full of hidden allusions.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "gründlich",
+"en": "thorough(ly)",
+"ex": "Wir haben das Thema gründlich besprochen.",
+"exEn": "We discussed the topic thoroughly.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Bestandteil",
+"en": "component / constituent part",
+"pl": "die Bestandteile",
+"ex": "Ehrlichkeit ist ein wichtiger Bestandteil guter Zusammenarbeit.",
+"exEn": "Honesty is an important component of good collaboration.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "durchhalten",
+"en": "to hold out / to persevere",
+"ex": "Trotz aller Probleme hat sie bis zum Ende durchgehalten.",
+"exEn": "Despite all the problems she persevered to the end.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Schicksal",
+"en": "fate / destiny",
+"pl": "die Schicksale",
+"ex": "Er glaubt fest an sein eigenes Schicksal.",
+"exEn": "He firmly believes in his own fate.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Nervenkitzel",
+"en": "thrill / suspense",
+"ex": "Extremsportler suchen ständig den Nervenkitzel.",
+"exEn": "Extreme athletes constantly seek the thrill.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Zeitvertreib",
+"en": "pastime / way to pass the time",
+"pl": "die Zeitvertreibe",
+"ex": "Lesen ist für mich ein angenehmer Zeitvertreib.",
+"exEn": "Reading is a pleasant pastime for me.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Ausweg",
+"en": "way out / solution (to a difficulty)",
+"pl": "die Auswege",
+"ex": "In dieser Lage sah er einfach keinen Ausweg.",
+"exEn": "In this situation he simply saw no way out.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "besagen",
+"en": "to state / to say (of a study, rule)",
+"ex": "Eine Studie besagt, dass Pausen die Leistung steigern.",
+"exEn": "A study states that breaks boost performance.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "beschäftigen",
+"en": "to occupy / to keep busy; (sich) to deal with",
+"ex": "Sie beschäftigt sich intensiv mit dem neuen Projekt.",
+"exEn": "She is dealing intensively with the new project.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ausgehen",
+"en": "to assume / to proceed (from an assumption)",
+"ex": "Man geht davon aus, dass die Krise bald endet.",
+"exEn": "It is assumed that the crisis will end soon.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "einsehen",
+"en": "to realise / to accept (that one is wrong)",
+"ex": "Ich habe eingesehen, dass mein Talent nicht reicht.",
+"exEn": "I have realised that my talent isn't enough.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "eingestehen",
+"en": "to admit (sich etwas) / to confess to oneself",
+"ex": "Er musste sich einen Fehler eingestehen.",
+"exEn": "He had to admit a mistake to himself.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "aufreiben",
+"en": "to wear oneself out / to exhaust (sich)",
+"ex": "Sie hat sich in dem Job völlig aufgerieben.",
+"exEn": "She completely wore herself out in the job.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "demotivieren",
+"en": "to demotivate",
+"ex": "Ständige Kritik kann Mitarbeiter stark demotivieren.",
+"exEn": "Constant criticism can strongly demotivate employees.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "locken",
+"en": "to lure / to entice / to attract",
+"ex": "Das hohe Gehalt lockt viele junge Bewerber.",
+"exEn": "The high salary attracts many young applicants.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "mangelnd",
+"en": "lacking / insufficient",
+"ex": "Wegen mangelnder Erfahrung bekam sie die Stelle nicht.",
+"exEn": "Due to a lack of experience she didn't get the position.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Einschränkung",
+"en": "restriction / limitation",
+"pl": "die Einschränkungen",
+"ex": "Die neue Regelung bringt einige Einschränkungen mit sich.",
+"exEn": "The new regulation brings some restrictions with it.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Aufzählung",
+"en": "enumeration / list",
+"pl": "die Aufzählungen",
+"ex": "Er beendete seinen Vortrag mit einer langen Aufzählung.",
+"exEn": "He ended his talk with a long enumeration.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "genügend",
+"en": "sufficient / enough",
+"ex": "Wir haben genügend Zeit für das Projekt.",
+"exEn": "We have sufficient time for the project.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "hauptsächlich",
+"en": "mainly / chiefly",
+"ex": "Sie arbeitet hauptsächlich von zu Hause aus.",
+"exEn": "She works mainly from home.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Herzenswunsch",
+"en": "heartfelt wish / dearest wish",
+"pl": "die Herzenswünsche",
+"ex": "Es war ihr Herzenswunsch, Ärztin zu werden.",
+"exEn": "It was her heartfelt wish to become a doctor.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "lästig",
+"en": "annoying / bothersome",
+"ex": "Diese Formulare sind für viele Kunden lästig.",
+"exEn": "These forms are annoying for many customers.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Lebensglück",
+"en": "happiness in life",
+"ex": "Geld allein bringt nicht das Lebensglück.",
+"exEn": "Money alone doesn't bring happiness in life.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "restlich",
+"en": "remaining / rest of",
+"ex": "Den restlichen Tag verbrachten wir im Büro.",
+"exEn": "We spent the rest of the day in the office.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "zugleich",
+"en": "at the same time / simultaneously",
+"ex": "Sie ist Mutter und Chefin zugleich.",
+"exEn": "She is a mother and a boss at the same time.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ungefragt",
+"en": "unasked / without being asked",
+"ex": "Er gab ungefragt seine Meinung dazu ab.",
+"exEn": "He gave his opinion on it without being asked.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "systematisch",
+"en": "systematic / methodical",
+"ex": "Wir gehen das Problem systematisch an.",
+"exEn": "We tackle the problem systematically.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "obligatorisch",
+"en": "obligatory / compulsory",
+"ex": "Die Schulung ist für alle neuen Mitarbeiter obligatorisch.",
+"exEn": "The training is compulsory for all new employees.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "smart",
+"en": "smart / clever / sharp",
+"ex": "Das war eine wirklich smarte Lösung.",
+"exEn": "That was a really smart solution.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "unverzichtbar",
+"en": "indispensable / essential",
+"ex": "Erfahrung ist für diese Position unverzichtbar.",
+"exEn": "Experience is indispensable for this position.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "wirtschaftlich",
+"en": "economic / efficient",
+"ex": "Aus wirtschaftlichen Gründen wurde die Filiale geschlossen.",
+"exEn": "The branch was closed for economic reasons.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "relevant",
+"en": "relevant",
+"ex": "Nennen Sie bitte nur die relevanten Informationen.",
+"exEn": "Please mention only the relevant information.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "aussagekräftig",
+"en": "meaningful / informative",
+"ex": "Bitte senden Sie uns einen aussagekräftigen Lebenslauf.",
+"exEn": "Please send us a meaningful CV.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "bisherig",
+"en": "previous / so far",
+"ex": "Meine bisherige Tätigkeit war im Vertrieb.",
+"exEn": "My previous role was in sales.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "jetzig",
+"en": "current / present",
+"ex": "In meiner jetzigen Stelle leite ich ein kleines Team.",
+"exEn": "In my current position I lead a small team.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "informativ",
+"en": "informative",
+"ex": "Die Broschüre ist übersichtlich und sehr informativ.",
+"exEn": "The brochure is clear and very informative.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "wirkungsvoll",
+"en": "effective / impactful",
+"ex": "Eine wirkungsvolle Präsentation bleibt im Gedächtnis.",
+"exEn": "An effective presentation stays in the memory.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "übersichtlich",
+"en": "clear / well-organised",
+"ex": "Die Tabelle ist übersichtlich in mehrere Spalten gegliedert.",
+"exEn": "The table is clearly divided into several columns.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "nahegelegen",
+"en": "nearby / nearby-located",
+"ex": "Das Hotel liegt nahegelegen am Messegelände.",
+"exEn": "The hotel is located close to the trade-fair grounds.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ausgesprochen",
+"en": "exceptionally / decidedly",
+"ex": "Ihr Sinn für Gerechtigkeit ist ausgesprochen groß.",
+"exEn": "Her sense of justice is exceptionally strong.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "final",
+"en": "final",
+"ex": "Die finale Entscheidung trifft die Geschäftsleitung.",
+"exEn": "The final decision is made by the management.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "hierzulande",
+"en": "in this country / here",
+"ex": "Hierzulande ist eine gute Ausbildung sehr wichtig.",
+"exEn": "In this country a good education is very important.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "abgeschlossen",
+"en": "completed (e.g. a degree)",
+"ex": "Vorausgesetzt wird ein abgeschlossenes Studium.",
+"exEn": "A completed degree is required.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "gliedern",
+"en": "to structure / divide into",
+"ex": "Wir gliedern den Bericht in drei Abschnitte.",
+"exEn": "We divide the report into three sections.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "kurios",
+"en": "curious / odd / quirky",
+"ex": "Auf dem Flohmarkt fand ich ein wirklich kurioses Objekt.",
+"exEn": "At the flea market I found a really curious object.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Oberbegriff",
+"en": "umbrella term / generic term",
+"pl": "die Oberbegriffe",
+"ex": "\"Obst\" ist der Oberbegriff für Äpfel und Birnen.",
+"exEn": "\"Fruit\" is the umbrella term for apples and pears.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Analogie",
+"en": "analogy",
+"pl": "die Analogien",
+"ex": "Der Redner erklärte das Problem mithilfe einer einfachen Analogie.",
+"exEn": "The speaker explained the problem using a simple analogy.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Bequemlichkeit",
+"en": "comfort / convenience",
+"pl": "die Bequemlichkeiten",
+"ex": "Aus reiner Bequemlichkeit bestellt er alles online.",
+"exEn": "Out of sheer convenience he orders everything online.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Richtigkeit",
+"en": "correctness / accuracy",
+"ex": "Bitte überprüfen Sie die Richtigkeit Ihrer Angaben.",
+"exEn": "Please check the correctness of your details.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Ruf",
+"en": "reputation; call (to a professorship)",
+"pl": "die Rufe",
+"ex": "Sie erhielt einen Ruf an eine renommierte Universität.",
+"exEn": "She received a call to a renowned university.",
+"diff": "hard",
+"level": "B2",
+"hint": "Also means 'reputation': einen guten Ruf haben."
+},
+{
+"de": "der Schlag",
+"en": "blow / strike; stroke",
+"pl": "die Schläge",
+"ex": "Wir haben alle Aufgaben auf einen Schlag erledigt.",
+"exEn": "We finished all the tasks in one go.",
+"diff": "hard",
+"level": "B2",
+"hint": "auf einen Schlag = all at once / in one go."
+},
+{
+"de": "die Unterdrückung",
+"en": "oppression / suppression",
+"pl": "die Unterdrückungen",
+"ex": "Das Volk litt jahrelang unter politischer Unterdrückung.",
+"exEn": "The people suffered political oppression for years.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "vehement",
+"en": "vehement / forceful",
+"ex": "Er widersprach vehement der Entscheidung des Chefs.",
+"exEn": "He vehemently objected to the boss's decision.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "vereinen",
+"en": "to unite / combine (with)",
+"ex": "Dieser Beruf vereint Kreativität mit technischem Wissen.",
+"exEn": "This profession combines creativity with technical knowledge.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verleihen",
+"en": "to award / bestow; to lend",
+"ex": "Man verlieh ihr einen Preis für ihre Forschung.",
+"exEn": "She was awarded a prize for her research.",
+"diff": "hard",
+"level": "B2",
+"hint": "verleihen, verlieh, hat verliehen."
+},
+{
+"de": "das Vermögen",
+"en": "fortune / wealth; ability",
+"pl": "die Vermögen",
+"ex": "Er hat im Laufe der Jahre ein kleines Vermögen angespart.",
+"exEn": "He saved up a small fortune over the years.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verstärkt",
+"en": "increasingly / intensified",
+"ex": "Das Unternehmen setzt verstärkt auf erneuerbare Energien.",
+"exEn": "The company is increasingly relying on renewable energy.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Weltbild",
+"en": "worldview",
+"pl": "die Weltbilder",
+"ex": "Diese Entdeckung erschütterte das damalige Weltbild.",
+"exEn": "This discovery shook the worldview of the time.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Weltformel",
+"en": "theory of everything / world formula",
+"pl": "die Weltformeln",
+"ex": "Physiker suchen seit Langem nach einer Weltformel.",
+"exEn": "Physicists have long been searching for a theory of everything.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "wenden",
+"en": "to turn (against); to turn around",
+"ex": "Die Bürger wandten sich gegen die geplante Reform.",
+"exEn": "The citizens turned against the planned reform.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich wenden gegen + A. = to turn against."
+},
+{
+"de": "logisch",
+"en": "logical",
+"ex": "Seine Schlussfolgerung war völlig logisch.",
+"exEn": "His conclusion was completely logical.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Resultat",
+"en": "result / outcome",
+"pl": "die Resultate",
+"ex": "Das Resultat der Studie überraschte die Forscher.",
+"exEn": "The result of the study surprised the researchers.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Korrektur",
+"en": "correction",
+"pl": "die Korrekturen",
+"ex": "Der Lehrer nahm einige kleine Korrekturen vor.",
+"exEn": "The teacher made a few small corrections.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "recht",
+"en": "right / correct; quite",
+"ex": "Ein Lob zur rechten Zeit kann viel bewirken.",
+"exEn": "Praise at the right time can achieve a lot.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "undenkbar",
+"en": "unthinkable / inconceivable",
+"ex": "Vor zwanzig Jahren war so etwas noch undenkbar.",
+"exEn": "Twenty years ago, something like that was still unthinkable.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Veränderung",
+"en": "change / alteration",
+"pl": "die Veränderungen",
+"ex": "Die Veränderungen am Arbeitsplatz waren spürbar.",
+"exEn": "The changes at the workplace were noticeable.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vielmehr",
+"en": "rather / on the contrary",
+"ex": "Es war kein Zufall, vielmehr sorgfältige Planung.",
+"exEn": "It was no coincidence, but rather careful planning.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Vorzug",
+"en": "advantage / preference",
+"pl": "die Vorzüge",
+"ex": "Sie gab der erfahrenen Kandidatin den Vorzug.",
+"exEn": "She gave preference to the experienced candidate.",
+"diff": "hard",
+"level": "B2",
+"hint": "jmd. den Vorzug geben = to give preference to."
+},
+{
+"de": "würdigen",
+"en": "to appreciate / honour / acknowledge",
+"ex": "Der Chef würdigte die Leistung des ganzen Teams.",
+"exEn": "The boss acknowledged the whole team's achievement.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "voranstellen",
+"en": "to place before / put first",
+"ex": "Sie stellte ihrem Vortrag eine kurze Einleitung voran.",
+"exEn": "She placed a short introduction before her talk.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ausmalen",
+"en": "to imagine / picture (sich)",
+"ex": "Er malte sich schon die schlimmsten Dinge aus.",
+"exEn": "He was already imagining the worst things.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich etw. ausmalen = to picture/imagine sth."
+},
+{
+"de": "eingrenzen",
+"en": "to narrow down / limit",
+"ex": "Wir müssen das Thema noch weiter eingrenzen.",
+"exEn": "We need to narrow the topic down further.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "konstant",
+"en": "constant / steady",
+"ex": "Man sollte den Blutzucker möglichst konstant halten.",
+"exEn": "You should keep your blood sugar as steady as possible.",
+"diff": "medium",
+"level": "B2",
+"hint": "etw. konstant halten = to keep sth. constant."
+},
+{
+"de": "meiden",
+"en": "to avoid / shun",
+"ex": "Vor der Prüfung sollte man Stress unbedingt meiden.",
+"exEn": "Before the exam you should definitely avoid stress.",
+"diff": "hard",
+"level": "B2",
+"hint": "meiden, mied, hat gemieden."
+},
+{
+"de": "die Mühe",
+"en": "effort / trouble / pains",
+"pl": "die Mühen",
+"ex": "Sie gibt sich große Mühe, alles richtig zu machen.",
+"exEn": "She takes great pains to do everything correctly.",
+"diff": "medium",
+"level": "B2",
+"hint": "sich Mühe geben = to make an effort."
+},
+{
+"de": "schlimmstenfalls",
+"en": "in the worst case",
+"ex": "Schlimmstenfalls musst du die Prüfung wiederholen.",
+"exEn": "In the worst case you'll have to retake the exam.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Work & Study": [
+{
+"de": "die Auslandserfahrung",
+"en": "experience abroad",
+"pl": "die Auslandserfahrungen",
+"ex": "Auslandserfahrung sieht im Lebenslauf gut aus.",
+"exEn": "Experience abroad looks good on a CV.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Konferenz",
+"en": "conference",
+"pl": "die Konferenzen",
+"ex": "Auf der Konferenz wurden neue Projekte vorgestellt.",
+"exEn": "New projects were presented at the conference.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Geschäftsbeziehung",
+"en": "business relationship",
+"pl": "die Geschäftsbeziehungen",
+"ex": "Eine gute Geschäftsbeziehung beruht auf Vertrauen.",
+"exEn": "A good business relationship is based on trust.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Geschäftsverhandlung",
+"en": "business negotiation",
+"pl": "die Geschäftsverhandlungen",
+"ex": "Die Geschäftsverhandlung dauerte mehrere Stunden.",
+"exEn": "The business negotiation lasted several hours.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Lehrkraft",
+"en": "teacher / teaching staff member",
+"pl": "die Lehrkräfte",
+"ex": "Jede Lehrkraft sollte interkulturell geschult sein.",
+"exEn": "Every teacher should be trained in intercultural skills.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Hochschulreife",
+"en": "university entrance qualification",
+"ex": "Mit der Hochschulreife darf man studieren.",
+"exEn": "With the university entrance qualification you may study.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Schulabschluss",
+"en": "school-leaving qualification",
+"pl": "die Schulabschlüsse",
+"ex": "Ohne Schulabschluss ist es schwer, eine Stelle zu finden.",
+"exEn": "Without a school-leaving qualification it's hard to find a job.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Informatik",
+"en": "computer science",
+"ex": "Sie studiert Informatik an der Universität Berlin.",
+"exEn": "She studies computer science at the University of Berlin.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kindergartenpflicht",
+"en": "compulsory kindergarten attendance",
+"ex": "In manchen Ländern gibt es eine Kindergartenpflicht.",
+"exEn": "In some countries there is compulsory kindergarten attendance.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Schuluniform",
+"en": "school uniform",
+"pl": "die Schuluniformen",
+"ex": "In Deutschland gibt es meist keine Schuluniform.",
+"exEn": "In Germany there is usually no school uniform.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Automobilhersteller",
+"en": "car manufacturer",
+"pl": "die Automobilhersteller",
+"ex": "Viele Automobilhersteller suchen Fachkräfte aus dem Ausland.",
+"exEn": "Many car manufacturers are looking for skilled workers from abroad.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Auszeit",
+"en": "time-out / break (from work)",
+"pl": "die Auszeiten",
+"ex": "Nach dem Projekt nahm er sich eine Auszeit.",
+"exEn": "After the project he took a time-out.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kompetenz",
+"en": "competence / skill",
+"pl": "die Kompetenzen",
+"ex": "Interkulturelle Kompetenz wird im Beruf immer wichtiger.",
+"exEn": "Intercultural competence is becoming ever more important at work.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Konzentrationsleistung",
+"en": "concentration performance",
+"pl": "die Konzentrationsleistungen",
+"ex": "Lärm im Büro mindert die Konzentrationsleistung erheblich.",
+"exEn": "Noise in the office considerably reduces concentration performance.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Großraumbüro",
+"en": "open-plan office",
+"ex": "Im Großraumbüro kann man sich schlecht konzentrieren.",
+"exEn": "It's hard to concentrate in an open-plan office.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nachweisen",
+"en": "to prove / demonstrate (with evidence)",
+"ex": "Studien konnten diesen Effekt eindeutig nachweisen.",
+"exEn": "Studies were able to clearly demonstrate this effect.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Aufgabenteilung",
+"en": "division of tasks",
+"pl": "die Aufgabenteilungen",
+"ex": "Eine klare Aufgabenteilung verhindert Konflikte im Team.",
+"exEn": "A clear division of tasks prevents conflicts in the team.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Erledigung",
+"en": "handling / completion (of a task)",
+"pl": "die Erledigungen",
+"ex": "Für die Erledigung der Aufgabe blieb wenig Zeit.",
+"exEn": "There was little time for completing the task.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Talent",
+"en": "talent",
+"pl": "die Talente",
+"ex": "Sie hat ein großes Talent für Sprachen.",
+"exEn": "She has a great talent for languages.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Vorbild",
+"en": "role model / example",
+"pl": "die Vorbilder",
+"ex": "Ihre Lehrerin war für sie ein großes Vorbild.",
+"exEn": "Her teacher was a great role model for her.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Trophäe",
+"en": "trophy",
+"pl": "die Trophäen",
+"ex": "Die Mannschaft präsentierte stolz ihre Trophäe.",
+"exEn": "The team proudly presented their trophy.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Sprachentwicklung",
+"en": "language development",
+"pl": "die Sprachentwicklungen",
+"ex": "Die Sprachentwicklung beginnt schon im ersten Lebensjahr.",
+"exEn": "Language development begins as early as the first year of life.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Sprachschatz",
+"en": "vocabulary / word stock",
+"ex": "Durch viel Lesen erweitert sich der Sprachschatz.",
+"exEn": "Through a lot of reading one's vocabulary expands.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Kleinkriminellenstudie",
+"en": "study on petty criminals",
+"pl": "die Kleinkriminellenstudien",
+"ex": "Die Kleinkriminellenstudie lieferte überraschende Ergebnisse.",
+"exEn": "The study on petty criminals produced surprising results.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hauptberuflich",
+"en": "full-time / as one's main job",
+"ex": "Sie arbeitet hauptberuflich als Krankenschwester.",
+"exEn": "She works full-time as a nurse.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Handwerk",
+"en": "craft / trade (skilled manual work)",
+"ex": "Er hat ein Handwerk gelernt und wurde Tischler.",
+"exEn": "He learned a trade and became a carpenter.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Seminar",
+"en": "seminar",
+"pl": "die Seminare",
+"ex": "Ich besuche diese Woche ein Seminar zur Karriereplanung.",
+"exEn": "I'm attending a seminar on career planning this week.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Banklehre",
+"en": "bank apprenticeship",
+"pl": "die Banklehren",
+"ex": "Nach der Schule begann er eine Banklehre.",
+"exEn": "After school he began a bank apprenticeship.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Praktikumsbörse",
+"en": "internship fair / internship listing platform",
+"pl": "die Praktikumsbörsen",
+"ex": "Auf der Praktikumsbörse findest du viele Angebote.",
+"exEn": "You'll find many offers on the internship platform.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Nebenjob",
+"en": "side job / part-time job",
+"pl": "die Nebenjobs",
+"ex": "Neben dem Studium hat sie einen Nebenjob.",
+"exEn": "Alongside her studies she has a side job.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "angestellt",
+"en": "employed (by a company)",
+"ex": "Ich bin seit fünf Jahren bei der Firma angestellt.",
+"exEn": "I've been employed by the company for five years.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "anspruchsvoll",
+"en": "demanding / challenging",
+"ex": "Die meisten beschäftigen sich mit anspruchsvollen Aufgaben.",
+"exEn": "Most of them deal with demanding tasks.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Arbeitsumfeld",
+"en": "work environment",
+"pl": "die Arbeitsumfelder",
+"ex": "Ein gutes Arbeitsumfeld ist mir besonders wichtig.",
+"exEn": "A good work environment is especially important to me.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "fachlich",
+"en": "professional / specialist (in expertise)",
+"ex": "Fachlich ist sie ihren Kollegen weit überlegen.",
+"exEn": "Professionally she is far superior to her colleagues.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Praktikumszeit",
+"en": "internship period",
+"pl": "die Praktikumszeiten",
+"ex": "Während der Praktikumszeit habe ich viel gelernt.",
+"exEn": "During the internship period I learned a lot.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Firmenkultur",
+"en": "company culture / corporate culture",
+"ex": "Die offene Firmenkultur gefällt den neuen Mitarbeitern.",
+"exEn": "The new employees like the open company culture.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Karriereplanung",
+"en": "career planning",
+"pl": "die Karriereplanungen",
+"ex": "Eine durchdachte Karriereplanung zahlt sich später aus.",
+"exEn": "Well-thought-out career planning pays off later.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "kooperativ",
+"en": "cooperative",
+"ex": "Unser Chef ist offen und sehr kooperativ.",
+"exEn": "Our boss is open and very cooperative.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "lukrativ",
+"en": "lucrative / profitable",
+"ex": "Er hat ein lukratives Jobangebot bekommen.",
+"exEn": "He received a lucrative job offer.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Misserfolg",
+"en": "failure / lack of success",
+"pl": "die Misserfolge",
+"ex": "Aus jedem Misserfolg kann man etwas lernen.",
+"exEn": "You can learn something from every failure.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "mitverantwortlich",
+"en": "jointly responsible / partly responsible",
+"ex": "Das ganze Team ist für das Projekt mitverantwortlich.",
+"exEn": "The whole team is jointly responsible for the project.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nachgehen",
+"en": "to pursue / to follow up on",
+"ex": "Sie geht in ihrer Freizeit vielen Hobbys nach.",
+"exEn": "She pursues many hobbies in her free time.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Schauspielschule",
+"en": "acting school / drama school",
+"pl": "die Schauspielschulen",
+"ex": "Er wurde an einer renommierten Schauspielschule angenommen.",
+"exEn": "He was accepted at a renowned drama school.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Stuntschule",
+"en": "stunt school",
+"pl": "die Stuntschulen",
+"ex": "Für die Filmrolle besuchte sie eine Stuntschule.",
+"exEn": "For the film role she attended a stunt school.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "betreiben",
+"en": "to run / to operate (a business, activity)",
+"ex": "Die Familie betreibt seit Jahren ein kleines Café.",
+"exEn": "The family has run a small café for years.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verlangen",
+"en": "to demand / to require",
+"ex": "Der Job verlangt viel Geduld und Genauigkeit.",
+"exEn": "The job demands a lot of patience and precision.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ausüben",
+"en": "to exert / to practise (a profession)",
+"ex": "Der Chef übt großen Druck auf die Mitarbeiter aus.",
+"exEn": "The boss exerts great pressure on the employees.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "erfüllen",
+"en": "to fulfil / to meet (expectations)",
+"ex": "Sie konnte alle Erwartungen der Firma erfüllen.",
+"exEn": "She was able to meet all the company's expectations.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Erwartung",
+"en": "expectation",
+"pl": "die Erwartungen",
+"ex": "Die hohen Erwartungen setzten ihn stark unter Druck.",
+"exEn": "The high expectations put him under a lot of pressure.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Stellenwechsel",
+"en": "job change / change of position",
+"pl": "die Stellenwechsel",
+"ex": "Ein Stellenwechsel kann der Karriere neuen Schwung geben.",
+"exEn": "A job change can give your career fresh momentum.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Geschäftsleitung",
+"en": "management / executive board",
+"pl": "die Geschäftsleitungen",
+"ex": "Die Geschäftsleitung hat die neuen Ziele bekannt gegeben.",
+"exEn": "The management announced the new targets.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Absprache",
+"en": "agreement / arrangement",
+"pl": "die Absprachen",
+"ex": "Wir treffen die Termine nur nach Absprache mit dem Team.",
+"exEn": "We set the dates only by arrangement with the team.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Ausarbeitung",
+"en": "preparation / drafting (of a document)",
+"pl": "die Ausarbeitungen",
+"ex": "Die Ausarbeitung des Konzepts dauerte mehrere Wochen.",
+"exEn": "Drafting the concept took several weeks.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Auslandssemester",
+"en": "semester abroad",
+"pl": "die Auslandssemester",
+"ex": "Sie hat ein Auslandssemester in Spanien absolviert.",
+"exEn": "She completed a semester abroad in Spain.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Bachelorarbeit",
+"en": "bachelor's thesis",
+"pl": "die Bachelorarbeiten",
+"ex": "Er schreibt seine Bachelorarbeit über erneuerbare Energien.",
+"exEn": "He is writing his bachelor's thesis on renewable energy.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Betreuung",
+"en": "supervision / support",
+"pl": "die Betreuungen",
+"ex": "Die Betreuung der Praktikanten gehört zu meinen Aufgaben.",
+"exEn": "Supervising the interns is one of my responsibilities.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Durchführung",
+"en": "implementation / carrying out",
+"pl": "die Durchführungen",
+"ex": "Für die Durchführung des Projekts sind drei Monate geplant.",
+"exEn": "Three months are planned for carrying out the project.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die EDV-Kenntnisse",
+"en": "IT skills / computer skills",
+"ex": "Gute EDV-Kenntnisse sind in dieser Stelle unverzichtbar.",
+"exEn": "Good IT skills are indispensable in this position.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Eventmanagement",
+"en": "event management",
+"ex": "Sie arbeitet seit Jahren im Eventmanagement.",
+"exEn": "She has worked in event management for years.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kalkulation",
+"en": "costing / calculation",
+"pl": "die Kalkulationen",
+"ex": "Die Kalkulation der Kosten muss bis Freitag fertig sein.",
+"exEn": "The costing of the expenses must be ready by Friday.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Kenntnis",
+"en": "knowledge / command (of something)",
+"pl": "die Kenntnisse",
+"ex": "Fundierte Kenntnisse im Marketing werden vorausgesetzt.",
+"exEn": "Sound knowledge of marketing is required.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Konzeption",
+"en": "conception / conceptual design",
+"pl": "die Konzeptionen",
+"ex": "Die Konzeption der Kampagne übernimmt unsere Agentur.",
+"exEn": "Our agency handles the conceptual design of the campaign.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Koordination",
+"en": "coordination",
+"ex": "Die Koordination der Teams läuft über das Projektbüro.",
+"exEn": "The coordination of the teams runs through the project office.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Management",
+"en": "management",
+"pl": "die Managements",
+"ex": "Das Management hat einer Gehaltserhöhung zugestimmt.",
+"exEn": "Management agreed to a pay rise.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Mitarbeit",
+"en": "collaboration / participation",
+"ex": "Wir danken Ihnen für Ihre engagierte Mitarbeit.",
+"exEn": "We thank you for your dedicated collaboration.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Neukundengewinnung",
+"en": "acquisition of new customers",
+"ex": "Die Neukundengewinnung ist das Ziel der neuen Kampagne.",
+"exEn": "Acquiring new customers is the goal of the new campaign.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Organisation",
+"en": "organisation",
+"pl": "die Organisationen",
+"ex": "Zu meinen Aufgaben gehört die Organisation von Messen.",
+"exEn": "My responsibilities include the organisation of trade fairs.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Persönlichkeitstraining",
+"en": "personality / personal development training",
+"ex": "Die Firma bietet ihren Führungskräften ein Persönlichkeitstraining an.",
+"exEn": "The company offers its managers personality development training.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Präsentationssoftware",
+"en": "presentation software",
+"pl": "die Präsentationssoftwares",
+"ex": "Mit der neuen Präsentationssoftware lassen sich Folien schneller erstellen.",
+"exEn": "With the new presentation software, slides can be created faster.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Projektleitung",
+"en": "project management / project lead",
+"pl": "die Projektleitungen",
+"ex": "Sie hat die Projektleitung für das neue Produkt übernommen.",
+"exEn": "She took on the project lead for the new product.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Veranstaltungskonzept",
+"en": "event concept",
+"pl": "die Veranstaltungskonzepte",
+"ex": "Das Veranstaltungskonzept überzeugte die Geschäftsleitung sofort.",
+"exEn": "The event concept convinced the management immediately.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die EDV",
+"en": "IT / electronic data processing",
+"ex": "In der EDV-Abteilung werden alle Systeme betreut.",
+"exEn": "All systems are maintained in the IT department.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Teamevent",
+"en": "team event",
+"pl": "die Teamevents",
+"ex": "Beim letzten Teamevent sind wir gemeinsam klettern gegangen.",
+"exEn": "At the last team event we went climbing together.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Teambildung",
+"en": "team building",
+"pl": "die Teambildungen",
+"ex": "Gemeinsame Ausflüge fördern die Teambildung im Unternehmen.",
+"exEn": "Joint outings promote team building in the company.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Teambildungsaktivität",
+"en": "team-building activity",
+"pl": "die Teambildungsaktivitäten",
+"ex": "Eine Schnitzeljagd ist eine beliebte Teambildungsaktivität.",
+"exEn": "A scavenger hunt is a popular team-building activity.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "betreuen",
+"en": "to look after / supervise",
+"ex": "Ich betreue die neuen Kollegen während der Einarbeitung.",
+"exEn": "I look after the new colleagues during their onboarding.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Budget",
+"en": "budget",
+"pl": "die Budgets",
+"ex": "Das Budget für die Werbung wurde deutlich gekürzt.",
+"exEn": "The budget for advertising was cut significantly.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Entwicklungsperspektive",
+"en": "development prospect / career prospect",
+"pl": "die Entwicklungsperspektiven",
+"ex": "Die Stelle bietet interessante Entwicklungsperspektiven.",
+"exEn": "The position offers interesting career prospects.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Eventmarketing",
+"en": "event marketing",
+"ex": "Im Eventmarketing zählt vor allem das Erlebnis der Gäste.",
+"exEn": "In event marketing, the guests' experience matters most.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Kampagne",
+"en": "campaign",
+"pl": "die Kampagnen",
+"ex": "Die neue Kampagne soll jüngere Kunden ansprechen.",
+"exEn": "The new campaign is meant to appeal to younger customers.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Markenunternehmen",
+"en": "brand company",
+"pl": "die Markenunternehmen",
+"ex": "Sie arbeitet für ein international bekanntes Markenunternehmen.",
+"exEn": "She works for an internationally known brand company.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Profil",
+"en": "profile",
+"pl": "die Profile",
+"ex": "Ihr Profil passt genau zu unserer Stellenausschreibung.",
+"exEn": "Your profile fits our job posting exactly.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Projektmanagement",
+"en": "project management",
+"pl": "die Projektmanagements",
+"ex": "Er hat eine Weiterbildung im Projektmanagement gemacht.",
+"exEn": "He took a course in project management.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Stellenausschreibung",
+"en": "job advertisement / job posting",
+"pl": "die Stellenausschreibungen",
+"ex": "In der Stellenausschreibung werden gute Sprachkenntnisse verlangt.",
+"exEn": "The job posting requires good language skills.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Veranstaltungsagentur",
+"en": "event agency",
+"pl": "die Veranstaltungsagenturen",
+"ex": "Eine Veranstaltungsagentur plant das gesamte Firmenjubiläum.",
+"exEn": "An event agency is planning the entire company anniversary.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verantworten",
+"en": "to be responsible for / answer for",
+"ex": "Als Leiterin muss sie das Budget selbst verantworten.",
+"exEn": "As the manager, she has to answer for the budget herself.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Angebotserstellung",
+"en": "creation of offers / quotation preparation",
+"pl": "die Angebotserstellungen",
+"ex": "Die Angebotserstellung gehört zu meinem täglichen Aufgabengebiet.",
+"exEn": "Preparing quotations is part of my daily responsibilities.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Auslandsaufenthalt",
+"en": "stay abroad",
+"pl": "die Auslandsaufenthalte",
+"ex": "Ein längerer Auslandsaufenthalt macht sich im Lebenslauf gut.",
+"exEn": "A longer stay abroad looks good on your CV.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "budgetverantwortlich",
+"en": "responsible for the budget",
+"ex": "In dieser Position sind Sie budgetverantwortlich.",
+"exEn": "In this position you are responsible for the budget.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "einbringen",
+"en": "to contribute / bring in",
+"ex": "Gern möchte ich meine Erfahrung ins Team einbringen.",
+"exEn": "I would like to contribute my experience to the team.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Umfang",
+"en": "extent / scope",
+"pl": "die Umfänge",
+"ex": "Ich stehe Ihnen in vollem Umfang zur Verfügung.",
+"exEn": "I am at your disposal to the full extent.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Unternehmen",
+"en": "company / enterprise",
+"pl": "die Unternehmen",
+"ex": "Das Unternehmen beschäftigt über tausend Mitarbeiter.",
+"exEn": "The company employs over a thousand staff.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vertiefen",
+"en": "to deepen / develop further",
+"ex": "Im Praktikum konnte ich meine Kenntnisse vertiefen.",
+"exEn": "During the internship I was able to deepen my knowledge.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Bewerbungsbrief",
+"en": "cover letter / letter of application",
+"pl": "die Bewerbungsbriefe",
+"ex": "Der Bewerbungsbrief sollte fehlerfrei und überzeugend sein.",
+"exEn": "The cover letter should be error-free and convincing.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Arbeitsmarkt",
+"en": "labour market / job market",
+"pl": "die Arbeitsmärkte",
+"ex": "Auf dem Arbeitsmarkt sind IT-Fachkräfte sehr gefragt.",
+"exEn": "IT specialists are in high demand on the job market.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "avancieren",
+"en": "to advance / rise (to a position)",
+"ex": "Sie avancierte innerhalb weniger Jahre zur Abteilungsleiterin.",
+"exEn": "Within a few years she rose to head of department.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Billiglohnland",
+"en": "low-wage country",
+"pl": "die Billiglohnländer",
+"ex": "Viele Firmen produzieren ihre Waren in Billiglohnländern.",
+"exEn": "Many companies produce their goods in low-wage countries.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "gefragt",
+"en": "in demand / sought-after",
+"ex": "Erfahrene Programmierer sind zurzeit sehr gefragt.",
+"exEn": "Experienced programmers are very much in demand right now.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Gewerkschaft",
+"en": "trade union",
+"pl": "die Gewerkschaften",
+"ex": "Die Gewerkschaft fordert höhere Löhne für die Beschäftigten.",
+"exEn": "The trade union is demanding higher wages for the employees.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Grundvoraussetzung",
+"en": "basic requirement / prerequisite",
+"pl": "die Grundvoraussetzungen",
+"ex": "Teamfähigkeit ist eine Grundvoraussetzung für diese Stelle.",
+"exEn": "The ability to work in a team is a basic requirement for this job.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hofieren",
+"en": "to court / curry favour with",
+"ex": "Das Unternehmen hofiert seine wichtigsten Kunden mit Geschenken.",
+"exEn": "The company courts its most important clients with gifts.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Teamgeist",
+"en": "team spirit",
+"ex": "Ein guter Teamgeist ist für den Erfolg entscheidend.",
+"exEn": "A good team spirit is crucial for success.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Strukturierung",
+"en": "structuring / organisation",
+"pl": "die Strukturierungen",
+"ex": "Eine klare Strukturierung des Tages erhöht die Produktivität.",
+"exEn": "A clear structuring of the day increases productivity.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Coach",
+"en": "coach",
+"pl": "die Coachs",
+"ex": "Ein guter Coach hilft dir, deine Ziele zu erreichen.",
+"exEn": "A good coach helps you reach your goals.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Arbeitsatmosphäre",
+"en": "working atmosphere",
+"pl": "die Arbeitsatmosphären",
+"ex": "Eine entspannte Arbeitsatmosphäre steigert die Motivation.",
+"exEn": "A relaxed working atmosphere boosts motivation.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Arbeitsklima",
+"en": "working climate / work environment",
+"ex": "Ein gutes Arbeitsklima kann viel ausmachen.",
+"exEn": "A good working climate can make a big difference.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "befehlen",
+"en": "to command / order",
+"ex": "Der General befahl den Soldaten, sich zurückzuziehen.",
+"exEn": "The general ordered the soldiers to retreat.",
+"diff": "hard",
+"level": "B2",
+"hint": "befehlen, befahl, hat befohlen."
+},
+{
+"de": "die Bereitschaft",
+"en": "willingness / readiness (to)",
+"ex": "Sie zeigte große Bereitschaft zur Zusammenarbeit.",
+"exEn": "She showed great willingness to cooperate.",
+"diff": "hard",
+"level": "B2",
+"hint": "die Bereitschaft zu + D."
+},
+{
+"de": "der Diskussionsbedarf",
+"en": "need for discussion",
+"pl": "die Diskussionsbedarfe",
+"ex": "Bei diesem Thema besteht noch erheblicher Diskussionsbedarf.",
+"exEn": "On this topic there is still a considerable need for discussion.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "entgegenbringen",
+"en": "to show / extend (e.g. respect) to sb.",
+"ex": "Man sollte jedem Kollegen Respekt entgegenbringen.",
+"exEn": "You should show respect to every colleague.",
+"diff": "hard",
+"level": "B2",
+"hint": "jmd. Respekt entgegenbringen; brachte entgegen, hat entgegengebracht."
+},
+{
+"de": "klären",
+"en": "to clarify / resolve",
+"ex": "Wir sollten dieses Missverständnis schnell klären.",
+"exEn": "We should clarify this misunderstanding quickly.",
+"diff": "medium",
+"level": "B2",
+"hint": "Probleme klären = to resolve problems."
+},
+{
+"de": "das Konfliktpotential",
+"en": "potential for conflict",
+"pl": "die Konfliktpotentiale",
+"ex": "In jedem Team steckt ein gewisses Konfliktpotential.",
+"exEn": "Every team holds a certain potential for conflict.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Konzept",
+"en": "concept / plan / draft",
+"pl": "die Konzepte",
+"ex": "Sie stellte ihr neues Konzept in der Sitzung vor.",
+"exEn": "She presented her new concept in the meeting.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "einprägen",
+"en": "to memorise / imprint (sich)",
+"ex": "Diese Regel solltest du dir gut einprägen.",
+"exEn": "You should memorise this rule well.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich etw. einprägen = to commit sth. to memory."
+},
+{
+"de": "einteilen",
+"en": "to divide up / classify (into)",
+"ex": "Der Lernstoff lässt sich in fünf Phasen einteilen.",
+"exEn": "The material can be divided into five phases.",
+"diff": "medium",
+"level": "B2",
+"hint": "einteilen in + A."
+},
+{
+"de": "gönnen",
+"en": "to allow / grant oneself (sth. nice)",
+"ex": "Nach der Prüfung gönne ich mir ein langes Wochenende.",
+"exEn": "After the exam I'll treat myself to a long weekend.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich etw. gönnen = to treat oneself to sth."
+},
+{
+"de": "die Prüfungsangst",
+"en": "exam anxiety / test anxiety",
+"pl": "die Prüfungsängste",
+"ex": "Viele Studierende leiden unter starker Prüfungsangst.",
+"exEn": "Many students suffer from severe exam anxiety.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Lernphase",
+"en": "learning phase / study phase",
+"pl": "die Lernphasen",
+"ex": "In der intensiven Lernphase plane ich feste Pausen ein.",
+"exEn": "During the intensive study phase I schedule fixed breaks.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Stadtbibliothek",
+"en": "city library / public library",
+"pl": "die Stadtbibliotheken",
+"ex": "Ich lerne am liebsten in der ruhigen Stadtbibliothek.",
+"exEn": "I prefer to study in the quiet city library.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Studentenwohnheim",
+"en": "student hall of residence / dorm",
+"pl": "die Studentenwohnheime",
+"ex": "Im ersten Semester wohnte er im Studentenwohnheim.",
+"exEn": "In his first semester he lived in a hall of residence.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "mitbestimmen",
+"en": "to have a say / participate in decisions",
+"ex": "Die Mitarbeiter dürfen über die Pausenzeiten mitbestimmen.",
+"exEn": "The employees may have a say in the break times.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Teambesprechung",
+"en": "team meeting",
+"pl": "die Teambesprechungen",
+"ex": "In der wöchentlichen Teambesprechung klären wir offene Fragen.",
+"exEn": "In the weekly team meeting we clarify open questions.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Umgangston",
+"en": "tone / manner of interaction",
+"pl": "die Umgangstöne",
+"ex": "In dieser Firma herrscht ein freundlicher Umgangston.",
+"exEn": "In this company there is a friendly tone of interaction.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "unangemessen",
+"en": "inappropriate / unsuitable",
+"ex": "Sein Verhalten war in dieser Situation völlig unangemessen.",
+"exEn": "His behaviour was completely inappropriate in this situation.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Arbeitssituation",
+"en": "work situation",
+"pl": "die Arbeitssituationen",
+"ex": "Die aktuelle Arbeitssituation belastet viele Angestellte.",
+"exEn": "The current work situation is a burden on many employees.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "einplanen",
+"en": "to plan in / allow for",
+"ex": "Plane für die Vorbereitung genug Zeit ein.",
+"exEn": "Allow enough time for the preparation.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "entgegensehen",
+"en": "to look forward to / await (a thing)",
+"ex": "Sie sah der Prüfung erstaunlich positiv entgegen.",
+"exEn": "She looked forward to the exam surprisingly positively.",
+"diff": "hard",
+"level": "B2",
+"hint": "einer Sache entgegensehen; sah entgegen, hat entgegengesehen."
+},
+{
+"de": "die Gesamtwiederholung",
+"en": "overall revision / complete review",
+"pl": "die Gesamtwiederholungen",
+"ex": "Vor der Klausur mache ich eine Gesamtwiederholung des Stoffes.",
+"exEn": "Before the exam I do a complete review of the material.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "klarmachen",
+"en": "to make clear (to oneself)",
+"ex": "Du musst dir klarmachen, dass Zeit begrenzt ist.",
+"exEn": "You have to make it clear to yourself that time is limited.",
+"diff": "medium",
+"level": "B2",
+"hint": "sich etw. klarmachen = to make sth. clear to oneself."
+},
+{
+"de": "der Lernstoff",
+"en": "learning material / subject matter",
+"pl": "die Lernstoffe",
+"ex": "Der Lernstoff für die Prüfung ist sehr umfangreich.",
+"exEn": "The material for the exam is very extensive.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Musterklausur",
+"en": "sample exam / mock exam",
+"pl": "die Musterklausuren",
+"ex": "Zur Vorbereitung löse ich mehrere Musterklausuren.",
+"exEn": "To prepare, I work through several sample exams.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nachhaken",
+"en": "to follow up / probe further",
+"ex": "Wenn etwas unklar ist, solltest du beim Dozenten nachhaken.",
+"exEn": "If something is unclear, you should follow up with the lecturer.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Puffertag",
+"en": "buffer day / spare day",
+"pl": "die Puffertage",
+"ex": "Im Lernplan baue ich immer ein paar Puffertage ein.",
+"exEn": "In my study plan I always build in a few buffer days.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Visabestimmungen",
+"en": "visa regulations",
+"ex": "Vor der Reise solltest du die Visabestimmungen prüfen.",
+"exEn": "Before the trip you should check the visa regulations.",
+"diff": "hard",
+"level": "B2",
+"hint": "Usually plural."
+}
+],
+"Common Verbs": [
+{
+"de": "auflösen",
+"en": "to dissolve / break up / give up (a flat)",
+"ex": "Vor dem Umzug musste sie ihre Wohnung auflösen.",
+"exEn": "Before moving she had to give up her flat.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "knüpfen",
+"en": "to make / forge (contacts)",
+"ex": "Im Ausland konnte er schnell neue Kontakte knüpfen.",
+"exEn": "Abroad he was able to make new contacts quickly.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "auswandern",
+"en": "to emigrate",
+"ex": "Viele junge Leute wandern nach Kanada aus.",
+"exEn": "Many young people emigrate to Canada.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "bereuen",
+"en": "to regret",
+"ex": "Sie hat die Entscheidung auszuwandern nie bereut.",
+"exEn": "She has never regretted the decision to emigrate.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "einleben",
+"en": "to settle in",
+"ex": "Es dauerte Monate, bis er sich richtig eingelebt hatte.",
+"exEn": "It took months until he had really settled in.",
+"diff": "hard",
+"level": "B2",
+"hint": "Reflexive: sich einleben."
+},
+{
+"de": "erweitern",
+"en": "to broaden / expand",
+"ex": "Reisen erweitert den Horizont enorm.",
+"exEn": "Travelling broadens your horizons enormously.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "konfrontieren",
+"en": "to confront (with)",
+"ex": "Im Ausland wird man oft mit Vorurteilen konfrontiert.",
+"exEn": "Abroad you are often confronted with prejudices.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "trösten",
+"en": "to comfort / console",
+"ex": "Sie versuchte, das weinende Kind zu trösten.",
+"exEn": "She tried to comfort the crying child.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "beschriften",
+"en": "to label / write on",
+"ex": "Alltagsprodukte sind oft mehrsprachig beschriftet.",
+"exEn": "Everyday products are often labelled in several languages.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "riskieren",
+"en": "to risk",
+"ex": "Er riskierte viel, als er ins Ausland zog.",
+"exEn": "He risked a lot when he moved abroad.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "wagen",
+"en": "to dare / venture",
+"ex": "Sie wagte den Schritt in ein fremdes Land.",
+"exEn": "She dared to take the step into a foreign country.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "empfinden",
+"en": "to feel / perceive",
+"ex": "Viele empfinden die fremde Kultur als bereichernd.",
+"exEn": "Many perceive the foreign culture as enriching.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "zerschneiden",
+"en": "to cut up / cut to pieces",
+"ex": "Er zerschnitt das alte Foto in viele Stücke.",
+"exEn": "He cut the old photo into many pieces.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "missverstehen",
+"en": "to misunderstand",
+"ex": "Bitte missverstehen Sie mich nicht.",
+"exEn": "Please don't misunderstand me.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "anfügen",
+"en": "to attach / add",
+"ex": "Ich füge meinem Schreiben einige Belege an.",
+"exEn": "I'm attaching some documents to my letter.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ausbremsen",
+"en": "to slow down / hold back / thwart",
+"ex": "Bürokratie kann ambitionierte Pläne ausbremsen.",
+"exEn": "Bureaucracy can hold back ambitious plans.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "flechten",
+"en": "to braid / weave / plait",
+"ex": "Die Mutter flocht ihrer Tochter einen Zopf.",
+"exEn": "The mother braided her daughter's hair into a plait.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "disqualifizieren",
+"en": "to disqualify",
+"ex": "Solche Aussagen disqualifizieren ihn als Vorbild.",
+"exEn": "Such statements disqualify him as a role model.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "leuchten",
+"en": "to shine / glow",
+"ex": "Ihre Augen leuchteten vor Freude.",
+"exEn": "Her eyes shone with joy.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "entstammen",
+"en": "to come from / originate from",
+"ex": "Er entstammt einer Migrantenfamilie.",
+"exEn": "He comes from an immigrant family.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "zusammenbinden",
+"en": "to tie together / bind",
+"ex": "Sie band ihre langen Haare zusammen.",
+"exEn": "She tied her long hair together.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "anhören",
+"en": "to sound (good/bad) / listen to",
+"ex": "Dein Plan hört sich wirklich gut an.",
+"exEn": "Your plan really sounds good.",
+"diff": "medium",
+"level": "B2",
+"hint": "Reflexive: sich gut/schlecht anhören."
+},
+{
+"de": "auszeichnen",
+"en": "to honour / award / distinguish",
+"ex": "Fatih Akın wurde mit vielen Preisen ausgezeichnet.",
+"exEn": "Fatih Akın was honoured with many awards.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "infrage kommen",
+"en": "to be an option / be feasible",
+"ex": "Ein Umzug ins Ausland kommt für mich nicht infrage.",
+"exEn": "Moving abroad is not an option for me.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "leichtfallen",
+"en": "to come easily / be easy (for sb.)",
+"ex": "Das Einleben in der neuen Stadt fiel ihr leicht.",
+"exEn": "Settling into the new city came easily to her.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "fernliegen",
+"en": "to be far from one's mind",
+"ex": "Es liegt mir fern, dich zu kritisieren.",
+"exEn": "It's far from my mind to criticise you.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Media & Communication": [
+{
+"de": "das Zitat",
+"en": "quotation / quote",
+"pl": "die Zitate",
+"ex": "Sie begann ihren Vortrag mit einem passenden Zitat.",
+"exEn": "She began her talk with a fitting quotation.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Handyvertrag",
+"en": "mobile phone contract",
+"pl": "die Handyverträge",
+"ex": "Ohne Meldeadresse bekommt man schwer einen Handyvertrag.",
+"exEn": "Without a registered address it's hard to get a mobile phone contract.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Blog",
+"en": "blog",
+"pl": "die Blogs",
+"ex": "In ihrem Blog schreibt sie über das Leben im Ausland.",
+"exEn": "In her blog she writes about life abroad.",
+"diff": "easy",
+"level": "B2"
+},
+{
+"de": "die Bekanntmachung",
+"en": "announcement / public notice",
+"pl": "die Bekanntmachungen",
+"ex": "Die amtliche Bekanntmachung hing am schwarzen Brett.",
+"exEn": "The official announcement was posted on the notice board.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Flyer",
+"en": "flyer / leaflet",
+"pl": "die Flyer",
+"ex": "Im Bürgeramt lagen Flyer in mehreren Sprachen aus.",
+"exEn": "Leaflets in several languages were laid out at the citizens' office.",
+"diff": "easy",
+"level": "B2"
+},
+{
+"de": "missverständlich",
+"en": "ambiguous / misleading",
+"ex": "Seine Formulierung war leider sehr missverständlich.",
+"exEn": "Unfortunately his wording was very ambiguous.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nonverbal",
+"en": "nonverbal",
+"ex": "Vieles wird nonverbal kommuniziert.",
+"exEn": "A lot is communicated nonverbally.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Geste",
+"en": "gesture",
+"pl": "die Gesten",
+"ex": "Manche Gesten bedeuten in anderen Kulturen etwas anderes.",
+"exEn": "Some gestures mean something different in other cultures.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Drehbuchpreis",
+"en": "screenplay award",
+"pl": "die Drehbuchpreise",
+"ex": "Der Film gewann einen wichtigen Drehbuchpreis.",
+"exEn": "The film won an important screenplay award.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Gangsterkino",
+"en": "gangster cinema / gangster films",
+"ex": "Seine frühen Filme gehörten zum Gangsterkino.",
+"exEn": "His early films belonged to the gangster cinema genre.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Hauptrolle",
+"en": "leading role / main part",
+"pl": "die Hauptrollen",
+"ex": "Sie spielte die Hauptrolle in seinem neuen Film.",
+"exEn": "She played the leading role in his new film.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Hommage",
+"en": "homage / tribute",
+"ex": "Der Film ist eine Hommage an seine Heimatstadt.",
+"exEn": "The film is a homage to his home town.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Juryvorsitz",
+"en": "jury chairmanship",
+"ex": "Er übernahm den Juryvorsitz beim Filmfestival.",
+"exEn": "He took over the jury chairmanship at the film festival.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Kinofilm",
+"en": "cinema film / feature film",
+"pl": "die Kinofilme",
+"ex": "Sein erster Kinofilm war ein großer Erfolg.",
+"exEn": "His first feature film was a great success.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kinokasse",
+"en": "box office",
+"pl": "die Kinokassen",
+"ex": "Der Film war ein Erfolg an den Kinokassen.",
+"exEn": "The film was a success at the box office.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Nonsens",
+"en": "nonsense",
+"ex": "Das ist doch völliger Nonsens!",
+"exEn": "That's complete nonsense!",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Durchbruch",
+"en": "breakthrough",
+"pl": "die Durchbrüche",
+"ex": "Mit diesem Film gelang ihm der internationale Durchbruch.",
+"exEn": "With this film he achieved his international breakthrough.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Piktogramm",
+"en": "pictogram",
+"pl": "die Piktogramme",
+"ex": "Das Piktogramm zeigt den Weg zum Notausgang.",
+"exEn": "The pictogram shows the way to the emergency exit.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Gebärdensprache",
+"en": "sign language",
+"ex": "Sie verständigt sich fließend in Gebärdensprache.",
+"exEn": "She communicates fluently in sign language.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Körpersprache",
+"en": "body language",
+"ex": "Seine Körpersprache verriet seine Nervosität.",
+"exEn": "His body language gave away his nervousness.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Körpersignal",
+"en": "body signal / nonverbal cue",
+"pl": "die Körpersignale",
+"ex": "Wir senden ständig unbewusste Körpersignale aus.",
+"exEn": "We constantly send out unconscious body signals.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Mimik",
+"en": "facial expressions / mimicry",
+"ex": "An ihrer Mimik erkennt man sofort ihre Stimmung.",
+"exEn": "You can tell her mood immediately from her facial expressions.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Signal",
+"en": "signal",
+"pl": "die Signale",
+"ex": "Sein Schweigen war ein deutliches Signal.",
+"exEn": "His silence was a clear signal.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Langspielfilm",
+"en": "feature-length film",
+"pl": "die Langspielfilme",
+"ex": "Der Regisseur drehte seinen ersten Langspielfilm.",
+"exEn": "The director shot his first feature-length film.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Melodram",
+"en": "melodrama",
+"pl": "die Melodramen",
+"ex": "Der Film geriet zum kitschigen Melodram.",
+"exEn": "The film turned into a kitschy melodrama.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Migrationsdrama",
+"en": "migration drama (film genre)",
+"pl": "die Migrationsdramen",
+"ex": "Das Migrationsdrama gewann einen Preis bei der Berlinale.",
+"exEn": "The migration drama won a prize at the Berlinale.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Indie-Pop",
+"en": "indie pop",
+"ex": "Die Band spielt melancholischen Indie-Pop.",
+"exEn": "The band plays melancholic indie pop.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "touren",
+"en": "to tour (with a band/show)",
+"ex": "Die Gruppe tourt diesen Sommer durch ganz Europa.",
+"exEn": "The group is touring all over Europe this summer.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "klatschen",
+"en": "to clap / applaud",
+"ex": "Das Publikum klatschte begeistert nach dem Konzert.",
+"exEn": "The audience clapped enthusiastically after the concert.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Ich-Botschaft",
+"en": "\"I\" statement / first-person message",
+"pl": "die Ich-Botschaften",
+"ex": "In Konflikten helfen klare Ich-Botschaften sehr.",
+"exEn": "In conflicts, clear \"I\" statements help a lot.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Mitschrift",
+"en": "transcript / set of notes (taken during)",
+"pl": "die Mitschriften",
+"ex": "Ich habe meine Mitschrift aus dem Seminar verloren.",
+"exEn": "I lost my notes from the seminar.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Internetportal",
+"en": "internet portal / website platform",
+"pl": "die Internetportale",
+"ex": "Über dieses Internetportal kann man Praktika finden.",
+"exEn": "Through this internet portal you can find internships.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "phrasieren",
+"en": "to phrase / to articulate (in music)",
+"ex": "Der Pianist phrasiert die Melodie sehr gefühlvoll.",
+"exEn": "The pianist phrases the melody very expressively.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "poetisch",
+"en": "poetic",
+"ex": "Sein Text ist in einer sehr poetischen Sprache geschrieben.",
+"exEn": "His text is written in very poetic language.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Datumsangabe",
+"en": "date / specification of the date",
+"pl": "die Datumsangaben",
+"ex": "Bitte vergessen Sie die Datumsangabe im Brief nicht.",
+"exEn": "Please don't forget the date in the letter.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Highlight",
+"en": "highlight",
+"pl": "die Highlights",
+"ex": "Der Vortrag war das Highlight der ganzen Konferenz.",
+"exEn": "The talk was the highlight of the entire conference.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Messecatering",
+"en": "trade-fair catering",
+"pl": "die Messecaterings",
+"ex": "Das Messecatering versorgt täglich hunderte Besucher.",
+"exEn": "The trade-fair catering serves hundreds of visitors daily.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Nationalität",
+"en": "nationality",
+"pl": "die Nationalitäten",
+"ex": "Bei uns arbeiten Menschen vieler Nationalitäten zusammen.",
+"exEn": "People of many nationalities work together here.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Rechtschreibfehler",
+"en": "spelling mistake",
+"pl": "die Rechtschreibfehler",
+"ex": "In der Bewerbung sollte kein einziger Rechtschreibfehler stehen.",
+"exEn": "There shouldn't be a single spelling mistake in the application.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Spalte",
+"en": "column",
+"pl": "die Spalten",
+"ex": "Setzen Sie die Überschrift in die linke Spalte.",
+"exEn": "Put the heading in the left column.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Sprachkenntnisse",
+"en": "language skills",
+"ex": "Ihre Sprachkenntnisse in Französisch sind beeindruckend.",
+"exEn": "Your language skills in French are impressive.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Start-up",
+"en": "start-up",
+"pl": "die Start-ups",
+"ex": "Das junge Start-up entwickelt eine App für Pendler.",
+"exEn": "The young start-up is developing an app for commuters.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Komma",
+"en": "comma",
+"pl": "die Kommas",
+"ex": "Vor dem Nebensatz steht ein Komma.",
+"exEn": "There is a comma before the subordinate clause.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Aufgabengebiet",
+"en": "area of responsibility",
+"pl": "die Aufgabengebiete",
+"ex": "Die Kundenbetreuung gehört zu meinem Aufgabengebiet.",
+"exEn": "Customer support is part of my area of responsibility.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Vortragsreihe",
+"en": "lecture series",
+"pl": "die Vortragsreihen",
+"ex": "Die Universität bietet eine Vortragsreihe zur Physik an.",
+"exEn": "The university is offering a lecture series on physics.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "ausrichten",
+"en": "to pass on (a message); to organise",
+"ex": "Könnten Sie bitte Frau Weber etwas ausrichten?",
+"exEn": "Could you please pass a message on to Ms Weber?",
+"diff": "medium",
+"level": "B2",
+"hint": "jmd. etwas ausrichten = to pass on a message."
+},
+{
+"de": "festhalten",
+"en": "to record / note down; to hold on",
+"ex": "Lassen Sie uns das Ergebnis schriftlich festhalten.",
+"exEn": "Let's put the result down in writing.",
+"diff": "hard",
+"level": "B2",
+"hint": "festhalten, hielt fest, hat festgehalten."
+},
+{
+"de": "die Rückversicherung",
+"en": "reassurance; double-checking",
+"pl": "die Rückversicherungen",
+"ex": "Zur Rückversicherung rief sie noch einmal im Büro an.",
+"exEn": "To be on the safe side, she called the office again.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verbleiben",
+"en": "to remain (closing of a letter); to be left",
+"ex": "Mit freundlichen Grüßen verbleibe ich Ihre Anna Weber.",
+"exEn": "With kind regards, I remain yours, Anna Weber.",
+"diff": "hard",
+"level": "B2",
+"hint": "verbleiben, verblieb, ist verblieben; common in formal letters."
+},
+{
+"de": "verbunden",
+"en": "connected (with); obliged",
+"ex": "Ich glaube, ich bin falsch verbunden.",
+"exEn": "I think I've got the wrong number.",
+"diff": "medium",
+"level": "B2",
+"hint": "falsch verbunden sein = to have the wrong number."
+},
+{
+"de": "vergewissern",
+"en": "to make sure / ascertain (sich)",
+"ex": "Vergewissern Sie sich, dass die Tür abgeschlossen ist.",
+"exEn": "Make sure that the door is locked.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich vergewissern, dass …"
+},
+{
+"de": "verwählen",
+"en": "to misdial / dial the wrong number (sich)",
+"ex": "Entschuldigung, ich habe mich wohl verwählt.",
+"exEn": "Sorry, I think I dialled the wrong number.",
+"diff": "medium",
+"level": "B2",
+"hint": "sich verwählen = to misdial."
+},
+{
+"de": "die Zusammenfassung",
+"en": "summary",
+"pl": "die Zusammenfassungen",
+"ex": "Am Ende gab er eine kurze Zusammenfassung des Vortrags.",
+"exEn": "At the end he gave a brief summary of the talk.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vortragen",
+"en": "to present / give a talk / recite",
+"ex": "Sie trug ihre Ergebnisse vor dem ganzen Team vor.",
+"exEn": "She presented her results to the whole team.",
+"diff": "hard",
+"level": "B2",
+"hint": "vortragen, trug vor, hat vorgetragen."
+},
+{
+"de": "das Feedback",
+"en": "feedback",
+"pl": "die Feedbacks",
+"ex": "Konstruktives Feedback hilft, sich beruflich zu verbessern.",
+"exEn": "Constructive feedback helps you improve professionally.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Admin & Bureaucracy": [
+{
+"de": "die Landessprache",
+"en": "national / official language",
+"pl": "die Landessprachen",
+"ex": "Die Schweiz hat vier Landessprachen.",
+"exEn": "Switzerland has four national languages.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Parlament",
+"en": "parliament",
+"pl": "die Parlamente",
+"ex": "Im Parlament wurde über das neue Gesetz debattiert.",
+"exEn": "The new law was debated in parliament.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Verwaltungssprache",
+"en": "administrative / official language",
+"pl": "die Verwaltungssprachen",
+"ex": "Deutsch ist hier die offizielle Verwaltungssprache.",
+"exEn": "German is the official administrative language here.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Landesgesetz",
+"en": "state law",
+"pl": "die Landesgesetze",
+"ex": "Das Landesgesetz regelt die Schulpflicht.",
+"exEn": "The state law regulates compulsory schooling.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Verkehrsschild",
+"en": "traffic sign / road sign",
+"pl": "die Verkehrsschilder",
+"ex": "In manchen Regionen sind Verkehrsschilder zweisprachig.",
+"exEn": "In some regions road signs are bilingual.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Chancengleichheit",
+"en": "equal opportunity / equality of opportunity",
+"ex": "Bildung soll Chancengleichheit für alle schaffen.",
+"exEn": "Education should create equal opportunity for everyone.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Migrationshintergrund",
+"en": "migration background / immigrant background",
+"ex": "Ein Drittel der Schüler hat einen Migrationshintergrund.",
+"exEn": "A third of the pupils have a migration background.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Ausländerquote",
+"en": "foreigner ratio / quota of foreigners",
+"pl": "die Ausländerquoten",
+"ex": "In dieser Stadt ist die Ausländerquote besonders hoch.",
+"exEn": "In this city the proportion of foreigners is particularly high.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Diskriminierung",
+"en": "discrimination",
+"pl": "die Diskriminierungen",
+"ex": "Diskriminierung am Arbeitsplatz ist verboten.",
+"exEn": "Discrimination in the workplace is prohibited.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Abstammung",
+"en": "descent / ancestry",
+"pl": "die Abstammungen",
+"ex": "Niemand sollte wegen seiner Abstammung benachteiligt werden.",
+"exEn": "No one should be disadvantaged because of their ancestry.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Öffentlichkeit",
+"en": "the public / public sphere",
+"ex": "Das Thema wurde in der Öffentlichkeit heftig diskutiert.",
+"exEn": "The topic was hotly debated in public.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Privatsphäre",
+"en": "privacy",
+"ex": "Viele empfinden solche Fragen als Eingriff in die Privatsphäre.",
+"exEn": "Many feel such questions are an intrusion into their privacy.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Sprachenpolitik",
+"en": "language policy",
+"ex": "Die europäische Sprachenpolitik fördert die Mehrsprachigkeit.",
+"exEn": "European language policy promotes multilingualism.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Family & People": [
+{
+"de": "die Elite",
+"en": "elite",
+"pl": "die Eliten",
+"ex": "Nur eine kleine Elite spricht diese Sprache fließend.",
+"exEn": "Only a small elite speaks this language fluently.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Migrantenfamilie",
+"en": "immigrant family",
+"pl": "die Migrantenfamilien",
+"ex": "Er wuchs in einer Migrantenfamilie auf.",
+"exEn": "He grew up in an immigrant family.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Migrantenkind",
+"en": "child of immigrants",
+"pl": "die Migrantenkinder",
+"ex": "Viele Migrantenkinder wachsen zweisprachig auf.",
+"exEn": "Many children of immigrants grow up bilingual.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Gegenüber",
+"en": "counterpart / person opposite",
+"ex": "Sprechen Sie ruhig und schauen Sie Ihr Gegenüber an.",
+"exEn": "Speak calmly and look at the person opposite you.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Kleinkind",
+"en": "toddler / small child",
+"pl": "die Kleinkinder",
+"ex": "Schon Kleinkinder verstehen die Mimik ihrer Eltern.",
+"exEn": "Even toddlers understand their parents' facial expressions.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Erziehungsfragen",
+"en": "questions of upbringing / parenting issues",
+"ex": "Über Erziehungsfragen waren sich die Eltern oft uneinig.",
+"exEn": "The parents often disagreed on parenting issues.",
+"diff": "hard",
+"level": "B2",
+"hint": "Usually used in the plural."
+},
+{
+"de": "die Startchance",
+"en": "starting opportunity / chance in life",
+"pl": "die Startchancen",
+"ex": "Mehrsprachigkeit verbessert die Startchancen vieler Kinder.",
+"exEn": "Multilingualism improves many children's chances in life.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Scheinehe",
+"en": "sham marriage / marriage of convenience",
+"pl": "die Scheinehen",
+"ex": "Die Behörden vermuteten eine Scheinehe.",
+"exEn": "The authorities suspected a sham marriage.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Milieu",
+"en": "social milieu / environment",
+"pl": "die Milieus",
+"ex": "Der Film spielt in einem kriminellen Milieu.",
+"exEn": "The film is set in a criminal milieu.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Character & Personality": [
+{
+"de": "abenteuerlich",
+"en": "adventurous / daring",
+"ex": "Seine Reise durch Asien war ziemlich abenteuerlich.",
+"exEn": "His journey through Asia was quite adventurous.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "spontan",
+"en": "spontaneous(ly)",
+"ex": "Sie entschied ganz spontan auszuwandern.",
+"exEn": "She decided quite spontaneously to emigrate.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Freundlichkeit",
+"en": "friendliness / kindness",
+"pl": "die Freundlichkeiten",
+"ex": "Ihre Freundlichkeit erleichterte mir den Anfang.",
+"exEn": "Her friendliness made the beginning easier for me.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "intolerant",
+"en": "intolerant",
+"ex": "Gegenüber anderen Kulturen sollte man nicht intolerant sein.",
+"exEn": "One should not be intolerant towards other cultures.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "gläubig",
+"en": "religious / devout",
+"ex": "Seine Familie ist sehr gläubig.",
+"exEn": "His family is very devout.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "katholisch",
+"en": "Catholic",
+"ex": "Sie wurde katholisch erzogen.",
+"exEn": "She was raised Catholic.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "bürgerlich",
+"en": "middle-class / bourgeois / civil",
+"ex": "Er stammt aus einer bürgerlichen Familie.",
+"exEn": "He comes from a middle-class family.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "begehrt",
+"en": "sought-after / in demand",
+"ex": "Diese Auszeichnung ist bei Regisseuren sehr begehrt.",
+"exEn": "This award is highly sought-after among directors.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Ansehen",
+"en": "reputation / prestige / standing",
+"ex": "Sein Beruf genießt in der Gesellschaft hohes Ansehen.",
+"exEn": "His profession enjoys high standing in society.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "sozial",
+"en": "social",
+"ex": "Sie hat ausgeprägte soziale Kompetenzen.",
+"exEn": "She has strong social skills.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Wahrnehmungsbereich",
+"en": "field of perception",
+"pl": "die Wahrnehmungsbereiche",
+"ex": "Manche Reize liegen außerhalb unseres Wahrnehmungsbereichs.",
+"exEn": "Some stimuli lie outside our field of perception.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "verlässlich",
+"en": "reliable / dependable",
+"ex": "Sie ist eine verlässliche Kollegin, auf die man zählen kann.",
+"exEn": "She is a reliable colleague you can count on.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vernünftig",
+"en": "sensible / reasonable",
+"ex": "Es wäre vernünftig, das Angebot noch einmal zu prüfen.",
+"exEn": "It would be sensible to check the offer once more.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "teamfähig",
+"en": "able to work in a team",
+"ex": "Wir suchen eine teamfähige Person mit Organisationstalent.",
+"exEn": "We are looking for a team player with organisational talent.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "zielorientiert",
+"en": "goal-oriented",
+"ex": "Sie arbeitet sehr zielorientiert und effizient.",
+"exEn": "She works in a very goal-oriented and efficient way.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "seriös",
+"en": "reputable / respectable",
+"ex": "Das ist ein seriöses Unternehmen mit langer Tradition.",
+"exEn": "That is a reputable company with a long tradition.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "verhandlungssicher",
+"en": "fluent / confident in negotiation",
+"ex": "Für die Stelle benötigen Sie verhandlungssicheres Englisch.",
+"exEn": "For the position you need negotiation-level English.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Gerechtigkeitssinn",
+"en": "sense of justice",
+"ex": "Ihr Sinn für Gerechtigkeit ist ausgesprochen groß.",
+"exEn": "Her sense of justice is exceptionally strong.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Benehmen",
+"en": "behaviour / conduct",
+"ex": "Sein höfliches Benehmen kam bei den Gästen gut an.",
+"exEn": "His polite behaviour went down well with the guests.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Hilfsbereitschaft",
+"en": "willingness to help / helpfulness",
+"ex": "Ihre Hilfsbereitschaft wird von allen Kollegen geschätzt.",
+"exEn": "Her willingness to help is appreciated by all colleagues.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Höflichkeit",
+"en": "politeness / courtesy",
+"pl": "die Höflichkeiten",
+"ex": "Höflichkeit kostet nichts und öffnet viele Türen.",
+"exEn": "Politeness costs nothing and opens many doors.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kommunikationsfähigkeit",
+"en": "communication skills",
+"pl": "die Kommunikationsfähigkeiten",
+"ex": "Für diese Stelle ist eine gute Kommunikationsfähigkeit entscheidend.",
+"exEn": "Good communication skills are crucial for this position.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Kritikfähigkeit",
+"en": "ability to handle criticism",
+"pl": "die Kritikfähigkeiten",
+"ex": "Kritikfähigkeit gehört zu den wichtigsten sozialen Kompetenzen.",
+"exEn": "The ability to handle criticism is one of the key social skills.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Offenheit",
+"en": "openness / candour",
+"ex": "Ich schätze die Offenheit, mit der sie ihre Meinung sagt.",
+"exEn": "I appreciate the openness with which she states her opinion.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Wertschätzung",
+"en": "appreciation / esteem",
+"ex": "Gegenseitige Wertschätzung verbessert das Arbeitsklima erheblich.",
+"exEn": "Mutual appreciation considerably improves the working atmosphere.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "anerkennend",
+"en": "appreciative / approving",
+"ex": "Der Chef nickte ihr anerkennend zu.",
+"exEn": "The boss nodded to her approvingly.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "freundschaftlich",
+"en": "friendly / amicable",
+"ex": "Zwischen den Kollegen herrscht ein freundschaftliches Verhältnis.",
+"exEn": "There is a friendly relationship between the colleagues.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "wohlwollend",
+"en": "benevolent / well-meaning",
+"ex": "Sie betrachtete den Vorschlag mit wohlwollendem Interesse.",
+"exEn": "She regarded the proposal with well-meaning interest.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "gleichberechtigt",
+"en": "with equal rights / on equal terms",
+"ex": "Im Team arbeiten alle gleichberechtigt zusammen.",
+"exEn": "In the team everyone works together on equal terms.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "kritikfähig",
+"en": "able to handle criticism",
+"ex": "Ein guter Chef sollte kritikfähig und offen sein.",
+"exEn": "A good boss should be able to take criticism and be open.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "benehmen",
+"en": "to behave (oneself)",
+"ex": "Die Kinder haben sich beim Essen sehr gut benommen.",
+"exEn": "The children behaved very well during dinner.",
+"diff": "medium",
+"level": "B2",
+"hint": "sich benehmen, benahm sich, hat sich benommen."
+}
+],
+"Emotions & Opinions": [
+{
+"de": "gestresst",
+"en": "stressed (out)",
+"ex": "Am Anfang war sie von der neuen Umgebung sehr gestresst.",
+"exEn": "At first she was very stressed by the new surroundings.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "sehnsüchtig",
+"en": "longing / wistful",
+"ex": "Sie blickte sehnsüchtig nach ihrer alten Heimat.",
+"exEn": "She looked longingly towards her old homeland.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "geteilt",
+"en": "divided / of two minds",
+"ex": "Bei diesem Thema bin ich geteilter Meinung.",
+"exEn": "On this topic I'm of two minds.",
+"diff": "hard",
+"level": "B2",
+"hint": "Phrase: geteilter Meinung sein."
+},
+{
+"de": "hilfreich",
+"en": "helpful",
+"ex": "Ihre Tipps waren beim Einleben sehr hilfreich.",
+"exEn": "Her tips were very helpful for settling in.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "nützlich",
+"en": "useful",
+"ex": "Mehrsprachigkeit ist für den Beruf sehr nützlich.",
+"exEn": "Multilingualism is very useful for one's career.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "einig",
+"en": "in agreement / agreed",
+"ex": "In diesem Punkt sind wir uns einig.",
+"exEn": "On this point we're in agreement.",
+"diff": "hard",
+"level": "B2",
+"hint": "sich einig sein in etw."
+},
+{
+"de": "die Emotion",
+"en": "emotion",
+"pl": "die Emotionen",
+"ex": "Bestimmte Wörter wecken starke Emotionen in uns.",
+"exEn": "Certain words awaken strong emotions in us.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Mitleid",
+"en": "compassion / pity",
+"ex": "Sie empfand tiefes Mitleid mit den Flüchtlingen.",
+"exEn": "She felt deep compassion for the refugees.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Kritik",
+"en": "criticism / critique (Kritik austeilen/einstecken)",
+"pl": "die Kritiken",
+"ex": "Er kann Kritik nur schwer einstecken.",
+"exEn": "He finds it hard to take criticism.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "austeilen",
+"en": "to dish out / deal out (Kritik austeilen)",
+"ex": "Im Streit teilte er heftige Kritik aus.",
+"exEn": "In the argument he dished out harsh criticism.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "einstecken",
+"en": "to take / put up with (Kritik einstecken)",
+"ex": "Als Chef muss man auch Kritik einstecken können.",
+"exEn": "As a boss you also have to be able to take criticism.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "blamieren",
+"en": "to embarrass (sich blamieren = to make a fool of oneself)",
+"ex": "Er hat sich vor allen Kollegen blamiert.",
+"exEn": "He made a fool of himself in front of all his colleagues.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "überfordern",
+"en": "to overwhelm / overtax",
+"ex": "Zwei Sprachen gleichzeitig überfordern manche Kinder.",
+"exEn": "Two languages at once overwhelm some children.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "unterfordern",
+"en": "to under-challenge / not challenge enough",
+"ex": "Im Unterricht fühlte sich das begabte Kind unterfordert.",
+"exEn": "In class the gifted child felt under-challenged.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hitzig",
+"en": "heated / hot-tempered",
+"ex": "Die Diskussion wurde schnell ziemlich hitzig.",
+"exEn": "The discussion quickly became quite heated.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "destruktiv",
+"en": "destructive",
+"ex": "Seine Kritik war eher destruktiv als hilfreich.",
+"exEn": "His criticism was destructive rather than helpful.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "konstruktiv",
+"en": "constructive",
+"ex": "Wir suchen eine konstruktive Lösung für den Konflikt.",
+"exEn": "We are looking for a constructive solution to the conflict.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ernst",
+"en": "serious (etwas ernst meinen = to mean it)",
+"ex": "Meinst du das wirklich ernst?",
+"exEn": "Do you really mean that seriously?",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "dreckig",
+"en": "dirty / filthy",
+"ex": "Nach dem Streit ging es ihm richtig dreckig.",
+"exEn": "After the argument he felt really lousy.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "verschuldet",
+"en": "in debt / at fault",
+"ex": "Nach dem Studium war er hoch verschuldet.",
+"exEn": "After his studies he was heavily in debt.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Zufriedenheit",
+"en": "satisfaction / contentment",
+"ex": "Die Zufriedenheit der Mitarbeiter ist uns sehr wichtig.",
+"exEn": "Employee satisfaction is very important to us.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Wichtigkeit",
+"en": "importance",
+"ex": "Niemand bezweifelt die Wichtigkeit guter Kommunikation.",
+"exEn": "Nobody doubts the importance of good communication.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ungeliebt",
+"en": "unpopular / disliked",
+"ex": "Die ungeliebte Aufgabe blieb am Ende an mir hängen.",
+"exEn": "The unpopular task ended up being left to me.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "erhoffen",
+"en": "to hope for",
+"ex": "Von der neuen Stelle erhoffe ich mir mehr Verantwortung.",
+"exEn": "I hope for more responsibility from the new position.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "erregen",
+"en": "to arouse / cause (a stir)",
+"ex": "Mit ihrer Idee erregte sie großes Aufsehen.",
+"exEn": "With her idea she caused quite a stir.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Aufsehen",
+"en": "stir / sensation",
+"ex": "Die Entscheidung erregte in der Branche großes Aufsehen.",
+"exEn": "The decision caused a big stir in the industry.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Nervosität",
+"en": "nervousness",
+"ex": "Trotz aller Nervosität bestand sie die Prüfung souverän.",
+"exEn": "Despite all her nervousness she passed the exam with ease.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "übereinander",
+"en": "about one another / on top of each other",
+"ex": "Die Kollegen redeten schlecht übereinander.",
+"exEn": "The colleagues spoke badly about one another.",
+"diff": "hard",
+"level": "B2",
+"hint": "schlecht übereinander reden = to badmouth each other."
+},
+{
+"de": "anfühlen",
+"en": "to feel (a certain way) (sich)",
+"ex": "Die neue Aufgabe fühlt sich anfangs ungewohnt an.",
+"exEn": "The new task feels unfamiliar at first.",
+"diff": "medium",
+"level": "B2",
+"hint": "sich anfühlen = to feel (to the touch/emotionally)."
+}
+],
+"Colours & Descriptions": [
+{
+"de": "multikulturell",
+"en": "multicultural",
+"ex": "Berlin ist eine sehr multikulturelle Stadt.",
+"exEn": "Berlin is a very multicultural city.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "vielsprachig",
+"en": "multilingual / polyglot",
+"ex": "Die Schweiz ist ein vielsprachiges Land.",
+"exEn": "Switzerland is a multilingual country.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "einheitlich",
+"en": "uniform / standardised",
+"ex": "Es gibt keine einheitliche Regelung dafür.",
+"exEn": "There is no uniform regulation for this.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "farbenfroh",
+"en": "colourful / vibrant",
+"ex": "Das Fest war laut und farbenfroh.",
+"exEn": "The festival was loud and colourful.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "alkoholfrei",
+"en": "non-alcoholic",
+"ex": "Möchten Sie ein alkoholfreies Getränk?",
+"exEn": "Would you like a non-alcoholic drink?",
+"diff": "easy",
+"level": "B2"
+},
+{
+"de": "atypisch",
+"en": "atypical",
+"ex": "Sein Verhalten war atypisch für die Situation.",
+"exEn": "His behaviour was atypical for the situation.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "heimisch",
+"en": "native / local / at home",
+"ex": "Nach einem Jahr fühlte er sich endlich heimisch.",
+"exEn": "After a year he finally felt at home.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "trennbar",
+"en": "separable",
+"ex": "Viele deutsche Verben sind trennbar.",
+"exEn": "Many German verbs are separable.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "zerrissen",
+"en": "torn (apart) / conflicted",
+"ex": "Zwischen zwei Kulturen fühlte er sich innerlich zerrissen.",
+"exEn": "Between two cultures he felt inwardly torn.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "fälschlicherweise",
+"en": "mistakenly / wrongly",
+"ex": "Sie wurde fälschlicherweise für eine Touristin gehalten.",
+"exEn": "She was mistakenly taken for a tourist.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "netterweise",
+"en": "kindly / nicely",
+"ex": "Netterweise half mir ein Nachbar beim Umzug.",
+"exEn": "Kindly, a neighbour helped me with the move.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "sämtlich",
+"en": "all / entire",
+"ex": "Sämtliche Unterlagen müssen übersetzt werden.",
+"exEn": "All the documents have to be translated.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "bilingual",
+"en": "bilingual",
+"ex": "Die Kinder wachsen bilingual auf.",
+"exEn": "The children are growing up bilingually.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "zweisprachig",
+"en": "bilingual / two-language",
+"ex": "Sie besucht eine zweisprachige Schule.",
+"exEn": "She attends a bilingual school.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "einsprachig",
+"en": "monolingual",
+"ex": "In einsprachig aufwachsenden Kindern fehlt dieser Vorteil.",
+"exEn": "Children growing up monolingually lack this advantage.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "monolingual",
+"en": "monolingual",
+"ex": "Die Studie verglich monolinguale und bilinguale Kinder.",
+"exEn": "The study compared monolingual and bilingual children.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "fehlerlos",
+"en": "flawless / error-free",
+"ex": "Sie sprach das Gedicht völlig fehlerlos auf.",
+"exEn": "She recited the poem completely flawlessly.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "schmerzlos",
+"en": "painless",
+"ex": "Der Abschied verlief schneller und schmerzloser als erwartet.",
+"exEn": "The farewell went quicker and more painlessly than expected.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "kinderleicht",
+"en": "dead easy / child's play",
+"ex": "Für sie war die Übung kinderleicht.",
+"exEn": "For her the exercise was child's play.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "hektisch",
+"en": "hectic / frantic",
+"ex": "Im Großraumbüro herrschte eine hektische Stimmung.",
+"exEn": "A hectic atmosphere prevailed in the open-plan office.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "platt",
+"en": "flat / (colloq.) flabbergasted",
+"ex": "Nach der Nachricht war ich völlig platt.",
+"exEn": "After the news I was completely flabbergasted.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Around the House": [
+{
+"de": "das Alltagsprodukt",
+"en": "everyday product",
+"pl": "die Alltagsprodukte",
+"ex": "Auf Alltagsprodukten steht der Text oft mehrsprachig.",
+"exEn": "On everyday products the text is often multilingual.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Feuerholz",
+"en": "firewood",
+"ex": "Im Winter sammelten sie Feuerholz im Wald.",
+"exEn": "In winter they gathered firewood in the forest.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Gemüsegeschäft",
+"en": "greengrocer's / vegetable shop",
+"pl": "die Gemüsegeschäfte",
+"ex": "An der Ecke gibt es ein kleines Gemüsegeschäft.",
+"exEn": "There's a small greengrocer's on the corner.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Nagel",
+"en": "nail",
+"pl": "die Nägel",
+"ex": "Den Beruf an den Nagel zu hängen war keine leichte Entscheidung.",
+"exEn": "Giving up the profession was not an easy decision.",
+"diff": "medium",
+"level": "B2",
+"hint": "\"etwas an den Nagel hängen\" = to give something up / quit"
+},
+{
+"de": "die Innenarchitektur",
+"en": "interior design / interior architecture",
+"pl": "die Innenarchitekturen",
+"ex": "Sie hat Innenarchitektur studiert und gestaltet Büros.",
+"exEn": "She studied interior design and designs offices.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Design",
+"en": "design",
+"pl": "die Designs",
+"ex": "Das moderne Design des Stuhls gefällt mir sehr.",
+"exEn": "I really like the modern design of the chair.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Handbewegung",
+"en": "hand gesture / hand movement",
+"pl": "die Handbewegungen",
+"ex": "Mit einer kurzen Handbewegung begrüßte er die Gäste.",
+"exEn": "With a brief hand gesture he greeted the guests.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "restaurieren",
+"en": "to restore (a building, object)",
+"ex": "Die alten Möbel wurden aufwendig restauriert.",
+"exEn": "The old furniture was elaborately restored.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "umgestalten",
+"en": "to redesign / to remodel",
+"ex": "Wir wollen das Wohnzimmer komplett umgestalten.",
+"exEn": "We want to completely redesign the living room.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Weather & Nature": [
+{
+"de": "die Wüste",
+"en": "desert",
+"pl": "die Wüsten",
+"ex": "Die Karawane zog langsam durch die Wüste.",
+"exEn": "The caravan moved slowly through the desert.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Horizont",
+"en": "horizon",
+"pl": "die Horizonte",
+"ex": "Reisen hilft, den eigenen Horizont zu erweitern.",
+"exEn": "Travelling helps to broaden one's own horizons.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "blitzen",
+"en": "to flash with lightning",
+"ex": "Draußen blitzte und donnerte es heftig.",
+"exEn": "Outside it was flashing with lightning and thundering heavily.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "donnern",
+"en": "to thunder",
+"ex": "Es begann zu donnern, bevor der Regen einsetzte.",
+"exEn": "It began to thunder before the rain set in.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "gewittern",
+"en": "to storm (with thunder and lightning)",
+"ex": "Am Nachmittag hat es heftig gewittert.",
+"exEn": "In the afternoon there was a heavy thunderstorm.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "nieseln",
+"en": "to drizzle",
+"ex": "Den ganzen Morgen hat es leicht genieselt.",
+"exEn": "It drizzled lightly all morning.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "stürmen",
+"en": "to storm (be stormy)",
+"ex": "Draußen stürmt es, also bleiben wir zu Hause.",
+"exEn": "It's stormy outside, so we're staying home.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Sonnenfinsternis",
+"en": "solar eclipse",
+"ex": "Viele Menschen beobachteten die seltene Sonnenfinsternis.",
+"exEn": "Many people watched the rare solar eclipse.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Diamant",
+"en": "diamond",
+"pl": "die Diamanten",
+"ex": "Der Ring war mit einem funkelnden Diamanten besetzt.",
+"exEn": "The ring was set with a sparkling diamond.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Gebirge",
+"en": "mountain range / mountains",
+"pl": "die Gebirge",
+"ex": "Im Sommer wandern wir gern im Gebirge.",
+"exEn": "In summer we like to hike in the mountains.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Travel & Directions": [
+{
+"de": "das Abteil",
+"en": "compartment (train)",
+"pl": "die Abteile",
+"ex": "Wir suchten ein freies Abteil im Zug.",
+"exEn": "We looked for an empty compartment on the train.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Sprachgebiet",
+"en": "language area / linguistic region",
+"pl": "die Sprachgebiete",
+"ex": "Das deutsche Sprachgebiet umfasst mehrere Länder.",
+"exEn": "The German-speaking area covers several countries.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Sprachregion",
+"en": "language region",
+"pl": "die Sprachregionen",
+"ex": "Die Schweiz besteht aus mehreren Sprachregionen.",
+"exEn": "Switzerland consists of several language regions.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Kiez",
+"en": "neighbourhood / local quarter",
+"pl": "die Kieze",
+"ex": "In seinem Kiez kennt ihn jeder.",
+"exEn": "In his neighbourhood everyone knows him.",
+"diff": "hard",
+"level": "B2",
+"hint": "Typical of Berlin/Hamburg usage."
+}
+],
+"Connectors & Structure": [
+{
+"de": "der Wandel",
+"en": "change / transformation",
+"ex": "Die Gesellschaft befindet sich im stetigen Wandel.",
+"exEn": "Society is in constant change.",
+"diff": "hard",
+"level": "B2",
+"hint": "Usually no plural."
+},
+{
+"de": "die Sprachenvielfalt",
+"en": "linguistic diversity",
+"ex": "Die Sprachenvielfalt Europas ist beeindruckend.",
+"exEn": "The linguistic diversity of Europe is impressive.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Vielsprachigkeit",
+"en": "multilingualism",
+"ex": "Die Vielsprachigkeit des Landes gilt als Vorteil.",
+"exEn": "The country's multilingualism is seen as an advantage.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Mehrsprachigkeit",
+"en": "multilingualism / plurilingualism",
+"ex": "Mehrsprachigkeit fördert das Verständnis zwischen Kulturen.",
+"exEn": "Multilingualism promotes understanding between cultures.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "abgesehen",
+"en": "apart from (abgesehen von + D.)",
+"ex": "Abgesehen von einem Tippfehler war der Text fehlerlos.",
+"exEn": "Apart from one typo the text was flawless.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Denksportaufgabe",
+"en": "brain teaser / puzzle",
+"pl": "die Denksportaufgaben",
+"ex": "Zum Aufwärmen löste die Gruppe eine knifflige Denksportaufgabe.",
+"exEn": "As a warm-up the group solved a tricky brain teaser.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "angewiesen",
+"en": "dependent / reliant (on)",
+"ex": "Im Studium ist man oft auf gute Tipps angewiesen.",
+"exEn": "During your studies you are often reliant on good tips.",
+"diff": "hard",
+"level": "B2",
+"hint": "auf etw./jmd. angewiesen sein = to be dependent on."
+}
+],
+"Body & Health": [
+{
+"de": "das Lächeln",
+"en": "smile",
+"ex": "Ein freundliches Lächeln öffnet viele Türen.",
+"exEn": "A friendly smile opens many doors.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Zöpfchen",
+"en": "little plait / small braid",
+"pl": "die Zöpfchen",
+"ex": "Das Mädchen trug viele bunte Zöpfchen.",
+"exEn": "The girl wore many colourful little plaits.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ausstrecken",
+"en": "to stretch out / extend (a limb)",
+"ex": "Er streckte mir freundlich die Hand aus.",
+"exEn": "He kindly extended his hand to me.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Geruchssinn",
+"en": "sense of smell",
+"ex": "Ein guter Geruchssinn ist für Parfümeure unverzichtbar.",
+"exEn": "A good sense of smell is indispensable for perfumers.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Hautcreme",
+"en": "skin cream",
+"pl": "die Hautcremes",
+"ex": "Im Winter benutze ich eine reichhaltige Hautcreme.",
+"exEn": "In winter I use a rich skin cream.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Shampoo",
+"en": "shampoo",
+"pl": "die Shampoos",
+"ex": "Dieses Shampoo ist gut für trockenes Haar.",
+"exEn": "This shampoo is good for dry hair.",
+"diff": "easy",
+"level": "B1"
+},
+{
+"de": "die Arztpraxis",
+"en": "doctor's surgery / medical practice",
+"pl": "die Arztpraxen",
+"ex": "Die Arztpraxis ist montags geschlossen.",
+"exEn": "The doctor's surgery is closed on Mondays.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "spüren",
+"en": "to feel / to sense",
+"ex": "Ich spüre eine große Verantwortung in diesem Job.",
+"exEn": "I feel a great responsibility in this job.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "überlastet",
+"en": "overworked / overloaded",
+"ex": "Viele Mitarbeiter fühlen sich völlig überlastet.",
+"exEn": "Many employees feel completely overworked.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Fingerspitzengefühl",
+"en": "tact / sensitivity / instinctive feel",
+"ex": "Für diese Verhandlung braucht man viel Fingerspitzengefühl.",
+"exEn": "This negotiation requires a lot of tact.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Geschick",
+"en": "skill / dexterity / knack",
+"pl": "die Geschicke",
+"ex": "Für diese Arbeit braucht man handwerkliches Geschick.",
+"exEn": "This work requires manual skill.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Genauigkeit",
+"en": "precision / accuracy",
+"ex": "Bei dieser Aufgabe kommt es auf Genauigkeit an.",
+"exEn": "This task depends on precision.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Sport & Leisure": [
+{
+"de": "das Platzproblem",
+"en": "space problem / lack of space",
+"pl": "die Platzprobleme",
+"ex": "In der kleinen Wohnung hatten wir ein echtes Platzproblem.",
+"exEn": "In the small flat we had a real space problem.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Cello",
+"en": "cello",
+"pl": "die Celli",
+"ex": "Sie spielt seit ihrer Kindheit Cello.",
+"exEn": "She has played the cello since childhood.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Tagebuch",
+"en": "diary",
+"pl": "die Tagebücher",
+"ex": "Jeden Abend schreibt er in sein Tagebuch.",
+"exEn": "Every evening he writes in his diary.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Lifestyle",
+"en": "lifestyle",
+"pl": "die Lifestyles",
+"ex": "Viele junge Leute streben einen aktiven Lifestyle an.",
+"exEn": "Many young people aspire to an active lifestyle.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Strandurlaub",
+"en": "beach holiday",
+"pl": "die Strandurlaube",
+"ex": "Nach dem stressigen Jahr brauche ich einen Strandurlaub.",
+"exEn": "After the stressful year I need a beach holiday.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Walzer",
+"en": "waltz",
+"ex": "Auf dem Ball tanzten sie einen langsamen Walzer.",
+"exEn": "At the ball they danced a slow waltz.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Zugabe",
+"en": "encore",
+"pl": "die Zugaben",
+"ex": "Das Publikum forderte lautstark eine Zugabe.",
+"exEn": "The audience loudly demanded an encore.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Probe",
+"en": "rehearsal / sample / test",
+"pl": "die Proben",
+"ex": "Vor dem Konzert hatten wir eine letzte Probe.",
+"exEn": "Before the concert we had a final rehearsal.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Probenraum",
+"en": "rehearsal room",
+"pl": "die Probenräume",
+"ex": "Die Band trifft sich abends im Probenraum.",
+"exEn": "The band meets in the rehearsal room in the evenings.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "rudern",
+"en": "to row",
+"ex": "Am Wochenende rudern wir gern auf dem See.",
+"exEn": "On weekends we like to row on the lake.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "umrunden",
+"en": "to circle / go around",
+"ex": "Die Läufer umrunden den See in einer Stunde.",
+"exEn": "The runners circle the lake in an hour.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Wette",
+"en": "bet / wager",
+"pl": "die Wetten",
+"ex": "Die Kinder liefen um die Wette zum Spielplatz.",
+"exEn": "The children raced each other to the playground.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "verwöhnen",
+"en": "to spoil / pamper",
+"ex": "Beim Teamevent wurden wir mit gutem Essen verwöhnt.",
+"exEn": "At the team event we were pampered with good food.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Freizeitkleidung",
+"en": "casual wear / leisure clothing",
+"ex": "Zum Betriebsausflug genügt bequeme Freizeitkleidung.",
+"exEn": "Comfortable casual wear is enough for the company outing.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Atmosphäre",
+"en": "atmosphere",
+"pl": "die Atmosphären",
+"ex": "Im Büro herrscht eine angenehme, lockere Atmosphäre.",
+"exEn": "There is a pleasant, relaxed atmosphere in the office.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Bundespolizei",
+"en": "federal police",
+"ex": "Manche Spitzensportler sind bei der Bundespolizei angestellt.",
+"exEn": "Some top athletes are employed by the federal police.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Jugendbereich",
+"en": "youth section / youth division",
+"pl": "die Jugendbereiche",
+"ex": "Im Jugendbereich des Vereins trainieren viele Talente.",
+"exEn": "Many talents train in the club's youth section.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Kader",
+"en": "squad / team roster",
+"pl": "die Kader",
+"ex": "Der Trainer nominierte sie für den nationalen Kader.",
+"exEn": "The coach nominated her for the national squad.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Kartrennen",
+"en": "go-kart race",
+"pl": "die Kartrennen",
+"ex": "Am Wochenende nahm er an einem Kartrennen teil.",
+"exEn": "At the weekend he took part in a go-kart race.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Kunstturnen",
+"en": "artistic gymnastics",
+"ex": "Sie trainiert seit ihrer Kindheit Kunstturnen.",
+"exEn": "She has trained in artistic gymnastics since childhood.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Monoski",
+"en": "mono-ski / sit-ski",
+"pl": "die Monoskis",
+"ex": "Beim Behindertensport fährt sie mit dem Monoski.",
+"exEn": "In disabled sports she skis with a mono-ski.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Nationalmannschaft",
+"en": "national team",
+"pl": "die Nationalmannschaften",
+"ex": "Mit 18 spielte er bereits in der Nationalmannschaft.",
+"exEn": "At 18 he was already playing in the national team.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Opinions & Argument": [
+{
+"de": "die Verhandlung",
+"en": "negotiation",
+"pl": "die Verhandlungen",
+"ex": "Eine Verhandlung erfordert Geduld und Kompromissbereitschaft.",
+"exEn": "A negotiation requires patience and a willingness to compromise.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Konsens",
+"en": "consensus",
+"ex": "Nach langer Debatte fanden sie endlich einen Konsens.",
+"exEn": "After a long debate they finally found a consensus.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Vorwurf",
+"en": "accusation / reproach",
+"pl": "die Vorwürfe",
+"ex": "Sie machte ihm heftige Vorwürfe.",
+"exEn": "She made serious accusations against him.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Unstimmigkeit",
+"en": "disagreement / discrepancy",
+"pl": "die Unstimmigkeiten",
+"ex": "Zwischen den Partnern gab es einige Unstimmigkeiten.",
+"exEn": "There were some disagreements between the partners.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Konfliktlösung",
+"en": "conflict resolution",
+"pl": "die Konfliktlösungen",
+"ex": "Eine friedliche Konfliktlösung war beiden Seiten wichtig.",
+"exEn": "A peaceful conflict resolution was important to both sides.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Problemlösung",
+"en": "problem-solving / solution",
+"pl": "die Problemlösungen",
+"ex": "Gemeinsam suchten sie nach einer Problemlösung.",
+"exEn": "Together they searched for a solution to the problem.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "auffordern",
+"en": "to call upon / urge (zu + D.)",
+"ex": "Der Lehrer forderte die Schüler zum Mitmachen auf.",
+"exEn": "The teacher called upon the students to join in.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "auslösen",
+"en": "to trigger / set off (einen Streit auslösen)",
+"ex": "Eine harmlose Bemerkung löste einen heftigen Streit aus.",
+"exEn": "A harmless remark triggered a fierce argument.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "werben",
+"en": "to advertise / campaign (für + A.)",
+"ex": "Die Partei wirbt für mehr Sprachenförderung.",
+"exEn": "The party is campaigning for more language support.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "hinhören",
+"en": "to listen carefully",
+"ex": "Wenn man genau hinhört, erkennt man den Dialekt.",
+"exEn": "If you listen carefully, you recognise the dialect.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Druck",
+"en": "pressure (unter Druck stehen)",
+"ex": "Im Job stand sie ständig unter großem Druck.",
+"exEn": "At work she was constantly under great pressure.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Everyday Actions": [
+{
+"de": "der Stopp",
+"en": "stop / halt",
+"pl": "die Stopps",
+"ex": "Der Trainer rief einen kurzen Stopp aus.",
+"exEn": "The coach called a short stop.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Schranke",
+"en": "barrier / bounds (jmdn. in die Schranken weisen)",
+"pl": "die Schranken",
+"ex": "Man musste den frechen Schüler in die Schranken weisen.",
+"exEn": "The cheeky pupil had to be put in his place.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "herumschlagen",
+"en": "to struggle / grapple with (sich herumschlagen mit + D.)",
+"ex": "Sie schlug sich täglich mit bürokratischen Hürden herum.",
+"exEn": "She grappled with bureaucratic hurdles every day.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "schwerfallen",
+"en": "to be difficult (for someone)",
+"ex": "Das Sprechen vor Publikum fällt ihm schwer.",
+"exEn": "Speaking in front of an audience is difficult for him.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "zusammengehören",
+"en": "to belong together",
+"ex": "Diese beiden Begriffe gehören eng zusammen.",
+"exEn": "These two terms belong closely together.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "draufhauen",
+"en": "to bash / hit out",
+"ex": "Statt zu reden, wollte er nur draufhauen.",
+"exEn": "Instead of talking, he just wanted to lash out.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "brillieren",
+"en": "to shine / excel (mit + D.)",
+"ex": "Sie brillierte mit ihrem fehlerlosen Vortrag.",
+"exEn": "She shone with her flawless presentation.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Türenknallen",
+"en": "slamming of doors",
+"ex": "Das laute Türenknallen verriet seinen Ärger.",
+"exEn": "The loud slamming of doors gave away his anger.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Cooking & Kitchen": [
+{
+"de": "kreieren",
+"en": "to create (a dish, design)",
+"ex": "Der Koch kreiert jede Woche ein neues Gericht.",
+"exEn": "The chef creates a new dish every week.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Rezeptur",
+"en": "formula / recipe (technical)",
+"pl": "die Rezepturen",
+"ex": "Die genaue Rezeptur der Creme bleibt geheim.",
+"exEn": "The exact formula of the cream remains secret.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "dekorieren",
+"en": "to decorate",
+"ex": "Sie dekoriert das Schaufenster jeden Monat neu.",
+"exEn": "She decorates the shop window anew every month.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Housing & Renting": [
+{
+"de": "die Privatwohnung",
+"en": "private apartment",
+"pl": "die Privatwohnungen",
+"ex": "Er empfängt seine Kunden in seiner Privatwohnung.",
+"exEn": "He receives his clients in his private apartment.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Banking & Finance": [
+{
+"de": "die Finanzkrise",
+"en": "financial crisis",
+"pl": "die Finanzkrisen",
+"ex": "Während der Finanzkrise verloren viele ihren Job.",
+"exEn": "During the financial crisis many lost their jobs.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Onlinebanking",
+"en": "online banking",
+"ex": "Dank Onlinebanking erledige ich meine Überweisungen von zu Hause.",
+"exEn": "Thanks to online banking, I do my transfers from home.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Kontodaten",
+"en": "account details",
+"ex": "Geben Sie Ihre Kontodaten niemals an Fremde weiter.",
+"exEn": "Never give your account details to strangers.",
+"diff": "hard",
+"level": "B2",
+"hint": "Plural only (die Kontodaten)."
+},
+{
+"de": "der Kreditkartenbetrug",
+"en": "credit card fraud",
+"ex": "Die Bank warnt regelmäßig vor Kreditkartenbetrug im Internet.",
+"exEn": "The bank regularly warns about credit card fraud online.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Kundenkonto",
+"en": "customer account",
+"pl": "die Kundenkonten",
+"ex": "Sie hat ein Kundenkonto bei dem Onlineshop angelegt.",
+"exEn": "She set up a customer account with the online shop.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "sperren",
+"en": "to block / freeze (an account)",
+"ex": "Nach dem Diebstahl ließ er sein Konto sofort sperren.",
+"exEn": "After the theft he had his account blocked immediately.",
+"diff": "medium",
+"level": "B2",
+"hint": "das Konto sperren = to block the account."
+}
+],
+"Engineering Workplace": [
+{
+"de": "die Säge",
+"en": "saw",
+"pl": "die Sägen",
+"ex": "Mit der Säge schneidet er das Brett auf Maß.",
+"exEn": "With the saw he cuts the board to size.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Garn",
+"en": "yarn / thread",
+"pl": "die Garne",
+"ex": "Das Garn für die Taschen stammt aus Biobaumwolle.",
+"exEn": "The yarn for the bags comes from organic cotton.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Biobaumwolltasche",
+"en": "organic cotton bag",
+"pl": "die Biobaumwolltaschen",
+"ex": "Auf der Messe verteilen wir Biobaumwolltaschen als Werbegeschenk.",
+"exEn": "At the fair we hand out organic cotton bags as promotional gifts.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Technology & Digital": [
+{
+"de": "das Benutzerkonto",
+"en": "user account",
+"pl": "die Benutzerkonten",
+"ex": "Bitte loggen Sie sich in Ihr Benutzerkonto ein.",
+"exEn": "Please log into your user account.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Doppelklick",
+"en": "double-click",
+"pl": "die Doppelklicks",
+"ex": "Mit einem Doppelklick öffnest du die Datei.",
+"exEn": "With a double-click you open the file.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Firewall",
+"en": "firewall",
+"pl": "die Firewalls",
+"ex": "Eine gute Firewall schützt deinen Computer vor Angriffen.",
+"exEn": "A good firewall protects your computer from attacks.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Suchmaschine",
+"en": "search engine",
+"pl": "die Suchmaschinen",
+"ex": "Ich habe das Rezept schnell über eine Suchmaschine gefunden.",
+"exEn": "I quickly found the recipe via a search engine.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Virenschutzprogramm",
+"en": "antivirus program",
+"pl": "die Virenschutzprogramme",
+"ex": "Installiere unbedingt ein aktuelles Virenschutzprogramm.",
+"exEn": "Be sure to install an up-to-date antivirus program.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "die Datensicherheit",
+"en": "data security",
+"ex": "Bei Onlinebanking ist die Datensicherheit besonders wichtig.",
+"exEn": "With online banking, data security is especially important.",
+"diff": "hard",
+"level": "B2"
+}
+],
+"Shopping & Money": [
+{
+"de": "die Ratgebersendung",
+"en": "advice programme / consumer show",
+"pl": "die Ratgebersendungen",
+"ex": "In der Ratgebersendung ging es ums sichere Onlineshopping.",
+"exEn": "The advice programme was about safe online shopping.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Mindestbestellwert",
+"en": "minimum order value",
+"ex": "Die Lieferung ist ab einem Mindestbestellwert von 30 Euro kostenlos.",
+"exEn": "Delivery is free from a minimum order value of 30 euros.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "der Preisvergleich",
+"en": "price comparison",
+"pl": "die Preisvergleiche",
+"ex": "Vor dem Kauf mache ich immer einen Preisvergleich im Netz.",
+"exEn": "Before buying, I always do a price comparison online.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Produktbeschreibung",
+"en": "product description",
+"pl": "die Produktbeschreibungen",
+"ex": "Lies die Produktbeschreibung genau, bevor du bestellst.",
+"exEn": "Read the product description carefully before you order.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Schnelligkeit",
+"en": "speed / quickness",
+"ex": "Die Schnelligkeit der Lieferung hat mich positiv überrascht.",
+"exEn": "The speed of delivery pleasantly surprised me.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Wartezeit",
+"en": "waiting time",
+"pl": "die Wartezeiten",
+"ex": "Die Wartezeit auf das Paket betrug nur zwei Tage.",
+"exEn": "The waiting time for the parcel was only two days.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Zahlungsmöglichkeit",
+"en": "payment option",
+"pl": "die Zahlungsmöglichkeiten",
+"ex": "Der Shop bietet mehrere bequeme Zahlungsmöglichkeiten an.",
+"exEn": "The shop offers several convenient payment options.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "ausverkauft",
+"en": "sold out",
+"ex": "Das beliebte Modell war leider schon ausverkauft.",
+"exEn": "The popular model was unfortunately already sold out.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Ersatz",
+"en": "replacement / substitute",
+"ex": "Als Ersatz für das defekte Gerät schickte die Firma ein neues.",
+"exEn": "As a replacement for the faulty device, the company sent a new one.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Interneteinkauf",
+"en": "internet shopping / online purchase",
+"pl": "die Interneteinkäufe",
+"ex": "Beim Interneteinkauf spare ich oft Zeit und Geld.",
+"exEn": "With internet shopping I often save time and money.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "das Versandrisiko",
+"en": "shipping risk",
+"pl": "die Versandrisiken",
+"ex": "Der Verkäufer trägt beim Versand das Versandrisiko.",
+"exEn": "The seller bears the shipping risk during dispatch.",
+"diff": "hard",
+"level": "B2"
+},
+{
+"de": "das Bestellformular",
+"en": "order form",
+"pl": "die Bestellformulare",
+"ex": "Füllen Sie bitte das Bestellformular vollständig aus.",
+"exEn": "Please fill in the order form completely.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Bestellvorgang",
+"en": "ordering process",
+"pl": "die Bestellvorgänge",
+"ex": "Der Bestellvorgang war einfach und in Minuten erledigt.",
+"exEn": "The ordering process was simple and done in minutes.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "die Geschäftsbedingungen",
+"en": "terms and conditions",
+"ex": "Lesen Sie bitte die Allgemeinen Geschäftsbedingungen aufmerksam.",
+"exEn": "Please read the general terms and conditions carefully.",
+"diff": "hard",
+"level": "B2",
+"hint": "Usually plural; AGB = Allgemeine Geschäftsbedingungen."
+}
+],
+"Numbers & Time": [
+{
+"de": "das Silvester",
+"en": "New Year's Eve",
+"ex": "Silvester feiern wir immer mit Freunden und Feuerwerk.",
+"exEn": "We always celebrate New Year's Eve with friends and fireworks.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Lebensjahr",
+"en": "year of life / year of age",
+"pl": "die Lebensjahre",
+"ex": "Ab dem 18. Lebensjahr ist man in Deutschland volljährig.",
+"exEn": "From the age of 18 you are of legal age in Germany.",
+"diff": "medium",
+"level": "B2"
+}
+],
+"Health & Doctor": [
+{
+"de": "der Blutzucker",
+"en": "blood sugar",
+"ex": "Bei Diabetes muss man den Blutzucker regelmäßig messen.",
+"exEn": "With diabetes you have to measure your blood sugar regularly.",
+"diff": "medium",
+"level": "B2"
+},
+{
+"de": "der Blutzuckerspiegel",
+"en": "blood sugar level",
+"pl": "die Blutzuckerspiegel",
+"ex": "Ein stabiler Blutzuckerspiegel hilft beim Konzentrieren.",
+"exEn": "A stable blood sugar level helps with concentration.",
+"diff": "hard",
+"level": "B2"
+}
+]
+}

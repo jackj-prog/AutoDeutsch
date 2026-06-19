@@ -661,7 +661,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.19.09";
+const APP_VERSION = "2026.06.19.10";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -861,9 +861,9 @@ function playIconTap(svg) {
 // sensible starting shapes (mode · difficulty · length). The full controls stay one tap away
 // under "Advanced". `len` is capped to the topic's available card count at use.
 const SESSION_PRESETS = [
-  { key: "quick",    label: "Quick",    tag: "Recall",  mode: "vocab",      diff: "mixed", level: "all", len: 10, icon: "layers" },
-  { key: "standard", label: "Standard", tag: "Produce", mode: "production", diff: "mixed", level: "all", len: 15, icon: "keyboard" },
-  { key: "deep",     label: "Deep",     tag: "Hard",    mode: "production", diff: "hard",  level: "all", len: 20, icon: "bolt" },
+  { key: "quick",    label: "Quick",    tag: "Recall",  mode: "vocab",      diff: "mixed", len: 10, icon: "layers" },
+  { key: "standard", label: "Standard", tag: "Produce", mode: "production", diff: "mixed", len: 15, icon: "keyboard" },
+  { key: "deep",     label: "Deep",     tag: "Hard",    mode: "production", diff: "hard",  len: 20, icon: "bolt" },
 ];
 
 
@@ -1065,8 +1065,22 @@ function App() {
   const [known, setKnown] = useState(() => new Set());   // vocab words the user marked as known (knownKey)
   // Level focus (all | A1 | A2 | B1 | B2) — a sticky preference, surfaced on home so the
   // learner can aim sessions at their CEFR level (e.g. B2) without digging into the modal.
+  // "auto" (the default) follows the learner's current CEFR level so sessions stay
+  // level-appropriate and advance A1→A2→B1→B2 as each band is mastered — important now
+  // the deck spans A1–B2 (a flat "all" pool would swamp a beginner with B2 words).
   const [setupLevel, setSetupLevel] = useState(() => {
-    try { return localStorage.getItem("ad-level-v1") || "all"; } catch (e) { return "all"; }
+    try {
+      let v = localStorage.getItem("ad-level-v1");
+      // One-time migration: the old default was the flat "all" pool (the selector lived
+      // behind Advanced, so most "all" values are the default, not a deliberate choice).
+      // Convert legacy "all"/unset to "auto" once; explicit bands (A1…B2) are kept.
+      if (!localStorage.getItem("ad-level-mig-v1")) {
+        if (!v || v === "all") v = "auto";
+        localStorage.setItem("ad-level-v1", v);
+        localStorage.setItem("ad-level-mig-v1", "1");
+      }
+      return v || "auto";
+    } catch (e) { return "auto"; }
   });
   const setSessLevel = useCallback((lvl) => { setSetupLevel(lvl); try { localStorage.setItem("ad-level-v1", lvl); } catch (e) {} }, []);
   const [clozeTopic, setClozeTopic] = useState("all");      // grammar cloze focus: all | adjektiv | praeteritum | konjunktiv
@@ -2402,8 +2416,10 @@ function App() {
   // Apply the "known" suppression and the CEFR level filter to a vocab pool. Both degrade
   // gracefully: if the level filter would leave nothing, it's dropped so a session can still
   // start; if every card is marked known, we fall back to the full pool rather than a dead end.
+  // "auto" resolves to the learner's current level; an explicit band wins over it.
+  const resolveLevel = (lvl) => (lvl === "auto" ? (deepStats.currentLevel || "A1") : lvl);
   const filterPool = (pool, levelOverride) => {
-    const lvl = levelOverride || setupLevel;
+    const lvl = resolveLevel(levelOverride || setupLevel);
     const notKnown = pool.filter(c => !known.has(knownKey(c._cat, c.de)));
     const base = notKnown.length ? notKnown : pool;
     if (lvl === "all") return base;
@@ -3628,7 +3644,7 @@ function App() {
                   {SESSION_PRESETS.map(p => {
                     const len = Math.min(p.len, maxC);
                     return (
-                      <button key={p.key} onClick={() => { setSetupMode(p.mode); setSessDiff(p.diff); setSessLevel(p.level); setSessLen(len); startSession(setupCat, p.mode, len, { diff: p.diff, level: p.level }); }}
+                      <button key={p.key} onClick={() => { setSetupMode(p.mode); setSessDiff(p.diff); setSessLen(len); startSession(setupCat, p.mode, len, { diff: p.diff }); }}
                         style={{ display: "grid", justifyItems: "center", gap: 6, padding: "13px 6px 11px", borderRadius: 13, cursor: "pointer", fontFamily: "inherit", background: "linear-gradient(180deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D` }}>
                         <IconBadge name={p.icon} size={30} color={A} bg={`${A}12`} />
                         <span style={{ fontSize: 12.5, fontWeight: 900, color: T }}>{p.label}</span>
@@ -3796,11 +3812,12 @@ function App() {
             {setupIsLibrary && showAdvanced && (
               <div style={{ marginBottom: 16 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, marginBottom: 8 }}>Level</div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
-                  {[["all", "All"], ...LEVELS.map(l => [l, l])].map(([k, l]) => (
-                    <button key={k} onClick={() => setSessLevel(k)} style={{ padding: "9px 4px", borderRadius: 9, fontSize: 12, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 4, padding: 4, background: "#0A0A0A", border: `1px solid ${B}`, borderRadius: 12 }}>
+                  {[["auto", "Auto"], ["all", "All"], ...LEVELS.map(l => [l, l])].map(([k, l]) => (
+                    <button key={k} onClick={() => setSessLevel(k)} style={{ padding: "9px 3px", borderRadius: 9, fontSize: 11.5, fontWeight: 900, cursor: "pointer", background: setupLevel === k ? A : "transparent", color: setupLevel === k ? "#0A0A0A" : TD, border: "none" }}>{l}</button>
                   ))}
                 </div>
+                {setupLevel === "auto" && <div style={{ fontSize: 10.5, color: TD, marginTop: 6 }}>Following your level — currently <span style={{ color: A, fontWeight: 800 }}>{deepStats.currentLevel}</span></div>}
               </div>
             )}
 

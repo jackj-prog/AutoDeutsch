@@ -115,6 +115,7 @@ const V = {
     {de:"der Gruß",en:"greeting",pl:"die Grüße",ex:"Viele Grüße an deine Familie!",exEn:"Best wishes to your family!",diff:"easy",level:"A1"},
     {de:"der Spaß",en:"fun",pl:"die Späße",ex:"Die Reise hat viel Spaß gemacht.",exEn:"The trip was a lot of fun.",diff:"easy",level:"A1"},
     {de:"das Familienfoto",en:"family photo",pl:"die Familienfotos",ex:"An der Wand hängt ein altes Familienfoto.",exEn:"An old family photo hangs on the wall.",diff:"easy",level:"A1"},
+    {de:"das Wiedersehen",en:"goodbye / reunion",ex:"Auf Wiedersehen und bis morgen!",exEn:"Goodbye and see you tomorrow!",diff:"easy",level:"A1",hint:"Usually in 'Auf Wiedersehen' (goodbye)."},
   ],
   "Numbers & Time": [
     {de:"eins",en:"one",ex:"Ich hätte gern eins.",exEn:"I'd like one.",diff:"easy"},
@@ -255,6 +256,7 @@ const V = {
     {de:"nun",en:"now",ex:"Nun müssen wir leider gehen.",exEn:"Now we unfortunately have to go.",diff:"easy",level:"A1"},
     {de:"jährlich",en:"annually / yearly",ex:"Das Fest findet jährlich statt.",exEn:"The festival takes place annually.",diff:"medium",level:"A2"},
     {de:"jeweils",en:"each / in each case",ex:"Die Kurse dauern jeweils zwei Stunden.",exEn:"The courses last two hours each.",diff:"hard",level:"B1"},
+    {de:"einmal",en:"once / one time",ex:"Ich war erst einmal in Berlin.",exEn:"I've only been to Berlin once.",diff:"easy",level:"A1"},
   ],
   "Family & People": [
     {de:"der Mann",en:"man / husband",pl:"die Männer",ex:"Der Mann liest die Zeitung.",exEn:"The man is reading the newspaper.",diff:"easy",level:"A1"},
@@ -1509,6 +1511,7 @@ const V = {
     {de:"herum",en:"around",ex:"Die Kinder rennen um den Tisch herum.",exEn:"The children run around the table.",diff:"medium",level:"A2"},
     {de:"irgendwo",en:"somewhere",ex:"Mein Schlüssel liegt irgendwo hier.",exEn:"My key is somewhere here.",diff:"medium",level:"A2"},
     {de:"daheim",en:"at home",ex:"Am Wochenende bleibe ich gern daheim.",exEn:"At the weekend I like to stay at home.",diff:"medium",level:"A2",hint:"Southern German / Austrian for 'zu Hause'."},
+    {de:"hierher",en:"(to) here / over here",ex:"Komm bitte hierher!",exEn:"Please come over here!",diff:"medium",level:"B1"},
   ],
   "Shopping & Money": [
     {de:"das Geld",en:"money",ex:"Ich habe kein Geld dabei.",exEn:"I don't have any money on me.",diff:"easy",level:"A1"},
@@ -1839,6 +1842,7 @@ const V = {
     {de:"hinfallen",en:"to fall down",ex:"Das Kind ist auf dem Spielplatz hingefallen.",exEn:"The child fell down on the playground.",diff:"easy",level:"A2"},
     {de:"umknicken",en:"to twist (one's ankle)",ex:"Beim Laufen bin ich umgeknickt.",exEn:"I twisted my ankle while running.",diff:"medium",level:"A2"},
     {de:"turnen",en:"to do gymnastics",ex:"Die Kinder turnen in der Halle.",exEn:"The children do gymnastics in the hall.",diff:"medium",level:"A2"},
+    {de:"der Plan",en:"plan",pl:"die Pläne",ex:"Hast du schon einen Plan für das Wochenende?",exEn:"Do you already have a plan for the weekend?",diff:"easy",level:"A1"},
   ],
   "Work & Study": [
     {de:"die Arbeit",en:"work / job",pl:"die Arbeiten",ex:"Ich gehe zur Arbeit.",exEn:"I'm going to work.",diff:"easy",level:"A1"},
@@ -2043,6 +2047,12 @@ const V = {
     {de:"die Hektik",en:"hectic rush / hustle",ex:"Vor dem Termin herrscht große Hektik.",exEn:"Before the appointment there is a big rush.",diff:"hard",level:"A2"},
     {de:"die Kraft",en:"strength / power / force",pl:"die Kräfte",ex:"Ich habe heute keine Kraft mehr.",exEn:"I have no strength left today.",diff:"medium",level:"A2"},
     {de:"die Vorlesung",en:"lecture",pl:"die Vorlesungen",ex:"Die Vorlesung beginnt um neun Uhr.",exEn:"The lecture starts at nine o'clock.",diff:"medium",level:"A2"},
+    {de:"die Erdkunde",en:"geography (school subject)",ex:"In Erdkunde lernen wir über Vulkane.",exEn:"In geography we learn about volcanoes.",diff:"medium",level:"A2"},
+    {de:"die Geschichte",en:"history / story",pl:"die Geschichten",ex:"Geschichte war mein Lieblingsfach.",exEn:"History was my favourite subject.",diff:"easy",level:"A2"},
+    {de:"die Kunst",en:"art",pl:"die Künste",ex:"Sie studiert moderne Kunst.",exEn:"She studies modern art.",diff:"medium",level:"A2"},
+    {de:"die Religion",en:"religion / religious studies",pl:"die Religionen",ex:"Religion ist ein freiwilliges Fach.",exEn:"Religious studies is an optional subject.",diff:"medium",level:"A2"},
+    {de:"die Selbstständige",en:"self-employed person (f.)",pl:"die Selbstständigen",ex:"Als Selbstständige zahlt sie ihre Steuern selbst.",exEn:"As a self-employed person she pays her own taxes.",diff:"hard",level:"B1"},
+    {de:"die Stellenanzeige",en:"job advertisement",pl:"die Stellenanzeigen",ex:"Ich habe die Stellenanzeige in der Zeitung gefunden.",exEn:"I found the job advertisement in the newspaper.",diff:"hard",level:"B1"},
   ],
   "Connectors & Structure": [
     {de:"und",en:"and",ex:"Ich trinke Kaffee und esse Brot.",exEn:"I drink coffee and eat bread.",diff:"easy",level:"A1"},
@@ -2150,6 +2160,9 @@ const V = {
     {de:"weshalb",en:"why / which is why",ex:"Ich weiß nicht, weshalb er nicht kommt.",exEn:"I don't know why he isn't coming.",diff:"hard",level:"B1"},
     {de:"oben",en:"above / at the top",ex:"Das Menü findest du oben auf der Seite.",exEn:"You'll find the menu at the top of the page.",diff:"easy",level:"A2"},
     {de:"indem",en:"by (doing something)",ex:"Wir sparen Strom, indem wir das Licht ausmachen.",exEn:"We save electricity by turning off the light.",diff:"hard",level:"B1",hint:"Subordinating conjunction expressing means/method."},
+    {de:"niemand",en:"nobody / no one",ex:"Niemand war zu Hause.",exEn:"Nobody was at home.",diff:"easy",level:"A2"},
+    {de:"irgendwer",en:"someone / anyone",ex:"Irgendwer muss die Tür aufgemacht haben.",exEn:"Someone must have opened the door.",diff:"hard",level:"B1"},
+    {de:"irgendwelche",en:"any / some (pl.)",ex:"Hast du noch irgendwelche Fragen?",exEn:"Do you have any further questions?",diff:"hard",level:"B1"},
   ],
   "Abstract & Advanced": [
     {de:"die Entwicklung",en:"development",pl:"die Entwicklungen",ex:"Die Entwicklung geht schnell.",exEn:"Development is going fast.",diff:"hard"},
@@ -2291,6 +2304,7 @@ const V = {
     {de:"die Erlaubnis",en:"permission",ex:"Du brauchst die Erlaubnis deiner Eltern.",exEn:"You need your parents' permission.",diff:"medium",level:"B1"},
     {de:"der Gegenstand",en:"object / item",pl:"die Gegenstände",ex:"Welcher Gegenstand gehört dir?",exEn:"Which object belongs to you?",diff:"medium",level:"B1"},
     {de:"der Gegenvorschlag",en:"counterproposal",pl:"die Gegenvorschläge",ex:"Hast du einen besseren Gegenvorschlag?",exEn:"Do you have a better counterproposal?",diff:"hard",level:"B1"},
+    {de:"der Blick",en:"view / glance",pl:"die Blicke",ex:"Vom Balkon hat man einen schönen Blick.",exEn:"From the balcony you have a lovely view.",diff:"medium",level:"A2"},
   ],
   "Media & Communication": [
     {de:"das Fernsehen",en:"television",ex:"Ich schaue Fernsehen am Abend.",exEn:"I watch TV in the evening.",diff:"easy",level:"A1"},
@@ -2658,6 +2672,7 @@ const V = {
     {de:"das Original",en:"original",pl:"die Originale",ex:"Bitte bringen Sie das Original mit.",exEn:"Please bring the original with you.",diff:"medium",level:"B1"},
     {de:"der Laptop",en:"laptop",pl:"die Laptops",ex:"Mein Laptop ist leider sehr langsam.",exEn:"My laptop is unfortunately very slow.",diff:"easy",level:"A2"},
     {de:"die Grafik",en:"graphic / chart",pl:"die Grafiken",ex:"Die Grafik zeigt die Verkaufszahlen.",exEn:"The graphic shows the sales figures.",diff:"medium",level:"A2"},
+    {de:"ausblenden",en:"to hide / fade out",ex:"Du kannst die Menüleiste ausblenden.",exEn:"You can hide the menu bar.",diff:"medium",level:"A2"},
   ],
   "Admin & Bureaucracy": [
     {de:"das Formular",en:"form",pl:"die Formulare",ex:"Füllen Sie bitte das Formular aus.",exEn:"Please fill out the form.",diff:"easy",level:"A1"},
@@ -3276,6 +3291,7 @@ const V = {
     {de:"die Tischdecke",en:"tablecloth",pl:"die Tischdecken",ex:"Sie legt eine weiße Tischdecke auf.",exEn:"She lays out a white tablecloth.",diff:"medium",level:"A2"},
     {de:"die Tischdekoration",en:"table decoration",pl:"die Tischdekorationen",ex:"Die Tischdekoration ist sehr festlich.",exEn:"The table decoration is very festive.",diff:"hard",level:"B1"},
     {de:"die Verpackung",en:"packaging",pl:"die Verpackungen",ex:"Die Verpackung ist aus Papier.",exEn:"The packaging is made of paper.",diff:"medium",level:"A2"},
+    {de:"die Tasse",en:"cup",pl:"die Tassen",ex:"Möchtest du eine Tasse Tee?",exEn:"Would you like a cup of tea?",diff:"easy",level:"A1"},
   ],
   "Idioms & Slang": [
     {de:"Das ist mir egal",en:"I don't mind / I don't care",ex:"Pizza oder Pasta? Das ist mir egal.",exEn:"Pizza or pasta? I don't mind.",diff:"easy",level:"A2"},

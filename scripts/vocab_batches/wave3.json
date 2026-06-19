@@ -1,0 +1,157 @@
+{
+ "Greetings & Basics": [
+  {
+   "de": "das Wiedersehen",
+   "en": "goodbye / reunion",
+   "ex": "Auf Wiedersehen und bis morgen!",
+   "exEn": "Goodbye and see you tomorrow!",
+   "diff": "easy",
+   "level": "A1",
+   "hint": "Usually in 'Auf Wiedersehen' (goodbye)."
+  }
+ ],
+ "Numbers & Time": [
+  {
+   "de": "einmal",
+   "en": "once / one time",
+   "ex": "Ich war erst einmal in Berlin.",
+   "exEn": "I've only been to Berlin once.",
+   "diff": "easy",
+   "level": "A1"
+  }
+ ],
+ "Work & Study": [
+  {
+   "de": "die Erdkunde",
+   "en": "geography (school subject)",
+   "ex": "In Erdkunde lernen wir über Vulkane.",
+   "exEn": "In geography we learn about volcanoes.",
+   "diff": "medium",
+   "level": "A2"
+  },
+  {
+   "de": "die Geschichte",
+   "en": "history / story",
+   "pl": "die Geschichten",
+   "ex": "Geschichte war mein Lieblingsfach.",
+   "exEn": "History was my favourite subject.",
+   "diff": "easy",
+   "level": "A2"
+  },
+  {
+   "de": "die Kunst",
+   "en": "art",
+   "pl": "die Künste",
+   "ex": "Sie studiert moderne Kunst.",
+   "exEn": "She studies modern art.",
+   "diff": "medium",
+   "level": "A2"
+  },
+  {
+   "de": "die Religion",
+   "en": "religion / religious studies",
+   "pl": "die Religionen",
+   "ex": "Religion ist ein freiwilliges Fach.",
+   "exEn": "Religious studies is an optional subject.",
+   "diff": "medium",
+   "level": "A2"
+  },
+  {
+   "de": "die Selbstständige",
+   "en": "self-employed person (f.)",
+   "pl": "die Selbstständigen",
+   "ex": "Als Selbstständige zahlt sie ihre Steuern selbst.",
+   "exEn": "As a self-employed person she pays her own taxes.",
+   "diff": "hard",
+   "level": "B1"
+  },
+  {
+   "de": "die Stellenanzeige",
+   "en": "job advertisement",
+   "pl": "die Stellenanzeigen",
+   "ex": "Ich habe die Stellenanzeige in der Zeitung gefunden.",
+   "exEn": "I found the job advertisement in the newspaper.",
+   "diff": "hard",
+   "level": "B1"
+  }
+ ],
+ "Cooking & Kitchen": [
+  {
+   "de": "die Tasse",
+   "en": "cup",
+   "pl": "die Tassen",
+   "ex": "Möchtest du eine Tasse Tee?",
+   "exEn": "Would you like a cup of tea?",
+   "diff": "easy",
+   "level": "A1"
+  }
+ ],
+ "Everyday Actions": [
+  {
+   "de": "der Plan",
+   "en": "plan",
+   "pl": "die Pläne",
+   "ex": "Hast du schon einen Plan für das Wochenende?",
+   "exEn": "Do you already have a plan for the weekend?",
+   "diff": "easy",
+   "level": "A1"
+  }
+ ],
+ "Travel & Directions": [
+  {
+   "de": "hierher",
+   "en": "(to) here / over here",
+   "ex": "Komm bitte hierher!",
+   "exEn": "Please come over here!",
+   "diff": "medium",
+   "level": "B1"
+  }
+ ],
+ "Technology & Digital": [
+  {
+   "de": "ausblenden",
+   "en": "to hide / fade out",
+   "ex": "Du kannst die Menüleiste ausblenden.",
+   "exEn": "You can hide the menu bar.",
+   "diff": "medium",
+   "level": "A2"
+  }
+ ],
+ "Abstract & Advanced": [
+  {
+   "de": "der Blick",
+   "en": "view / glance",
+   "pl": "die Blicke",
+   "ex": "Vom Balkon hat man einen schönen Blick.",
+   "exEn": "From the balcony you have a lovely view.",
+   "diff": "medium",
+   "level": "A2"
+  }
+ ],
+ "Connectors & Structure": [
+  {
+   "de": "niemand",
+   "en": "nobody / no one",
+   "ex": "Niemand war zu Hause.",
+   "exEn": "Nobody was at home.",
+   "diff": "easy",
+   "level": "A2"
+  },
+  {
+   "de": "irgendwer",
+   "en": "someone / anyone",
+   "ex": "Irgendwer muss die Tür aufgemacht haben.",
+   "exEn": "Someone must have opened the door.",
+   "diff": "hard",
+   "level": "B1"
+  },
+  {
+   "de": "irgendwelche",
+   "en": "any / some (pl.)",
+   "ex": "Hast du noch irgendwelche Fragen?",
+   "exEn": "Do you have any further questions?",
+   "diff": "hard",
+   "level": "B1"
+  }
+ ]
+}

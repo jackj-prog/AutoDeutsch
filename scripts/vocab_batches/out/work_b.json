@@ -196,7 +196,8 @@
     {"de":"beilegen","en":"to enclose / attach","ex":"Ich lege meinen Lebenslauf bei.","exEn":"I am enclosing my CV.","diff":"hard","level":"B1"},
     {"de":"senden","en":"to send","ex":"Ich sende Ihnen die Unterlagen morgen.","exEn":"I will send you the documents tomorrow.","diff":"medium","level":"B1"},
     {"de":"eingehen","en":"to come in / arrive (mail)","ex":"Ihre Bewerbung ist heute eingegangen.","exEn":"Your application arrived today.","diff":"hard","level":"B1"},
-    {"de":"einschreiben","en":"to register / enrol","ex":"Sie hat sich für den Kurs eingeschrieben.","exEn":"She enrolled for the course.","diff":"hard","level":"B1"}
+    {"de":"einschreiben","en":"to register / enrol","ex":"Sie hat sich für den Kurs eingeschrieben.","exEn":"She enrolled for the course.","diff":"hard","level":"B1"},
+    {"de":"die Stellenanzeige","en":"job advertisement","pl":"die Stellenanzeigen","ex":"Ich habe die Stellenanzeige in der Zeitung gelesen.","exEn":"I read the job advertisement in the newspaper.","diff":"medium","level":"B1"}
   ],
   "Media & Communication": [
     {"de":"die Rede","en":"speech","pl":"die Reden","ex":"Der Bürgermeister hielt eine kurze Rede.","exEn":"The mayor gave a short speech.","diff":"medium","level":"A2"},

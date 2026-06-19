@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.9";
+const APP_VERSION = "2026.06.18.10";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4793,12 +4793,17 @@ function App() {
       </div>}
 
       {/* ── DRILL SCREEN (article/cloze/verb) ── */}
-      {screen === "drill" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      {screen === "drill" && card && (() => {
+        // Compose the canvas (fill the card, drop the bottom auto-margin so there's no void)
+        // whenever there's no keyboard to fill the lower half: every answered state, plus the
+        // multiple-choice modes. Typed modes while unanswered stay top-anchored (keyboard space).
+        const composed = answered || mode === "article" || mode === "listening" || (mode === "verb" && !!card.opts);
+        return (<div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
-        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextDrill)} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, minHeight: 160, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextDrill)} style={{ opacity: vis ? 1 : 0, flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: composed ? "center" : "flex-start" }}>
+          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 20px", marginBottom: 16, flex: "0 0 auto", minHeight: 160, maxHeight: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflowX: "hidden", overflowY: "auto" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
             {answeredCorrect && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
             {mode === "article" && <>
@@ -5013,19 +5018,19 @@ function App() {
             </div>
             <button type="button" onClick={revealDrill} style={{ width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
-          <div style={{ marginTop: "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
+          <div style={{ marginTop: composed ? 0 : "auto", paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {answered && <Btn bg={SH} border={`1px solid ${B}`} onClick={nextDrill}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
             {KeyHint({ text: mode === "article" ? "Keys 1–3 to answer · Enter for next" : (mode === "listening" || (mode === "verb" && card.opts)) ? "Keys 1–4 to answer · Enter for next" : "Enter to submit · Enter again for next" })}
           </div>
         </div>
-      </div>}
+      </div>); })()}
 
       {/* ── SENTENCE BUILDER ── */}
       {screen === "sentence" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {Header({ extra: <span style={{ color: A, marginRight: 6 }}>Build</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : BL} />
-        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(sbChecked, sbNext)} style={{ opacity: vis ? 1 : 0, flex: 1, display: "flex", flexDirection: "column" }}>
-          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, position: "relative", overflow: "hidden" }}>
+        <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(sbChecked, sbNext)} style={{ opacity: vis ? 1 : 0, flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, flex: "0 0 auto", maxHeight: "100%", position: "relative", overflowX: "hidden", overflowY: "auto" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: CARD_ACCENT, opacity: 0.7 }} />
             <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12, fontWeight: 700 }}>Build the sentence</div>
             <div style={{ fontSize: 14, color: TD, marginBottom: 16, lineHeight: 1.4 }}>"{card.en}"</div>
@@ -5043,7 +5048,7 @@ function App() {
               {SpeedBadge({ ms: lastElapsed })}{CardStats()}
             </div>}
           </div>
-          <div style={{ marginTop: "auto", paddingTop: 8, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
+          <div style={{ marginTop: 0, paddingTop: 8, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
             {!sbChecked && sbPicked.length > 0 && <Btn bg={BL} color="#0A0A0A" onClick={sbCheck} style={{ fontFamily: FN }}>Check</Btn>}
             {sbChecked && <Btn bg={SH} border={`1px solid ${B}`} onClick={sbNext}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
             {KeyHint({ text: "Enter to check · Enter again for next" })}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autodeutsch-f93f3a7c886d';
+const CACHE_NAME = 'autodeutsch-24ffed0ff56e';
 
 const CORE_ASSETS = [
   './',

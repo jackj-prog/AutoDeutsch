@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.8";
+const APP_VERSION = "2026.06.18.9";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2075,6 +2075,23 @@ function App() {
     });
     return { byMode, total };
   }, [weakCards]);
+
+  // Preview of the user's weakest words (most-missed first), for the Weak-spots deck on
+  // Home — makes the deck tangible ("der Kondensator, die Spannung…") instead of a bare
+  // count. Ranks by miss-count without resolving every key, then resolves only the top few.
+  const weakPreview = useMemo(() => {
+    const ranked = [...weakCards]
+      .map(k => ({ k, n: normalizeEntry(prog[k]) }))
+      .sort((a, b) => (b.n.stats.incorrect || 0) - (a.n.stats.incorrect || 0) || (a.n.srs.box || 0) - (b.n.srs.box || 0));
+    const out = [];
+    for (const { k } of ranked) {
+      const card = resolveKey(k);
+      const de = card && (card.de || card.noun || card.base || card.q || card.verb);
+      if (de) out.push(de);
+      if (out.length >= 6) break;
+    }
+    return out;
+  }, [weakCards, prog]);
 
   // Resolved + grouped "due today" queue (same resolution rules as weak areas)
   const resolvedDue = useMemo(() => {
@@ -3977,15 +3994,16 @@ function App() {
             gold hero action (the one thing an SRS app should pull you back for); Weak/Almost sit
             below as smaller secondary cells. The gold "new session" CTA further down demotes to a
             quiet outline whenever Due is the hero, so there's only ever one gold focal point. */}
-        {reviewQueueItems.length > 0 && (() => {
+        {reviewQueueItems.some(i => i.key !== "weak") && (() => {
           const dueItem = reviewQueueItems.find(item => item.key === "due");
-          const otherItems = reviewQueueItems.filter(item => item.key !== "due");
+          const otherItems = reviewQueueItems.filter(item => item.key !== "due" && item.key !== "weak");
+          const shown = [dueItem, ...otherItems].filter(Boolean);
           return (
             <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 11, paddingTop: 2 }}>
                 <div style={{ fontSize: 11, color: T, fontWeight: 800, letterSpacing: 0.4 }}>Today's work</div>
-                <div style={{ fontSize: 10, color: TD }}>{reviewQueueItems.reduce((sum, item) => sum + item.count, 0)} waiting</div>
+                <div style={{ fontSize: 10, color: TD }}>{shown.reduce((sum, item) => sum + item.count, 0)} waiting</div>
               </div>
               {dueItem && (
                 <button type="button" onClick={dueItem.onClick} title={dueItem.detail}
@@ -4016,6 +4034,32 @@ function App() {
             </div>
           );
         })()}
+
+        {/* Weak spots — a first-class deck of the words that keep slipping. Promoted out of the
+            cramped Today's-work cell so it can show the actual trouble words (tangible + motivating)
+            and a clear drill CTA. Stays secondary to the gold Due hero above. */}
+        {resolvedWeak.total > 0 && (
+          <button type="button" onClick={startWeakReview} aria-label={`Drill ${resolvedWeak.total} weak words`}
+            style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer", fontFamily: "inherit", background: PANEL_GRAD, border: `1px solid ${R}33`, borderRadius: 18, padding: "15px 16px 14px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${R} 0%, ${A} 100%)`, opacity: 0.8 }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 11, paddingTop: 2 }}>
+              <IconBadge name="alert" size={34} color={R} bg={`${R}1A`} />
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "block", fontSize: 11.5, color: T, fontWeight: 800, letterSpacing: 0.3 }}>Weak spots <span style={{ color: R }}>{resolvedWeak.total}</span></span>
+                <span style={{ display: "block", fontSize: 10.5, color: TD, marginTop: 1 }}>Words that keep slipping — pin them down</span>
+              </span>
+              <Icon name="arrowRight" size={18} style={{ color: TD }} />
+            </div>
+            {weakPreview.length > 0 && (
+              <span style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 11 }}>
+                {weakPreview.slice(0, 5).map((w, i) => (
+                  <span key={i} style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 11.5, fontWeight: 700, color: T, background: "#0A0A0A", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "5px 11px" }}>{w}</span>
+                ))}
+                {resolvedWeak.total > 5 && <span style={{ fontSize: 11.5, fontWeight: 700, color: TD, padding: "5px 4px", alignSelf: "center" }}>+{resolvedWeak.total - 5} more</span>}
+              </span>
+            )}
+          </button>
+        )}
 
         {/* Primary actions */}
         <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>

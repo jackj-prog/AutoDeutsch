@@ -1,0 +1,5715 @@
+{
+"Food & Drink": [
+{
+"de": "der Apfelsaft",
+"en": "apple juice",
+"pl": "die Apfelsäfte",
+"ex": "Ich trinke gern Apfelsaft zum Frühstück.",
+"exEn": "I like to drink apple juice for breakfast.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Babynahrung",
+"en": "baby food",
+"ex": "Die Babynahrung steht im Supermarkt ganz hinten.",
+"exEn": "The baby food is right at the back of the supermarket.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Birne",
+"en": "pear",
+"pl": "die Birnen",
+"ex": "Diese Birne ist schön süß.",
+"exEn": "This pear is nice and sweet.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Bistro",
+"en": "bistro / café",
+"pl": "die Bistros",
+"ex": "Wir treffen uns im Bistro um die Ecke.",
+"exEn": "We're meeting at the bistro around the corner.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Blaubeere",
+"en": "blueberry",
+"pl": "die Blaubeeren",
+"ex": "Im Sommer pflücken wir Blaubeeren im Wald.",
+"exEn": "In summer we pick blueberries in the forest.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Bohne",
+"en": "bean",
+"pl": "die Bohnen",
+"ex": "Zum Mittagessen gibt es Reis mit Bohnen.",
+"exEn": "For lunch there is rice with beans.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Cola",
+"en": "cola / coke",
+"pl": "die Colas",
+"ex": "Ich nehme eine Cola, bitte.",
+"exEn": "I'll have a cola, please.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Couscous",
+"en": "couscous",
+"ex": "Couscous ist schnell zubereitet.",
+"exEn": "Couscous is quick to prepare.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Dose",
+"en": "can / tin",
+"pl": "die Dosen",
+"ex": "Ich öffne eine Dose Tomaten.",
+"exEn": "I'm opening a can of tomatoes.",
+"diff": "easy",
+"level": "A1",
+"hint": "a can/tin, not a jar (= das Glas)"
+},
+{
+"de": "die Erbse",
+"en": "pea",
+"pl": "die Erbsen",
+"ex": "Erbsen schmecken mir besser als Bohnen.",
+"exEn": "I like peas better than beans.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "frisch",
+"en": "fresh",
+"ex": "Das Brot ist heute ganz frisch.",
+"exEn": "The bread is completely fresh today.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Getränk",
+"en": "drink / beverage",
+"pl": "die Getränke",
+"ex": "Möchtest du noch ein Getränk?",
+"exEn": "Would you like another drink?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Himbeere",
+"en": "raspberry",
+"pl": "die Himbeeren",
+"ex": "Auf dem Kuchen liegen frische Himbeeren.",
+"exEn": "There are fresh raspberries on the cake.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Keks",
+"en": "biscuit / cookie",
+"pl": "die Kekse",
+"ex": "Magst du einen Keks zum Kaffee?",
+"exEn": "Would you like a biscuit with your coffee?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Kichererbse",
+"en": "chickpea",
+"pl": "die Kichererbsen",
+"ex": "Aus Kichererbsen macht man Hummus.",
+"exEn": "You make hummus from chickpeas.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kirsche",
+"en": "cherry",
+"pl": "die Kirschen",
+"ex": "Im Juni sind die Kirschen reif.",
+"exEn": "The cherries are ripe in June.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Kiwi",
+"en": "kiwi",
+"pl": "die Kiwis",
+"ex": "Eine Kiwi hat viel Vitamin C.",
+"exEn": "A kiwi has a lot of vitamin C.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Lammfleisch",
+"en": "lamb (meat)",
+"ex": "Zu Ostern essen wir oft Lammfleisch.",
+"exEn": "At Easter we often eat lamb.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Lebensmittel",
+"en": "food item / groceries",
+"pl": "die Lebensmittel",
+"ex": "Im Kühlschrank sind keine Lebensmittel mehr.",
+"exEn": "There are no groceries left in the fridge.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Limonade",
+"en": "lemonade / soft drink",
+"pl": "die Limonaden",
+"ex": "An heißen Tagen trinke ich gern Limonade.",
+"exEn": "On hot days I like to drink lemonade.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Mandarine",
+"en": "mandarin (orange)",
+"pl": "die Mandarinen",
+"ex": "Im Winter esse ich viele Mandarinen.",
+"exEn": "In winter I eat a lot of mandarins.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Mango",
+"en": "mango",
+"pl": "die Mangos",
+"ex": "Die Mango ist noch nicht reif.",
+"exEn": "The mango is not ripe yet.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Melone",
+"en": "melon",
+"pl": "die Melonen",
+"ex": "Eine kalte Melone schmeckt im Sommer toll.",
+"exEn": "A cold melon tastes great in summer.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Milchprodukt",
+"en": "dairy product",
+"pl": "die Milchprodukte",
+"ex": "Käse und Joghurt sind Milchprodukte.",
+"exEn": "Cheese and yoghurt are dairy products.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Möhre",
+"en": "carrot",
+"pl": "die Möhren",
+"ex": "Das Kaninchen frisst gern Möhren.",
+"exEn": "The rabbit likes to eat carrots.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Nudel",
+"en": "noodle / pasta",
+"pl": "die Nudeln",
+"ex": "Heute Abend koche ich Nudeln mit Soße.",
+"exEn": "Tonight I'm cooking pasta with sauce.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Obstsalat",
+"en": "fruit salad",
+"pl": "die Obstsalate",
+"ex": "Zum Nachtisch gibt es Obstsalat.",
+"exEn": "For dessert there is fruit salad.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Olivenöl",
+"en": "olive oil",
+"ex": "Ich brate das Gemüse in Olivenöl.",
+"exEn": "I fry the vegetables in olive oil.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Paprika",
+"en": "(bell) pepper",
+"pl": "die Paprikas",
+"ex": "Die rote Paprika ist besonders süß.",
+"exEn": "The red pepper is especially sweet.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Pudding",
+"en": "pudding / custard dessert",
+"pl": "die Puddings",
+"ex": "Als Kind liebte ich Schokoladenpudding.",
+"exEn": "As a child I loved chocolate pudding.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Traube",
+"en": "grape",
+"pl": "die Trauben",
+"ex": "Wir kaufen ein Kilo grüne Trauben.",
+"exEn": "We're buying a kilo of green grapes.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Döner",
+"en": "doner kebab",
+"pl": "die Döner",
+"ex": "Nach der Arbeit hole ich mir einen Döner.",
+"exEn": "After work I grab a doner kebab.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Eiweiß",
+"en": "protein / egg white",
+"ex": "Bohnen enthalten viel Eiweiß.",
+"exEn": "Beans contain a lot of protein.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Getreide",
+"en": "grain / cereal",
+"ex": "Brot wird aus Getreide gemacht.",
+"exEn": "Bread is made from grain.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Hartweizen",
+"en": "durum wheat",
+"ex": "Gute Nudeln macht man aus Hartweizen.",
+"exEn": "Good pasta is made from durum wheat.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Haselnuss",
+"en": "hazelnut",
+"pl": "die Haselnüsse",
+"ex": "Die Schokolade enthält ganze Haselnüsse.",
+"exEn": "The chocolate contains whole hazelnuts.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Hülsenfrucht",
+"en": "legume / pulse",
+"pl": "die Hülsenfrüchte",
+"ex": "Linsen und Erbsen sind Hülsenfrüchte.",
+"exEn": "Lentils and peas are legumes.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Milchzucker",
+"en": "lactose (milk sugar)",
+"ex": "Viele Menschen vertragen keinen Milchzucker.",
+"exEn": "Many people can't tolerate lactose.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Nährstoff",
+"en": "nutrient",
+"pl": "die Nährstoffe",
+"ex": "Gemüse liefert wichtige Nährstoffe.",
+"exEn": "Vegetables provide important nutrients.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Nahrungsmittel",
+"en": "foodstuff",
+"pl": "die Nahrungsmittel",
+"ex": "Salz ist ein sehr altes Nahrungsmittel.",
+"exEn": "Salt is a very old foodstuff.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Nuss",
+"en": "nut",
+"pl": "die Nüsse",
+"ex": "Ich darf keine Nüsse essen.",
+"exEn": "I'm not allowed to eat nuts.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Quark",
+"en": "quark (curd cheese)",
+"ex": "Zum Frühstück esse ich Quark mit Obst.",
+"exEn": "For breakfast I eat quark with fruit.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Zusatzstoff",
+"en": "additive",
+"pl": "die Zusatzstoffe",
+"ex": "Dieses Produkt enthält keine künstlichen Zusatzstoffe.",
+"exEn": "This product contains no artificial additives.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Apfelschorle",
+"en": "apple spritzer",
+"pl": "die Apfelschorlen",
+"ex": "Ich nehme eine Apfelschorle, bitte.",
+"exEn": "I'll have an apple spritzer, please.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Aubergine",
+"en": "aubergine / eggplant",
+"pl": "die Auberginen",
+"ex": "Für die Lasagne brauche ich eine Aubergine.",
+"exEn": "For the lasagne I need an aubergine.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Champignon",
+"en": "mushroom (button mushroom)",
+"pl": "die Champignons",
+"ex": "Auf die Pizza kommen frische Champignons.",
+"exEn": "Fresh mushrooms go on the pizza.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Currywurst",
+"en": "currywurst",
+"pl": "die Currywürste",
+"ex": "Zum Mittag esse ich eine Currywurst mit Pommes.",
+"exEn": "For lunch I'm having a currywurst with fries.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Fast Food",
+"en": "fast food",
+"ex": "Er isst zu oft Fast Food.",
+"exEn": "He eats fast food too often.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Gemüselasagne",
+"en": "vegetable lasagne",
+"pl": "die Gemüselasagnen",
+"ex": "Heute koche ich eine Gemüselasagne.",
+"exEn": "Today I'm cooking a vegetable lasagne.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Gold",
+"en": "gold",
+"ex": "Der Ring ist aus echtem Gold.",
+"exEn": "The ring is made of real gold.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Gulaschsuppe",
+"en": "goulash soup",
+"pl": "die Gulaschsuppen",
+"ex": "Im Winter schmeckt eine heiße Gulaschsuppe.",
+"exEn": "In winter a hot goulash soup tastes good.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Mineralwasser",
+"en": "mineral water",
+"ex": "Möchten Sie stilles oder sprudelndes Mineralwasser?",
+"exEn": "Would you like still or sparkling mineral water?",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Schafskäse",
+"en": "feta / sheep's cheese",
+"ex": "In den Salat kommt etwas Schafskäse.",
+"exEn": "Some feta cheese goes in the salad.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Schnitzel",
+"en": "schnitzel",
+"pl": "die Schnitzel",
+"ex": "Ich hätte gern ein Schnitzel mit Kartoffelsalat.",
+"exEn": "I'd like a schnitzel with potato salad.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Snack",
+"en": "snack",
+"pl": "die Snacks",
+"ex": "Ich brauche einen kleinen Snack für unterwegs.",
+"exEn": "I need a small snack for on the go.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Steak",
+"en": "steak",
+"pl": "die Steaks",
+"ex": "Wie möchten Sie Ihr Steak?",
+"exEn": "How would you like your steak?",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Süßigkeiten",
+"en": "sweets / candy",
+"ex": "Kinder essen gern Süßigkeiten.",
+"exEn": "Children like to eat sweets.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Vanilleeis",
+"en": "vanilla ice cream",
+"ex": "Zum Nachtisch gibt es Vanilleeis.",
+"exEn": "For dessert there is vanilla ice cream.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Zucchini",
+"en": "courgette / zucchini",
+"pl": "die Zucchini",
+"ex": "Ich brate die Zucchini in der Pfanne.",
+"exEn": "I'm frying the courgette in the pan.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Hunger",
+"en": "hunger",
+"ex": "Ich habe großen Hunger.",
+"exEn": "I'm very hungry.",
+"diff": "easy",
+"level": "A1",
+"hint": "'Hunger haben' = to be hungry."
+},
+{
+"de": "süß",
+"en": "sweet",
+"ex": "Der Kuchen ist mir zu süß.",
+"exEn": "The cake is too sweet for me.",
+"diff": "easy",
+"level": "A1"
+}
+],
+"Cooking & Kitchen": [
+{
+"de": "der Becher",
+"en": "cup / beaker / tub",
+"pl": "die Becher",
+"ex": "Sie kauft einen Becher Joghurt.",
+"exEn": "She buys a tub of yoghurt.",
+"diff": "easy",
+"level": "A1",
+"hint": "a cup/beaker/tub, not a generic container"
+},
+{
+"de": "die Packung",
+"en": "pack / packet",
+"pl": "die Packungen",
+"ex": "Wir brauchen noch eine Packung Mehl.",
+"exEn": "We still need a packet of flour.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Kochbuch",
+"en": "cookbook",
+"pl": "die Kochbücher",
+"ex": "In diesem Kochbuch stehen viele einfache Rezepte.",
+"exEn": "There are many simple recipes in this cookbook.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "kulinarisch",
+"en": "culinary",
+"ex": "Die Stadt bietet viele kulinarische Highlights.",
+"exEn": "The city offers many culinary highlights.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Fertiggericht",
+"en": "ready meal",
+"pl": "die Fertiggerichte",
+"ex": "Abends esse ich oft ein Fertiggericht.",
+"exEn": "In the evening I often eat a ready meal.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Tiefkühlpizza",
+"en": "frozen pizza",
+"pl": "die Tiefkühlpizzen",
+"ex": "Im Ofen ist gerade eine Tiefkühlpizza.",
+"exEn": "There's a frozen pizza in the oven right now.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "frittieren",
+"en": "to deep-fry",
+"ex": "Die Pommes muss man in Öl frittieren.",
+"exEn": "You have to deep-fry the fries in oil.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Ofen",
+"en": "oven",
+"pl": "die Öfen",
+"ex": "Der Kuchen ist noch im Ofen.",
+"exEn": "The cake is still in the oven.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Küchengerät",
+"en": "kitchen appliance",
+"pl": "die Küchengeräte",
+"ex": "Der Mixer ist ein praktisches Küchengerät.",
+"exEn": "The blender is a practical kitchen appliance.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Toaster",
+"en": "toaster",
+"pl": "die Toaster",
+"ex": "Das Brot ist im Toaster.",
+"exEn": "The bread is in the toaster.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "zubereiten",
+"en": "to prepare (food)",
+"ex": "Ich bereite das Abendessen zu.",
+"exEn": "I'm preparing dinner.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Behälter",
+"en": "container",
+"pl": "die Behälter",
+"ex": "Den Reis bewahre ich in einem Behälter auf.",
+"exEn": "I keep the rice in a container.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Container",
+"en": "(large) container / skip",
+"pl": "die Container",
+"ex": "Den Müll werfen wir in den Container.",
+"exEn": "We throw the rubbish into the container.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Streichholz",
+"en": "match",
+"pl": "die Streichhölzer",
+"ex": "Mit einem Streichholz zünde ich die Kerze an.",
+"exEn": "I light the candle with a match.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Taschenmesser",
+"en": "pocket knife",
+"pl": "die Taschenmesser",
+"ex": "Auf der Wanderung brauche ich ein Taschenmesser.",
+"exEn": "I need a pocket knife on the hike.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Leine",
+"en": "leash / line",
+"pl": "die Leinen",
+"ex": "Der Hund muss an der Leine bleiben.",
+"exEn": "The dog has to stay on the leash.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Restaurant & Dining Out": [
+{
+"de": "der Gang",
+"en": "course (of a meal)",
+"pl": "die Gänge",
+"ex": "Das Menü hat vier Gänge.",
+"exEn": "The menu has four courses.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Shopping & Money": [
+{
+"de": "der Einkaufszettel",
+"en": "shopping list",
+"pl": "die Einkaufszettel",
+"ex": "Ich habe den Einkaufszettel zu Hause vergessen.",
+"exEn": "I forgot the shopping list at home.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Cent",
+"en": "cent",
+"pl": "die Cent",
+"ex": "Das Brötchen kostet dreißig Cent.",
+"exEn": "The bread roll costs thirty cents.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Verkäuferin",
+"en": "saleswoman / shop assistant",
+"pl": "die Verkäuferinnen",
+"ex": "Die Verkäuferin hilft mir gern.",
+"exEn": "The saleswoman is happy to help me.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Mengenangabe",
+"en": "quantity / amount specification",
+"pl": "die Mengenangaben",
+"ex": "Im Rezept fehlt die Mengenangabe für Zucker.",
+"exEn": "The recipe is missing the amount of sugar.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "bio",
+"en": "organic",
+"ex": "Wir kaufen meistens Bio-Gemüse.",
+"exEn": "We mostly buy organic vegetables.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Bioprodukt",
+"en": "organic product",
+"pl": "die Bioprodukte",
+"ex": "Bioprodukte sind oft etwas teurer.",
+"exEn": "Organic products are often a bit more expensive.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Elektronik",
+"en": "electronics",
+"ex": "Die Elektronik findest du im zweiten Stock.",
+"exEn": "You'll find electronics on the second floor.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Modegeschäft",
+"en": "fashion shop / clothing store",
+"pl": "die Modegeschäfte",
+"ex": "In der Stadt gibt es viele Modegeschäfte.",
+"exEn": "There are many fashion shops in town.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Schaufenster",
+"en": "shop window",
+"pl": "die Schaufenster",
+"ex": "Im Schaufenster steht ein schönes Kleid.",
+"exEn": "There is a beautiful dress in the shop window.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Spielwaren",
+"en": "toys (retail)",
+"ex": "Die Spielwaren sind im Erdgeschoss.",
+"exEn": "The toys are on the ground floor.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "bummeln",
+"en": "to stroll / wander (shopping)",
+"ex": "Am Samstag bummeln wir durch die Stadt.",
+"exEn": "On Saturday we stroll through the town.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Kauf",
+"en": "purchase",
+"pl": "die Käufe",
+"ex": "Vielen Dank für Ihren Kauf.",
+"exEn": "Thank you for your purchase.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Kaufbestätigung",
+"en": "purchase confirmation",
+"pl": "die Kaufbestätigungen",
+"ex": "Sie erhalten die Kaufbestätigung per E-Mail.",
+"exEn": "You will receive the purchase confirmation by email.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Kaufvertrag",
+"en": "sales contract",
+"pl": "die Kaufverträge",
+"ex": "Mit der Bestellung kommt ein Kaufvertrag zustande.",
+"exEn": "A sales contract comes into effect with the order.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Kundenbefragung",
+"en": "customer survey",
+"pl": "die Kundenbefragungen",
+"ex": "Die Firma macht eine Kundenbefragung.",
+"exEn": "The company is conducting a customer survey.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "kundenfreundlich",
+"en": "customer-friendly",
+"ex": "Der Service hier ist sehr kundenfreundlich.",
+"exEn": "The service here is very customer-friendly.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Reklamation",
+"en": "complaint (about goods)",
+"pl": "die Reklamationen",
+"ex": "Ich möchte eine Reklamation aufgeben.",
+"exEn": "I'd like to file a complaint.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Retoure",
+"en": "return (of goods)",
+"pl": "die Retouren",
+"ex": "Die Retoure ist für den Kunden kostenlos.",
+"exEn": "The return is free of charge for the customer.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Retourenschein",
+"en": "return slip / return label",
+"pl": "die Retourenscheine",
+"ex": "Legen Sie den Retourenschein in das Paket.",
+"exEn": "Put the return slip in the parcel.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Rücksendung",
+"en": "return (shipment)",
+"pl": "die Rücksendungen",
+"ex": "Die Rücksendung muss innerhalb von 14 Tagen erfolgen.",
+"exEn": "The return must be made within 14 days.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Ware",
+"en": "goods / merchandise",
+"pl": "die Waren",
+"ex": "Die Ware ist gut verpackt angekommen.",
+"exEn": "The goods arrived well packaged.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Warenkorb",
+"en": "shopping cart / basket",
+"pl": "die Warenkörbe",
+"ex": "Legen Sie den Artikel in den Warenkorb.",
+"exEn": "Put the item in the shopping cart.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "unverbindlich",
+"en": "non-binding / without obligation",
+"ex": "Das Angebot ist völlig unverbindlich.",
+"exEn": "The offer is completely non-binding.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "erhältlich",
+"en": "available (for purchase)",
+"ex": "Das Buch ist in jeder Buchhandlung erhältlich.",
+"exEn": "The book is available in every bookshop.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zurücktreten",
+"en": "to withdraw (from a contract)",
+"ex": "Sie können vom Kaufvertrag zurücktreten.",
+"exEn": "You can withdraw from the sales contract.",
+"diff": "hard",
+"level": "B1",
+"hint": "also 'to step back' / 'to resign'"
+},
+{
+"de": "berechnen",
+"en": "to calculate / charge",
+"ex": "Die Bank berechnet keine Gebühren.",
+"exEn": "The bank does not charge any fees.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Rechnungsbetrag",
+"en": "invoice amount",
+"pl": "die Rechnungsbeträge",
+"ex": "Der Rechnungsbetrag ist noch offen.",
+"exEn": "The invoice amount is still outstanding.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Rechnungsnummer",
+"en": "invoice number",
+"pl": "die Rechnungsnummern",
+"ex": "Bitte geben Sie die Rechnungsnummer an.",
+"exEn": "Please state the invoice number.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Bestellnummer",
+"en": "order number",
+"pl": "die Bestellnummern",
+"ex": "Notieren Sie bitte Ihre Bestellnummer.",
+"exEn": "Please note down your order number.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "reich",
+"en": "rich",
+"ex": "Seine Familie ist sehr reich.",
+"exEn": "His family is very rich.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "monatlich",
+"en": "monthly",
+"ex": "Die Miete zahle ich monatlich.",
+"exEn": "I pay the rent monthly.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Menge",
+"en": "amount / quantity",
+"pl": "die Mengen",
+"ex": "Er hat eine große Menge Geld gespart.",
+"exEn": "He has saved a large amount of money.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Metzger",
+"en": "butcher",
+"pl": "die Metzger",
+"ex": "Beim Metzger kaufe ich frisches Fleisch.",
+"exEn": "I buy fresh meat at the butcher's.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Wochenmarkt",
+"en": "weekly market",
+"pl": "die Wochenmärkte",
+"ex": "Auf dem Wochenmarkt gibt es frisches Gemüse.",
+"exEn": "There is fresh vegetables at the weekly market.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Katalog",
+"en": "catalogue",
+"pl": "die Kataloge",
+"ex": "Ich bestelle die Schuhe aus dem Katalog.",
+"exEn": "I order the shoes from the catalogue.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Numbers & Time": [
+{
+"de": "das Gramm",
+"en": "gram",
+"pl": "die Gramm",
+"ex": "Ich brauche zweihundert Gramm Käse.",
+"exEn": "I need two hundred grams of cheese.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Kilo",
+"en": "kilo",
+"pl": "die Kilos",
+"ex": "Ein Kilo Äpfel, bitte.",
+"exEn": "A kilo of apples, please.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Liter",
+"en": "litre",
+"pl": "die Liter",
+"ex": "Wir brauchen einen Liter Milch.",
+"exEn": "We need a litre of milk.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Pfund",
+"en": "pound (500 g)",
+"pl": "die Pfund",
+"ex": "Geben Sie mir bitte ein Pfund Tomaten.",
+"exEn": "Please give me a pound of tomatoes.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Stück",
+"en": "piece",
+"pl": "die Stücke",
+"ex": "Möchtest du ein Stück Kuchen?",
+"exEn": "Would you like a piece of cake?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "pro",
+"en": "per",
+"ex": "Die Äpfel kosten zwei Euro pro Kilo.",
+"exEn": "The apples cost two euros per kilo.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "durchschnittlich",
+"en": "on average / average",
+"ex": "Wir essen durchschnittlich zweimal pro Woche Fisch.",
+"exEn": "On average we eat fish twice a week.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "jederzeit",
+"en": "anytime",
+"ex": "Du kannst mich jederzeit anrufen.",
+"exEn": "You can call me anytime.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "spätestens",
+"en": "at the latest",
+"ex": "Ich bin spätestens um acht zu Hause.",
+"exEn": "I will be home by eight at the latest.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Mittag",
+"en": "midday / noon",
+"pl": "die Mittage",
+"ex": "Am Mittag mache ich eine kurze Pause.",
+"exEn": "At noon I take a short break.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "mittags",
+"en": "at midday / at noon",
+"ex": "Mittags esse ich meistens warm.",
+"exEn": "At midday I usually eat a hot meal.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Nachmittag",
+"en": "afternoon",
+"pl": "die Nachmittage",
+"ex": "Am Nachmittag treffe ich Freunde.",
+"exEn": "In the afternoon I meet friends.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "nachmittags",
+"en": "in the afternoon(s)",
+"ex": "Nachmittags habe ich oft frei.",
+"exEn": "In the afternoons I'm often free.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "nachts",
+"en": "at night",
+"ex": "Nachts ist es hier sehr ruhig.",
+"exEn": "At night it's very quiet here.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Vormittag",
+"en": "morning (late morning)",
+"pl": "die Vormittage",
+"ex": "Am Vormittag habe ich einen Termin.",
+"exEn": "In the morning I have an appointment.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "vormittags",
+"en": "in the morning(s)",
+"ex": "Vormittags arbeite ich zu Hause.",
+"exEn": "In the mornings I work at home.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Uhrzeit",
+"en": "time (of day)",
+"pl": "die Uhrzeiten",
+"ex": "Können Sie mir die Uhrzeit sagen?",
+"exEn": "Can you tell me the time?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Zeit",
+"en": "time",
+"pl": "die Zeiten",
+"ex": "Ich habe heute keine Zeit.",
+"exEn": "I have no time today.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "nie",
+"en": "never",
+"ex": "Ich war noch nie in Berlin.",
+"exEn": "I have never been to Berlin.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "früher",
+"en": "formerly / in the past",
+"ex": "Früher habe ich in München gewohnt.",
+"exEn": "I used to live in Munich.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "stundenlang",
+"en": "for hours",
+"ex": "Wir haben stundenlang geredet.",
+"exEn": "We talked for hours.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "anfangs",
+"en": "at first / initially",
+"ex": "Anfangs war alles ganz neu für mich.",
+"exEn": "At first everything was completely new to me.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "irgendwann",
+"en": "sometime / at some point",
+"ex": "Irgendwann möchte ich nach Japan reisen.",
+"exEn": "At some point I'd like to travel to Japan.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "jahrelang",
+"en": "for years",
+"ex": "Sie hat jahrelang im Ausland gelebt.",
+"exEn": "She lived abroad for years.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Meter",
+"en": "metre",
+"pl": "die Meter",
+"ex": "Das Zimmer ist vier Meter breit.",
+"exEn": "The room is four metres wide.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "zweimal",
+"en": "twice",
+"ex": "Ich war schon zweimal in Berlin.",
+"exEn": "I have been to Berlin twice already.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "ungefähr",
+"en": "approximately",
+"ex": "Die Fahrt dauert ungefähr eine Stunde.",
+"exEn": "The journey takes approximately one hour.",
+"diff": "medium",
+"level": "A2"
+}
+],
+"Connectors & Structure": [
+{
+"de": "die Antwort",
+"en": "answer",
+"pl": "die Antworten",
+"ex": "Ich warte noch auf deine Antwort.",
+"exEn": "I'm still waiting for your answer.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Beispiel",
+"en": "example",
+"pl": "die Beispiele",
+"ex": "Kannst du mir ein Beispiel geben?",
+"exEn": "Can you give me an example?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "gleich",
+"en": "same / right away",
+"ex": "Ich komme gleich zurück.",
+"exEn": "I'll be right back.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "meistens",
+"en": "mostly / usually",
+"ex": "Am Wochenende schlafe ich meistens lange.",
+"exEn": "At the weekend I usually sleep in.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "nebenbei",
+"en": "on the side / incidentally",
+"ex": "Nebenbei lernt sie noch Spanisch.",
+"exEn": "On the side she's also learning Spanish.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "gemeinsam",
+"en": "together / jointly",
+"ex": "Wir kochen heute Abend gemeinsam.",
+"exEn": "We're cooking together this evening.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "nachher",
+"en": "afterwards / later",
+"ex": "Wir treffen uns nachher im Café.",
+"exEn": "We'll meet afterwards at the café.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "wirklich",
+"en": "really",
+"ex": "Das war wirklich ein schöner Tag.",
+"exEn": "That was really a lovely day.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "bereits",
+"en": "already",
+"ex": "Das Paket ist bereits angekommen.",
+"exEn": "The parcel has already arrived.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "ebenso",
+"en": "likewise / equally",
+"ex": "Sie ist klug und ebenso fleißig.",
+"exEn": "She is clever and equally hard-working.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "eher",
+"en": "rather / sooner",
+"ex": "Ich trinke lieber Tee, eher als Kaffee.",
+"exEn": "I prefer tea, rather than coffee.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "irgendwie",
+"en": "somehow",
+"ex": "Wir schaffen das irgendwie.",
+"exEn": "We'll manage it somehow.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "eventuell",
+"en": "possibly / perhaps",
+"ex": "Eventuell komme ich später.",
+"exEn": "I might possibly come later.",
+"diff": "hard",
+"level": "B1",
+"hint": "false friend: means 'possibly', not 'eventually'"
+},
+{
+"de": "miteinander",
+"en": "with one another / together",
+"ex": "Wir reden offen miteinander.",
+"exEn": "We talk openly with one another.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "fast",
+"en": "almost / nearly",
+"ex": "Wir haben den Zug fast verpasst.",
+"exEn": "We almost missed the train.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "selten",
+"en": "rarely / seldom",
+"ex": "Ich fahre selten mit dem Taxi.",
+"exEn": "I rarely travel by taxi.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "sowieso",
+"en": "anyway",
+"ex": "Ich gehe sowieso in die Stadt.",
+"exEn": "I'm going into town anyway.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "mitten",
+"en": "in the middle",
+"ex": "Das Hotel liegt mitten in der Stadt.",
+"exEn": "The hotel is right in the middle of the city.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Everyday Actions": [
+{
+"de": "gern",
+"en": "gladly / with pleasure",
+"ex": "Ich helfe dir gern.",
+"exEn": "I'll gladly help you.",
+"diff": "easy",
+"level": "A1",
+"hint": "means 'gladly/like to', not 'very much'"
+},
+{
+"de": "fertig",
+"en": "finished / ready",
+"ex": "Das Essen ist gleich fertig.",
+"exEn": "The food will be ready soon.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "ordnen",
+"en": "to arrange / organise",
+"ex": "Bitte ordnen Sie die Wörter alphabetisch.",
+"exEn": "Please arrange the words alphabetically.",
+"diff": "medium",
+"level": "A2",
+"hint": "to arrange/organise, not 'to order' (= bestellen)"
+},
+{
+"de": "streichen",
+"en": "to paint / spread",
+"ex": "Ich streiche Butter aufs Brot.",
+"exEn": "I'm spreading butter on the bread.",
+"diff": "medium",
+"level": "B1",
+"hint": "both 'to paint (a wall)' and 'to spread (butter)'"
+},
+{
+"de": "planen",
+"en": "to plan",
+"ex": "Wir planen eine Reise nach Italien.",
+"exEn": "We're planning a trip to Italy.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "ausprobieren",
+"en": "to try out",
+"ex": "Ich möchte das neue Rezept ausprobieren.",
+"exEn": "I want to try out the new recipe.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "achten",
+"en": "to pay attention / watch out",
+"ex": "Du musst auf die Zutaten achten.",
+"exEn": "You have to pay attention to the ingredients.",
+"diff": "medium",
+"level": "B1",
+"hint": "usually 'auf etwas achten' = to watch out for sth"
+},
+{
+"de": "erkennen",
+"en": "to recognise",
+"ex": "Ich erkenne sie an ihrer Stimme.",
+"exEn": "I recognise her by her voice.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "angewöhnen",
+"en": "to get into the habit of",
+"ex": "Ich habe mir angewöhnt, früh aufzustehen.",
+"exEn": "I've got into the habit of getting up early.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "vorbeigehen",
+"en": "to walk / go past",
+"ex": "Auf dem Heimweg gehe ich am Bäcker vorbei.",
+"exEn": "On the way home I go past the bakery.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "reduzieren",
+"en": "to reduce",
+"ex": "Ich möchte meinen Zuckerkonsum reduzieren.",
+"exEn": "I want to reduce my sugar consumption.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "versorgen",
+"en": "to provide for / supply",
+"ex": "Sie versorgt die ganze Familie mit Essen.",
+"exEn": "She provides food for the whole family.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "nutzen",
+"en": "to use",
+"ex": "Ich nutze den Bus jeden Tag.",
+"exEn": "I use the bus every day.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "stecken",
+"en": "to put / stick",
+"ex": "Sie steckt die Karte in den Automaten.",
+"exEn": "She puts the card into the machine.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "schieben",
+"en": "to push",
+"ex": "Er schiebt den Wagen durch den Supermarkt.",
+"exEn": "He pushes the trolley through the supermarket.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "stoßen",
+"en": "to push / bump into",
+"ex": "Pass auf, du stößt an den Tisch.",
+"exEn": "Watch out, you are bumping into the table.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "zurückgeben",
+"en": "to give back / return",
+"ex": "Ich gebe dir das Buch morgen zurück.",
+"exEn": "I will give the book back to you tomorrow.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "weglaufen",
+"en": "to run away",
+"ex": "Der Hund ist plötzlich weggelaufen.",
+"exEn": "The dog suddenly ran away.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "abdecken",
+"en": "to cover",
+"ex": "Decke den Tisch mit einer Decke ab.",
+"exEn": "Cover the table with a blanket.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "umfallen",
+"en": "to fall over",
+"ex": "Die Vase ist vom Tisch umgefallen.",
+"exEn": "The vase fell over from the table.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "nachdenken",
+"en": "to think (about)",
+"ex": "Ich muss über deinen Vorschlag nachdenken.",
+"exEn": "I have to think about your suggestion.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "schwingen",
+"en": "to swing",
+"ex": "Das Kind schwingt auf der Schaukel.",
+"exEn": "The child swings on the swing.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "vorsichtig",
+"en": "careful",
+"ex": "Sei vorsichtig auf der Treppe.",
+"exEn": "Be careful on the stairs.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "grillen",
+"en": "to grill / barbecue",
+"ex": "Im Sommer grillen wir oft im Garten.",
+"exEn": "In summer we often barbecue in the garden.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "spazieren",
+"en": "to walk / stroll",
+"ex": "Wir gehen am Sonntag gern spazieren.",
+"exEn": "We like to go for a walk on Sundays.",
+"diff": "easy",
+"level": "A1",
+"hint": "Usually used as 'spazieren gehen'."
+},
+{
+"de": "telefonieren",
+"en": "to make a phone call",
+"ex": "Ich telefoniere gerade mit meiner Mutter.",
+"exEn": "I'm on the phone with my mother right now.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "tun",
+"en": "to do",
+"ex": "Was kann ich für dich tun?",
+"exEn": "What can I do for you?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "gucken",
+"en": "to look / watch",
+"ex": "Abends gucken wir oft einen Film.",
+"exEn": "In the evening we often watch a film.",
+"diff": "easy",
+"level": "A1",
+"hint": "Colloquial; like English 'to have a look'."
+},
+{
+"de": "packen",
+"en": "to pack",
+"ex": "Ich muss noch meinen Koffer packen.",
+"exEn": "I still have to pack my suitcase.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "beantworten",
+"en": "to answer (a question)",
+"ex": "Kannst du meine Frage beantworten?",
+"exEn": "Can you answer my question?",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "aufschreiben",
+"en": "to write down",
+"ex": "Ich schreibe mir die Adresse auf.",
+"exEn": "I'll write the address down.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "erinnern",
+"en": "to remember / remind",
+"ex": "Ich kann mich nicht an ihn erinnern.",
+"exEn": "I can't remember him.",
+"diff": "medium",
+"level": "B1",
+"hint": "Reflexive 'sich erinnern an' = to remember."
+},
+{
+"de": "merken",
+"en": "to notice / realise",
+"ex": "Ich habe den Fehler sofort gemerkt.",
+"exEn": "I noticed the mistake straight away.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "streiken",
+"en": "to strike (industrial)",
+"ex": "Die Piloten streiken seit drei Tagen.",
+"exEn": "The pilots have been on strike for three days.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Body & Health": [
+{
+"de": "abnehmen",
+"en": "to lose weight",
+"ex": "Im Frühling will ich ein paar Kilo abnehmen.",
+"exEn": "In spring I want to lose a few kilos.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "zunehmen",
+"en": "to gain weight / increase",
+"ex": "Über den Winter habe ich etwas zugenommen.",
+"exEn": "Over the winter I've gained a bit of weight.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "allergisch",
+"en": "allergic",
+"ex": "Ich bin allergisch gegen Nüsse.",
+"exEn": "I'm allergic to nuts.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "ausgewogen",
+"en": "balanced",
+"ex": "Eine ausgewogene Ernährung ist wichtig.",
+"exEn": "A balanced diet is important.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "einseitig",
+"en": "one-sided / unbalanced",
+"ex": "Eine einseitige Ernährung macht krank.",
+"exEn": "An unbalanced diet makes you ill.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "fett",
+"en": "fatty / greasy",
+"ex": "Das Essen war mir zu fett.",
+"exEn": "The food was too greasy for me.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "leiden",
+"en": "to suffer",
+"ex": "Viele Menschen leiden unter Stress.",
+"exEn": "Many people suffer from stress.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "vertragen",
+"en": "to tolerate / digest",
+"ex": "Ich vertrage keine Milch.",
+"exEn": "I can't tolerate milk.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "glutenfrei",
+"en": "gluten-free",
+"ex": "Sie isst nur glutenfreies Brot.",
+"exEn": "She only eats gluten-free bread.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "laktosefrei",
+"en": "lactose-free",
+"ex": "Diese Milch ist laktosefrei.",
+"exEn": "This milk is lactose-free.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "fleischfrei",
+"en": "meat-free",
+"ex": "Am Montag essen wir fleischfrei.",
+"exEn": "On Mondays we eat meat-free.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "fleischlos",
+"en": "meatless / vegetarian",
+"ex": "Das Gericht ist komplett fleischlos.",
+"exEn": "The dish is completely meatless.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Glatze",
+"en": "bald head",
+"pl": "die Glatzen",
+"ex": "Mein Onkel hat eine Glatze.",
+"exEn": "My uncle has a bald head.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Schnurrbart",
+"en": "moustache",
+"pl": "die Schnurrbärte",
+"ex": "Er trägt einen großen Schnurrbart.",
+"exEn": "He has a big moustache.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Duft",
+"en": "scent / fragrance",
+"pl": "die Düfte",
+"ex": "Das Parfüm hat einen angenehmen Duft.",
+"exEn": "The perfume has a pleasant scent.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Duschgel",
+"en": "shower gel",
+"ex": "Das Duschgel riecht nach Zitrone.",
+"exEn": "The shower gel smells of lemon.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Haarpflege",
+"en": "hair care",
+"ex": "Diese Marke ist auf Haarpflege spezialisiert.",
+"exEn": "This brand specialises in hair care.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Hautpflege",
+"en": "skin care",
+"ex": "Im Winter ist gute Hautpflege wichtig.",
+"exEn": "Good skin care is important in winter.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Naturkosmetik",
+"en": "natural cosmetics",
+"ex": "Sie kauft nur Naturkosmetik ohne Chemie.",
+"exEn": "She only buys natural cosmetics without chemicals.",
+"diff": "hard",
+"level": "A2"
+},
+{
+"de": "die Parfümerie",
+"en": "perfumery / cosmetics shop",
+"pl": "die Parfümerien",
+"ex": "In der Parfümerie kaufe ich mein Parfüm.",
+"exEn": "I buy my perfume at the perfumery.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kosmetik",
+"en": "cosmetics",
+"ex": "Die Kosmetik findest du neben der Drogerie.",
+"exEn": "You'll find the cosmetics next to the drugstore.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "ärztlich",
+"en": "medical",
+"ex": "Sie braucht ein ärztliches Attest.",
+"exEn": "She needs a medical certificate.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verletzen",
+"en": "to injure / hurt",
+"ex": "Beim Sturz hat er sich am Arm verletzt.",
+"exEn": "He injured his arm in the fall.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Medizin",
+"en": "medicine",
+"ex": "Sie studiert Medizin in Berlin.",
+"exEn": "She studies medicine in Berlin.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Emotions & Opinions": [
+{
+"de": "bewusst",
+"en": "conscious / deliberate",
+"ex": "Sie ernährt sich sehr bewusst.",
+"exEn": "She eats very consciously.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Laune",
+"en": "mood",
+"pl": "die Launen",
+"ex": "Heute habe ich gute Laune.",
+"exEn": "I'm in a good mood today.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Frust",
+"en": "frustration",
+"ex": "Aus Frust hat er die ganze Schokolade gegessen.",
+"exEn": "Out of frustration he ate all the chocolate.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "bedenklich",
+"en": "questionable / worrying",
+"ex": "Der hohe Zuckergehalt ist bedenklich.",
+"exEn": "The high sugar content is worrying.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "moralisch",
+"en": "moral / morally",
+"ex": "Für sie ist Vegetarismus eine moralische Frage.",
+"exEn": "For her, vegetarianism is a moral question.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "fantastisch",
+"en": "fantastic",
+"ex": "Das Essen war wirklich fantastisch.",
+"exEn": "The food was really fantastic.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "wunderbar",
+"en": "wonderful",
+"ex": "Wir hatten einen wunderbaren Tag.",
+"exEn": "We had a wonderful day.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "egal",
+"en": "doesn't matter / regardless",
+"ex": "Es ist mir egal, wohin wir gehen.",
+"exEn": "It doesn't matter to me where we go.",
+"diff": "medium",
+"level": "A2",
+"hint": "'egal' = it doesn't matter, not 'equal'"
+},
+{
+"de": "der Schrei",
+"en": "scream / shout",
+"pl": "die Schreie",
+"ex": "Plötzlich hörten wir einen lauten Schrei.",
+"exEn": "Suddenly we heard a loud scream.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "frustriert",
+"en": "frustrated",
+"ex": "Ich bin frustriert über das Ergebnis.",
+"exEn": "I am frustrated about the result.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "optimistisch",
+"en": "optimistic",
+"ex": "Sie ist immer sehr optimistisch.",
+"exEn": "She is always very optimistic.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Respekt",
+"en": "respect",
+"ex": "Er behandelt alle mit Respekt.",
+"exEn": "He treats everyone with respect.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "überraschen",
+"en": "to surprise",
+"ex": "Das Geschenk hat mich sehr überrascht.",
+"exEn": "The gift surprised me a lot.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Idee",
+"en": "idea",
+"pl": "die Ideen",
+"ex": "Das ist eine gute Idee!",
+"exEn": "That's a good idea!",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "leider",
+"en": "unfortunately",
+"ex": "Ich kann leider nicht kommen.",
+"exEn": "Unfortunately I can't come.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "schade",
+"en": "a pity / a shame",
+"ex": "Schade, dass du gehen musst.",
+"exEn": "It's a shame that you have to go.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Gefühl",
+"en": "feeling",
+"pl": "die Gefühle",
+"ex": "Ich habe ein gutes Gefühl dabei.",
+"exEn": "I have a good feeling about it.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "emotional",
+"en": "emotional",
+"ex": "Der Abschied war sehr emotional.",
+"exEn": "The farewell was very emotional.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Erinnerung",
+"en": "memory",
+"pl": "die Erinnerungen",
+"ex": "Ich habe schöne Erinnerungen an die Reise.",
+"exEn": "I have lovely memories of the trip.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Ruhe",
+"en": "calm / quiet",
+"ex": "Auf dem Land genieße ich die Ruhe.",
+"exEn": "In the countryside I enjoy the quiet.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Ruhezeit",
+"en": "quiet time / rest period",
+"pl": "die Ruhezeiten",
+"ex": "Die Ruhezeit beginnt um 22 Uhr.",
+"exEn": "The quiet time begins at 10 p.m.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Lärm",
+"en": "noise",
+"ex": "Der Lärm der Straße stört mich nachts.",
+"exEn": "The noise from the street disturbs me at night.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Mobilität",
+"en": "mobility",
+"ex": "Ein Auto bedeutet mehr Mobilität.",
+"exEn": "A car means more mobility.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Abstract & Advanced": [
+{
+"de": "die Kontrolle",
+"en": "control / check",
+"pl": "die Kontrollen",
+"ex": "An der Grenze gab es eine Kontrolle.",
+"exEn": "There was a check at the border.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Anbau",
+"en": "cultivation / growing",
+"ex": "Der Anbau von Bio-Gemüse braucht Zeit.",
+"exEn": "Growing organic vegetables takes time.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "auseinandersetzen",
+"en": "to deal with / engage with",
+"ex": "Ich setze mich mit dem Thema Ernährung auseinander.",
+"exEn": "I'm engaging with the topic of nutrition.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "industriell",
+"en": "industrial",
+"ex": "Industriell hergestelltes Essen enthält oft viel Zucker.",
+"exEn": "Industrially produced food often contains a lot of sugar.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "problemlos",
+"en": "without problems / easily",
+"ex": "Das Rezept gelingt problemlos.",
+"exEn": "The recipe works without any problems.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "vereinbar",
+"en": "compatible / reconcilable",
+"ex": "Beruf und Familie sind oft schwer vereinbar.",
+"exEn": "Work and family are often hard to reconcile.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Verzehr",
+"en": "consumption (of food)",
+"ex": "Der Verzehr von rohem Fleisch ist riskant.",
+"exEn": "The consumption of raw meat is risky.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "tierisch",
+"en": "animal (of/from animals)",
+"ex": "Sie verzichtet auf tierische Produkte.",
+"exEn": "She avoids animal products.",
+"diff": "hard",
+"level": "B1",
+"hint": "adjective 'animal-based', not 'animalistic'"
+},
+{
+"de": "fix",
+"en": "quick / fixed",
+"ex": "Das geht ganz fix.",
+"exEn": "That's done really quickly.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Art",
+"en": "kind / type / manner",
+"pl": "die Arten",
+"ex": "Welche Art von Kaffee möchten Sie?",
+"exEn": "What kind of coffee would you like?",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Eigentum",
+"en": "property / ownership",
+"ex": "Das Fahrrad ist mein Eigentum.",
+"exEn": "The bicycle is my property.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Ergänzung",
+"en": "addition / supplement",
+"pl": "die Ergänzungen",
+"ex": "Diese Information ist eine wichtige Ergänzung.",
+"exEn": "This information is an important addition.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Herstellung",
+"en": "manufacture / production",
+"ex": "Die Herstellung dauert mehrere Wochen.",
+"exEn": "The manufacture takes several weeks.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Aktivität",
+"en": "activity",
+"pl": "die Aktivitäten",
+"ex": "Sport ist eine gesunde Aktivität.",
+"exEn": "Sport is a healthy activity.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Armut",
+"en": "poverty",
+"ex": "Viele Menschen leben in Armut.",
+"exEn": "Many people live in poverty.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Basis",
+"en": "basis / foundation",
+"pl": "die Basen",
+"ex": "Vertrauen ist die Basis jeder Beziehung.",
+"exEn": "Trust is the basis of every relationship.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "eigen",
+"en": "own",
+"ex": "Sie hat ihre eigene Wohnung.",
+"exEn": "She has her own apartment.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "folgend",
+"en": "following",
+"ex": "Beachten Sie die folgenden Hinweise.",
+"exEn": "Note the following instructions.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "indirekt",
+"en": "indirect",
+"ex": "Er gab eine indirekte Antwort.",
+"exEn": "He gave an indirect answer.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Sinn",
+"en": "meaning / sense",
+"pl": "die Sinne",
+"ex": "Was ist der Sinn dieser Übung?",
+"exEn": "What is the meaning of this exercise?",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Versuch",
+"en": "attempt",
+"pl": "die Versuche",
+"ex": "Beim zweiten Versuch hat es geklappt.",
+"exEn": "It worked on the second attempt.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "absichtlich",
+"en": "deliberate / on purpose",
+"ex": "Das hat er nicht absichtlich getan.",
+"exEn": "He did not do that on purpose.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "versehentlich",
+"en": "accidentally / by mistake",
+"ex": "Ich habe versehentlich die falsche Taste gedrückt.",
+"exEn": "I accidentally pressed the wrong button.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verursachen",
+"en": "to cause",
+"ex": "Der Sturm hat große Schäden verursacht.",
+"exEn": "The storm caused great damage.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "regulieren",
+"en": "to regulate",
+"ex": "Der Staat reguliert die Preise.",
+"exEn": "The state regulates the prices.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Regulierung",
+"en": "regulation",
+"pl": "die Regulierungen",
+"ex": "Die Regulierung des Marktes ist umstritten.",
+"exEn": "The regulation of the market is controversial.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "korrekt",
+"en": "correct",
+"ex": "Deine Antwort ist völlig korrekt.",
+"exEn": "Your answer is completely correct.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Migration",
+"en": "migration",
+"ex": "Migration ist ein wichtiges Thema.",
+"exEn": "Migration is an important topic.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Auswanderung",
+"en": "emigration",
+"ex": "Die Auswanderung begann im 19. Jahrhundert.",
+"exEn": "The emigration began in the 19th century.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Einwanderung",
+"en": "immigration",
+"ex": "Die Einwanderung hat das Land verändert.",
+"exEn": "Immigration has changed the country.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Öffnung",
+"en": "opening",
+"pl": "die Öffnungen",
+"ex": "Nach der Öffnung der Grenze reisten viele.",
+"exEn": "After the opening of the border, many travelled.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Phase",
+"en": "phase",
+"pl": "die Phasen",
+"ex": "Wir sind in einer schwierigen Phase.",
+"exEn": "We're in a difficult phase.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Teilung",
+"en": "division",
+"pl": "die Teilungen",
+"ex": "Die Teilung des Landes dauerte Jahrzehnte.",
+"exEn": "The division of the country lasted decades.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Wiedervereinigung",
+"en": "reunification",
+"ex": "Die Wiedervereinigung war 1990.",
+"exEn": "The reunification was in 1990.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Bewegung (politisch)",
+"en": "movement (social/political)",
+"pl": "die Bewegungen",
+"ex": "Die politische Bewegung wuchs schnell.",
+"exEn": "The political movement grew quickly.",
+"diff": "hard",
+"level": "B1",
+"hint": "Same word as 'movement/exercise' in a political sense."
+},
+{
+"de": "der Krieg",
+"en": "war",
+"pl": "die Kriege",
+"ex": "Der Krieg dauerte sechs Jahre.",
+"exEn": "The war lasted six years.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Kriegsende",
+"en": "end of the war",
+"ex": "Nach dem Kriegsende begann der Wiederaufbau.",
+"exEn": "After the end of the war the reconstruction began.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Bürgerkrieg",
+"en": "civil war",
+"pl": "die Bürgerkriege",
+"ex": "Im Land herrscht seit Jahren Bürgerkrieg.",
+"exEn": "There has been civil war in the country for years.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Nachkriegszeit",
+"en": "post-war period",
+"ex": "In der Nachkriegszeit war das Leben hart.",
+"exEn": "In the post-war period life was hard.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Nationalsozialismus",
+"en": "National Socialism / Nazism",
+"ex": "Der Nationalsozialismus prägte diese Zeit.",
+"exEn": "National Socialism shaped this era.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Mauer",
+"en": "wall (the Berlin Wall)",
+"pl": "die Mauern",
+"ex": "Die Mauer trennte Berlin viele Jahre.",
+"exEn": "The Wall divided Berlin for many years.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Mauerbau",
+"en": "building of the Wall",
+"ex": "Der Mauerbau war im Jahr 1961.",
+"exEn": "The building of the Wall was in 1961.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Mauerfall",
+"en": "fall of the Berlin Wall",
+"ex": "Der Mauerfall war im November 1989.",
+"exEn": "The fall of the Wall was in November 1989.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Besatzungszone",
+"en": "occupation zone",
+"pl": "die Besatzungszonen",
+"ex": "Deutschland wurde in vier Besatzungszonen geteilt.",
+"exEn": "Germany was divided into four occupation zones.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Hauptstadt",
+"en": "capital city",
+"pl": "die Hauptstädte",
+"ex": "Berlin ist die Hauptstadt von Deutschland.",
+"exEn": "Berlin is the capital of Germany.",
+"diff": "medium",
+"level": "A2"
+}
+],
+"Work & Study": [
+{
+"de": "der Tipp",
+"en": "tip / hint",
+"pl": "die Tipps",
+"ex": "Hast du einen Tipp für ein gutes Rezept?",
+"exEn": "Do you have a tip for a good recipe?",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "unterstreichen",
+"en": "to underline / emphasise",
+"ex": "Unterstreichen Sie das wichtigste Wort.",
+"exEn": "Underline the most important word.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "präsentieren",
+"en": "to present",
+"ex": "Morgen präsentiere ich mein Projekt.",
+"exEn": "Tomorrow I'm presenting my project.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Berufstätigkeit",
+"en": "employment / working life",
+"ex": "Die Berufstätigkeit beider Eltern ist heute normal.",
+"exEn": "Both parents being employed is normal today.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Zeitmangel",
+"en": "lack of time",
+"ex": "Aus Zeitmangel kocht er selten frisch.",
+"exEn": "Due to a lack of time he rarely cooks fresh.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Freiwillige",
+"en": "volunteer (female)",
+"pl": "die Freiwilligen",
+"ex": "Die Freiwillige half im Altenheim.",
+"exEn": "The volunteer helped at the care home.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Interview",
+"en": "interview",
+"pl": "die Interviews",
+"ex": "Der Sänger gab ein langes Interview.",
+"exEn": "The singer gave a long interview.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Mittagspause",
+"en": "lunch break",
+"pl": "die Mittagspausen",
+"ex": "In der Mittagspause gehe ich kurz raus.",
+"exEn": "During the lunch break I go out briefly.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Notizzettel",
+"en": "note / slip of paper",
+"pl": "die Notizzettel",
+"ex": "Ich habe mir einen Notizzettel geschrieben.",
+"exEn": "I wrote myself a note.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Schluss",
+"en": "end / closing time",
+"pl": "die Schlüsse",
+"ex": "Am Freitag ist um drei Uhr Schluss.",
+"exEn": "On Friday it's closing time at three o'clock.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Stundenplan",
+"en": "timetable / schedule",
+"pl": "die Stundenpläne",
+"ex": "Mein Stundenplan ist dieses Jahr voll.",
+"exEn": "My timetable is full this year.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Unterricht",
+"en": "lesson(s) / class",
+"ex": "Der Unterricht beginnt um acht Uhr.",
+"exEn": "The lesson starts at eight o'clock.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Studium",
+"en": "degree / course of study",
+"pl": "die Studien",
+"ex": "Mein Studium dauert drei Jahre.",
+"exEn": "My degree takes three years.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "stressig",
+"en": "stressful",
+"ex": "Heute war ein stressiger Tag.",
+"exEn": "Today was a stressful day.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Dienst",
+"en": "service / duty (shift)",
+"pl": "die Dienste",
+"ex": "Er hat heute Abend Dienst.",
+"exEn": "He's on duty this evening.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Arbeitskraft",
+"en": "worker / workforce",
+"pl": "die Arbeitskräfte",
+"ex": "Die Firma sucht neue Arbeitskräfte.",
+"exEn": "The company is looking for new workers.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Arbeitslosigkeit",
+"en": "unemployment",
+"ex": "Die Arbeitslosigkeit ist dieses Jahr gesunken.",
+"exEn": "Unemployment fell this year.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Stipendium",
+"en": "scholarship / grant",
+"pl": "die Stipendien",
+"ex": "Sie hat ein Stipendium für ihr Studium bekommen.",
+"exEn": "She got a scholarship for her studies.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Industrie",
+"en": "industry",
+"pl": "die Industrien",
+"ex": "Die Industrie braucht viele Fachkräfte.",
+"exEn": "Industry needs many skilled workers.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Volkshochschule",
+"en": "adult education centre",
+"pl": "die Volkshochschulen",
+"ex": "An der Volkshochschule lerne ich Deutsch.",
+"exEn": "I'm learning German at the adult education centre.",
+"diff": "medium",
+"level": "A2"
+}
+],
+"Family & People": [
+{
+"de": "der Freundeskreis",
+"en": "circle of friends",
+"pl": "die Freundeskreise",
+"ex": "In meinem Freundeskreis essen viele vegetarisch.",
+"exEn": "Many people in my circle of friends eat vegetarian.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Bevölkerung",
+"en": "population",
+"pl": "die Bevölkerungen",
+"ex": "Ein Teil der Bevölkerung ernährt sich vegan.",
+"exEn": "Part of the population eats vegan.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Dame",
+"en": "lady",
+"pl": "die Damen",
+"ex": "Die Dame am Schalter war sehr freundlich.",
+"exEn": "The lady at the counter was very friendly.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Ehepaar",
+"en": "married couple",
+"pl": "die Ehepaare",
+"ex": "Das Ehepaar wohnt seit zehn Jahren hier.",
+"exEn": "The married couple has lived here for ten years.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Nachbarin",
+"en": "neighbour (female)",
+"pl": "die Nachbarinnen",
+"ex": "Meine Nachbarin ist sehr nett.",
+"exEn": "My neighbour is very nice.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "geboren sein",
+"en": "to be born",
+"ex": "Ich bin in Hamburg geboren.",
+"exEn": "I was born in Hamburg.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Kindheit",
+"en": "childhood",
+"ex": "Ich hatte eine glückliche Kindheit.",
+"exEn": "I had a happy childhood.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Auswanderer",
+"en": "emigrant",
+"pl": "die Auswanderer",
+"ex": "Viele Auswanderer gingen nach Amerika.",
+"exEn": "Many emigrants went to America.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Flüchtling",
+"en": "refugee",
+"pl": "die Flüchtlinge",
+"ex": "Die Stadt hat viele Flüchtlinge aufgenommen.",
+"exEn": "The city took in many refugees.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Media & Communication": [
+{
+"de": "der Zeitungsbericht",
+"en": "newspaper report",
+"pl": "die Zeitungsberichte",
+"ex": "Der Zeitungsbericht handelt von gesunder Ernährung.",
+"exEn": "The newspaper report is about healthy eating.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Trend",
+"en": "trend",
+"pl": "die Trends",
+"ex": "Vegane Ernährung ist ein großer Trend.",
+"exEn": "Vegan eating is a big trend.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Kosmetiktasche",
+"en": "cosmetic bag / makeup bag",
+"pl": "die Kosmetiktaschen",
+"ex": "Ihre Kosmetiktasche ist voller Schminke.",
+"exEn": "Her cosmetic bag is full of makeup.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Make-up",
+"en": "make-up",
+"ex": "Sie trägt nur wenig Make-up.",
+"exEn": "She wears only a little make-up.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Bestellhotline",
+"en": "order hotline",
+"pl": "die Bestellhotlines",
+"ex": "Bestellungen nehmen wir über die Bestellhotline an.",
+"exEn": "We take orders via the order hotline.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Callcenter",
+"en": "call centre",
+"pl": "die Callcenter",
+"ex": "Sie arbeitet in einem Callcenter.",
+"exEn": "She works in a call centre.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Impressum",
+"en": "legal notice / site imprint",
+"ex": "Die Adresse der Firma steht im Impressum.",
+"exEn": "The company's address is in the legal notice.",
+"diff": "hard",
+"level": "B1",
+"hint": "the legally required publisher/owner info on a German website"
+},
+{
+"de": "die Broschüre",
+"en": "brochure",
+"pl": "die Broschüren",
+"ex": "Die Bank hat mir eine Broschüre gegeben.",
+"exEn": "The bank gave me a brochure.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Zeitungsartikel",
+"en": "newspaper article",
+"pl": "die Zeitungsartikel",
+"ex": "Ich habe einen interessanten Zeitungsartikel gelesen.",
+"exEn": "I read an interesting newspaper article.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Amtssprache",
+"en": "official language",
+"pl": "die Amtssprachen",
+"ex": "Deutsch ist die Amtssprache in Österreich.",
+"exEn": "German is the official language in Austria.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Fremdsprache",
+"en": "foreign language",
+"pl": "die Fremdsprachen",
+"ex": "Ich lerne zwei Fremdsprachen.",
+"exEn": "I'm learning two foreign languages.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Muttersprache",
+"en": "mother tongue / native language",
+"pl": "die Muttersprachen",
+"ex": "Seine Muttersprache ist Spanisch.",
+"exEn": "His native language is Spanish.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Ansage",
+"en": "announcement",
+"pl": "die Ansagen",
+"ex": "Die Ansage am Bahnhof war kaum zu verstehen.",
+"exEn": "The announcement at the station was hard to understand.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Durchsage",
+"en": "public announcement",
+"pl": "die Durchsagen",
+"ex": "Eine Durchsage informierte über die Verspätung.",
+"exEn": "An announcement informed us about the delay.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Absage",
+"en": "cancellation / rejection",
+"pl": "die Absagen",
+"ex": "Leider bekam ich eine Absage für den Job.",
+"exEn": "Unfortunately I received a rejection for the job.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Aufruf",
+"en": "call / appeal",
+"pl": "die Aufrufe",
+"ex": "Der Aufruf zum Boarding kam pünktlich.",
+"exEn": "The call to board came on time.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Admin & Bureaucracy": [
+{
+"de": "die Institution",
+"en": "institution",
+"pl": "die Institutionen",
+"ex": "Schulen sind wichtige Institutionen.",
+"exEn": "Schools are important institutions.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Studie",
+"en": "study",
+"pl": "die Studien",
+"ex": "Eine neue Studie zeigt überraschende Ergebnisse.",
+"exEn": "A new study shows surprising results.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Hauptgrund",
+"en": "main reason",
+"pl": "die Hauptgründe",
+"ex": "Der Hauptgrund für den Einkauf ist der Preis.",
+"exEn": "The main reason for the purchase is the price.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "lieferbar",
+"en": "available / deliverable",
+"ex": "Der Artikel ist sofort lieferbar.",
+"exEn": "The item is immediately available.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Lieferbedingung",
+"en": "delivery terms",
+"pl": "die Lieferbedingungen",
+"ex": "Die Lieferbedingungen stehen auf der Website.",
+"exEn": "The delivery terms are on the website.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Lager",
+"en": "warehouse / stock",
+"pl": "die Lager",
+"ex": "Die Ware ist auf Lager.",
+"exEn": "The goods are in stock.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Paketbote",
+"en": "parcel carrier / delivery man",
+"pl": "die Paketboten",
+"ex": "Der Paketbote war schon da.",
+"exEn": "The parcel carrier has already been here.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Paketdienst",
+"en": "parcel service",
+"pl": "die Paketdienste",
+"ex": "Welcher Paketdienst liefert das Paket?",
+"exEn": "Which parcel service is delivering the parcel?",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Porto",
+"en": "postage",
+"ex": "Das Porto für den Brief beträgt einen Euro.",
+"exEn": "The postage for the letter is one euro.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "portofrei",
+"en": "postage-free",
+"ex": "Die Bestellung ist ab 50 Euro portofrei.",
+"exEn": "The order is postage-free from 50 euros.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Portokosten",
+"en": "postage costs",
+"ex": "Die Portokosten trägt der Käufer.",
+"exEn": "The buyer pays the postage costs.",
+"diff": "hard",
+"level": "B1",
+"hint": "plural only"
+},
+{
+"de": "der Versand",
+"en": "shipping / dispatch",
+"ex": "Der Versand erfolgt innerhalb von zwei Tagen.",
+"exEn": "Shipping takes place within two days.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Versandkosten",
+"en": "shipping costs",
+"ex": "Die Versandkosten betragen fünf Euro.",
+"exEn": "The shipping costs are five euros.",
+"diff": "medium",
+"level": "B1",
+"hint": "plural only"
+},
+{
+"de": "versandkostenfrei",
+"en": "free shipping",
+"ex": "Ab 30 Euro ist die Lieferung versandkostenfrei.",
+"exEn": "From 30 euros the delivery is free of shipping costs.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Versandkostenpauschale",
+"en": "flat-rate shipping fee",
+"pl": "die Versandkostenpauschalen",
+"ex": "Es gilt eine Versandkostenpauschale von vier Euro.",
+"exEn": "A flat-rate shipping fee of four euros applies.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Werktag",
+"en": "working day / weekday",
+"pl": "die Werktage",
+"ex": "Die Lieferung dauert drei Werktage.",
+"exEn": "Delivery takes three working days.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "anfordern",
+"en": "to request",
+"ex": "Ich möchte ein neues Formular anfordern.",
+"exEn": "I would like to request a new form.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kundennummer",
+"en": "customer number",
+"pl": "die Kundennummern",
+"ex": "Halten Sie bitte Ihre Kundennummer bereit.",
+"exEn": "Please have your customer number ready.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kundenreferenz",
+"en": "customer reference",
+"pl": "die Kundenreferenzen",
+"ex": "Geben Sie die Kundenreferenz im Verwendungszweck an.",
+"exEn": "State the customer reference in the payment reference.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Eingabe",
+"en": "input / entry",
+"pl": "die Eingaben",
+"ex": "Bestätigen Sie Ihre Eingabe mit Enter.",
+"exEn": "Confirm your entry with Enter.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "eingeben",
+"en": "to enter (data)",
+"ex": "Bitte geben Sie Ihr Passwort ein.",
+"exEn": "Please enter your password.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "ausdrucken",
+"en": "to print out",
+"ex": "Ich muss den Kontoauszug ausdrucken.",
+"exEn": "I have to print out the bank statement.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "kontrollieren",
+"en": "to check / monitor",
+"ex": "Der Beamte kontrolliert meinen Ausweis.",
+"exEn": "The official is checking my ID.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "formulieren",
+"en": "to formulate / phrase",
+"ex": "Kannst du den Satz höflicher formulieren?",
+"exEn": "Can you phrase the sentence more politely?",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "aufheben",
+"en": "to keep / cancel",
+"ex": "Heb die Quittung gut auf.",
+"exEn": "Keep the receipt carefully.",
+"diff": "medium",
+"level": "A2",
+"hint": "Two senses: to keep/pick up, or to cancel/abolish."
+},
+{
+"de": "vorschreiben",
+"en": "to stipulate / prescribe",
+"ex": "Das Gesetz schreibt eine Versicherung vor.",
+"exEn": "The law stipulates insurance.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zulassen",
+"en": "to allow / register (a vehicle)",
+"ex": "Man muss das Auto erst zulassen.",
+"exEn": "You first have to register the car.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Überfall",
+"en": "robbery / hold-up",
+"pl": "die Überfälle",
+"ex": "Es gab einen Überfall auf die Bank.",
+"exEn": "There was a robbery at the bank.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "überfallen",
+"en": "to rob / hold up",
+"ex": "Räuber haben die Tankstelle überfallen.",
+"exEn": "Robbers held up the petrol station.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Überwachungskamera",
+"en": "surveillance camera (CCTV)",
+"pl": "die Überwachungskameras",
+"ex": "Die Überwachungskamera filmte den Dieb.",
+"exEn": "The surveillance camera filmed the thief.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Diebstahl",
+"en": "theft",
+"pl": "die Diebstähle",
+"ex": "Sie meldete den Diebstahl bei der Polizei.",
+"exEn": "She reported the theft to the police.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "einbrechen",
+"en": "to break in",
+"ex": "Diebe sind in das Haus eingebrochen.",
+"exEn": "Thieves broke into the house.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Einbruch",
+"en": "burglary / break-in",
+"pl": "die Einbrüche",
+"ex": "Nach dem Einbruch fehlte der Schmuck.",
+"exEn": "After the burglary the jewellery was missing.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "beschädigen",
+"en": "to damage",
+"ex": "Der Sturm hat das Dach beschädigt.",
+"exEn": "The storm damaged the roof.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "betrunken",
+"en": "drunk",
+"ex": "Er fuhr betrunken nach Hause.",
+"exEn": "He drove home drunk.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Asyl",
+"en": "asylum",
+"ex": "Die Familie hat Asyl beantragt.",
+"exEn": "The family applied for asylum.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Notunterkunft",
+"en": "emergency accommodation",
+"pl": "die Notunterkünfte",
+"ex": "Die Flüchtlinge kamen in eine Notunterkunft.",
+"exEn": "The refugees were placed in emergency accommodation.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Regierung",
+"en": "government",
+"pl": "die Regierungen",
+"ex": "Die neue Regierung plant viele Reformen.",
+"exEn": "The new government is planning many reforms.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Staat",
+"en": "state / country",
+"pl": "die Staaten",
+"ex": "Der Staat zahlt für die Schulen.",
+"exEn": "The state pays for the schools.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Staatsgründung",
+"en": "founding of a state",
+"ex": "Die Staatsgründung war 1949.",
+"exEn": "The founding of the state was in 1949.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Bundesrepublik",
+"en": "Federal Republic (of Germany)",
+"ex": "Die Bundesrepublik wurde 1949 gegründet.",
+"exEn": "The Federal Republic was founded in 1949.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Republik",
+"en": "republic",
+"pl": "die Republiken",
+"ex": "Frankreich ist eine Republik.",
+"exEn": "France is a republic.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Demokratie",
+"en": "democracy",
+"ex": "In einer Demokratie wählt das Volk.",
+"exEn": "In a democracy the people vote.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "demokratisch",
+"en": "democratic",
+"ex": "Das Land hat demokratische Wahlen.",
+"exEn": "The country has democratic elections.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "politisch",
+"en": "political",
+"ex": "Er interessiert sich für politische Themen.",
+"exEn": "He's interested in political topics.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Demonstration",
+"en": "demonstration / protest march",
+"pl": "die Demonstrationen",
+"ex": "Tausende kamen zur Demonstration.",
+"exEn": "Thousands came to the demonstration.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Protest",
+"en": "protest",
+"pl": "die Proteste",
+"ex": "Es gab große Proteste in der Stadt.",
+"exEn": "There were big protests in the city.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Europäische Union",
+"en": "European Union",
+"ex": "Deutschland ist Teil der Europäischen Union.",
+"exEn": "Germany is part of the European Union.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Euroeinführung",
+"en": "introduction of the euro",
+"ex": "Die Euroeinführung war im Jahr 2002.",
+"exEn": "The introduction of the euro was in 2002.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die NATO",
+"en": "NATO",
+"ex": "Deutschland ist Mitglied der NATO.",
+"exEn": "Germany is a member of NATO.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Bürgerbüro",
+"en": "citizens' office",
+"pl": "die Bürgerbüros",
+"ex": "Ich melde mich im Bürgerbüro an.",
+"exEn": "I register at the citizens' office.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Jobcenter",
+"en": "job centre",
+"pl": "die Jobcenter",
+"ex": "Sie sucht beim Jobcenter eine neue Stelle.",
+"exEn": "She is looking for a new job at the job centre.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Rathaus",
+"en": "town hall",
+"pl": "die Rathäuser",
+"ex": "Das Rathaus steht im Zentrum der Stadt.",
+"exEn": "The town hall is in the centre of the city.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Post",
+"en": "post office",
+"pl": "die Posten",
+"ex": "Ich bringe das Paket zur Post.",
+"exEn": "I'm taking the parcel to the post office.",
+"diff": "easy",
+"level": "A1",
+"hint": "die Post = both the post office and the mail itself."
+},
+{
+"de": "die Polizei",
+"en": "police",
+"ex": "Bei einem Unfall rufst du die Polizei.",
+"exEn": "In case of an accident you call the police.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Verfügung",
+"en": "disposal / availability",
+"pl": "die Verfügungen",
+"ex": "Ein Auto steht uns zur Verfügung.",
+"exEn": "A car is at our disposal.",
+"diff": "hard",
+"level": "B1",
+"hint": "Usually in the phrase 'zur Verfügung stehen' = to be available."
+}
+],
+"Nature & Outdoors": [
+{
+"de": "die Massentierhaltung",
+"en": "factory farming",
+"pl": "die Massentierhaltungen",
+"ex": "Viele lehnen Massentierhaltung ab.",
+"exEn": "Many people reject factory farming.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Stadtwald",
+"en": "city forest",
+"pl": "die Stadtwälder",
+"ex": "Am Sonntag spazieren wir im Stadtwald.",
+"exEn": "On Sunday we walk in the city forest.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Campingplatz",
+"en": "campsite",
+"pl": "die Campingplätze",
+"ex": "Wir zelten auf einem Campingplatz am See.",
+"exEn": "We're camping at a campsite by the lake.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Inlineskaten",
+"en": "inline skating",
+"ex": "Im Park macht Inlineskaten besonders Spaß.",
+"exEn": "Inline skating is especially fun in the park.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Leuchtturm",
+"en": "lighthouse",
+"pl": "die Leuchttürme",
+"ex": "Vom Strand sieht man den alten Leuchtturm.",
+"exEn": "You can see the old lighthouse from the beach.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Paradies",
+"en": "paradise",
+"pl": "die Paradiese",
+"ex": "Die Insel war ein wahres Paradies.",
+"exEn": "The island was a true paradise.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Schlange",
+"en": "snake / queue",
+"pl": "die Schlangen",
+"ex": "Am Schalter stand eine lange Schlange.",
+"exEn": "There was a long queue at the counter.",
+"diff": "medium",
+"level": "B1",
+"hint": "die Schlange means both 'snake' and 'queue'."
+},
+{
+"de": "der Wanderer",
+"en": "hiker",
+"pl": "die Wanderer",
+"ex": "Der Wanderer rastete auf dem Berg.",
+"exEn": "The hiker rested on the mountain.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Wandertour",
+"en": "hiking tour",
+"pl": "die Wandertouren",
+"ex": "Am Wochenende machen wir eine Wandertour.",
+"exEn": "At the weekend we're going on a hiking tour.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Wohnwagen",
+"en": "caravan",
+"pl": "die Wohnwagen",
+"ex": "Im Urlaub reisen wir mit dem Wohnwagen.",
+"exEn": "On holiday we travel with the caravan.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Clothing & Style": [
+{
+"de": "die Accessoires",
+"en": "accessories",
+"ex": "Die Accessoires passen gut zum Kleid.",
+"exEn": "The accessories go well with the dress.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "anhaben",
+"en": "to have on / to be wearing",
+"ex": "Sie hat heute einen roten Mantel an.",
+"exEn": "She is wearing a red coat today.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Badesachen",
+"en": "swimwear / swimming things",
+"ex": "Vergiss deine Badesachen für den Pool nicht.",
+"exEn": "Don't forget your swimming things for the pool.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Bekleidung",
+"en": "clothing",
+"ex": "Im ersten Stock gibt es Bekleidung für Kinder.",
+"exEn": "On the first floor there is clothing for children.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Fahrradhelm",
+"en": "cycle helmet",
+"pl": "die Fahrradhelme",
+"ex": "Beim Radfahren trage ich immer einen Fahrradhelm.",
+"exEn": "When cycling I always wear a cycle helmet.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Flipflops",
+"en": "flip-flops",
+"ex": "Am Strand trägt sie nur Flipflops.",
+"exEn": "At the beach she only wears flip-flops.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "gepunktet",
+"en": "spotted / polka-dotted",
+"ex": "Er trägt ein gepunktetes Hemd.",
+"exEn": "He is wearing a spotted shirt.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Modeschmuck",
+"en": "costume jewellery",
+"ex": "Modeschmuck ist viel billiger als echtes Gold.",
+"exEn": "Costume jewellery is much cheaper than real gold.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Ohrring",
+"en": "earring",
+"pl": "die Ohrringe",
+"ex": "Sie hat sich neue Ohrringe gekauft.",
+"exEn": "She bought herself new earrings.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Schuhgröße",
+"en": "shoe size",
+"pl": "die Schuhgrößen",
+"ex": "Welche Schuhgröße haben Sie?",
+"exEn": "What shoe size do you have?",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Shorts",
+"en": "shorts",
+"ex": "Im Sommer trage ich am liebsten Shorts.",
+"exEn": "In summer I prefer to wear shorts.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Wanderschuh",
+"en": "hiking boot",
+"pl": "die Wanderschuhe",
+"ex": "Für die Bergtour brauchst du gute Wanderschuhe.",
+"exEn": "For the mountain hike you need good hiking boots.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "atmungsaktiv",
+"en": "breathable",
+"ex": "Diese Jacke ist atmungsaktiv und leicht.",
+"exEn": "This jacket is breathable and light.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "luftdurchlässig",
+"en": "breathable / air-permeable",
+"ex": "Der Stoff ist luftdurchlässig und angenehm im Sommer.",
+"exEn": "The fabric is breathable and pleasant in summer.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "wetterfest",
+"en": "weatherproof",
+"ex": "Die Jacke ist wetterfest und hält dich trocken.",
+"exEn": "The jacket is weatherproof and keeps you dry.",
+"diff": "hard",
+"level": "B1",
+"hint": "weatherproof, not just waterproof"
+}
+],
+"Colours & Descriptions": [
+{
+"de": "blond",
+"en": "blond",
+"ex": "Ihre Tochter hat blonde Haare.",
+"exEn": "Her daughter has blond hair.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "bunt",
+"en": "colourful",
+"ex": "Im Herbst sind die Blätter bunt.",
+"exEn": "In autumn the leaves are colourful.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Silber",
+"en": "silver",
+"ex": "Die Kette ist aus Silber.",
+"exEn": "The chain is made of silver.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "lockig",
+"en": "curly",
+"ex": "Sie hat lange, lockige Haare.",
+"exEn": "She has long, curly hair.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "schlank",
+"en": "slim",
+"ex": "Er ist groß und schlank.",
+"exEn": "He is tall and slim.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "dicht",
+"en": "dense / thick (e.g. hair, fog)",
+"ex": "Der Wald ist hier sehr dicht.",
+"exEn": "The forest is very dense here.",
+"diff": "hard",
+"level": "B1",
+"hint": "dense/tightly-packed, also 'watertight'"
+},
+{
+"de": "durchlässig",
+"en": "permeable / leaky",
+"ex": "Die alte Jacke ist leider durchlässig.",
+"exEn": "Unfortunately the old jacket is permeable.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "aufmerksam",
+"en": "attentive",
+"ex": "Der Verkäufer war sehr aufmerksam.",
+"exEn": "The salesperson was very attentive.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "beschädigt",
+"en": "damaged",
+"ex": "Das Paket kam beschädigt an.",
+"exEn": "The parcel arrived damaged.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "geöffnet",
+"en": "open / opened",
+"ex": "Das Geschäft ist bis acht Uhr geöffnet.",
+"exEn": "The shop is open until eight o'clock.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "extra",
+"en": "extra / specially",
+"ex": "Ich habe extra für dich gekocht.",
+"exEn": "I cooked specially for you.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "unregelmäßig",
+"en": "irregular",
+"ex": "Seine Arbeitszeiten sind sehr unregelmäßig.",
+"exEn": "His working hours are very irregular.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "ehemalig",
+"en": "former",
+"ex": "Das ist mein ehemaliger Chef.",
+"exEn": "That's my former boss.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "friedlich",
+"en": "peaceful",
+"ex": "Die Demonstration verlief friedlich.",
+"exEn": "The demonstration was peaceful.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "musikalisch",
+"en": "musical",
+"ex": "Ihre ganze Familie ist sehr musikalisch.",
+"exEn": "Her whole family is very musical.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "tatsächlich",
+"en": "actually / in fact",
+"ex": "Er hat tatsächlich recht gehabt.",
+"exEn": "He was actually right.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "kaum",
+"en": "hardly / barely",
+"ex": "Ich kann es kaum glauben.",
+"exEn": "I can hardly believe it.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "außerplanmäßig",
+"en": "unscheduled",
+"ex": "Der Zug machte einen außerplanmäßigen Halt.",
+"exEn": "The train made an unscheduled stop.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "öffentlich",
+"en": "public",
+"ex": "Ich nutze gern öffentliche Verkehrsmittel.",
+"exEn": "I like to use public transport.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "praktisch",
+"en": "practical / handy",
+"ex": "Ein Rucksack ist sehr praktisch auf Reisen.",
+"exEn": "A backpack is very practical when travelling.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "aktiv",
+"en": "active",
+"ex": "Im Urlaub bin ich gern aktiv.",
+"exEn": "On holiday I like to be active.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "angenehm",
+"en": "pleasant",
+"ex": "Wir hatten eine angenehme Reise.",
+"exEn": "We had a pleasant journey.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "historisch",
+"en": "historical",
+"ex": "Die Altstadt hat viele historische Gebäude.",
+"exEn": "The old town has many historical buildings.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "hygienisch",
+"en": "hygienic",
+"ex": "Das Hotel ist sauber und hygienisch.",
+"exEn": "The hotel is clean and hygienic.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "komfortabel",
+"en": "comfortable",
+"ex": "Das Zimmer war groß und komfortabel.",
+"exEn": "The room was large and comfortable.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "lebhaft",
+"en": "lively",
+"ex": "Die Stadt ist abends sehr lebhaft.",
+"exEn": "The city is very lively in the evening.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "sauber",
+"en": "clean",
+"ex": "Das Badezimmer war blitzsauber.",
+"exEn": "The bathroom was spotlessly clean.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "traumhaft",
+"en": "wonderful / dreamlike",
+"ex": "Der Strand war einfach traumhaft.",
+"exEn": "The beach was simply wonderful.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Around the House": [
+{
+"de": "der Babyartikel",
+"en": "baby item / baby product",
+"pl": "die Babyartikel",
+"ex": "Babyartikel gibt es in der dritten Etage.",
+"exEn": "Baby items are on the third floor.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Navigationsgerät",
+"en": "navigation device / sat nav",
+"pl": "die Navigationsgeräte",
+"ex": "Ohne Navigationsgerät finde ich den Weg nicht.",
+"exEn": "Without a navigation device I can't find the way.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Wecker",
+"en": "alarm clock",
+"pl": "die Wecker",
+"ex": "Mein Wecker klingelt um sechs Uhr.",
+"exEn": "My alarm clock rings at six o'clock.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Hausflur",
+"en": "hallway / corridor",
+"pl": "die Hausflure",
+"ex": "Im Hausflur stehen viele Fahrräder.",
+"exEn": "There are lots of bikes in the hallway.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Krippe",
+"en": "crib / day nursery",
+"pl": "die Krippen",
+"ex": "Unser Sohn geht seit September in die Krippe.",
+"exEn": "Our son has been going to the day nursery since September.",
+"diff": "medium",
+"level": "B1",
+"hint": "Also means a nativity crib."
+},
+{
+"de": "das Gebäude",
+"en": "building",
+"pl": "die Gebäude",
+"ex": "Das alte Gebäude wird gerade renoviert.",
+"exEn": "The old building is being renovated.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Café",
+"en": "café",
+"pl": "die Cafés",
+"ex": "Wir trinken Kaffee in einem kleinen Café.",
+"exEn": "We drink coffee in a small café.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Kino",
+"en": "cinema",
+"pl": "die Kinos",
+"ex": "Heute Abend gehen wir ins Kino.",
+"exEn": "This evening we're going to the cinema.",
+"diff": "easy",
+"level": "A1"
+}
+],
+"Sport & Leisure": [
+{
+"de": "das Camping",
+"en": "camping",
+"ex": "Im Sommer machen wir gern Camping.",
+"exEn": "In summer we like to go camping.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Tattoo",
+"en": "tattoo",
+"pl": "die Tattoos",
+"ex": "Er hat ein großes Tattoo am Arm.",
+"exEn": "He has a big tattoo on his arm.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Shopping",
+"en": "shopping",
+"ex": "Sie liebt Shopping am Wochenende.",
+"exEn": "She loves shopping at the weekend.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Onlineeinkauf",
+"en": "online shopping / online purchase",
+"pl": "die Onlineeinkäufe",
+"ex": "Der Onlineeinkauf spart mir viel Zeit.",
+"exEn": "Online shopping saves me a lot of time.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Onlineshopping",
+"en": "online shopping",
+"ex": "Onlineshopping ist heute sehr beliebt.",
+"exEn": "Online shopping is very popular today.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Schläger",
+"en": "racket / bat",
+"pl": "die Schläger",
+"ex": "Sie kaufte einen neuen Schläger zum Tennis.",
+"exEn": "She bought a new racket for tennis.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Computerspiel",
+"en": "computer game",
+"pl": "die Computerspiele",
+"ex": "Mein Bruder spielt gern Computerspiele.",
+"exEn": "My brother likes playing computer games.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Ski",
+"en": "ski",
+"pl": "die Skier",
+"ex": "Im Winter fahren wir gern Ski.",
+"exEn": "In winter we like to ski.",
+"diff": "easy",
+"level": "A1",
+"hint": "'Ski fahren' = to ski."
+},
+{
+"de": "der Abfall",
+"en": "rubbish / waste",
+"pl": "die Abfälle",
+"ex": "Bitte werfen Sie den Abfall in den Mülleimer.",
+"exEn": "Please throw the rubbish into the bin.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Alkohol",
+"en": "alcohol",
+"ex": "Im Flugzeug ist eigener Alkohol nicht erlaubt.",
+"exEn": "Your own alcohol is not allowed on the plane.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Greetings & Basics": [
+{
+"de": "griechisch",
+"en": "Greek",
+"ex": "Heute Abend essen wir griechisch.",
+"exEn": "Tonight we're eating Greek food.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "ungarisch",
+"en": "Hungarian",
+"ex": "Die Gulaschsuppe ist ein ungarisches Gericht.",
+"exEn": "Goulash soup is a Hungarian dish.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Ding",
+"en": "thing",
+"pl": "die Dinge",
+"ex": "Was ist das für ein Ding?",
+"exEn": "What kind of thing is that?",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Lieblingsfarbe",
+"en": "favourite colour",
+"pl": "die Lieblingsfarben",
+"ex": "Blau ist meine Lieblingsfarbe.",
+"exEn": "Blue is my favourite colour.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "zu Hause",
+"en": "at home",
+"ex": "Am Wochenende bleibe ich zu Hause.",
+"exEn": "At the weekend I stay at home.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "verstanden",
+"en": "understood",
+"ex": "Alles klar, ich habe alles verstanden.",
+"exEn": "All clear, I've understood everything.",
+"diff": "easy",
+"level": "A2",
+"hint": "Past participle of verstehen, often used to confirm you understood."
+},
+{
+"de": "gestattet sein",
+"en": "to be permitted",
+"ex": "Rauchen ist hier nicht gestattet.",
+"exEn": "Smoking is not permitted here.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Common Verbs": [
+{
+"de": "anfassen",
+"en": "to touch",
+"ex": "Bitte die Ware nicht anfassen.",
+"exEn": "Please do not touch the merchandise.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "stehlen",
+"en": "to steal",
+"ex": "Jemand hat ihr das Portemonnaie gestohlen.",
+"exEn": "Someone stole her wallet.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "herstellen",
+"en": "to manufacture / produce",
+"ex": "Diese Firma stellt Möbel her.",
+"exEn": "This company manufactures furniture.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "produzieren",
+"en": "to produce",
+"ex": "Die Fabrik produziert tausend Autos pro Tag.",
+"exEn": "The factory produces a thousand cars per day.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verpacken",
+"en": "to package / wrap",
+"ex": "Die Mitarbeiter verpacken die Ware sorgfältig.",
+"exEn": "The employees package the goods carefully.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "ausliefern",
+"en": "to deliver / ship out",
+"ex": "Wir liefern die Bestellung morgen aus.",
+"exEn": "We will deliver the order tomorrow.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zustellen",
+"en": "to deliver (mail/parcels)",
+"ex": "Der Bote stellt das Paket am Vormittag zu.",
+"exEn": "The courier delivers the parcel in the morning.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zurückschicken",
+"en": "to send back",
+"ex": "Ich möchte die Schuhe zurückschicken.",
+"exEn": "I'd like to send the shoes back.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "zurücksenden",
+"en": "to return / send back",
+"ex": "Bitte senden Sie den Artikel kostenlos zurück.",
+"exEn": "Please return the item free of charge.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "widerrufen",
+"en": "to revoke / cancel (a contract)",
+"ex": "Sie können die Bestellung innerhalb von 14 Tagen widerrufen.",
+"exEn": "You can cancel the order within 14 days.",
+"diff": "hard",
+"level": "B1",
+"hint": "to revoke/withdraw, not 'disclaimer'"
+},
+{
+"de": "bilden",
+"en": "to form",
+"ex": "Bitte bilden Sie einen Satz.",
+"exEn": "Please form a sentence.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "aufwachsen",
+"en": "to grow up",
+"ex": "Sie ist auf dem Land aufgewachsen.",
+"exEn": "She grew up in the countryside.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "heiraten",
+"en": "to marry",
+"ex": "Sie wollen im Sommer heiraten.",
+"exEn": "They want to get married in the summer.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "einführen",
+"en": "to introduce (something new)",
+"ex": "Die Firma will neue Regeln einführen.",
+"exEn": "The company wants to introduce new rules.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "aufteilen",
+"en": "to divide up",
+"ex": "Wir teilen die Arbeit untereinander auf.",
+"exEn": "We divide the work among ourselves.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "anheben",
+"en": "to raise / lift",
+"ex": "Die Firma will die Löhne anheben.",
+"exEn": "The company wants to raise wages.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "entwickeln",
+"en": "to develop",
+"ex": "Die Stadt hat sich schnell entwickelt.",
+"exEn": "The city developed quickly.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "fördern",
+"en": "to promote / support",
+"ex": "Der Staat fördert junge Künstler.",
+"exEn": "The state supports young artists.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "gründen",
+"en": "to found / establish",
+"ex": "Sie haben eine kleine Firma gegründet.",
+"exEn": "They founded a small company.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "verlassen",
+"en": "to leave",
+"ex": "Er hat das Haus früh verlassen.",
+"exEn": "He left the house early.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "vermischen",
+"en": "to mix / blend",
+"ex": "Vermischen Sie das Mehl mit dem Zucker.",
+"exEn": "Mix the flour with the sugar.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "verfolgen",
+"en": "to pursue / follow",
+"ex": "Die Polizei verfolgte den Dieb.",
+"exEn": "The police pursued the thief.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verdrängen",
+"en": "to suppress / push out",
+"ex": "Er verdrängt die schlechten Erinnerungen.",
+"exEn": "He suppresses the bad memories.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "vereinigen",
+"en": "to unite",
+"ex": "1990 wurden die beiden Staaten vereinigt.",
+"exEn": "In 1990 the two states were united.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zerschlagen",
+"en": "to smash / break up",
+"ex": "Die Vase ist auf dem Boden zerschlagen.",
+"exEn": "The vase is smashed on the floor.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "einsperren",
+"en": "to lock up / confine",
+"ex": "Man hat ihn jahrelang eingesperrt.",
+"exEn": "They locked him up for years.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verhaften",
+"en": "to arrest",
+"ex": "Die Polizei hat den Mann verhaftet.",
+"exEn": "The police arrested the man.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "ernähren",
+"en": "to feed / nourish",
+"ex": "Sie muss eine große Familie ernähren.",
+"exEn": "She has to feed a large family.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "miterleben",
+"en": "to witness / live through",
+"ex": "Meine Oma hat den Krieg miterlebt.",
+"exEn": "My grandma lived through the war.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "zurückkehren",
+"en": "to return / come back",
+"ex": "Nach Jahren kehrte er in die Heimat zurück.",
+"exEn": "After years he returned to his homeland.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "wiedervereinigen",
+"en": "to reunite / reunify",
+"ex": "Deutschland wurde 1990 wiedervereinigt.",
+"exEn": "Germany was reunified in 1990.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "fallen",
+"en": "to fall",
+"ex": "Im Herbst fallen die Blätter von den Bäumen.",
+"exEn": "In autumn the leaves fall from the trees.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "halten",
+"en": "to stop / to hold",
+"ex": "Der Zug hält an jedem Bahnhof.",
+"exEn": "The train stops at every station.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "nachfragen",
+"en": "to ask / to inquire",
+"ex": "Ich frage am Schalter nach.",
+"exEn": "I'll inquire at the counter.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "führen",
+"en": "to lead",
+"ex": "Dieser Weg führt direkt zum See.",
+"exEn": "This path leads straight to the lake.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "betreten",
+"en": "to enter / step onto",
+"ex": "Es ist verboten, die Gleise zu betreten.",
+"exEn": "It is forbidden to step onto the tracks.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "erleben",
+"en": "to experience",
+"ex": "Auf der Reise haben wir viel erlebt.",
+"exEn": "We experienced a lot on the trip.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "füttern",
+"en": "to feed (an animal)",
+"ex": "Bitte die Tiere nicht füttern.",
+"exEn": "Please do not feed the animals.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "stören",
+"en": "to disturb",
+"ex": "Der Lärm stört die anderen Gäste.",
+"exEn": "The noise disturbs the other guests.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "verzögern",
+"en": "to delay",
+"ex": "Das schlechte Wetter verzögert den Abflug.",
+"exEn": "The bad weather delays the departure.",
+"diff": "hard",
+"level": "B1",
+"hint": "verzögern = to delay, NOT 'to hesitate' (that's zögern)."
+}
+],
+"Banking & Finance": [
+{
+"de": "AGB",
+"en": "general terms and conditions",
+"ex": "Bitte lesen Sie die AGB vor der Bestellung.",
+"exEn": "Please read the terms and conditions before ordering.",
+"diff": "hard",
+"level": "B1",
+"hint": "Allgemeine Geschäftsbedingungen; always plural, no article"
+},
+{
+"de": "der Bankeinzug",
+"en": "direct debit",
+"pl": "die Bankeinzüge",
+"ex": "Ich bezahle die Rechnung per Bankeinzug.",
+"exEn": "I pay the bill by direct debit.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Nachnahme",
+"en": "cash on delivery",
+"ex": "Sie können die Ware per Nachnahme bezahlen.",
+"exEn": "You can pay for the goods cash on delivery.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Bezahlvorgang",
+"en": "payment process",
+"pl": "die Bezahlvorgänge",
+"ex": "Der Bezahlvorgang dauert nur wenige Sekunden.",
+"exEn": "The payment process takes only a few seconds.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Mehrkosten",
+"en": "additional costs",
+"ex": "Für die Lieferung entstehen keine Mehrkosten.",
+"exEn": "There are no additional costs for delivery.",
+"diff": "hard",
+"level": "B1",
+"hint": "plural only"
+},
+{
+"de": "die Zahlung",
+"en": "payment",
+"pl": "die Zahlungen",
+"ex": "Wir haben Ihre Zahlung erhalten.",
+"exEn": "We have received your payment.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Widerrufsrecht",
+"en": "right of withdrawal",
+"ex": "Als Kunde haben Sie ein Widerrufsrecht.",
+"exEn": "As a customer you have a right of withdrawal.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Bankkarte",
+"en": "bank card",
+"pl": "die Bankkarten",
+"ex": "Ich bezahle mit meiner Bankkarte.",
+"exEn": "I pay with my bank card.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Bankleitzahl",
+"en": "sort code",
+"pl": "die Bankleitzahlen",
+"ex": "Bitte geben Sie die Bankleitzahl ein.",
+"exEn": "Please enter the sort code.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Bankschalter",
+"en": "bank counter",
+"pl": "die Bankschalter",
+"ex": "Am Bankschalter gibt es eine lange Schlange.",
+"exEn": "There is a long queue at the bank counter.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "bar",
+"en": "in cash",
+"ex": "Ich zahle lieber bar.",
+"exEn": "I prefer to pay in cash.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "bargeldlos",
+"en": "cashless",
+"ex": "Im Geschäft kann man bargeldlos bezahlen.",
+"exEn": "In the shop you can pay cashless.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "begleichen",
+"en": "to settle (a bill)",
+"ex": "Ich muss noch die Rechnung begleichen.",
+"exEn": "I still have to settle the bill.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der BIC",
+"en": "BIC (bank code)",
+"pl": "die BICs",
+"ex": "Für die Überweisung brauche ich den BIC.",
+"exEn": "I need the BIC for the transfer.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Geldstück",
+"en": "coin",
+"pl": "die Geldstücke",
+"ex": "Im Brunnen liegen viele Geldstücke.",
+"exEn": "There are many coins in the fountain.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Girocard",
+"en": "girocard (debit card)",
+"pl": "die Girocards",
+"ex": "Mit der Girocard kann ich Geld abheben.",
+"exEn": "With the girocard I can withdraw money.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die IBAN",
+"en": "IBAN",
+"pl": "die IBANs",
+"ex": "Meine IBAN steht auf dem Kontoauszug.",
+"exEn": "My IBAN is on the bank statement.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Kleingeld",
+"en": "small change",
+"ex": "Hast du etwas Kleingeld für den Automaten?",
+"exEn": "Do you have some small change for the machine?",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Kontonummer",
+"en": "account number",
+"pl": "die Kontonummern",
+"ex": "Bitte nennen Sie mir Ihre Kontonummer.",
+"exEn": "Please tell me your account number.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Kreditinstitut",
+"en": "credit institution / bank",
+"pl": "die Kreditinstitute",
+"ex": "Die Sparkasse ist ein bekanntes Kreditinstitut.",
+"exEn": "The Sparkasse is a well-known credit institution.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Münze",
+"en": "coin",
+"pl": "die Münzen",
+"ex": "Er warf eine Münze in den Automaten.",
+"exEn": "He threw a coin into the machine.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Pfennig",
+"en": "penny (old German coin)",
+"pl": "die Pfennige",
+"ex": "Früher bezahlte man mit Pfennig und Mark.",
+"exEn": "In the past people paid with pfennig and mark.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Reichtum",
+"en": "wealth",
+"pl": "die Reichtümer",
+"ex": "Sein Reichtum machte ihn nicht glücklich.",
+"exEn": "His wealth did not make him happy.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Schein",
+"en": "banknote / bill",
+"pl": "die Scheine",
+"ex": "Kannst du mir den Schein wechseln?",
+"exEn": "Can you change the banknote for me?",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Sparkonto",
+"en": "savings account",
+"pl": "die Sparkonten",
+"ex": "Ich lege jeden Monat Geld auf mein Sparkonto.",
+"exEn": "I put money into my savings account every month.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Sparschwein",
+"en": "piggy bank",
+"pl": "die Sparschweine",
+"ex": "Das Kind spart sein Geld im Sparschwein.",
+"exEn": "The child saves its money in the piggy bank.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die TAN",
+"en": "TAN (transaction number)",
+"pl": "die TANs",
+"ex": "Für die Überweisung brauche ich eine TAN.",
+"exEn": "I need a TAN for the transfer.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Überweisungsformular",
+"en": "bank transfer form",
+"pl": "die Überweisungsformulare",
+"ex": "Ich fülle das Überweisungsformular aus.",
+"exEn": "I am filling out the bank transfer form.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Nulltarif",
+"en": "free of charge / zero rate",
+"pl": "die Nulltarife",
+"ex": "Das Konto gibt es zum Nulltarif.",
+"exEn": "The account is available free of charge.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Autoversicherung",
+"en": "car insurance",
+"pl": "die Autoversicherungen",
+"ex": "Meine Autoversicherung ist sehr günstig.",
+"exEn": "My car insurance is very cheap.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Haftpflicht",
+"en": "liability",
+"pl": "die Haftpflichten",
+"ex": "Die Haftpflicht zahlt den Schaden am anderen Auto.",
+"exEn": "The liability insurance pays for the damage to the other car.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Haftpflichtversicherung",
+"en": "liability insurance",
+"pl": "die Haftpflichtversicherungen",
+"ex": "Eine Haftpflichtversicherung ist in Deutschland Pflicht.",
+"exEn": "Liability insurance is mandatory in Germany.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Kaskoversicherung",
+"en": "comprehensive car insurance",
+"pl": "die Kaskoversicherungen",
+"ex": "Mit einer Kaskoversicherung bist du besser geschützt.",
+"exEn": "With comprehensive insurance you are better protected.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Personenschaden",
+"en": "personal injury",
+"pl": "die Personenschäden",
+"ex": "Bei dem Unfall gab es zum Glück keinen Personenschaden.",
+"exEn": "Luckily there was no personal injury in the accident.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Sachschaden",
+"en": "property damage",
+"pl": "die Sachschäden",
+"ex": "Der Sachschaden war zum Glück gering.",
+"exEn": "Luckily the property damage was minor.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Teilkaskoversicherung",
+"en": "partial comprehensive insurance",
+"pl": "die Teilkaskoversicherungen",
+"ex": "Die Teilkaskoversicherung deckt Diebstahl ab.",
+"exEn": "Partial comprehensive insurance covers theft.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "versichern",
+"en": "to insure",
+"ex": "Ich habe mein Auto gut versichert.",
+"exEn": "I have insured my car well.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Versicherungsschutz",
+"en": "insurance cover",
+"pl": "die Versicherungsschütze",
+"ex": "Der Versicherungsschutz beginnt morgen.",
+"exEn": "The insurance cover starts tomorrow.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Vollkaskoversicherung",
+"en": "fully comprehensive insurance",
+"pl": "die Vollkaskoversicherungen",
+"ex": "Für ein neues Auto lohnt sich eine Vollkaskoversicherung.",
+"exEn": "For a new car, fully comprehensive insurance is worth it.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Zusatzversicherung",
+"en": "additional insurance",
+"pl": "die Zusatzversicherungen",
+"ex": "Eine Zusatzversicherung kostet extra.",
+"exEn": "An additional insurance costs extra.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "aufkommen",
+"en": "to cover (costs)",
+"ex": "Die Versicherung kommt für den Schaden auf.",
+"exEn": "The insurance covers the damage.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "lohnen",
+"en": "to be worth it",
+"ex": "Es lohnt sich, die Preise zu vergleichen.",
+"exEn": "It is worth comparing the prices.",
+"diff": "medium",
+"level": "B1"
+}
+],
+"Travel & Directions": [
+{
+"de": "der Onlineshop",
+"en": "online shop",
+"pl": "die Onlineshops",
+"ex": "Diese Jacke gibt es nur im Onlineshop.",
+"exEn": "This jacket is only available in the online shop.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Artikelnummer",
+"en": "item number",
+"pl": "die Artikelnummern",
+"ex": "Geben Sie bitte die Artikelnummer an.",
+"exEn": "Please provide the item number.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Auftragsnummer",
+"en": "order number",
+"pl": "die Auftragsnummern",
+"ex": "Ihre Auftragsnummer steht in der E-Mail.",
+"exEn": "Your order number is in the email.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Innenstadt",
+"en": "city centre",
+"pl": "die Innenstädte",
+"ex": "In der Innenstadt gibt es viele Geschäfte.",
+"exEn": "There are many shops in the city centre.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "das Dorf",
+"en": "village",
+"pl": "die Dörfer",
+"ex": "Sie wohnt in einem kleinen Dorf.",
+"exEn": "She lives in a small village.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "der Besuch",
+"en": "visit / visitor(s)",
+"pl": "die Besuche",
+"ex": "Heute bekommen wir Besuch.",
+"exEn": "We're having visitors today.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Ferienhaus",
+"en": "holiday home",
+"pl": "die Ferienhäuser",
+"ex": "Wir mieten ein Ferienhaus am Meer.",
+"exEn": "We're renting a holiday home by the sea.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Inselrundfahrt",
+"en": "island tour",
+"pl": "die Inselrundfahrten",
+"ex": "Wir machen morgen eine Inselrundfahrt.",
+"exEn": "We're doing an island tour tomorrow.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Tourist",
+"en": "tourist",
+"pl": "die Touristen",
+"ex": "Im Sommer kommen viele Touristen.",
+"exEn": "Many tourists come in summer.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Heimat",
+"en": "home / homeland",
+"ex": "Italien ist meine zweite Heimat.",
+"exEn": "Italy is my second home.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Ampel",
+"en": "traffic light",
+"pl": "die Ampeln",
+"ex": "An der Ampel müssen wir warten.",
+"exEn": "We have to wait at the traffic light.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Ankunftszeit",
+"en": "arrival time",
+"pl": "die Ankunftszeiten",
+"ex": "Wie ist die Ankunftszeit des Zuges?",
+"exEn": "What is the train's arrival time?",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Auskunft",
+"en": "information",
+"pl": "die Auskünfte",
+"ex": "Ich frage am Schalter nach einer Auskunft.",
+"exEn": "I ask for information at the counter.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Bahn",
+"en": "train / railway",
+"pl": "die Bahnen",
+"ex": "Ich fahre mit der Bahn zur Arbeit.",
+"exEn": "I travel to work by train.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Bushaltestelle",
+"en": "bus stop",
+"pl": "die Bushaltestellen",
+"ex": "Die Bushaltestelle ist gleich um die Ecke.",
+"exEn": "The bus stop is just around the corner.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Einzelfahrkarte",
+"en": "single ticket",
+"pl": "die Einzelfahrkarten",
+"ex": "Eine Einzelfahrkarte kostet drei Euro.",
+"exEn": "A single ticket costs three euros.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Fahrgast",
+"en": "passenger",
+"pl": "die Fahrgäste",
+"ex": "Jeder Fahrgast braucht ein gültiges Ticket.",
+"exEn": "Every passenger needs a valid ticket.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Gleis",
+"en": "platform / track",
+"pl": "die Gleise",
+"ex": "Der Zug fährt von Gleis vier ab.",
+"exEn": "The train departs from platform four.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Hauptbahnhof",
+"en": "main train station",
+"pl": "die Hauptbahnhöfe",
+"ex": "Wir treffen uns am Hauptbahnhof.",
+"exEn": "We'll meet at the main train station.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Informationsschalter",
+"en": "information desk",
+"pl": "die Informationsschalter",
+"ex": "Fragen Sie bitte am Informationsschalter.",
+"exEn": "Please ask at the information desk.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Intercity",
+"en": "intercity train",
+"pl": "die Intercitys",
+"ex": "Der Intercity hält nur in großen Städten.",
+"exEn": "The intercity train only stops in big cities.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kreuzung",
+"en": "crossroads / intersection",
+"pl": "die Kreuzungen",
+"ex": "An der nächsten Kreuzung links abbiegen.",
+"exEn": "Turn left at the next crossroads.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Kurzstrecke",
+"en": "short distance / short-haul trip",
+"pl": "die Kurzstrecken",
+"ex": "Für die Kurzstrecke brauchst du kein teures Ticket.",
+"exEn": "You don't need an expensive ticket for the short trip.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Linie",
+"en": "line / route",
+"pl": "die Linien",
+"ex": "Die Linie 5 fährt zum Bahnhof.",
+"exEn": "Line 5 goes to the station.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "das Motorrad",
+"en": "motorcycle",
+"pl": "die Motorräder",
+"ex": "Im Sommer fahre ich gern Motorrad.",
+"exEn": "In summer I like to ride a motorcycle.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "die Orientierung",
+"en": "orientation / sense of direction",
+"pl": "die Orientierungen",
+"ex": "In der fremden Stadt verlor ich die Orientierung.",
+"exEn": "I lost my bearings in the unfamiliar city.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Regionalbahn",
+"en": "regional train",
+"pl": "die Regionalbahnen",
+"ex": "Die Regionalbahn hält an jedem kleinen Bahnhof.",
+"exEn": "The regional train stops at every small station.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Schienenersatzverkehr",
+"en": "rail replacement bus service",
+"ex": "Wegen Bauarbeiten gibt es Schienenersatzverkehr.",
+"exEn": "There is a rail replacement bus service due to construction work.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Tageskarte",
+"en": "day ticket",
+"pl": "die Tageskarten",
+"ex": "Mit der Tageskarte kannst du den ganzen Tag fahren.",
+"exEn": "With the day ticket you can travel all day.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Verkehrsmittel",
+"en": "means of transport",
+"pl": "die Verkehrsmittel",
+"ex": "Der Bus ist ein praktisches Verkehrsmittel.",
+"exEn": "The bus is a practical means of transport.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Weg",
+"en": "path / way",
+"pl": "die Wege",
+"ex": "Können Sie mir den Weg zum Bahnhof zeigen?",
+"exEn": "Can you show me the way to the station?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "wohin",
+"en": "where to",
+"ex": "Wohin fährst du in den Urlaub?",
+"exEn": "Where are you going on holiday?",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "vorbei",
+"en": "past / over",
+"ex": "Der Bus fuhr einfach an uns vorbei.",
+"exEn": "The bus just drove past us.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "vorne",
+"en": "at the front",
+"ex": "Der Fahrer sitzt vorne im Bus.",
+"exEn": "The driver sits at the front of the bus.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "überall",
+"en": "everywhere",
+"ex": "In dieser Stadt gibt es überall Fahrräder.",
+"exEn": "There are bicycles everywhere in this city.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Abflug",
+"en": "departure (flight)",
+"pl": "die Abflüge",
+"ex": "Der Abflug verspätet sich um eine Stunde.",
+"exEn": "The departure is delayed by an hour.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "annulliert",
+"en": "cancelled",
+"ex": "Unser Flug wurde leider annulliert.",
+"exEn": "Unfortunately our flight was cancelled.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Anzeigetafel",
+"en": "departure board",
+"pl": "die Anzeigetafeln",
+"ex": "Auf der Anzeigetafel steht das Gleis.",
+"exEn": "The platform is shown on the departure board.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Bordkarte",
+"en": "boarding pass",
+"pl": "die Bordkarten",
+"ex": "Zeigen Sie bitte Ihre Bordkarte vor.",
+"exEn": "Please show your boarding pass.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Check-in-Schalter",
+"en": "check-in desk",
+"pl": "die Check-in-Schalter",
+"ex": "Der Check-in-Schalter öffnet zwei Stunden vor Abflug.",
+"exEn": "The check-in desk opens two hours before departure.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "einchecken",
+"en": "to check in",
+"ex": "Wir müssen am Flughafen rechtzeitig einchecken.",
+"exEn": "We have to check in on time at the airport.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Einsteigezeit",
+"en": "boarding time",
+"pl": "die Einsteigezeiten",
+"ex": "Die Einsteigezeit ist um 14 Uhr.",
+"exEn": "The boarding time is at 2 p.m.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Fluggast",
+"en": "air passenger",
+"pl": "die Fluggäste",
+"ex": "Jeder Fluggast darf einen Koffer mitnehmen.",
+"exEn": "Each air passenger may bring one suitcase.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Fluggesellschaft",
+"en": "airline",
+"pl": "die Fluggesellschaften",
+"ex": "Welche Fluggesellschaft fliegt nach Berlin?",
+"exEn": "Which airline flies to Berlin?",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Gate",
+"en": "gate",
+"pl": "die Gates",
+"ex": "Unser Flug geht von Gate 12 ab.",
+"exEn": "Our flight departs from gate 12.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Gepäckausgabe",
+"en": "baggage reclaim",
+"pl": "die Gepäckausgaben",
+"ex": "Die Koffer findest du an der Gepäckausgabe.",
+"exEn": "You'll find the suitcases at the baggage reclaim.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Gepäckband",
+"en": "baggage carousel",
+"pl": "die Gepäckbänder",
+"ex": "Mein Koffer kommt gerade aufs Gepäckband.",
+"exEn": "My suitcase is just coming onto the baggage carousel.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Handgepäck",
+"en": "hand luggage",
+"ex": "Im Handgepäck sind keine Flüssigkeiten erlaubt.",
+"exEn": "No liquids are allowed in hand luggage.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "landen",
+"en": "to land",
+"ex": "Das Flugzeug landet pünktlich in München.",
+"exEn": "The plane lands on time in Munich.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Lautsprecherdurchsage",
+"en": "loudspeaker announcement",
+"pl": "die Lautsprecherdurchsagen",
+"ex": "Eine Lautsprecherdurchsage warnte vor der Verspätung.",
+"exEn": "A loudspeaker announcement warned of the delay.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Passkontrolle",
+"en": "passport control",
+"pl": "die Passkontrollen",
+"ex": "An der Passkontrolle war eine lange Schlange.",
+"exEn": "There was a long queue at passport control.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Pilotenstreik",
+"en": "pilots' strike",
+"pl": "die Pilotenstreiks",
+"ex": "Wegen des Pilotenstreiks fielen viele Flüge aus.",
+"exEn": "Many flights were cancelled because of the pilots' strike.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Reisebüro",
+"en": "travel agency",
+"pl": "die Reisebüros",
+"ex": "Wir haben die Reise im Reisebüro gebucht.",
+"exEn": "We booked the trip at the travel agency.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Reiseplan",
+"en": "itinerary",
+"pl": "die Reisepläne",
+"ex": "Unser Reiseplan ist gut durchdacht.",
+"exEn": "Our itinerary is well thought out.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Reiseplanung",
+"en": "travel planning",
+"pl": "die Reiseplanungen",
+"ex": "Die Reiseplanung hat mehrere Wochen gedauert.",
+"exEn": "The travel planning took several weeks.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "verreisen",
+"en": "to go on a trip",
+"ex": "Im Sommer verreisen wir nach Italien.",
+"exEn": "In summer we travel to Italy.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Zoll",
+"en": "customs",
+"pl": "die Zölle",
+"ex": "Am Zoll wurde mein Koffer kontrolliert.",
+"exEn": "My suitcase was checked at customs.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Zuschlag",
+"en": "surcharge",
+"pl": "die Zuschläge",
+"ex": "Für den Schnellzug zahlst du einen Zuschlag.",
+"exEn": "You pay a surcharge for the express train.",
+"diff": "hard",
+"level": "B1"
+}
+],
+"Driving & Traffic": [
+{
+"de": "anfahren",
+"en": "to hit (with a vehicle)",
+"ex": "Ein Auto hat den Radfahrer angefahren.",
+"exEn": "A car hit the cyclist.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "ausparken",
+"en": "to pull out (of a parking space)",
+"ex": "Beim Ausparken muss man vorsichtig sein.",
+"exEn": "You have to be careful when pulling out.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Außenspiegel",
+"en": "wing mirror",
+"pl": "die Außenspiegel",
+"ex": "Der Außenspiegel ist abgebrochen.",
+"exEn": "The wing mirror has broken off.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Automarke",
+"en": "car make / brand",
+"pl": "die Automarken",
+"ex": "Welche Automarke fährst du?",
+"exEn": "Which car make do you drive?",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Autoteil",
+"en": "car part",
+"pl": "die Autoteile",
+"ex": "Das Autoteil ist sehr teuer.",
+"exEn": "The car part is very expensive.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Blinker",
+"en": "indicator / turn signal",
+"pl": "die Blinker",
+"ex": "Setz bitte den Blinker, bevor du abbiegst.",
+"exEn": "Please use the indicator before you turn.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Fahrerseite",
+"en": "driver's side",
+"pl": "die Fahrerseiten",
+"ex": "Der Kratzer ist auf der Fahrerseite.",
+"exEn": "The scratch is on the driver's side.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Gebrauchtwagen",
+"en": "used car",
+"pl": "die Gebrauchtwagen",
+"ex": "Wir kaufen lieber einen Gebrauchtwagen.",
+"exEn": "We prefer to buy a used car.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Kilometer",
+"en": "kilometre",
+"pl": "die Kilometer",
+"ex": "Bis zur Stadt sind es zehn Kilometer.",
+"exEn": "It is ten kilometres to the city.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "krachen",
+"en": "to crash / bang",
+"ex": "Die beiden Autos sind laut gekracht.",
+"exEn": "The two cars crashed loudly.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Kratzer",
+"en": "scratch",
+"pl": "die Kratzer",
+"ex": "Mein Auto hat einen kleinen Kratzer.",
+"exEn": "My car has a small scratch.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "lenken",
+"en": "to steer",
+"ex": "Sie lenkt das Auto durch die enge Gasse.",
+"exEn": "She steers the car through the narrow alley.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Motorhaube",
+"en": "bonnet / hood",
+"pl": "die Motorhauben",
+"ex": "Er öffnete die Motorhaube und prüfte den Motor.",
+"exEn": "He opened the bonnet and checked the engine.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Neuwagen",
+"en": "new car",
+"pl": "die Neuwagen",
+"ex": "Ein Neuwagen verliert schnell an Wert.",
+"exEn": "A new car loses value quickly.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das Nummernschild",
+"en": "number plate",
+"pl": "die Nummernschilder",
+"ex": "Das Nummernschild war schmutzig.",
+"exEn": "The number plate was dirty.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Oldtimer",
+"en": "vintage car",
+"pl": "die Oldtimer",
+"ex": "Auf der Messe stehen viele Oldtimer.",
+"exEn": "There are many vintage cars at the fair.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "parken",
+"en": "to park",
+"ex": "Hier darf man nicht parken.",
+"exEn": "You are not allowed to park here.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Parklücke",
+"en": "parking space",
+"pl": "die Parklücken",
+"ex": "Ich habe endlich eine Parklücke gefunden.",
+"exEn": "I have finally found a parking space.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "quietschen",
+"en": "to screech / squeak",
+"ex": "Die Bremsen quietschen laut.",
+"exEn": "The brakes are screeching loudly.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Rücklicht",
+"en": "tail light",
+"pl": "die Rücklichter",
+"ex": "Das Rücklicht ist kaputt.",
+"exEn": "The tail light is broken.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Rückscheibe",
+"en": "rear window",
+"pl": "die Rückscheiben",
+"ex": "Die Rückscheibe ist beschlagen.",
+"exEn": "The rear window is fogged up.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "rutschen",
+"en": "to slide / skid",
+"ex": "Das Auto rutschte auf dem Eis.",
+"exEn": "The car skidded on the ice.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Scheibe",
+"en": "windscreen / pane",
+"pl": "die Scheiben",
+"ex": "Die Scheibe ist gesprungen.",
+"exEn": "The windscreen has cracked.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Scheinwerfer",
+"en": "headlight",
+"pl": "die Scheinwerfer",
+"ex": "Schalte bitte die Scheinwerfer ein.",
+"exEn": "Please switch on the headlights.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Sportwagen",
+"en": "sports car",
+"pl": "die Sportwagen",
+"ex": "Er träumt von einem roten Sportwagen.",
+"exEn": "He dreams of a red sports car.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Stoßstange",
+"en": "bumper",
+"pl": "die Stoßstangen",
+"ex": "Die Stoßstange ist verbeult.",
+"exEn": "The bumper is dented.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Straßenrand",
+"en": "roadside",
+"pl": "die Straßenränder",
+"ex": "Wir parkten am Straßenrand.",
+"exEn": "We parked at the roadside.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Straßenverkehr",
+"en": "road traffic",
+"ex": "Im Straßenverkehr muss man aufpassen.",
+"exEn": "You have to be careful in road traffic.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "das SUV",
+"en": "sport utility vehicle (SUV)",
+"pl": "die SUVs",
+"ex": "Ein SUV verbraucht oft viel Benzin.",
+"exEn": "An SUV often uses a lot of petrol.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Unfall",
+"en": "accident",
+"pl": "die Unfälle",
+"ex": "Auf der Autobahn gab es einen Unfall.",
+"exEn": "There was an accident on the motorway.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Unfallgefahr",
+"en": "risk of accident",
+"pl": "die Unfallgefahren",
+"ex": "Bei Nebel besteht hohe Unfallgefahr.",
+"exEn": "There is a high risk of accident in fog.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "wegfahren",
+"en": "to drive away",
+"ex": "Er ist ohne ein Wort weggefahren.",
+"exEn": "He drove away without a word.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Windschutzscheibe",
+"en": "windscreen",
+"pl": "die Windschutzscheiben",
+"ex": "Ein Stein traf die Windschutzscheibe.",
+"exEn": "A stone hit the windscreen.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "zusammenstoßen",
+"en": "to collide",
+"ex": "Zwei Autos sind an der Kreuzung zusammengestoßen.",
+"exEn": "Two cars collided at the junction.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Schadensfall",
+"en": "event of damage / claim",
+"pl": "die Schadensfälle",
+"ex": "Im Schadensfall rufen Sie die Versicherung an.",
+"exEn": "In the event of damage, call the insurance company.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Parkgebühr",
+"en": "parking fee",
+"pl": "die Parkgebühren",
+"ex": "Die Parkgebühr beträgt zwei Euro pro Stunde.",
+"exEn": "The parking fee is two euros per hour.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "der Parkplatz",
+"en": "car park / parking space",
+"pl": "die Parkplätze",
+"ex": "Vor dem Haus gibt es einen Parkplatz.",
+"exEn": "There is a car park in front of the house.",
+"diff": "easy",
+"level": "A1"
+}
+],
+"Technology & Digital": [
+{
+"de": "mobil",
+"en": "mobile",
+"ex": "Mit dem Handy bin ich mobil erreichbar.",
+"exEn": "I can be reached on my mobile.",
+"diff": "medium",
+"level": "A2"
+}
+],
+"Weather & Nature": [
+{
+"de": "der Hagel",
+"en": "hail",
+"ex": "Der Hagel hat die Autos beschädigt.",
+"exEn": "The hail damaged the cars.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Mond",
+"en": "moon",
+"pl": "die Monde",
+"ex": "Heute Nacht scheint der Mond hell.",
+"exEn": "The moon is shining brightly tonight.",
+"diff": "easy",
+"level": "A1"
+},
+{
+"de": "der Seehund",
+"en": "seal",
+"pl": "die Seehunde",
+"ex": "Am Strand haben wir einen Seehund gesehen.",
+"exEn": "We saw a seal on the beach.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Weltall",
+"en": "space / the universe",
+"ex": "Die Astronauten fliegen ins Weltall.",
+"exEn": "The astronauts are flying into space.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "die Bewegung",
+"en": "movement / exercise",
+"pl": "die Bewegungen",
+"ex": "Mehr Bewegung ist gut für die Gesundheit.",
+"exEn": "More exercise is good for your health.",
+"diff": "medium",
+"level": "A2"
+}
+],
+"Housing & Renting": [
+{
+"de": "die Ausstattung",
+"en": "furnishings / equipment",
+"pl": "die Ausstattungen",
+"ex": "Die Wohnung hat eine moderne Ausstattung.",
+"exEn": "The flat has modern furnishings.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Doppelbett",
+"en": "double bed",
+"pl": "die Doppelbetten",
+"ex": "Im Zimmer steht ein großes Doppelbett.",
+"exEn": "There is a large double bed in the room.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Doppelzimmer",
+"en": "double room",
+"pl": "die Doppelzimmer",
+"ex": "Wir haben ein Doppelzimmer reserviert.",
+"exEn": "We have reserved a double room.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "das Einzelzimmer",
+"en": "single room",
+"pl": "die Einzelzimmer",
+"ex": "Ich hätte gern ein Einzelzimmer.",
+"exEn": "I would like a single room.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Halbpension",
+"en": "half board",
+"ex": "Wir buchen das Hotel mit Halbpension.",
+"exEn": "We are booking the hotel with half board.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "das Hostel",
+"en": "hostel",
+"pl": "die Hostels",
+"ex": "Junge Leute übernachten oft im Hostel.",
+"exEn": "Young people often stay in a hostel.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Lage",
+"en": "location / situation",
+"pl": "die Lagen",
+"ex": "Das Hotel hat eine zentrale Lage.",
+"exEn": "The hotel has a central location.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Meerblick",
+"en": "sea view",
+"pl": "die Meerblicke",
+"ex": "Unser Zimmer hat einen schönen Meerblick.",
+"exEn": "Our room has a lovely sea view.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Pool",
+"en": "pool",
+"pl": "die Pools",
+"ex": "Das Hotel hat einen großen Pool.",
+"exEn": "The hotel has a large pool.",
+"diff": "easy",
+"level": "A2"
+},
+{
+"de": "die Sauberkeit",
+"en": "cleanliness",
+"ex": "Auf Sauberkeit wird hier großer Wert gelegt.",
+"exEn": "Great importance is placed on cleanliness here.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Sonnenschirm",
+"en": "parasol / sun umbrella",
+"pl": "die Sonnenschirme",
+"ex": "Am Strand mieten wir einen Sonnenschirm.",
+"exEn": "We rent a parasol at the beach.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "die Sonnenterrasse",
+"en": "sun terrace",
+"pl": "die Sonnenterrassen",
+"ex": "Wir frühstücken auf der Sonnenterrasse.",
+"exEn": "We have breakfast on the sun terrace.",
+"diff": "hard",
+"level": "B1"
+},
+{
+"de": "der Stern",
+"en": "star",
+"pl": "die Sterne",
+"ex": "Das Hotel hat vier Sterne.",
+"exEn": "The hotel has four stars.",
+"diff": "medium",
+"level": "A2"
+},
+{
+"de": "übernachten",
+"en": "to stay overnight",
+"ex": "Wir übernachten in einem kleinen Hotel.",
+"exEn": "We are staying overnight in a small hotel.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "die Übernachtung",
+"en": "overnight stay",
+"pl": "die Übernachtungen",
+"ex": "Die Übernachtung kostet achtzig Euro.",
+"exEn": "The overnight stay costs eighty euros.",
+"diff": "medium",
+"level": "B1"
+},
+{
+"de": "der Waschraum",
+"en": "washroom",
+"pl": "die Waschräume",
+"ex": "Der Waschraum befindet sich im Erdgeschoss.",
+"exEn": "The washroom is on the ground floor.",
+"diff": "hard",
+"level": "B1"
+}
+]
+}

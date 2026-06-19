@@ -1,0 +1,1270 @@
+{
+ "Housing & Renting": [
+  {
+   "de": "der Altbau",
+   "en_hint": "old building",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Angabe",
+   "en_hint": "detail",
+   "level": "A1",
+   "pl_hint": "die Angaben"
+  },
+  {
+   "de": "das Arbeitszimmer",
+   "en_hint": "workroom",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Badewanne",
+   "en_hint": "bathtub",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Badezimmer",
+   "en_hint": "bathroom",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "bekommen",
+   "en_hint": "to receive",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Besichtigungstermin",
+   "en_hint": "appointment",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "circa",
+   "en_hint": "around",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Diele",
+   "en_hint": "hallway",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "direkt",
+   "en_hint": "direct",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "draußen",
+   "en_hint": "outside",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Einfamilienhaus",
+   "en_hint": "detached hosue",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Elektrogerät",
+   "en_hint": "electronic device",
+   "level": "A1",
+   "pl_hint": "die Elektrogeräte"
+  },
+  {
+   "de": "ersetzen",
+   "en_hint": "to replace",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Firma",
+   "en_hint": "company",
+   "level": "A1",
+   "pl_hint": "die Firmen"
+  },
+  {
+   "de": "frei",
+   "en_hint": "free",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Garage",
+   "en_hint": "garage",
+   "level": "A1",
+   "pl_hint": "die Garagen"
+  },
+  {
+   "de": "gepflegt",
+   "en_hint": "looked after",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Hauptsache",
+   "en_hint": "main thing",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Haustier",
+   "en_hint": "pet",
+   "level": "A1",
+   "pl_hint": "die Haustiere"
+  },
+  {
+   "de": "die Hilfe",
+   "en_hint": "help",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "hinten",
+   "en_hint": "behind",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Hochhaus",
+   "en_hint": "high-rise building",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Immobilie",
+   "en_hint": "property",
+   "level": "A1",
+   "pl_hint": "die Immobilien"
+  },
+  {
+   "de": "insgesamt",
+   "en_hint": "in total",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Juni",
+   "en_hint": "june",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kaffeemaschine",
+   "en_hint": "coffee machine",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Kinderzimmer",
+   "en_hint": "child's room",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "lassen",
+   "en_hint": "to let",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "laut",
+   "en_hint": "loud",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "liebsten",
+   "en_hint": "favourite",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "maximal",
+   "en_hint": "maximal",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Mehrfamilienhaus",
+   "en_hint": "apartment building",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "mindestens",
+   "en_hint": "at least",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Möbel",
+   "en_hint": "furniture",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "modern",
+   "en_hint": "modern",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Monatsmiete",
+   "en_hint": "monthly rent",
+   "level": "A1",
+   "pl_hint": "die Monatsmieten"
+  },
+  {
+   "de": "der Müll",
+   "en_hint": "rubbish",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Obergeschoss",
+   "en_hint": "upper floor",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Ort",
+   "en_hint": "place",
+   "level": "A1",
+   "pl_hint": "die Orte"
+  },
+  {
+   "de": "der Plan",
+   "en_hint": "plan",
+   "level": "A1",
+   "pl_hint": "die Pläne"
+  },
+  {
+   "de": "der Platz",
+   "en_hint": "place, space",
+   "level": "A1",
+   "pl_hint": "die Plätze"
+  },
+  {
+   "de": "das Reihenhaus",
+   "en_hint": "terraced house",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "schauen",
+   "en_hint": "to look",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Sessel",
+   "en_hint": "chair",
+   "level": "A1",
+   "pl_hint": "die Sessel"
+  },
+  {
+   "de": "sonstiges",
+   "en_hint": "other",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Sprachschule",
+   "en_hint": "language school",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Stadt",
+   "en_hint": "city",
+   "level": "A1",
+   "pl_hint": "die Städte"
+  },
+  {
+   "de": "super",
+   "en_hint": "super",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Terrasse",
+   "en_hint": "terrace",
+   "level": "A1",
+   "pl_hint": "die Terrassen"
+  },
+  {
+   "de": "die Traumwohnung",
+   "en_hint": "dream flat",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "unbedingt",
+   "en_hint": "definitely",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ungemütlich",
+   "en_hint": "uncomfortable",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "warum",
+   "en_hint": "why",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "waschen",
+   "en_hint": "to wash",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das WC",
+   "en_hint": "WC/toilet",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "wegziehen",
+   "en_hint": "to move away",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "weiter",
+   "en_hint": "further",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "werden",
+   "en_hint": "to become",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Wohnungsanzeige",
+   "en_hint": "flat advertisement",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Wohnungssuche",
+   "en_hint": "search for housing",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "wunderschön",
+   "en_hint": "very beautiful",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "wünschen",
+   "en_hint": "to wish",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zahlen",
+   "en_hint": "to count",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Zentrum",
+   "en_hint": "centre",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zu Fuß",
+   "en_hint": "on foot",
+   "level": "A1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ablesen",
+   "en_hint": "to read from",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Ablesung",
+   "en_hint": "reading",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "abstellen",
+   "en_hint": "to park, to put down",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "afrikanisch",
+   "en_hint": "African",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Altglas",
+   "en_hint": "waste glass",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "aufschließen",
+   "en_hint": "to unlock",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ausführen",
+   "en_hint": "to execute",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "beachten",
+   "en_hint": "to consider",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Beinbruch",
+   "en_hint": "leg fracture",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "berufstätig",
+   "en_hint": "employed",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Beschwerde",
+   "en_hint": "complaint",
+   "level": "A2",
+   "pl_hint": "die Beschwerden"
+  },
+  {
+   "de": "der Bezirk",
+   "en_hint": "district",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Biomüll",
+   "en_hint": "biowaste",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Biotonne",
+   "en_hint": "biowaste container",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Brett",
+   "en_hint": "board",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Einbauküche",
+   "en_hint": "built-in kitchen",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "einrichten",
+   "en_hint": "to furnish",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Einwurfzeit",
+   "en_hint": "time slot for putting out rubbish",
+   "level": "A2",
+   "pl_hint": "die Einwurfzeiten"
+  },
+  {
+   "de": "der Einzug",
+   "en_hint": "move in",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "entsorgen",
+   "en_hint": "to dispose of",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "erfolgen",
+   "en_hint": "to take place",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Fahrradständer",
+   "en_hint": "bicycle stand",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Fernwärme",
+   "en_hint": "remote heating",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Gas",
+   "en_hint": "gas",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Gassi gehen",
+   "en_hint": "to walk the dog",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "gehören",
+   "en_hint": "to belong",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "gesondert",
+   "en_hint": "separate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Glascontainer",
+   "en_hint": "bottle bank",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Hausregel",
+   "en_hint": "house rule",
+   "level": "A2",
+   "pl_hint": "die Hausregeln"
+  },
+  {
+   "de": "die Hausreinigung",
+   "en_hint": "house cleaning",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Hausverwaltung",
+   "en_hint": "property management",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "herzlich",
+   "en_hint": "warm",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "hoch",
+   "en_hint": "high",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "jemand",
+   "en_hint": "someone",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kellerzugang",
+   "en_hint": "cellar entrance",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Kinderwagen",
+   "en_hint": "baby buggy",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kleinmöbel",
+   "en_hint": "small pieces of furniture",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Kommode",
+   "en_hint": "dresser",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "leidtun",
+   "en_hint": "to be sorry",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Mitteilung",
+   "en_hint": "notification",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Müllabfuhr",
+   "en_hint": "garbage disposal",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Nachbarschaft",
+   "en_hint": "neighbourhood",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Nähe",
+   "en_hint": "proximity",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "ordnungsgerecht",
+   "en_hint": "properly",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "privat",
+   "en_hint": "private",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "reichlich",
+   "en_hint": "abundant",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Restmüll",
+   "en_hint": "residual waste",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "schonen",
+   "en_hint": "to treat with care",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "setzen",
+   "en_hint": "to sit",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "sorgen",
+   "en_hint": "to care",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "sorgfältig",
+   "en_hint": "thoroughly",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "Spaziergang",
+   "en_hint": "walk",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Stellplatz",
+   "en_hint": "parking space",
+   "level": "A2",
+   "pl_hint": "die Stellplätze"
+  },
+  {
+   "de": "die Tiefgarage",
+   "en_hint": "underground garage",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Tonne",
+   "en_hint": "barrel",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "trennen",
+   "en_hint": "to separate",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Treppenhaus",
+   "en_hint": "stairway",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "übernehmen",
+   "en_hint": "to assume",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Umzugskarton",
+   "en_hint": "moving box",
+   "level": "A2",
+   "pl_hint": "die Umzugskartons"
+  },
+  {
+   "de": "die Vase",
+   "en_hint": "vase",
+   "level": "A2",
+   "pl_hint": "die Vasen"
+  },
+  {
+   "de": "der Verbraucherzähler",
+   "en_hint": "consumption meter",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorhanden",
+   "en_hint": "available",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "weiterhin",
+   "en_hint": "still",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Wohnungsbesichtigung",
+   "en_hint": "flat viewing",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Zähler",
+   "en_hint": "meter",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Zugang",
+   "en_hint": "entry",
+   "level": "A2",
+   "pl_hint": "die Zugänge"
+  },
+  {
+   "de": "zuletzt",
+   "en_hint": "recently",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "zuzüglich",
+   "en_hint": "plus",
+   "level": "A2",
+   "pl_hint": ""
+  },
+  {
+   "de": "absprechen",
+   "en_hint": "to arrange",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Abstellplatz",
+   "en_hint": "parking space",
+   "level": "B1",
+   "pl_hint": "die Abstellplätze"
+  },
+  {
+   "de": "akzeptieren",
+   "en_hint": "to accept",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "anstreichen",
+   "en_hint": "to paint",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "ärgerlich",
+   "en_hint": "annoying",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Aufregung",
+   "en_hint": "commotion",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Ausnahme",
+   "en_hint": "exception",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Balkongeländer",
+   "en_hint": "balcony railing",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "befestigen",
+   "en_hint": "to secure",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "behalten",
+   "en_hint": "to keep",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "beleidigen",
+   "en_hint": "to offend",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Beleidigung",
+   "en_hint": "insult",
+   "level": "B1",
+   "pl_hint": "die Beleidigungen"
+  },
+  {
+   "de": "berechtigt",
+   "en_hint": "justified",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "beschimpfen",
+   "en_hint": "to insult",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Beschimpfung",
+   "en_hint": "swear",
+   "level": "B1",
+   "pl_hint": "die Beschimpfungen"
+  },
+  {
+   "de": "beschweren",
+   "en_hint": "to complain",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Blumentopf",
+   "en_hint": "flower pot",
+   "level": "B1",
+   "pl_hint": "die Blumentöpfe"
+  },
+  {
+   "de": "bohren",
+   "en_hint": "to drill",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "deswegen",
+   "en_hint": "that is why",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "dumm",
+   "en_hint": "stupid",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "eilig",
+   "en_hint": "urgent",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "einhalten",
+   "en_hint": "to comply",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "einlegen",
+   "en_hint": "to insert",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "einstellen",
+   "en_hint": "to set up",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "enden",
+   "en_hint": "to end",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "entspannend",
+   "en_hint": "relaxing",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "erhöhen",
+   "en_hint": "to increase",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "erleichtern",
+   "en_hint": "to relieve",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "eskalieren",
+   "en_hint": "to escalate",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "exotisch",
+   "en_hint": "exotic",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "fair",
+   "en_hint": "fair",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "festkleben",
+   "en_hint": "to stick",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Freude",
+   "en_hint": "joy",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "fristgerecht",
+   "en_hint": "punctual",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "fristlos",
+   "en_hint": "without notice",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Gemeinschaftsraum",
+   "en_hint": "common room",
+   "level": "B1",
+   "pl_hint": "die Gemeinschaftsräume"
+  },
+  {
+   "de": "gesetzlich",
+   "en_hint": "legal",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "hämmern",
+   "en_hint": "to hammer",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "heizen",
+   "en_hint": "to heat",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "klug",
+   "en_hint": "clever",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Konflikt",
+   "en_hint": "conflict",
+   "level": "B1",
+   "pl_hint": "die Konflikte"
+  },
+  {
+   "de": "lüften",
+   "en_hint": "to air",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "massiv",
+   "en_hint": "solid",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "meckern",
+   "en_hint": "to whinge",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Meerschweinchen",
+   "en_hint": "guinea pig",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Mietspiegel",
+   "en_hint": "rent index",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Modernisierung",
+   "en_hint": "modernisation",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "nachsehen",
+   "en_hint": "to check",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "offenbar",
+   "en_hint": "obvious",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "protestieren",
+   "en_hint": "to protest",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "sauer",
+   "en_hint": "sour",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "schmutzig",
+   "en_hint": "dirty",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "sinnlos",
+   "en_hint": "meaningless",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "sinnvoll",
+   "en_hint": "meaningful",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "stinken",
+   "en_hint": "to stink",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "streiten",
+   "en_hint": "to argue",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "total",
+   "en_hint": "totally",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "treu",
+   "en_hint": "faithful",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "überlegen",
+   "en_hint": "to think about",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "üblich",
+   "en_hint": "normal",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "unglaublich",
+   "en_hint": "unbelievable",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Unrecht",
+   "en_hint": "unjust",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Urteil",
+   "en_hint": "judgement",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "vergleichbar",
+   "en_hint": "comparable",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "verpflichten",
+   "en_hint": "to compel",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Verständnis",
+   "en_hint": "understanding",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Verstoß",
+   "en_hint": "violation",
+   "level": "B1",
+   "pl_hint": "die Verstöße"
+  },
+  {
+   "de": "verstoßen",
+   "en_hint": "to violate",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "völlig",
+   "en_hint": "completely",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "vorher",
+   "en_hint": "before",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "wegräumen",
+   "en_hint": "to clear away",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Widerspruch",
+   "en_hint": "contradiction",
+   "level": "B1",
+   "pl_hint": "die Widersprüche"
+  },
+  {
+   "de": "ziemlich",
+   "en_hint": "rather",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "die Zimmerlautstärke",
+   "en_hint": "room volume",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "zurücklassen",
+   "en_hint": "to leave behind",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "das Zusammenleben",
+   "en_hint": "life together",
+   "level": "B1",
+   "pl_hint": ""
+  },
+  {
+   "de": "der Zutritt",
+   "en_hint": "access",
+   "level": "B1",
+   "pl_hint": ""
+  }
+ ]
+}

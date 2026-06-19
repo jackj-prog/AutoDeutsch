@@ -1,0 +1,152 @@
+{
+  "Food & Drink": [
+    {"de":"der Apfelsaft","en":"apple juice","pl":"die Apfelsäfte","ex":"Ich trinke gern Apfelsaft zum Frühstück.","exEn":"I like to drink apple juice for breakfast.","diff":"easy","level":"A1"},
+    {"de":"die Babynahrung","en":"baby food","ex":"Die Babynahrung steht im Supermarkt ganz hinten.","exEn":"The baby food is right at the back of the supermarket.","diff":"medium","level":"A2"},
+    {"de":"die Birne","en":"pear","pl":"die Birnen","ex":"Diese Birne ist schön süß.","exEn":"This pear is nice and sweet.","diff":"easy","level":"A1"},
+    {"de":"das Bistro","en":"bistro / café","pl":"die Bistros","ex":"Wir treffen uns im Bistro um die Ecke.","exEn":"We're meeting at the bistro around the corner.","diff":"medium","level":"A2"},
+    {"de":"die Blaubeere","en":"blueberry","pl":"die Blaubeeren","ex":"Im Sommer pflücken wir Blaubeeren im Wald.","exEn":"In summer we pick blueberries in the forest.","diff":"easy","level":"A1"},
+    {"de":"die Bohne","en":"bean","pl":"die Bohnen","ex":"Zum Mittagessen gibt es Reis mit Bohnen.","exEn":"For lunch there is rice with beans.","diff":"easy","level":"A1"},
+    {"de":"die Cola","en":"cola / coke","pl":"die Colas","ex":"Ich nehme eine Cola, bitte.","exEn":"I'll have a cola, please.","diff":"easy","level":"A1"},
+    {"de":"der Couscous","en":"couscous","ex":"Couscous ist schnell zubereitet.","exEn":"Couscous is quick to prepare.","diff":"medium","level":"A2"},
+    {"de":"die Dose","en":"can / tin","pl":"die Dosen","ex":"Ich öffne eine Dose Tomaten.","exEn":"I'm opening a can of tomatoes.","diff":"easy","level":"A1","hint":"a can/tin, not a jar (= das Glas)"},
+    {"de":"die Erbse","en":"pea","pl":"die Erbsen","ex":"Erbsen schmecken mir besser als Bohnen.","exEn":"I like peas better than beans.","diff":"easy","level":"A1"},
+    {"de":"frisch","en":"fresh","ex":"Das Brot ist heute ganz frisch.","exEn":"The bread is completely fresh today.","diff":"easy","level":"A1"},
+    {"de":"das Getränk","en":"drink / beverage","pl":"die Getränke","ex":"Möchtest du noch ein Getränk?","exEn":"Would you like another drink?","diff":"easy","level":"A1"},
+    {"de":"die Himbeere","en":"raspberry","pl":"die Himbeeren","ex":"Auf dem Kuchen liegen frische Himbeeren.","exEn":"There are fresh raspberries on the cake.","diff":"easy","level":"A1"},
+    {"de":"der Keks","en":"biscuit / cookie","pl":"die Kekse","ex":"Magst du einen Keks zum Kaffee?","exEn":"Would you like a biscuit with your coffee?","diff":"easy","level":"A1"},
+    {"de":"die Kichererbse","en":"chickpea","pl":"die Kichererbsen","ex":"Aus Kichererbsen macht man Hummus.","exEn":"You make hummus from chickpeas.","diff":"medium","level":"A2"},
+    {"de":"die Kirsche","en":"cherry","pl":"die Kirschen","ex":"Im Juni sind die Kirschen reif.","exEn":"The cherries are ripe in June.","diff":"easy","level":"A1"},
+    {"de":"die Kiwi","en":"kiwi","pl":"die Kiwis","ex":"Eine Kiwi hat viel Vitamin C.","exEn":"A kiwi has a lot of vitamin C.","diff":"easy","level":"A1"},
+    {"de":"das Lammfleisch","en":"lamb (meat)","ex":"Zu Ostern essen wir oft Lammfleisch.","exEn":"At Easter we often eat lamb.","diff":"medium","level":"A2"},
+    {"de":"das Lebensmittel","en":"food item / groceries","pl":"die Lebensmittel","ex":"Im Kühlschrank sind keine Lebensmittel mehr.","exEn":"There are no groceries left in the fridge.","diff":"easy","level":"A1"},
+    {"de":"die Limonade","en":"lemonade / soft drink","pl":"die Limonaden","ex":"An heißen Tagen trinke ich gern Limonade.","exEn":"On hot days I like to drink lemonade.","diff":"easy","level":"A1"},
+    {"de":"die Mandarine","en":"mandarin (orange)","pl":"die Mandarinen","ex":"Im Winter esse ich viele Mandarinen.","exEn":"In winter I eat a lot of mandarins.","diff":"easy","level":"A1"},
+    {"de":"die Mango","en":"mango","pl":"die Mangos","ex":"Die Mango ist noch nicht reif.","exEn":"The mango is not ripe yet.","diff":"easy","level":"A1"},
+    {"de":"die Melone","en":"melon","pl":"die Melonen","ex":"Eine kalte Melone schmeckt im Sommer toll.","exEn":"A cold melon tastes great in summer.","diff":"easy","level":"A1"},
+    {"de":"das Milchprodukt","en":"dairy product","pl":"die Milchprodukte","ex":"Käse und Joghurt sind Milchprodukte.","exEn":"Cheese and yoghurt are dairy products.","diff":"medium","level":"A2"},
+    {"de":"die Möhre","en":"carrot","pl":"die Möhren","ex":"Das Kaninchen frisst gern Möhren.","exEn":"The rabbit likes to eat carrots.","diff":"easy","level":"A1"},
+    {"de":"die Nudel","en":"noodle / pasta","pl":"die Nudeln","ex":"Heute Abend koche ich Nudeln mit Soße.","exEn":"Tonight I'm cooking pasta with sauce.","diff":"easy","level":"A1"},
+    {"de":"der Obstsalat","en":"fruit salad","pl":"die Obstsalate","ex":"Zum Nachtisch gibt es Obstsalat.","exEn":"For dessert there is fruit salad.","diff":"easy","level":"A1"},
+    {"de":"das Olivenöl","en":"olive oil","ex":"Ich brate das Gemüse in Olivenöl.","exEn":"I fry the vegetables in olive oil.","diff":"easy","level":"A1"},
+    {"de":"die Paprika","en":"(bell) pepper","pl":"die Paprikas","ex":"Die rote Paprika ist besonders süß.","exEn":"The red pepper is especially sweet.","diff":"easy","level":"A1"},
+    {"de":"der Pudding","en":"pudding / custard dessert","pl":"die Puddings","ex":"Als Kind liebte ich Schokoladenpudding.","exEn":"As a child I loved chocolate pudding.","diff":"easy","level":"A1"},
+    {"de":"die Traube","en":"grape","pl":"die Trauben","ex":"Wir kaufen ein Kilo grüne Trauben.","exEn":"We're buying a kilo of green grapes.","diff":"easy","level":"A1"},
+    {"de":"der Döner","en":"doner kebab","pl":"die Döner","ex":"Nach der Arbeit hole ich mir einen Döner.","exEn":"After work I grab a doner kebab.","diff":"medium","level":"A2"},
+    {"de":"das Eiweiß","en":"protein / egg white","ex":"Bohnen enthalten viel Eiweiß.","exEn":"Beans contain a lot of protein.","diff":"medium","level":"B1"},
+    {"de":"das Getreide","en":"grain / cereal","ex":"Brot wird aus Getreide gemacht.","exEn":"Bread is made from grain.","diff":"medium","level":"B1"},
+    {"de":"der Hartweizen","en":"durum wheat","ex":"Gute Nudeln macht man aus Hartweizen.","exEn":"Good pasta is made from durum wheat.","diff":"hard","level":"B1"},
+    {"de":"die Haselnuss","en":"hazelnut","pl":"die Haselnüsse","ex":"Die Schokolade enthält ganze Haselnüsse.","exEn":"The chocolate contains whole hazelnuts.","diff":"medium","level":"A2"},
+    {"de":"die Hülsenfrucht","en":"legume / pulse","pl":"die Hülsenfrüchte","ex":"Linsen und Erbsen sind Hülsenfrüchte.","exEn":"Lentils and peas are legumes.","diff":"hard","level":"B1"},
+    {"de":"der Milchzucker","en":"lactose (milk sugar)","ex":"Viele Menschen vertragen keinen Milchzucker.","exEn":"Many people can't tolerate lactose.","diff":"hard","level":"B1"},
+    {"de":"der Nährstoff","en":"nutrient","pl":"die Nährstoffe","ex":"Gemüse liefert wichtige Nährstoffe.","exEn":"Vegetables provide important nutrients.","diff":"medium","level":"B1"},
+    {"de":"das Nahrungsmittel","en":"foodstuff","pl":"die Nahrungsmittel","ex":"Salz ist ein sehr altes Nahrungsmittel.","exEn":"Salt is a very old foodstuff.","diff":"medium","level":"B1"},
+    {"de":"die Nuss","en":"nut","pl":"die Nüsse","ex":"Ich darf keine Nüsse essen.","exEn":"I'm not allowed to eat nuts.","diff":"easy","level":"A2"},
+    {"de":"der Quark","en":"quark (curd cheese)","ex":"Zum Frühstück esse ich Quark mit Obst.","exEn":"For breakfast I eat quark with fruit.","diff":"medium","level":"B1"},
+    {"de":"der Zusatzstoff","en":"additive","pl":"die Zusatzstoffe","ex":"Dieses Produkt enthält keine künstlichen Zusatzstoffe.","exEn":"This product contains no artificial additives.","diff":"hard","level":"B1"}
+  ],
+  "Cooking & Kitchen": [
+    {"de":"der Becher","en":"cup / beaker / tub","pl":"die Becher","ex":"Sie kauft einen Becher Joghurt.","exEn":"She buys a tub of yoghurt.","diff":"easy","level":"A1","hint":"a cup/beaker/tub, not a generic container"},
+    {"de":"die Packung","en":"pack / packet","pl":"die Packungen","ex":"Wir brauchen noch eine Packung Mehl.","exEn":"We still need a packet of flour.","diff":"easy","level":"A1"},
+    {"de":"das Kochbuch","en":"cookbook","pl":"die Kochbücher","ex":"In diesem Kochbuch stehen viele einfache Rezepte.","exEn":"There are many simple recipes in this cookbook.","diff":"medium","level":"A2"},
+    {"de":"kulinarisch","en":"culinary","ex":"Die Stadt bietet viele kulinarische Highlights.","exEn":"The city offers many culinary highlights.","diff":"hard","level":"B1"},
+    {"de":"das Fertiggericht","en":"ready meal","pl":"die Fertiggerichte","ex":"Abends esse ich oft ein Fertiggericht.","exEn":"In the evening I often eat a ready meal.","diff":"medium","level":"B1"},
+    {"de":"die Tiefkühlpizza","en":"frozen pizza","pl":"die Tiefkühlpizzen","ex":"Im Ofen ist gerade eine Tiefkühlpizza.","exEn":"There's a frozen pizza in the oven right now.","diff":"medium","level":"B1"}
+  ],
+  "Restaurant & Dining Out": [
+    {"de":"der Gang","en":"course (of a meal)","pl":"die Gänge","ex":"Das Menü hat vier Gänge.","exEn":"The menu has four courses.","diff":"medium","level":"B1"}
+  ],
+  "Shopping & Money": [
+    {"de":"der Einkaufszettel","en":"shopping list","pl":"die Einkaufszettel","ex":"Ich habe den Einkaufszettel zu Hause vergessen.","exEn":"I forgot the shopping list at home.","diff":"easy","level":"A1"},
+    {"de":"der Cent","en":"cent","pl":"die Cent","ex":"Das Brötchen kostet dreißig Cent.","exEn":"The bread roll costs thirty cents.","diff":"easy","level":"A1"},
+    {"de":"die Verkäuferin","en":"saleswoman / shop assistant","pl":"die Verkäuferinnen","ex":"Die Verkäuferin hilft mir gern.","exEn":"The saleswoman is happy to help me.","diff":"easy","level":"A1"},
+    {"de":"die Mengenangabe","en":"quantity / amount specification","pl":"die Mengenangaben","ex":"Im Rezept fehlt die Mengenangabe für Zucker.","exEn":"The recipe is missing the amount of sugar.","diff":"hard","level":"B1"},
+    {"de":"bio","en":"organic","ex":"Wir kaufen meistens Bio-Gemüse.","exEn":"We mostly buy organic vegetables.","diff":"medium","level":"B1"},
+    {"de":"das Bioprodukt","en":"organic product","pl":"die Bioprodukte","ex":"Bioprodukte sind oft etwas teurer.","exEn":"Organic products are often a bit more expensive.","diff":"medium","level":"B1"}
+  ],
+  "Numbers & Time": [
+    {"de":"das Gramm","en":"gram","pl":"die Gramm","ex":"Ich brauche zweihundert Gramm Käse.","exEn":"I need two hundred grams of cheese.","diff":"easy","level":"A1"},
+    {"de":"das Kilo","en":"kilo","pl":"die Kilos","ex":"Ein Kilo Äpfel, bitte.","exEn":"A kilo of apples, please.","diff":"easy","level":"A1"},
+    {"de":"der Liter","en":"litre","pl":"die Liter","ex":"Wir brauchen einen Liter Milch.","exEn":"We need a litre of milk.","diff":"easy","level":"A1"},
+    {"de":"das Pfund","en":"pound (500 g)","pl":"die Pfund","ex":"Geben Sie mir bitte ein Pfund Tomaten.","exEn":"Please give me a pound of tomatoes.","diff":"medium","level":"A2"},
+    {"de":"das Stück","en":"piece","pl":"die Stücke","ex":"Möchtest du ein Stück Kuchen?","exEn":"Would you like a piece of cake?","diff":"easy","level":"A1"},
+    {"de":"pro","en":"per","ex":"Die Äpfel kosten zwei Euro pro Kilo.","exEn":"The apples cost two euros per kilo.","diff":"easy","level":"A2"},
+    {"de":"durchschnittlich","en":"on average / average","ex":"Wir essen durchschnittlich zweimal pro Woche Fisch.","exEn":"On average we eat fish twice a week.","diff":"hard","level":"B1"}
+  ],
+  "Connectors & Structure": [
+    {"de":"die Antwort","en":"answer","pl":"die Antworten","ex":"Ich warte noch auf deine Antwort.","exEn":"I'm still waiting for your answer.","diff":"easy","level":"A1"},
+    {"de":"das Beispiel","en":"example","pl":"die Beispiele","ex":"Kannst du mir ein Beispiel geben?","exEn":"Can you give me an example?","diff":"easy","level":"A1"},
+    {"de":"gleich","en":"same / right away","ex":"Ich komme gleich zurück.","exEn":"I'll be right back.","diff":"easy","level":"A1"},
+    {"de":"meistens","en":"mostly / usually","ex":"Am Wochenende schlafe ich meistens lange.","exEn":"At the weekend I usually sleep in.","diff":"easy","level":"A2"},
+    {"de":"nebenbei","en":"on the side / incidentally","ex":"Nebenbei lernt sie noch Spanisch.","exEn":"On the side she's also learning Spanish.","diff":"hard","level":"B1"},
+    {"de":"gemeinsam","en":"together / jointly","ex":"Wir kochen heute Abend gemeinsam.","exEn":"We're cooking together this evening.","diff":"medium","level":"A2"}
+  ],
+  "Everyday Actions": [
+    {"de":"gern","en":"gladly / with pleasure","ex":"Ich helfe dir gern.","exEn":"I'll gladly help you.","diff":"easy","level":"A1","hint":"means 'gladly/like to', not 'very much'"},
+    {"de":"fertig","en":"finished / ready","ex":"Das Essen ist gleich fertig.","exEn":"The food will be ready soon.","diff":"easy","level":"A1"},
+    {"de":"ordnen","en":"to arrange / organise","ex":"Bitte ordnen Sie die Wörter alphabetisch.","exEn":"Please arrange the words alphabetically.","diff":"medium","level":"A2","hint":"to arrange/organise, not 'to order' (= bestellen)"},
+    {"de":"streichen","en":"to paint / spread","ex":"Ich streiche Butter aufs Brot.","exEn":"I'm spreading butter on the bread.","diff":"medium","level":"B1","hint":"both 'to paint (a wall)' and 'to spread (butter)'"},
+    {"de":"planen","en":"to plan","ex":"Wir planen eine Reise nach Italien.","exEn":"We're planning a trip to Italy.","diff":"medium","level":"A2"},
+    {"de":"ausprobieren","en":"to try out","ex":"Ich möchte das neue Rezept ausprobieren.","exEn":"I want to try out the new recipe.","diff":"medium","level":"B1"},
+    {"de":"achten","en":"to pay attention / watch out","ex":"Du musst auf die Zutaten achten.","exEn":"You have to pay attention to the ingredients.","diff":"medium","level":"B1","hint":"usually 'auf etwas achten' = to watch out for sth"},
+    {"de":"erkennen","en":"to recognise","ex":"Ich erkenne sie an ihrer Stimme.","exEn":"I recognise her by her voice.","diff":"medium","level":"B1"},
+    {"de":"angewöhnen","en":"to get into the habit of","ex":"Ich habe mir angewöhnt, früh aufzustehen.","exEn":"I've got into the habit of getting up early.","diff":"hard","level":"B1"},
+    {"de":"vorbeigehen","en":"to walk / go past","ex":"Auf dem Heimweg gehe ich am Bäcker vorbei.","exEn":"On the way home I go past the bakery.","diff":"medium","level":"B1"},
+    {"de":"reduzieren","en":"to reduce","ex":"Ich möchte meinen Zuckerkonsum reduzieren.","exEn":"I want to reduce my sugar consumption.","diff":"medium","level":"B1"},
+    {"de":"versorgen","en":"to provide for / supply","ex":"Sie versorgt die ganze Familie mit Essen.","exEn":"She provides food for the whole family.","diff":"hard","level":"B1"}
+  ],
+  "Body & Health": [
+    {"de":"abnehmen","en":"to lose weight","ex":"Im Frühling will ich ein paar Kilo abnehmen.","exEn":"In spring I want to lose a few kilos.","diff":"medium","level":"B1"},
+    {"de":"zunehmen","en":"to gain weight / increase","ex":"Über den Winter habe ich etwas zugenommen.","exEn":"Over the winter I've gained a bit of weight.","diff":"medium","level":"B1"},
+    {"de":"allergisch","en":"allergic","ex":"Ich bin allergisch gegen Nüsse.","exEn":"I'm allergic to nuts.","diff":"medium","level":"B1"},
+    {"de":"ausgewogen","en":"balanced","ex":"Eine ausgewogene Ernährung ist wichtig.","exEn":"A balanced diet is important.","diff":"hard","level":"B1"},
+    {"de":"einseitig","en":"one-sided / unbalanced","ex":"Eine einseitige Ernährung macht krank.","exEn":"An unbalanced diet makes you ill.","diff":"hard","level":"B1"},
+    {"de":"fett","en":"fatty / greasy","ex":"Das Essen war mir zu fett.","exEn":"The food was too greasy for me.","diff":"medium","level":"B1"},
+    {"de":"leiden","en":"to suffer","ex":"Viele Menschen leiden unter Stress.","exEn":"Many people suffer from stress.","diff":"hard","level":"B1"},
+    {"de":"vertragen","en":"to tolerate / digest","ex":"Ich vertrage keine Milch.","exEn":"I can't tolerate milk.","diff":"medium","level":"B1"},
+    {"de":"glutenfrei","en":"gluten-free","ex":"Sie isst nur glutenfreies Brot.","exEn":"She only eats gluten-free bread.","diff":"medium","level":"B1"},
+    {"de":"laktosefrei","en":"lactose-free","ex":"Diese Milch ist laktosefrei.","exEn":"This milk is lactose-free.","diff":"medium","level":"B1"},
+    {"de":"fleischfrei","en":"meat-free","ex":"Am Montag essen wir fleischfrei.","exEn":"On Mondays we eat meat-free.","diff":"medium","level":"B1"},
+    {"de":"fleischlos","en":"meatless / vegetarian","ex":"Das Gericht ist komplett fleischlos.","exEn":"The dish is completely meatless.","diff":"medium","level":"B1"}
+  ],
+  "Emotions & Opinions": [
+    {"de":"bewusst","en":"conscious / deliberate","ex":"Sie ernährt sich sehr bewusst.","exEn":"She eats very consciously.","diff":"hard","level":"B1"},
+    {"de":"die Laune","en":"mood","pl":"die Launen","ex":"Heute habe ich gute Laune.","exEn":"I'm in a good mood today.","diff":"medium","level":"B1"},
+    {"de":"der Frust","en":"frustration","ex":"Aus Frust hat er die ganze Schokolade gegessen.","exEn":"Out of frustration he ate all the chocolate.","diff":"hard","level":"B1"},
+    {"de":"bedenklich","en":"questionable / worrying","ex":"Der hohe Zuckergehalt ist bedenklich.","exEn":"The high sugar content is worrying.","diff":"hard","level":"B1"},
+    {"de":"moralisch","en":"moral / morally","ex":"Für sie ist Vegetarismus eine moralische Frage.","exEn":"For her, vegetarianism is a moral question.","diff":"hard","level":"B1"}
+  ],
+  "Abstract & Advanced": [
+    {"de":"die Kontrolle","en":"control / check","pl":"die Kontrollen","ex":"An der Grenze gab es eine Kontrolle.","exEn":"There was a check at the border.","diff":"medium","level":"B1"},
+    {"de":"der Anbau","en":"cultivation / growing","ex":"Der Anbau von Bio-Gemüse braucht Zeit.","exEn":"Growing organic vegetables takes time.","diff":"hard","level":"B1"},
+    {"de":"auseinandersetzen","en":"to deal with / engage with","ex":"Ich setze mich mit dem Thema Ernährung auseinander.","exEn":"I'm engaging with the topic of nutrition.","diff":"hard","level":"B1"},
+    {"de":"industriell","en":"industrial","ex":"Industriell hergestelltes Essen enthält oft viel Zucker.","exEn":"Industrially produced food often contains a lot of sugar.","diff":"hard","level":"B1"},
+    {"de":"problemlos","en":"without problems / easily","ex":"Das Rezept gelingt problemlos.","exEn":"The recipe works without any problems.","diff":"medium","level":"B1"},
+    {"de":"vereinbar","en":"compatible / reconcilable","ex":"Beruf und Familie sind oft schwer vereinbar.","exEn":"Work and family are often hard to reconcile.","diff":"hard","level":"B1"},
+    {"de":"der Verzehr","en":"consumption (of food)","ex":"Der Verzehr von rohem Fleisch ist riskant.","exEn":"The consumption of raw meat is risky.","diff":"hard","level":"B1"},
+    {"de":"tierisch","en":"animal (of/from animals)","ex":"Sie verzichtet auf tierische Produkte.","exEn":"She avoids animal products.","diff":"hard","level":"B1","hint":"adjective 'animal-based', not 'animalistic'"},
+    {"de":"fix","en":"quick / fixed","ex":"Das geht ganz fix.","exEn":"That's done really quickly.","diff":"medium","level":"B1"}
+  ],
+  "Work & Study": [
+    {"de":"der Tipp","en":"tip / hint","pl":"die Tipps","ex":"Hast du einen Tipp für ein gutes Rezept?","exEn":"Do you have a tip for a good recipe?","diff":"easy","level":"A2"},
+    {"de":"unterstreichen","en":"to underline / emphasise","ex":"Unterstreichen Sie das wichtigste Wort.","exEn":"Underline the most important word.","diff":"medium","level":"B1"},
+    {"de":"präsentieren","en":"to present","ex":"Morgen präsentiere ich mein Projekt.","exEn":"Tomorrow I'm presenting my project.","diff":"medium","level":"B1"},
+    {"de":"die Berufstätigkeit","en":"employment / working life","ex":"Die Berufstätigkeit beider Eltern ist heute normal.","exEn":"Both parents being employed is normal today.","diff":"hard","level":"B1"},
+    {"de":"der Zeitmangel","en":"lack of time","ex":"Aus Zeitmangel kocht er selten frisch.","exEn":"Due to a lack of time he rarely cooks fresh.","diff":"hard","level":"B1"}
+  ],
+  "Family & People": [
+    {"de":"der Freundeskreis","en":"circle of friends","pl":"die Freundeskreise","ex":"In meinem Freundeskreis essen viele vegetarisch.","exEn":"Many people in my circle of friends eat vegetarian.","diff":"hard","level":"B1"},
+    {"de":"die Bevölkerung","en":"population","pl":"die Bevölkerungen","ex":"Ein Teil der Bevölkerung ernährt sich vegan.","exEn":"Part of the population eats vegan.","diff":"hard","level":"B1"}
+  ],
+  "Media & Communication": [
+    {"de":"der Zeitungsbericht","en":"newspaper report","pl":"die Zeitungsberichte","ex":"Der Zeitungsbericht handelt von gesunder Ernährung.","exEn":"The newspaper report is about healthy eating.","diff":"hard","level":"B1"},
+    {"de":"der Trend","en":"trend","pl":"die Trends","ex":"Vegane Ernährung ist ein großer Trend.","exEn":"Vegan eating is a big trend.","diff":"medium","level":"B1"}
+  ],
+  "Admin & Bureaucracy": [
+    {"de":"die Institution","en":"institution","pl":"die Institutionen","ex":"Schulen sind wichtige Institutionen.","exEn":"Schools are important institutions.","diff":"hard","level":"B1"},
+    {"de":"die Studie","en":"study","pl":"die Studien","ex":"Eine neue Studie zeigt überraschende Ergebnisse.","exEn":"A new study shows surprising results.","diff":"hard","level":"B1"},
+    {"de":"der Hauptgrund","en":"main reason","pl":"die Hauptgründe","ex":"Der Hauptgrund für den Einkauf ist der Preis.","exEn":"The main reason for the purchase is the price.","diff":"medium","level":"B1"}
+  ],
+  "Nature & Outdoors": [
+    {"de":"die Massentierhaltung","en":"factory farming","pl":"die Massentierhaltungen","ex":"Viele lehnen Massentierhaltung ab.","exEn":"Many people reject factory farming.","diff":"hard","level":"B1"}
+  ]
+}

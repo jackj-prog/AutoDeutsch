@@ -629,7 +629,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.18.10";
+const APP_VERSION = "2026.06.18.11";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4388,9 +4388,19 @@ function App() {
         if (browseFilter === "known") list = list.filter(w => known.has(knownKey(w._cat, w.de)));
         else if (browseFilter === "mastered") list = list.filter(w => normalizeEntry(prog[`production::${w._cat}::${w.de}`]).stats.productionStreak >= MASTERY_STREAK);
         if (q) list = list.filter(w => normalize(w.de).includes(q) || w.en.toLowerCase().includes(browseQuery.trim().toLowerCase()));
-        list.sort((a, b) => a.de.localeCompare(b.de, "de"));
+        // Sort by the noun stripped of its article so "der Bahnhof" files under B, not D —
+        // otherwise every der/die/das noun clusters under one letter and A–Z is meaningless.
+        const sortKey = w => w.de.replace(/^(der|die|das)\s+/i, "");
+        list.sort((a, b) => sortKey(a).localeCompare(sortKey(b), "de"));
         const total = list.length;
-        const shown = list.slice(0, 80);
+        const shown = list.slice(0, 120);
+        // Group the shown rows under A–Z section headers for rhythm + a sense of place.
+        const groups = [];
+        shown.forEach(w => {
+          const L = (sortKey(w).trim()[0] || "#").toUpperCase();
+          const last = groups[groups.length - 1];
+          if (last && last.letter === L) last.items.push(w); else groups.push({ letter: L, items: [w] });
+        });
         return (
           <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
             <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
@@ -4405,34 +4415,39 @@ function App() {
               ))}
             </div>
             {shown.length === 0 && <div style={{ color: TD, fontSize: 13, textAlign: "center", marginTop: 40 }}>{browseFilter === "known" ? "No words marked as known yet. Tap “Known” on any word you don’t need to practise." : browseFilter === "mastered" ? "No mastered words yet. Master a word with 5 correct production answers in a row." : "No matches. Try a shorter search."}</div>}
-            <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 8 }}>
-              {shown.map(w => {
-                const isKnown = known.has(knownKey(w._cat, w.de));
-                const v = normalizeEntry(prog[`vocab::${w._cat}::${w.de}`]);
-                const pr = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
-                const att = v.stats.attempts + pr.stats.attempts;
-                const mastered = pr.stats.productionStreak >= MASTERY_STREAK;
-                return (
-                  <div key={`${w._cat}::${w.de}`} style={{ minWidth: 0, background: "#101010", border: `1px solid ${mastered ? `${G}44` : B}`, borderRadius: 12, padding: "11px 12px", opacity: isKnown && browseFilter !== "known" ? 0.55 : 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
-                          <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>{w.de}</span>
-                          <span style={{ fontSize: 9, color: A, fontWeight: 800, border: `1px solid ${A}44`, borderRadius: 999, padding: "1px 6px", flexShrink: 0 }}>{cardLevel(w)}</span>
-                          {mastered && <span style={{ fontSize: 9, color: G, fontWeight: 900, flexShrink: 0 }}>★</span>}
+            {groups.map(g => (
+              <div key={g.letter}>
+                <div style={{ position: "sticky", top: 0, zIndex: 3, background: "#0A0A0A", padding: "8px 4px 6px", fontFamily: FN, fontSize: 12, fontWeight: 900, color: A, letterSpacing: 1.5, borderBottom: `1px solid ${B}` }}>{g.letter}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 8, padding: "8px 0 12px" }}>
+                  {g.items.map(w => {
+                    const isKnown = known.has(knownKey(w._cat, w.de));
+                    const v = normalizeEntry(prog[`vocab::${w._cat}::${w.de}`]);
+                    const pr = normalizeEntry(prog[`production::${w._cat}::${w.de}`]);
+                    const att = v.stats.attempts + pr.stats.attempts;
+                    const mastered = pr.stats.productionStreak >= MASTERY_STREAK;
+                    return (
+                      <div key={`${w._cat}::${w.de}`} style={{ minWidth: 0, background: "#101010", border: `1px solid ${mastered ? `${G}44` : B}`, borderRadius: 12, padding: "11px 12px", opacity: isKnown && browseFilter !== "known" ? 0.55 : 1 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
+                              <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>{w.de}</span>
+                              <span style={{ fontSize: 9, color: A, fontWeight: 800, border: `1px solid ${A}44`, borderRadius: 999, padding: "1px 6px", flexShrink: 0 }}>{cardLevel(w)}</span>
+                              {mastered && <span style={{ fontSize: 9, color: G, fontWeight: 900, flexShrink: 0 }}>★</span>}
+                            </div>
+                            <div style={{ fontSize: 12, color: TD, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.en}</div>
+                            <div style={{ fontSize: 9.5, color: TD, marginTop: 3, opacity: 0.8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w._cat}{att > 0 ? ` · ${att} attempt${att !== 1 ? "s" : ""}` : " · not practised yet"}</div>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                            <button type="button" aria-label={`Hear ${w.de}`} onClick={() => speak(w.de)} style={{ background: "#FFCC0012", border: `1px solid ${A}33`, borderRadius: 10, width: 36, height: 36, color: A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icon name="volume" size={15} /></button>
+                            <button type="button" onClick={() => toggleKnown(w._cat, w.de)} style={{ background: isKnown ? `${G}18` : "#0A0A0A", border: `1px solid ${isKnown ? G : B}`, borderRadius: 10, height: 36, padding: "0 11px", color: isKnown ? G : TD, fontSize: 11, fontWeight: 800, cursor: "pointer" }}>{isKnown ? "Known ✓" : "Known"}</button>
+                          </div>
                         </div>
-                        <div style={{ fontSize: 12, color: TD, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.en}</div>
-                        <div style={{ fontSize: 9.5, color: TD, marginTop: 3, opacity: 0.8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w._cat}{att > 0 ? ` · ${att} attempt${att !== 1 ? "s" : ""}` : " · not practised yet"}</div>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                        <button type="button" aria-label={`Hear ${w.de}`} onClick={() => speak(w.de)} style={{ background: "#FFCC0012", border: `1px solid ${A}33`, borderRadius: 10, width: 36, height: 36, color: A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icon name="volume" size={15} /></button>
-                        <button type="button" onClick={() => toggleKnown(w._cat, w.de)} style={{ background: isKnown ? `${G}18` : "#0A0A0A", border: `1px solid ${isKnown ? G : B}`, borderRadius: 10, height: 36, padding: "0 11px", color: isKnown ? G : TD, fontSize: 11, fontWeight: 800, cursor: "pointer" }}>{isKnown ? "Known ✓" : "Known"}</button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
             {total > shown.length && <div style={{ color: TD, fontSize: 11, textAlign: "center", marginTop: 12 }}>Showing {shown.length} of {total} — refine your search to see more.</div>}
           </div>
         );

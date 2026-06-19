@@ -497,6 +497,38 @@ function todayKey(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
+// ── Daily reminder (local notifications, no backend) ──
+// A gentle "time to study" notification at the user's chosen time. Uses the Notification
+// Triggers API where available (Chromium) so it fires even when the app is closed —
+// scheduled several days ahead and re-armed whenever the app is opened. Falls back to a
+// foreground timer (fires only while a tab is open) elsewhere; iOS has no Triggers API,
+// so there the reminder only lands if the app was left open. Purely additive + opt-in.
+const REMINDER_TAG = "ad-daily-reminder";
+const REMINDER_TITLE = "Zeit für Deutsch! 🇩🇪";
+const REMINDER_BODY = "Your daily review is waiting — a few cards keeps your streak alive.";
+// Future timestamps for HH:MM across the next `days` days (today included if still ahead).
+function reminderTimes(hhmm, days) {
+  const [h, m] = (hhmm || "19:00").split(":").map(Number);
+  const now = Date.now();
+  const out = [];
+  for (let i = 0; i < days; i++) {
+    const d = new Date(); d.setHours(h, m, 0, 0); d.setDate(d.getDate() + i);
+    if (d.getTime() > now) out.push(d.getTime());
+  }
+  return out;
+}
+function triggersSupported() {
+  return typeof Notification !== "undefined" && "showTrigger" in Notification.prototype
+    && typeof window !== "undefined" && typeof window.TimestampTrigger === "function";
+}
+async function clearScheduledReminders(reg) {
+  try {
+    if (!reg) return;
+    const ns = await reg.getNotifications({ includeTriggered: true });
+    ns.forEach(n => { if (n.tag && n.tag.indexOf(REMINDER_TAG) === 0) n.close(); });
+  } catch (e) {}
+}
+
 // ── Color palette (module scope so hoisted components can reference) ──
 const PAL = {
   A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
@@ -629,7 +661,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.19.08";
+const APP_VERSION = "2026.06.19.09";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1106,6 +1138,12 @@ function App() {
   // Sound effects (synthesized cues on correct/wrong/celebrate). Default on.
   const [sfxOn, setSfxOn] = useState(() => sfxEnabled());
   const toggleSfx = () => setSfxOn(v => { const n = !v; setSfxEnabled(n); if (n) playSfx("correct"); return n; });
+  // Daily reminder (opt-in local notification). Persisted; permission gated.
+  const [reminderOn, setReminderOn] = useState(() => { try { return localStorage.getItem("ad-reminder-on-v1") === "1"; } catch (e) { return false; } });
+  const [reminderTime, setReminderTime] = useState(() => { try { return localStorage.getItem("ad-reminder-time-v1") || "19:00"; } catch (e) { return "19:00"; } });
+  const [notifPerm, setNotifPerm] = useState(() => (typeof Notification !== "undefined" ? Notification.permission : "unsupported"));
+  const reminderTimerRef = useRef(null);
+  const dailyRef = useRef(null); // latest {count, goal, date} read inside the fire callback
   // Audio mode state
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPauseLen, setAudioPauseLen] = useState(3500); // ms between utterances
@@ -1413,6 +1451,67 @@ function App() {
   }, [snapshotProgOnce]);
   const saveDaily = useCallback(d => { try { localStorage.setItem("gfc-daily-v7", JSON.stringify(d)); setSaveStatus("Saved locally"); } catch (e) { setSaveStatus("Storage blocked"); } }, []);
   const saveLast = useCallback(ls => { try { localStorage.setItem("gfc-last-v7", JSON.stringify(ls)); } catch (e) {} }, []);
+
+  // ── Daily reminder scheduling ──
+  // Keep a ref of today's progress so the fire callback can decide whether to skip a nag
+  // without making the scheduler depend on (and re-run for) every card answered.
+  useEffect(() => { dailyRef.current = { count: dailyStats.count, goal: dailyGoal, date: dailyStats.date }; }, [dailyStats, dailyGoal]);
+  const rescheduleReminder = useCallback(async () => {
+    if (reminderTimerRef.current) { clearTimeout(reminderTimerRef.current); reminderTimerRef.current = null; }
+    let reg = (typeof window !== "undefined" && window.__SW_REG__) || null;
+    try { if (!reg && navigator.serviceWorker) reg = await navigator.serviceWorker.ready; } catch (e) {}
+    await clearScheduledReminders(reg);
+    if (!reminderOn || typeof Notification === "undefined" || Notification.permission !== "granted") return;
+    // Preferred path: schedule a week of triggers that fire even when the app is closed.
+    if (reg && triggersSupported()) {
+      try {
+        for (const ts of reminderTimes(reminderTime, 7)) {
+          await reg.showNotification(REMINDER_TITLE, {
+            tag: REMINDER_TAG + "-" + ts, body: REMINDER_BODY,
+            icon: "./icons/icon-192x192.png", badge: "./icons/icon-192x192.png",
+            showTrigger: new window.TimestampTrigger(ts), data: { url: "./" },
+          });
+        }
+        return;
+      } catch (e) { /* fall through to foreground timer */ }
+    }
+    // Fallback: fire once at the next occurrence while a tab is open, then re-arm.
+    const ts = reminderTimes(reminderTime, 2)[0];
+    if (!ts) return;
+    const delay = ts - Date.now();
+    if (delay <= 0 || delay > 2147483647) return; // setTimeout ceiling (~24.8 days)
+    reminderTimerRef.current = setTimeout(() => {
+      try {
+        const d = dailyRef.current;
+        const metToday = d && d.date === todayKey() && d.count >= d.goal;
+        if (!metToday && typeof Notification !== "undefined" && Notification.permission === "granted") {
+          if (reg) reg.showNotification(REMINDER_TITLE, { tag: REMINDER_TAG, body: REMINDER_BODY, icon: "./icons/icon-192x192.png", data: { url: "./" } });
+          else new Notification(REMINDER_TITLE, { body: REMINDER_BODY });
+        }
+      } catch (e) {}
+      rescheduleReminder();
+    }, delay);
+  }, [reminderOn, reminderTime]);
+  useEffect(() => {
+    rescheduleReminder();
+    const onVis = () => { if (document.visibilityState === "visible") rescheduleReminder(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { document.removeEventListener("visibilitychange", onVis); if (reminderTimerRef.current) clearTimeout(reminderTimerRef.current); };
+  }, [rescheduleReminder]);
+  const toggleReminder = useCallback(async () => {
+    if (reminderOn) { setReminderOn(false); try { localStorage.setItem("ad-reminder-on-v1", "0"); } catch (e) {} return; }
+    if (typeof Notification === "undefined") { setNotifPerm("unsupported"); return; }
+    let perm = Notification.permission;
+    if (perm === "default") { try { perm = await Notification.requestPermission(); } catch (e) {} }
+    setNotifPerm(perm);
+    if (perm !== "granted") return; // denied/dismissed → leave the toggle off
+    setReminderOn(true); try { localStorage.setItem("ad-reminder-on-v1", "1"); } catch (e) {}
+  }, [reminderOn]);
+  const updateReminderTime = useCallback((t) => {
+    if (!t) return;
+    setReminderTime(t); try { localStorage.setItem("ad-reminder-time-v1", t); } catch (e) {}
+  }, []);
+
   // Mark/unmark a vocab word as known. Known words are kept out of session pools but their
   // saved progress is untouched, so unmarking restores them exactly where they were.
   const toggleKnown = useCallback((cat, de) => {
@@ -3785,6 +3884,28 @@ function App() {
               ))}
             </div>
             {dailyGoal > 60 && <p style={{ fontSize: 11, color: A, marginTop: 12, lineHeight: 1.5, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8, borderLeft: `3px solid ${A}` }}>Ambitious goal. Consistency beats intensity — missing a big target often hurts streak motivation more than a smaller goal would.</p>}
+          </div>
+
+          {/* Daily reminder — opt-in local notification to defend the streak */}
+          <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>Daily Reminder</h3>
+          <div style={{ marginBottom: 20 }}>
+            <button onClick={toggleReminder} style={{ width: "100%", padding: "11px 12px", borderRadius: 10, fontSize: 12, fontWeight: 800, cursor: "pointer", background: reminderOn ? `${A}22` : "#0A0A0A", color: reminderOn ? A : TD, border: `1px solid ${reminderOn ? A : B}`, textAlign: "left", fontFamily: "inherit" }}>
+              Daily reminder: {reminderOn ? "On" : "Off"}
+            </button>
+            {reminderOn && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, padding: "10px 12px", background: "#0A0A0A66", border: `1px solid ${B}`, borderRadius: 10 }}>
+                <span style={{ fontSize: 12, color: T, fontWeight: 800 }}>Remind me at</span>
+                <input type="time" aria-label="Reminder time" value={reminderTime} onChange={e => updateReminderTime(e.target.value)}
+                  style={{ background: SH, color: T, border: `1px solid ${B}`, borderRadius: 8, padding: "6px 10px", fontSize: 14, fontFamily: BD, outline: "none", colorScheme: "dark" }} />
+              </div>
+            )}
+            <div style={{ fontSize: 11, color: notifPerm === "denied" ? R : TD, marginTop: 6, lineHeight: 1.45 }}>
+              {notifPerm === "denied"
+                ? "Notifications are blocked for this site — turn them on in your browser settings to use reminders."
+                : notifPerm === "unsupported"
+                ? "This browser doesn't support notifications."
+                : "A gentle nudge to keep your streak alive — skipped on days you've already hit your goal. Works best with the app installed; on iOS it may only remind while the app has been opened recently."}
+            </div>
           </div>
 
           <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>AI Tutor</h3>

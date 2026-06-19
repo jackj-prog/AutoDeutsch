@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autodeutsch-73ff7ca4c9cb';
+const CACHE_NAME = 'autodeutsch-13a8348c3bb5';
 
 const CORE_ASSETS = [
   './',
@@ -45,6 +45,20 @@ self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+});
+
+// Daily-reminder notification tap: focus an open tab if there is one, else open the app.
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const target = (event.notification.data && event.notification.data.url) || './';
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+      for (const client of clients) {
+        if ('focus' in client) return client.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(target);
+    })
+  );
 });
 
 // Fetch: network-first for the app shell, cache-first for static supporting assets.

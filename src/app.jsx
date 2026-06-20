@@ -678,7 +678,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.13";
+const APP_VERSION = "2026.06.20.14";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1765,7 +1765,7 @@ function App() {
           const cutoff = Date.now() - 60 * 86400000;
           const pruned = {};
           Object.entries(merged).forEach(([k, v]) => {
-            if (new Date(k).getTime() >= cutoff) pruned[k] = v;
+            if (new Date(k + "T00:00:00").getTime() >= cutoff) pruned[k] = v;
           });
           setTrendStats(pruned); saveTrend(pruned);
         }
@@ -1788,18 +1788,43 @@ function App() {
     return () => window.speechSynthesis.removeEventListener?.("voiceschanged", onVoices);
   }, []);
 
-  // Esc key closes any open modal — matches hardware-keyboard expectations (e.g. iPad users)
+  // Esc key closes any open modal/overlay — matches hardware-keyboard expectations (e.g. iPad
+  // users). Includes the full-screen rank-up celebration (a blocking overlay) and onboarding.
   useEffect(() => {
-    if (!showSetup && !showSettings) return;
+    if (!showSetup && !showSettings && !showOnboarding && !rankUp) return;
     const onKey = e => {
       if (e.key === "Escape") {
         if (showSettings) setShowSettings(false);
         else if (showSetup) setShowSetup(false);
+        else if (rankUp) setRankUp(null);
+        else if (showOnboarding) setShowOnboarding(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [showSetup, showSettings]);
+  }, [showSetup, showSettings, showOnboarding, rankUp]);
+
+  // A11y: when a dialog opens, move keyboard focus into it and trap Tab inside (so focus can't
+  // wander to the page behind). One shared ref — only one of these modals is open at a time.
+  const modalRef = useRef(null);
+  useEffect(() => {
+    if (!showSetup && !showSettings && !showOnboarding) return;
+    const node = modalRef.current;
+    if (!node) return;
+    const focusables = () => [...node.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null);
+    const prev = document.activeElement;
+    (focusables()[0] || node).focus({ preventScroll: true });
+    const onKey = e => {
+      if (e.key !== "Tab") return;
+      const f = focusables();
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    node.addEventListener("keydown", onKey);
+    return () => { node.removeEventListener("keydown", onKey); if (prev && prev.focus) try { prev.focus({ preventScroll: true }); } catch (e) {} };
+  }, [showSetup, showSettings, showOnboarding]);
 
   // Stop audio playback when leaving the audio screen (e.g. app reload, nav to another mode)
   useEffect(() => {
@@ -2171,7 +2196,7 @@ function App() {
         const cutoff = Date.now() - 60 * 86400000;
         const pruned = {};
         Object.entries(updated).forEach(([k, v]) => {
-          if (new Date(k).getTime() >= cutoff) pruned[k] = v;
+          if (new Date(k + "T00:00:00").getTime() >= cutoff) pruned[k] = v;
         });
         saveTrend(pruned);
         return pruned;
@@ -2449,7 +2474,7 @@ function App() {
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
     setSetupMode(dm || "vocab");
-    const mx = cat === "__all__" ? totalW : cat === "__grammar__" ? CLOZE.length : cat === "__verb__" ? 30 : cat === "__sentence__" ? SENTENCES.length : cat === "__imperativ__" ? IMPERATIVES.length : cat === "__listening__" ? DIALOGUES.length : cat === "__confusion__" ? 15 : cat === "__exam__" ? 15 : cat === "__weak__" ? Math.max(weakCards.size, 1) : (V[cat]?.length || 25);
+    const mx = cat === "__all__" ? totalW : cat === "__grammar__" ? CLOZE.length : cat === "__verb__" ? VERBS.length : cat === "__sentence__" ? SENTENCES.length : cat === "__imperativ__" ? IMPERATIVES.length : cat === "__listening__" ? DIALOGUES.length : cat === "__confusion__" ? 15 : cat === "__exam__" ? 15 : cat === "__weak__" ? Math.max(weakCards.size, 1) : (V[cat]?.length || 25);
     setSessLen(Math.min(15, mx));
     setShowSetup(true);
   };
@@ -2594,6 +2619,16 @@ function App() {
     const ls = { cat, m, count, label, ts: Date.now() };
     setLastSession(ls); saveLast(ls);
 
+    // Guard: never navigate into an empty session (e.g. a library category whose every card
+    // is filtered out by the current level) — that renders a blank "0 / 0" dead-end. Bounce
+    // back home and surface a brief notice instead.
+    const guardEmpty = (list) => {
+      if (list && list.length) return false;
+      setShowSetup(false); setScreen("home");
+      showCelebration({ color: "#FFCC00", icon: "alert", tag: "Nothing to practise", big: "No cards for that pick", sub: "Try another topic or level", subIcon: null });
+      return true;
+    };
+
     if (m === "vocab" || m === "production" || m === "dictation" || m === "speaking") {
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories" : cat);
@@ -2624,6 +2659,7 @@ function App() {
       // Front-load due reviews: they land while attention is freshest, and an abandoned
       // session still services SRS debt before fresh material.
       const sel = [...sh(seeded), ...sh(restPick)];
+      if (guardEmpty(sel)) return;
       setCards(sel);
       setScreen("cards"); setTStart(Date.now());
       if (m === "dictation") {
@@ -2635,13 +2671,17 @@ function App() {
       setCategory("Article Drill"); const pool = cat === "__all__" ? nouns : nouns.filter(n => n.cat === cat);
       const take = Math.min(count, pool.length);
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`article::${c.cat}::${c.article} ${c.noun}`));
-      setCards([...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))]);
+      const aCards = [...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))];
+      if (guardEmpty(aCards)) return;
+      setCards(aCards);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "plural") {
       setCategory("Plural Drill"); const pool = cat === "__all__" ? pluralNouns : pluralNouns.filter(n => n.cat === cat);
       const take = Math.min(count, pool.length);
       const { seeded, rest } = seedDueFirst(pool, take, c => dueCards.has(`plural::${c.cat}::${c.de}`));
-      setCards([...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))]);
+      const pCards = [...sh(seeded), ...sh(rest).slice(0, Math.max(0, take - seeded.length))];
+      if (guardEmpty(pCards)) return;
+      setCards(pCards);
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "cloze") {
       setCategory("Grammar Cloze");
@@ -3400,6 +3440,9 @@ function App() {
   // Styles
   const A = "#FFCC00", AD = "#CC9900", BG = "#0A0A0A", S = "#111111", SH = "#1A1A1A", B = "#2A2A2A";
   const G = "#4ADE80", R = "#DD0000", T = "#F0EDE5", TD = "#8A857D", BL = "#60A5FA";
+  // Brand red #DD0000 is ~3.84:1 on #0A0A0A — fails WCAG-AA for normal-size text. RT is a
+  // brightened red (~6.9:1) used for red *text*; the deep R stays for rules/borders/badges.
+  const RT = "#FF5A5A";
   const dailyGoalPct = Math.min(1, dailyStats.count / Math.max(dailyGoal, 1));
   const FN = `'Montserrat',sans-serif`, BD = `'Montserrat',sans-serif`;
   const FLAG = `linear-gradient(90deg, #050505 0 33%, ${R} 33% 66%, ${A} 66%)`;
@@ -3419,7 +3462,7 @@ function App() {
   };
   const reviewQueueItems = [
     { key: "due", title: "Due", count: resolvedDue.total, next: nextBatchLabel(resolvedDue), detail: formatModeBreakdown(resolvedDue.byMode), icon: "calendarCheck", color: A, onClick: startDueReview },
-    { key: "weak", title: "Weak", count: resolvedWeak.total, next: nextBatchLabel(resolvedWeak), detail: formatModeBreakdown(resolvedWeak.byMode), icon: "alert", color: R, onClick: startWeakReview },
+    { key: "weak", title: "Weak", count: resolvedWeak.total, next: nextBatchLabel(resolvedWeak), detail: formatModeBreakdown(resolvedWeak.byMode), icon: "alert", color: RT, onClick: startWeakReview },
     { key: "almost", title: "Almost", count: almostCards.total, next: nextBatchLabel(almostCards), detail: formatModeBreakdown(almostCards.byMode), icon: "trophy", color: G, onClick: startAlmostReview },
   ].filter(item => item.count > 0);
 
@@ -3440,7 +3483,7 @@ function App() {
           </div>
           {combo >= 3 && (() => { const h = flameHeat(combo); return <span className="ad-pop" key={combo} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 4, background: `${h.color}1C`, border: `1px solid ${h.color}55`, borderRadius: 999, padding: "4px 10px", fontSize: 10.5, fontWeight: 900, color: h.color, boxShadow: h.glow ? `0 0 ${h.glow}px ${h.color}55` : "none" }}><HotFlame n={combo} size={12} /> {combo}</span>; })()}
           <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 5, background: "#141414", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "4px 11px", fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5 }}>
-            {rpt > 0 && <span style={{ color: R }}>R{rpt + 1}</span>}
+            {rpt > 0 && <span style={{ color: RT }}>R{rpt + 1}</span>}
             <span style={{ color: T }}>{idx + 1}<span style={{ color: TD, fontWeight: 700 }}> / {cards.length}</span></span>
           </span>
         </div>
@@ -3525,7 +3568,7 @@ function App() {
     );
   };
 
-  const maxC = setupCat === "__all__" ? (setupMode === "article" ? Math.max(nouns.length, 5) : setupMode === "plural" ? Math.max(pluralNouns.length, 5) : totalW) : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? 30 : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__confusion__" ? 15 : setupCat === "__exam__" ? 15 : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
+  const maxC = setupCat === "__all__" ? (setupMode === "article" ? Math.max(nouns.length, 5) : setupMode === "plural" ? Math.max(pluralNouns.length, 5) : totalW) : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? VERBS.length : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__confusion__" ? 15 : setupCat === "__exam__" ? 15 : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
   const hasNouns = setupCat && !["__all__", "__grammar__", "__verb__", "__sentence__", "__weak__"].includes(setupCat) && nouns.some(n => n.cat === setupCat);
   const setupSpecialCats = ["__grammar__", "__verb__", "__sentence__", "__imperativ__", "__listening__", "__confusion__", "__exam__", "__weak__"];
   const setupIsLibrary = setupCat && !setupSpecialCats.includes(setupCat);
@@ -3792,7 +3835,7 @@ function App() {
 
       {/* ── FIRST-RUN ONBOARDING ── */}
       {showOnboarding && <div style={{ position: "fixed", inset: 0, zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.92)", padding: 22 }}>
-        <div role="dialog" aria-modal="true" aria-label="Welcome to AutoDeutsch" style={{ background: SOFT_PANEL, border: `1px solid ${A}2E`, borderRadius: 18, padding: "26px 22px 22px", width: "100%", maxWidth: 390, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 24px 80px rgba(0,0,0,0.45)" }}>
+        <div ref={modalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Welcome to AutoDeutsch" style={{ outline: "none", background: SOFT_PANEL, border: `1px solid ${A}2E`, borderRadius: 18, padding: "26px 22px 22px", width: "100%", maxWidth: 390, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 24px 80px rgba(0,0,0,0.45)" }}>
           <div style={{ height: 3, width: 74, background: FLAG, borderRadius: 2, marginBottom: 16 }} />
           {obStep === "intake" && (<>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
@@ -3865,10 +3908,10 @@ function App() {
 
       {/* Setup modal */}
       {showSetup && <div style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.88)", padding: 18 }} onClick={() => setShowSetup(false)}>
-        <div role="dialog" aria-modal="true" aria-label="Session setup" onClick={e => e.stopPropagation()} style={{ background: S, border: `1px solid ${A}33`, borderRadius: 18, width: "100%", maxWidth: 382, maxHeight: "92vh", overflow: "hidden", boxShadow: `0 0 40px ${A}11`, display: "flex", flexDirection: "column" }}>
+        <div ref={modalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Session setup" onClick={e => e.stopPropagation()} style={{ outline: "none", background: S, border: `1px solid ${A}33`, borderRadius: 18, width: "100%", maxWidth: 382, maxHeight: "92vh", overflow: "hidden", boxShadow: `0 0 40px ${A}11`, display: "flex", flexDirection: "column" }}>
           <div style={{ height: 4, background: FLAG }} />
           <div style={{ padding: "18px 18px 10px" }}>
-            <div style={{ fontSize: 10, color: R, fontWeight: 800, letterSpacing: 3.2, textTransform: "uppercase", marginBottom: 6 }}>Setup</div>
+            <div style={{ fontSize: 10, color: RT, fontWeight: 800, letterSpacing: 3.2, textTransform: "uppercase", marginBottom: 6 }}>Setup</div>
             <h3 style={{ fontFamily: FN, fontSize: 20, margin: "0 0 4px", fontWeight: 800, lineHeight: 1.18 }}>{setupTitle}</h3>
             <div style={{ fontSize: 11, color: TD, minHeight: 15 }}>
               {setupIsGrammarDrill ? (setupMode === "article" ? "der · die · das — across every noun" : "Build the plural of any noun") : setupCat === "__imperativ__" ? "Imperativ" : setupCat === "__listening__" ? "Hör-Training" : setupMode === "production" ? "German recall and spelling" : "Choose the session shape"}
@@ -4111,9 +4154,9 @@ function App() {
       </div>}
       {/* ── SETTINGS MODAL ── */}
       {showSettings && <div style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.88)", padding: 24 }} onClick={() => setShowSettings(false)}>
-        <div role="dialog" aria-modal="true" aria-label="Settings" onClick={e => e.stopPropagation()} style={{ background: S, border: `1px solid ${A}33`, borderRadius: 20, padding: "28px 24px", width: "100%", maxWidth: 360, maxHeight: "90vh", overflowY: "auto", boxShadow: `0 0 40px ${A}11` }}>
+        <div ref={modalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Settings" onClick={e => e.stopPropagation()} style={{ outline: "none", background: S, border: `1px solid ${A}33`, borderRadius: 20, padding: "28px 24px", width: "100%", maxWidth: 360, maxHeight: "90vh", overflowY: "auto", boxShadow: `0 0 40px ${A}11` }}>
           <div style={{ height: 3, width: 72, background: FLAG, borderRadius: 2, marginBottom: 16 }} />
-          <div style={{ fontSize: 10, color: R, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", marginBottom: 6 }}>Settings</div>
+          <div style={{ fontSize: 10, color: RT, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", marginBottom: 6 }}>Settings</div>
 
           <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>Offline & Storage</h3>
           <div style={{ marginBottom: 20, display: "grid", gap: 8 }}>
@@ -4278,7 +4321,7 @@ function App() {
 
         {/* Storage warning — only shown if localStorage is not writable */}
         {!storageOK && (
-          <div style={{ background: "#1A0000", border: `1px solid ${R}55`, borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 12, color: R, lineHeight: 1.4 }}>
+          <div style={{ background: "#1A0000", border: `1px solid ${R}55`, borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 12, color: RT, lineHeight: 1.4 }}>
             <strong>Progress won't save</strong><br />
             <span style={{ color: T, fontWeight: 400, fontSize: 11 }}>Private browsing is on, or storage is full. Nothing you do this session will be remembered.</span>
           </div>
@@ -4473,7 +4516,7 @@ function App() {
             <div style={{ display: "flex", alignItems: "center", gap: 11, paddingTop: 2 }}>
               <IconBadge name="alert" size={34} color={R} bg={`${R}1A`} />
               <span style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ display: "block", fontSize: 11.5, color: T, fontWeight: 800, letterSpacing: 0.3 }}>Weak spots <span style={{ color: R }}>{resolvedWeak.total}</span></span>
+                <span style={{ display: "block", fontSize: 11.5, color: T, fontWeight: 800, letterSpacing: 0.3 }}>Weak spots <span style={{ color: RT }}>{resolvedWeak.total}</span></span>
                 <span style={{ display: "block", fontSize: 10.5, color: TD, marginTop: 1 }}>Words that keep slipping — pin them down</span>
               </span>
               <Icon name="arrowRight" size={18} style={{ color: TD }} />
@@ -5033,7 +5076,7 @@ function App() {
                     const reached = i <= LEVELS.indexOf(cl);
                     const last = i === LEVELS.length - 1;
                     return (
-                      <button key={l} type="button" onClick={() => { setSessLevel(l); setScreen("home"); }} aria-label={`Practice ${l} ${LEVEL_TITLES[l]}`} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left", padding: 0, opacity: reached || strongPct > 0 ? 1 : 0.45 }}>
+                      <button key={l} type="button" onClick={() => { setSessLevel(l); setScreen("home"); }} aria-label={`Practice ${l} ${LEVEL_TITLES[l]}`} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit", textAlign: "left", padding: 0, opacity: reached || strongPct > 0 ? 1 : 0.62 }}>
                         <div style={{ position: "relative", width: 20, alignSelf: "stretch", display: "flex", justifyContent: "center", flexShrink: 0 }}>
                           {!last && <div style={{ position: "absolute", top: "50%", bottom: -6, width: 2, background: done ? G : `${HAIR}` }} />}
                           <div style={{ alignSelf: "center", width: done || isCurrent ? 16 : 12, height: done || isCurrent ? 16 : 12, borderRadius: "50%", background: done ? G : isCurrent ? LEVEL_COLORS[l] : "#0A0A0A", border: `2px solid ${done ? G : isCurrent ? LEVEL_COLORS[l] : HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, boxShadow: isCurrent ? `0 0 12px -1px ${LEVEL_COLORS[l]}` : "none" }}>
@@ -5241,7 +5284,7 @@ function App() {
                     </button>
                     <div style={{ fontSize: 13, fontWeight: 800, color: listening ? R : A }}>{listening ? "Listening… tap to stop" : "Tap and say it in German"}</div>
                     {heard && <div style={{ fontSize: 15, color: T, fontFamily: BD }}>“{heard}”</div>}
-                    {speechErr && <div style={{ fontSize: 12, color: R }}>{speechErr}</div>}
+                    {speechErr && <div style={{ fontSize: 12, color: RT }}>{speechErr}</div>}
                   </>) : (<>
                     <Icon name="mic" size={30} style={{ color: TD }} />
                     <div style={{ fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, maxWidth: 280 }}>Say it aloud in German, then mark yourself. (Live speech scoring isn't supported on this browser.)</div>
@@ -5355,7 +5398,7 @@ function App() {
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <>
                 <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: inputResult === "wrong" ? R : G }}>{card.pl}</div>
-                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: R, marginTop: 4 }}>You: {input}</div>}
+                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: RT, marginTop: 4 }}>You: {input}</div>}
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
@@ -5375,7 +5418,7 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Fill the gap</div>
               <div style={{ fontFamily: FN, fontSize: 20, textAlign: "center", lineHeight: 1.4 }}>{answered ? card.q.replace("___", card.a) : card.q}</div>
               {answered && <><div style={{ marginTop: 12, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "8px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}` }}>
-                {inputResult === "wrong" ? <>{input && <><span style={{ color: R }}>Your answer: {input}</span><br /></>}<span style={{ color: G }}>Correct: {card.a}</span><br /></> :
+                {inputResult === "wrong" ? <>{input && <><span style={{ color: RT }}>Your answer: {input}</span><br /></>}<span style={{ color: G }}>Correct: {card.a}</span><br /></> :
                   inputResult === "capital" ? <span style={{ color: A }}>✓ Right — mind the capitalisation ({card.a})</span> :
                   inputResult === "eszett" ? <span style={{ color: A }}>✓ Right — mind ß vs ss ({card.a})</span> :
                   <span style={{ color: G }}>Correct! ✓</span>}{" "}{!skipSummary && card.h}
@@ -5412,7 +5455,7 @@ function App() {
                     <span style={{ color: card._person === "sie" ? (inputResult === "wrong" ? R : G) : T, fontWeight: card._person === "sie" ? 700 : 500 }}>{card.sie}{card._person === "sie" ? " ←" : ""}</span>
                   </div>
                 </div>
-                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: R, marginTop: 6 }}>You: {input}</div>}
+                {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: RT, marginTop: 6 }}>You: {input}</div>}
                 {!skipSummary && <div style={{ fontSize: 11, color: TD, marginTop: 8, fontStyle: "italic", textAlign: "center", padding: "0 6px" }}>„{card.ex}"</div>}
                 {!skipSummary && <div style={{ fontSize: 11, color: BL, marginTop: 4, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}><Icon name="target" size={12} /> {card.hint}</div>}
                 <SpeakBtn text={card[card._person]} />

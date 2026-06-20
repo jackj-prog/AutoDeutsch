@@ -678,7 +678,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.15";
+const APP_VERSION = "2026.06.20.16";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -5248,7 +5248,9 @@ function App() {
               )}
               {answered && <>
                 {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
-                <div className={inputResult === "wrong" ? undefined : "ad-answer-pop"} style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: inputResult === "wrong" ? R : G, letterSpacing: -0.2 }}>{card.de}</div>
+                {/* The correct answer is always the success colour — green = "this is right".
+                    The learner's wrong attempt is shown separately below, struck through in red. */}
+                <div className={inputResult === "wrong" ? undefined : "ad-answer-pop"} style={{ marginTop: 16, fontFamily: FN, fontSize: 22, fontWeight: 600, color: G, letterSpacing: -0.2 }}>{card.de}</div>
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
@@ -5381,7 +5383,7 @@ function App() {
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
-              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: sel !== null && ["der", "die", "das"][sel] === card.article ? G : R }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
+              {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: G }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {!skipSummary && card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
                   <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.5, fontStyle: "italic" }}>
                     {highlightExample(card.ex, card.noun).map((p, i) => p.hl
@@ -5397,7 +5399,7 @@ function App() {
               <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center", lineHeight: 1.2 }}>{card.de}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <>
-                <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: inputResult === "wrong" ? R : G }}>{card.pl}</div>
+                <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: G }}>{card.pl}</div>
                 {inputResult === "wrong" && input && <div style={{ fontSize: 11, color: RT, marginTop: 4 }}>You: {input}</div>}
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}

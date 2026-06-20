@@ -22,6 +22,8 @@
 
 ## Session run-log
 
+- Visual polish (v.16): **answer-reveal colour semantics.** On a wrong answer the *correct* answer was drawn in the same red (#DD0000) as an error — conflating "here's the right answer" with "you got it wrong". Now the correct answer always renders **green** (success = truth) in the production/vocab, article and plural reveals (matching the cloze drill, which already did this); the learner's wrong attempt stays red + struck-through ("You wrote …"). Clearer at a glance and more encouraging. Left the drill-card vertical rhythm as-is: the typed-mode top-anchor vs MC-mode centring is **intentional** (typed modes reserve the lower half for the on-screen keyboard, which balances the card on a real device). 26/26 tests; SW cache bumped.
+
 - PWA / installability hardening (v.15): moved the **Montserrat `<link>` into `index.html` `<head>`** (+ `preconnect` to fonts.googleapis/​gstatic) instead of injecting it late from the React tree — the brand font now requests at first paint, no flash of fallback; the service worker already runtime-caches the CSS + woff2 (cache-first, CORS-enabled) for offline. **Completed `manifest.json`**: added `id` / `scope` / `lang` / `dir` / `categories` and split the icon `purpose` into proper `any` + dedicated `maskable` entries (was `"any maskable"` on both, which can crop on Android adaptive icons). 26/26 tests; SW cache bumped.
 
 - A11y + correctness pass (v.14): see Bugs & Fixes. WCAG-AA red-text + CEFR-row contrast, modal focus-trap/focus-move + Escape for rank-up/onboarding, the UTC date off-by-one, verb-cap 30→92, and an empty-pool guard.

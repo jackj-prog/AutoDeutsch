@@ -7,12 +7,12 @@ export async function loadData(path = new URL("../src/data.js", import.meta.url)
   const code = await readFile(path, "utf8");
   const ctx = vm.createContext({ console });
   vm.runInContext(code, ctx);
-  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES })", ctx);
+  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS: typeof MISSIONS!=='undefined'?MISSIONS:null, MISSION_ARCS: typeof MISSION_ARCS!=='undefined'?MISSION_ARCS:null })", ctx);
 }
 
 const isStr = (v) => typeof v === "string" && v.trim().length > 0;
 
-export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES }) {
+export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS, MISSION_ARCS }) {
   const errors = [];
   const warnings = [];
   const err = (m) => errors.push(m);
@@ -109,6 +109,26 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     if (seenB.has(m.base)) err(`IMPERATIVES: duplicate base "${m.base}"`);
     seenB.add(m.base);
   });
+
+  // ── Missions (P0 scenario spine) ──
+  if (MISSIONS) {
+    const dlgTitles = new Set((DIALOGUES || []).map(d => d.title));
+    const arcIds = new Set((MISSION_ARCS || []).map(a => a.id));
+    const catNames = new Set(Object.keys(V || {}));
+    const seenM = new Set();
+    let dialogueRefsCovered = 0;
+    MISSIONS.forEach((m, i) => {
+      if (!isStr(m.id)) err(`MISSIONS[${i}] missing id`);
+      if (seenM.has(m.id)) err(`MISSIONS: duplicate id "${m.id}"`);
+      seenM.add(m.id);
+      if (!isStr(m.cando)) err(`MISSIONS "${m.id}": missing cando`);
+      if (!arcIds.has(m.arc)) err(`MISSIONS "${m.id}": arc "${m.arc}" not in MISSION_ARCS`);
+      if (m.level && !["A1", "A2", "B1", "B2"].includes(m.level)) err(`MISSIONS "${m.id}": bad level "${m.level}"`);
+      (m.dialogues || []).forEach(t => { if (!dlgTitles.has(t)) err(`MISSIONS "${m.id}": dialogue "${t}" not found`); else dialogueRefsCovered++; });
+      (m.cats || []).forEach(c => { if (!catNames.has(c)) err(`MISSIONS "${m.id}": category "${c}" not found`); });
+      if (!(m.dialogues || []).length) warn(`MISSIONS "${m.id}": no dialogues`);
+    });
+  }
 
   const counts = {
     vocab: Object.values(V || {}).reduce((n, l) => n + (Array.isArray(l) ? l.length : 0), 0),

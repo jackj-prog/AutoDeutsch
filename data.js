@@ -7338,3 +7338,67 @@ const IMPERATIVES = [
   {base:"kommen",en:"come",du:"komm",ihr:"kommt",sie:"kommen Sie",hint:"regular, frequent",ex:"Komm bitte her!"},
   {base:"gehen",en:"go",du:"geh",ihr:"geht",sie:"gehen Sie",hint:"regular, frequent",ex:"Geh nach Hause!"}
 ];
+
+// ── P0: Scenario / Mission spine (relocation journey) ──────────────────────────
+// Curated ordering of the existing DIALOGUES into real-world missions with a plain-language
+// "can-do" outcome. Dialogues are referenced by title (their stable key). Vocab `cats` must be
+// V categories. The build validator resolves every reference. See docs/P0-scenarios-spec.md.
+const MISSION_ARCS = [
+  {id:"touchdown", title:"Touchdown",     sub:"Your first days",          icon:"plane"},
+  {id:"paperwork", title:"The Paperwork", sub:"Anmeldung & the offices",   icon:"file"},
+  {id:"roof",      title:"A Roof",        sub:"Finding & keeping a flat",  icon:"home"},
+  {id:"money",     title:"Money & Connectivity", sub:"Bank, SIM, contracts", icon:"card"},
+  {id:"health",    title:"Staying Well",  sub:"Doctor, pharmacy, sick notes", icon:"heart"},
+  {id:"job",       title:"The Job",       sub:"Working in German",         icon:"briefcase"},
+  {id:"belonging", title:"Belonging",     sub:"Small talk & social life",  icon:"users"},
+];
+
+const MISSIONS = [
+  // Touchdown
+  {id:"cafe",        arc:"touchdown", level:"A2", cando:"Order at a café or bakery", dialogues:["Im Café bestellen","At the café","Beim Bäcker","At the bakery"], cats:["Food & Drink","Restaurant & Dining Out"]},
+  {id:"restaurant",  arc:"touchdown", level:"A2", cando:"Eat out and pay at a restaurant", dialogues:["At the restaurant","Bezahlen im Restaurant","Tisch reservieren","Complaining politely at a restaurant"], cats:["Restaurant & Dining Out","Food & Drink"]},
+  {id:"supermarket", arc:"touchdown", level:"A2", cando:"Shop at the supermarket", dialogues:["At the supermarket","An der Supermarktkasse","Ordering online delivery"], cats:["Shopping & Money","Food & Drink"]},
+  {id:"directions",  arc:"touchdown", level:"A2", cando:"Ask for and follow directions", dialogues:["Nach dem Weg fragen","Asking for directions"], cats:["Travel & Directions"]},
+  {id:"hotel",       arc:"touchdown", level:"A2", cando:"Book and check into a hotel", dialogues:["Booking a hotel","Im Hotel einchecken","Frühstück im Hotel"], cats:["Travel & Directions"]},
+  {id:"transit",     arc:"touchdown", level:"A2", cando:"Get around by train, taxi and plane", dialogues:["At the train station","Am Bahnhof — Ticket kaufen","Zug — Verspätung","Asking at the station","Taxi rufen","At the airport check-in","Train delay compensation"], cats:["Travel & Directions","Driving & Traffic"]},
+  {id:"meeting",     arc:"touchdown", level:"A2", cando:"Introduce yourself and meet people", dialogues:["Meeting someone"], cats:["Greetings & Basics","Small Talk & Social"]},
+  {id:"smalltalk",   arc:"touchdown", level:"A2", cando:"Make small talk about the weather and weekend", dialogues:["Das Wetter","Weekend plans","Small talk about weekend"], cats:["Small Talk & Social","Weather & Nature"]},
+  {id:"phone",       arc:"touchdown", level:"A2", cando:"Handle a basic phone call", dialogues:["On the phone"], cats:["Emails & Phone","Media & Communication"]},
+  {id:"clothes",     arc:"touchdown", level:"A2", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
+  // The Paperwork
+  {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
+  {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},
+  {id:"finanzamt",   arc:"paperwork", level:"B2", cando:"Handle a call to the Finanzamt", dialogues:["Anruf beim Finanzamt"], cats:["Admin & Bureaucracy","Banking & Finance"]},
+  {id:"strom",       arc:"paperwork", level:"B2", cando:"Set up your electricity", dialogues:["Strom anmelden"], cats:["Admin & Bureaucracy","Housing & Renting"]},
+  {id:"auslander",   arc:"paperwork", level:"B2", cando:"Get through an appointment at the Ausländerbehörde", dialogues:["Termin bei der Ausländerbehörde"], cats:["Admin & Bureaucracy"]},
+  // A Roof
+  {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
+  {id:"landlord",    arc:"roof", level:"A2", cando:"Deal with your landlord", dialogues:["Reporting an issue to a landlord","Calling the landlord"], cats:["Housing & Renting"]},
+  {id:"contract",    arc:"roof", level:"B2", cando:"Understand a rental contract", dialogues:["Discussing a rental contract"], cats:["Housing & Renting","Admin & Bureaucracy"]},
+  {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
+  // Money & Connectivity
+  {id:"bank",        arc:"money", level:"B1", cando:"Open a bank account", dialogues:["Kontoeröffnung bei der Bank","Opening a bank account"], cats:["Banking & Finance"]},
+  {id:"sim",         arc:"money", level:"B1", cando:"Get a SIM and choose a phone plan", dialogues:["Buying a SIM card","Choosing a phone plan"], cats:["Media & Communication","Shopping & Money"]},
+  {id:"internet",    arc:"money", level:"B2", cando:"Fix an internet or utility problem", dialogues:["Internet outage hotline"], cats:["Media & Communication","Technology & Digital"]},
+  {id:"insurance",   arc:"money", level:"B2", cando:"Make an insurance claim", dialogues:["Reporting an insurance claim"], cats:["Banking & Finance","Admin & Bureaucracy"]},
+  {id:"carworkshop", arc:"money", level:"B2", cando:"Deal with a car workshop", dialogues:["At the car workshop"], cats:["Driving & Traffic"]},
+  {id:"complaint",   arc:"money", level:"B2", cando:"Make a complaint and cancel a contract", dialogues:["Making a complaint","Cancelling a gym contract"], cats:["Admin & Bureaucracy"]},
+  // Staying Well
+  {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
+  {id:"pharmacy",    arc:"health", level:"B1", cando:"Get what you need at the pharmacy", dialogues:["In der Apotheke","At the pharmacy"], cats:["Health & Doctor"]},
+  {id:"results",     arc:"health", level:"B2", cando:"Discuss test results with a doctor", dialogues:["Discussing test results"], cats:["Health & Doctor","Body & Health"]},
+  {id:"sick",        arc:"health", level:"B2", cando:"Call in sick to work", dialogues:["Krankmeldung im Büro"], cats:["Health & Doctor","Work & Study"]},
+  // The Job
+  {id:"workhours",   arc:"job", level:"A2", cando:"Ask about work hours and conditions", dialogues:["Asking about work hours","Small talk at work"], cats:["Work & Study"]},
+  {id:"interview",   arc:"job", level:"B1", cando:"Handle a job interview", dialogues:["Job interview basics","Job interview"], cats:["Work & Study"]},
+  {id:"firstday",    arc:"job", level:"B2", cando:"Survive your first day at work", dialogues:["Onboarding: erster Arbeitstag"], cats:["Work & Study","Engineering Workplace"]},
+  {id:"codereview",  arc:"job", level:"B2", cando:"Take part in a code review or tech problem", dialogues:["Code-Review im Team","Technisches Problem im Labor","Reporting a technical problem"], cats:["Engineering Workplace","Technology & Digital"]},
+  {id:"meeting_work",arc:"job", level:"B2", cando:"Run a project meeting and give your view", dialogues:["Project status meeting","Debate: working from home"], cats:["Work & Study"]},
+  {id:"feedback",    arc:"job", level:"B2", cando:"Have a feedback and salary conversation", dialogues:["Feedbackgespräch mit der Chefin","Salary negotiation"], cats:["Work & Study"]},
+  // Belonging
+  {id:"gym",         arc:"belonging", level:"A2", cando:"Join and use a gym", dialogues:["Joining a gym","Fitnessstudio anmelden","Freunde im Fitnessstudio"], cats:["Sport & Leisure"]},
+  {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
+  {id:"networking",  arc:"belonging", level:"B2", cando:"Network at a conference", dialogues:["Networking at a conference"], cats:["Small Talk & Social","Work & Study"]},
+  {id:"kaffeekueche",arc:"belonging", level:"B2", cando:"Make small talk in the office kitchen", dialogues:["Smalltalk in der Kaffeeküche"], cats:["Small Talk & Social","Character & Personality"]},
+  {id:"debate",      arc:"belonging", level:"B2", cando:"Hold your own in a debate", dialogues:["Diskussion: Elektroautos"], cats:["Opinions & Argument"]},
+];

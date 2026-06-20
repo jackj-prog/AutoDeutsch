@@ -26,6 +26,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 |---|---|---|---|---|
 | Claude (Opus) | src/app.jsx (level focus), docs | Auto-chip fix + spreadsheet→Markdown migration | 2026-06-20 | ✅ done |
 | Claude (Opus) | src/app.jsx (session modes, render, grading) | Speaking production mode (Web Speech recognition + shadowing fallback) | 2026-06-20 | ✅ done |
+| Claude (Opus) | src/data.js (MISSIONS), src/app.jsx (scenarios/mission screens, Home card), validator | P0 — Scenario/Mission spine (per docs/P0-scenarios-spec.md) | 2026-06-20 | ✅ done |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

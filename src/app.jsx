@@ -667,7 +667,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.03";
+const APP_VERSION = "2026.06.20.04";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -755,6 +755,8 @@ const ICONS = {
   download: "M12 4v12M7 11l5 5 5-5M5 20h14",
   volume: "M4 10v4h4l5 4V6l-5 4H4Zm13-2a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14",
   mic: "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 23h8",
+  plane: "M17.8 19.2 16 11l3.5-3.5c1.5-1.5 2-3.5 1.5-4.5-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.6c-.2.4-.1.9.3 1.2L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 4.3c.3.4.8.5 1.2.3l.6-.3c.4-.2.6-.6.5-1.1Z",
+  card: "M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7ZM2 10h20",
   home: "m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2V10Z",
   users: "M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12.5 10v-2a4 4 0 0 0-3-3.85M16 3.15a4 4 0 0 1 0 7.7",
   heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z",
@@ -1191,6 +1193,10 @@ function App() {
   // NEW: Dialogue state
   const [dlgIdx, setDlgIdx] = useState(0);
   const [dlgRevealed, setDlgRevealed] = useState({});
+  // P0 mission spine: per-mission step progress (SRS-independent) + the mission being viewed.
+  const [missionProg, setMissionProg] = useState(() => { try { return JSON.parse(localStorage.getItem("ad-mission-progress-v1") || "{}"); } catch (e) { return {}; } });
+  const [activeMission, setActiveMission] = useState(null); // mission id when on the mission-detail screen
+  const missionReturnRef = useRef(null); // {id, step} so a mission-launched session credits the step on results
   // Listening-first (default on): the German line stays hidden until you've heard it, so a
   // dialogue trains the ear instead of being read along. Toggle to "Read along" for the old
   // always-visible behaviour; persisted across sessions.
@@ -2350,6 +2356,14 @@ function App() {
     return { levels, boxes, attempts, correct, entries, masteredTotal: masteredDates.length, recent28, perWeek, b2Remaining, b2WeeksLeft, journeyTotal, journeyStrong, journeyMastered, journeyPct, journeyRemaining, journeyWeeksLeft, currentLevel, chaptersDoneTotal, currentChapter, chapterRemaining };
   }, [prog]);
 
+  // The mission the journey nudges next: first not-done mission at/just-above the learner's level.
+  const currentMission = useMemo(() => {
+    const cl = Math.max(0, LEVELS.indexOf(deepStats.currentLevel));
+    const lvlOk = (m) => LEVELS.indexOf(m.level) <= Math.min(LEVELS.length - 1, cl + 1);
+    const notDone = (m) => !(missionProg[m.id] && missionProg[m.id].doneAt);
+    return MISSIONS.find(m => notDone(m) && lvlOk(m)) || MISSIONS.find(notDone) || MISSIONS[0];
+  }, [missionProg, deepStats.currentLevel]);
+
   // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
   // CHAPTER checkpoint when you finish a chapter mid-level. Detected on upward transitions
   // (prevLevelRef seeds on first load so nothing fires on open); both are QUEUED and played
@@ -2442,7 +2456,45 @@ function App() {
     return leveled.length ? leveled : base;
   };
 
+  // ── P0 mission helpers ──
+  const missionById = (id) => MISSIONS.find(m => m.id === id) || null;
+  const missionDialogues = (m) => (m ? m.dialogues.map(t => DIALOGUES.find(d => d.title === t)).filter(Boolean) : []);
+  const missionStatus = (id) => { const p = missionProg[id]; return !p ? "todo" : (p.doneAt ? "done" : "started"); };
+  const missionStepDone = (id, step) => !!(missionProg[id] && missionProg[id][step]);
+  const arcDone = (arcId) => MISSIONS.filter(m => m.arc === arcId && missionProg[m.id] && missionProg[m.id].doneAt).length;
+  const arcTotal = (arcId) => MISSIONS.filter(m => m.arc === arcId).length;
+  const markMissionStep = useCallback((id, step) => {
+    setMissionProg(prev => {
+      const cur = { ...(prev[id] || {}) };
+      cur[step] = true;
+      if (cur.learned && cur.listened && cur.spoke && !cur.doneAt) cur.doneAt = Date.now();
+      const merged = { ...prev, [id]: cur };
+      try { localStorage.setItem("ad-mission-progress-v1", JSON.stringify(merged)); } catch (e) {}
+      return merged;
+    });
+  }, []);
+  // Launch a mission step through an existing engine; mark "learned"/"spoke" on results.
+  const launchMissionStep = (m, step) => {
+    if (step === "listened") {
+      const dlgs = missionDialogues(m);
+      if (!dlgs.length) return;
+      setCards(dlgs); setDlgIdx(0); setDlgRevealed({});
+      missionReturnRef.current = { id: m.id, step };
+      markMissionStep(m.id, "listened"); // opening the scene to listen counts
+      setScreen("dialogues"); setTStart(Date.now());
+      return;
+    }
+    const cat = m.cats[0];
+    const sessMode = step === "spoke" ? "speaking" : "vocab";
+    startSession(cat, sessMode, 12, { level: m.level });
+    missionReturnRef.current = { id: m.id, step }; // startSession cleared it; re-set so results credits it
+  };
+  const openMission = (id) => { setActiveMission(id); setScreen("mission"); };
+  // Credit a mission step when its launched session reaches results.
+  useEffect(() => { if (screen === "results" && missionReturnRef.current) markMissionStep(missionReturnRef.current.id, missionReturnRef.current.step); }, [screen, markMissionStep]);
+
   const startSession = (cat, m, count, opts = {}) => {
+    missionReturnRef.current = null; // cleared by default; the mission launcher re-sets it after
     setMode(m); setShowSetup(false); resetSessionState();
     // Remember this session for one-tap resume
     const label = cat === "__all__" ? "All Categories" : cat === "__grammar__" ? "Grammar Cloze" : cat === "__verb__" ? "Verb Trainer" : cat === "__sentence__" ? "Sentence Builder" : cat === "__imperativ__" ? "Imperative" : cat === "__listening__" ? "Listening Practice" : cat;
@@ -4136,6 +4188,29 @@ function App() {
           );
         })()}
 
+        {currentMission && (() => {
+          const m = currentMission;
+          const arc = MISSION_ARCS.find(a => a.id === m.arc);
+          const stepsDone = ["learned", "listened", "spoke"].filter(s => missionStepDone(m.id, s)).length;
+          return (
+            <>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", margin: "2px 2px 10px" }}>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Your mission</span>
+                <button type="button" onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: "none", color: A, fontSize: 11, fontWeight: 800, cursor: "pointer", padding: 0 }}>All scenarios →</button>
+              </div>
+              <button type="button" onClick={() => openMission(m.id)} style={{ width: "100%", textAlign: "left", marginBottom: 20, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 16, padding: "14px 15px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 13 }}>
+                <IconBadge name={arc ? arc.icon : "map"} size={40} color={A} bg={`${A}12`} />
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase" }}>{arc ? arc.title : ""}</span>
+                  <span style={{ display: "block", fontSize: 15, fontWeight: 800, color: T, lineHeight: 1.2 }}>{m.cando}</span>
+                  <span style={{ display: "block", fontSize: 11, color: A, fontWeight: 700, marginTop: 3 }}>{stepsDone}/3 steps · {m.level}</span>
+                </span>
+                <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />
+              </button>
+            </>
+          );
+        })()}
+
         {SectionHead({ title: "Today", style: { margin: "2px 0 10px" } })}
         {/* Today panel: goal ring + streak + last-7-days activity */}
         <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 18px 13px", marginBottom: 20, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
@@ -4465,6 +4540,16 @@ function App() {
             <Icon name="book" size={12} /> Browse & search
           </button>
         </div>
+        {currentMission && (
+          <button type="button" onClick={() => setScreen("scenarios")} style={{ width: "100%", textAlign: "left", marginBottom: 14, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 14, padding: "13px 14px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 12 }}>
+            <IconBadge name="map" size={36} color={A} bg={`${A}12`} />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: "block", fontSize: 13.5, fontWeight: 800, color: T }}>Your journey — real-world scenarios</span>
+              <span style={{ display: "block", fontSize: 11, color: TD }}>Next: {currentMission.cando}</span>
+            </span>
+            <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />
+          </button>
+        )}
         <div style={{ display: "grid", gap: 8 }}>
           {libGroups.map((g, gi) => {
             const agg = g.cats.reduce((a, cat) => {
@@ -5296,6 +5381,84 @@ function App() {
       </div>}
 
       {/* ── NEW: DIALOGUE SCREEN ── */}
+      {screen === "scenarios" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+          <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
+        </div>
+        <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, margin: "10px 0 2px" }}>Your journey</div>
+        <div style={{ fontSize: 13, color: TD, marginBottom: 18 }}>Real situations on the way to living and working in Germany.</div>
+        {MISSION_ARCS.map(arc => {
+          const ms = MISSIONS.filter(m => m.arc === arc.id);
+          const done = arcDone(arc.id), total = arcTotal(arc.id);
+          return (
+            <div key={arc.id} style={{ marginBottom: 22 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 10 }}>
+                <IconBadge name={arc.icon} size={34} color={A} bg={`${A}12`} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800 }}>{arc.title}</div>
+                  <div style={{ fontSize: 11, color: TD }}>{arc.sub}</div>
+                </div>
+                <div style={{ fontSize: 11, color: done === total && total ? G : TD, fontWeight: 800 }}>{done}/{total}</div>
+              </div>
+              <div style={{ display: "grid", gap: 8 }}>
+                {ms.map(m => {
+                  const st = missionStatus(m.id);
+                  const isCur = currentMission && currentMission.id === m.id;
+                  return (
+                    <button key={m.id} onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", width: "100%", background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "12px 13px", cursor: "pointer", fontFamily: "inherit" }}>
+                      <span style={{ width: 22, height: 22, borderRadius: 999, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: st === "done" ? G : st === "started" ? `${A}22` : "transparent", border: `1.5px solid ${st === "done" ? G : st === "started" ? A : B}` }}>
+                        {st === "done" ? <Icon name="check" size={13} style={{ color: "#0A0A0A" }} /> : null}
+                      </span>
+                      <span style={{ flex: 1, minWidth: 0 }}>
+                        <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.cando}</span>
+                        {isCur && st !== "done" && <span style={{ fontSize: 10.5, color: A, fontWeight: 800, letterSpacing: 0.3 }}>START HERE</span>}
+                      </span>
+                      <span style={{ fontSize: 9, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{m.level}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>}
+
+      {screen === "mission" && (() => {
+        const m = missionById(activeMission); if (!m) return null;
+        const arc = MISSION_ARCS.find(a => a.id === m.arc);
+        const done = missionStatus(m.id) === "done";
+        const steps = [
+          { key: "learned", label: "Learn the words", sub: m.cats.join(" · "), icon: "layers" },
+          { key: "listened", label: "Listen to the scene", sub: `${missionDialogues(m).length} dialogue${missionDialogues(m).length > 1 ? "s" : ""}`, icon: "headphones" },
+          { key: "spoke", label: "Say it out loud", sub: "Speaking practice", icon: "mic" },
+        ];
+        return (
+          <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 24px", minHeight: DVH, overflowY: "auto" }}>
+            <button onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Journey</button>
+            <div style={{ fontSize: 10.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", margin: "16px 0 6px" }}>{arc ? arc.title : ""} · {m.level}</div>
+            <div style={{ fontSize: 12, color: TD, marginBottom: 2 }}>After this you'll be able to</div>
+            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, lineHeight: 1.2, marginBottom: 18 }}>{m.cando}.</div>
+            {done && <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 14px", background: `${G}14`, border: `1px solid ${G}55`, borderRadius: 12, marginBottom: 16, color: G, fontWeight: 800, fontSize: 13 }}><Icon name="check" size={16} /> You can now {m.cando.charAt(0).toLowerCase() + m.cando.slice(1)}.</div>}
+            <div style={{ display: "grid", gap: 10 }}>
+              {steps.map(s => {
+                const sd = missionStepDone(m.id, s.key);
+                return (
+                  <button key={s.key} onClick={() => launchMissionStep(m, s.key)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "#0F0F0F", border: `1px solid ${sd ? G : A}33`, borderRadius: 14, padding: "14px 14px", cursor: "pointer", fontFamily: "inherit" }}>
+                    <IconBadge name={s.icon} size={36} color={sd ? G : A} bg={sd ? `${G}12` : `${A}12`} />
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: "block", fontSize: 14.5, fontWeight: 800, color: T }}>{s.label}</span>
+                      <span style={{ display: "block", fontSize: 11, color: TD, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.sub}</span>
+                    </span>
+                    {sd ? <Icon name="check" size={18} style={{ color: G }} /> : <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />}
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ fontSize: 11, color: TD, textAlign: "center", marginTop: 16, lineHeight: 1.5 }}>Finish all three to complete the mission. The words you practise here count toward your normal progress too.</div>
+          </div>
+        );
+      })()}
+
       {screen === "dialogues" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 0", minHeight: DVH, display: "flex", flexDirection: "column" }}>
         {(() => {
           const pool = (cards && cards.length) ? cards : DIALOGUES;
@@ -5304,7 +5467,7 @@ function App() {
           return (
             <>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <button onClick={() => { dlgStopPlay(); setScreen("home"); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
+                <button onClick={() => { dlgStopPlay(); if (missionReturnRef.current) { const id = missionReturnRef.current.id; setActiveMission(id); setScreen("mission"); } else setScreen("home"); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {dlg.level && <span style={{ fontSize: 9, fontWeight: 900, color: A, border: `1px solid ${A}55`, borderRadius: 6, padding: "2px 7px", letterSpacing: 0.5 }}>{dlg.level}</span>}
                   <div style={{ fontSize: 12, color: TD, fontWeight: 600 }}>{dlgIdx + 1}/{pool.length}</div>

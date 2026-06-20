@@ -59,7 +59,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -147,6 +147,18 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     addN(44, i => `listening::__listening__::dlg${i}`);
   }
   localStorage.setItem("gfc-v7", JSON.stringify(prog));
+  if (missionReady) {
+    // Seed the café mission at 2/3 steps (learned + spoke). Crediting the third step
+    // ("listened", earned just by opening the scene) completes it → fires the green
+    // "Skill unlocked — You can now …" celebration. The extra two pre-done missions push
+    // the completion across the 3-mission role threshold (Newcomer → Settling in) so the
+    // status toast queues behind it too.
+    localStorage.setItem("ad-mission-progress-v1", JSON.stringify({
+      directions: { learned: true, listened: true, spoke: true, doneAt: Date.now() - 2 * 86400000 },
+      hotel: { learned: true, listened: true, spoke: true, doneAt: Date.now() - 86400000 },
+      cafe: { learned: true, spoke: true },
+    }));
+  }
 }
 
 async function clickText(page, txt) {
@@ -288,6 +300,102 @@ async function gotoScreen(page, screen) {
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
     await new Promise(r => setTimeout(r, 700));
   }
+  if (screen === "progmax") {
+    // High-capability Progress: every A1 word strong + ~half of A2, so the journey bar, level
+    // funnel and "Elementary" rank are populated (the advanced persona seeds volume, not mastery).
+    await page.evaluate(() => {
+      const now = Date.now();
+      const lvlOf = w => w.level || ({ easy: "A1", medium: "A2", hard: "B1" })[w.diff] || "A2";
+      const prog = {}; let a2 = 0;
+      for (const cat of Object.keys(V)) for (const w of V[cat]) {
+        const L = lvlOf(w);
+        if (L === "A1" || (L === "A2" && a2++ % 2 === 0)) {
+          const mastered = L === "A1" && a2 % 3 === 0;
+          prog[`production::${cat}::${w.de}`] = { stats: { attempts: 6, correct: 6, incorrect: 0, lastSeen: now, avgTime: 5000, timedAttempts: 6, currentStreak: 5, productionStreak: 5, masteredAt: mastered ? now - 10 * 86400000 : null }, srs: { box: mastered ? 5 : 4, lastReviewed: now } };
+        }
+      }
+      localStorage.setItem("gfc-v7", JSON.stringify(prog));
+      localStorage.setItem("ad-onboarding-v1", "done");
+      localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: 18, streak: 23 }));
+      localStorage.setItem("ad-mission-progress-v1", JSON.stringify(Object.fromEntries(["directions", "hotel", "cafe", "restaurant", "supermarket", "transit", "anmeldung", "rundfunk"].map(id => [id, { learned: true, listened: true, spoke: true, doneAt: now - 86400000 }]))));
+    });
+    await page.reload({ waitUntil: "load" });
+    await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
+    await new Promise(r => setTimeout(r, 700));
+    await clickText(page, "Progress");
+    await new Promise(r => setTimeout(r, 500));
+    return;
+  }
+  if (screen === "rankup") {
+    // The full-screen CEFR rank-up fires when deepStats.currentLevel rises during a session.
+    // currentLevel = lowest level not yet fully STRONG, so seed EVERY A1 card strong & not-due
+    // except "der Bahnhof" (left one short + due) → currentLevel sticks at A1. Then drive one
+    // correct production answer on Bahnhof to make it strong → A1 completes → A1→A2 rank-up,
+    // queued and flushed on home. cardLevel = w.level || {easy:A1,medium:A2,hard:B1}[diff] || A2.
+    await page.evaluate(() => {
+      const D = 86400000, now = Date.now();
+      const lvlOf = w => w.level || ({ easy: "A1", medium: "A2", hard: "B1" })[w.diff] || "A2";
+      const prog = {};
+      for (const cat of Object.keys(V)) for (const w of V[cat]) {
+        if (lvlOf(w) !== "A1") continue;
+        if (cat === "Travel & Directions" && w.de === "der Bahnhof") continue;
+        // box 3 = strong; lastReviewed today = NOT due, so it won't enter the review session.
+        prog[`production::${cat}::${w.de}`] = { stats: { attempts: 4, correct: 4, incorrect: 0, lastSeen: now, avgTime: 5000, timedAttempts: 4, currentStreak: 3, productionStreak: 3, masteredAt: null }, srs: { box: 3, lastReviewed: now } };
+      }
+      // Bahnhof: due + one short of strong (box 2, pStreak 2) → one correct answer crosses it.
+      prog["production::Travel & Directions::der Bahnhof"] = { stats: { attempts: 2, correct: 2, incorrect: 0, lastSeen: now - 25 * D, avgTime: 5000, timedAttempts: 2, currentStreak: 2, productionStreak: 2, masteredAt: null }, srs: { box: 2, lastReviewed: now - 25 * D } };
+      localStorage.setItem("gfc-v7", JSON.stringify(prog));
+      localStorage.setItem("ad-onboarding-v1", "done");
+      localStorage.setItem("gfc-goal-v7", "20");
+      localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: 12, streak: 6 }));
+    });
+    await page.reload({ waitUntil: "load" });
+    await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
+    await new Promise(r => setTimeout(r, 700));
+    await clickText(page, "Production practice");
+    await new Promise(r => setTimeout(r, 350));
+    await page.evaluate(() => { const i = document.querySelector('input[lang="de"]'); if (i) { i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, "der Bahnhof"); i.dispatchEvent(new Event("input", { bubbles: true })); } });
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+    await new Promise(r => setTimeout(r, 800));
+    // Single due card → session ends at results; go home so the queued rank-up flushes.
+    for (let i = 0; i < 3; i++) {
+      const onHome = await page.evaluate(() => /GUTEN TAG|Guten Tag/.test(document.body.innerText));
+      if (onHome) break;
+      const moved = await page.evaluate(() => { const b = [...document.querySelectorAll("button,[role=button]")].find(e => /^\s*(←\s*)?(Back to home|Back|Weiter|Home)\s*$/i.test(e.textContent || "")); if (b) { b.click(); return true; } return false; });
+      if (!moved) break;
+      await new Promise(r => setTimeout(r, 700));
+    }
+    await new Promise(r => setTimeout(r, +(process.env.SHOOT_RANKWAIT || 1400)));
+    return;
+  }
+  if (screen === "skillunlock" || screen === "statusup") {
+    // Open the café mission (seeded 2/3) and credit its final "listened" step by opening the
+    // scene → the mission completes and queues the green "Skill unlocked" toast (+ the
+    // Newcomer→Settling-in status toast for `statusup`). Back out to home so the queue flushes.
+    await clickText(page, "All scenarios →");
+    await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Order at a café or bakery");
+    await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Listen to the scene");
+    await new Promise(r => setTimeout(r, 500));
+    for (let i = 0; i < 5; i++) {
+      const onHome = await page.evaluate(() => /GUTEN TAG|Guten Tag/.test(document.body.innerText));
+      if (onHome) break;
+      // Mission back-button reads "← Journey"; scene/scenarios read "Back"; tap the Home nav otherwise.
+      const moved = await page.evaluate(() => {
+        const b = [...document.querySelectorAll("button,[role=button]")].find(e => /^\s*(←\s*)?(Back|Journey)\s*$/i.test(e.textContent || ""));
+        if (b) { b.click(); return true; }
+        const home = [...document.querySelectorAll("button,[role=button]")].find(e => (e.textContent || "").trim() === "Home" || (e.getAttribute("aria-label") || "").toLowerCase() === "home");
+        if (home) { home.click(); return true; }
+        return false;
+      });
+      if (!moved) break;
+      await new Promise(r => setTimeout(r, 500));
+    }
+    // Flush plays one toast at a time (2.3s each); statusup is second in the queue.
+    await new Promise(r => setTimeout(r, screen === "statusup" ? 2900 : 900));
+    return;
+  }
   if (screen === "weakspots") {
     // Home "Weak spots" card → startWeakReview() begins a weak-words session in one tap.
     await clickText(page, "Weak spots");
@@ -405,7 +513,10 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: +(process.env.SHOOT_WIDTH || 390), height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-      await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1" });
+      // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
+      // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
+      if (screen !== "rankup" && screen !== "progmax")
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

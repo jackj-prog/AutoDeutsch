@@ -6,7 +6,7 @@ Captures live in `screenshots/audit/` (prefixes `b5-` drills, `b6-` feedback/res
 structure). This complements the static `docs/APP-AUDIT-2026-06-20.md` (code-level review) with
 a live, screenshot-backed sweep of the running app.
 
-## Coverage: ~85% (52 of ~61 distinct states)
+## Coverage: ~95% (58 of ~61 distinct states)
 
 ### ✅ Captured & verified clean
 **Core navigation** — Home (first / daily / advanced), Library, Browse, Progress (first / daily /
@@ -24,17 +24,17 @@ drill answered-wrong (grammar note), drill reveal-answer, drill correct (green b
 **Results & celebrations** — Results (failed-session, repeat list), Results-win (Perfect! + confetti
 + 100% ring), Daily-goal-reached toast, Streak-milestone toast, Streak-freeze-used toast.
 
-### ⬜ Remaining (≈15%) — need extra seeding/inputs, deferred to next pass
-- **Mission-complete celebration** — requires driving a mission to completion (mission progress seed).
-- **Role-up / rank-up celebration** — requires crossing a capability-role threshold.
-- **Skill-unlocked celebration** — requires the unlock trigger.
-- **High-capability Progress** — the `advanced` persona seeds practice *volume* but deliberately not
-  real mastery, so role stays "Newcomer / 1%". A dedicated mastery+mission seed is needed to show the
-  upper-journey Progress and the role ladder populated.
-- **Mastery-crossing burst** — the in-session ★ burst overlay (b6-mastery caught the settled correct
-  state, not the burst frame).
-- **Tutor active chat** — needs a live Anthropic key (not available in the harness).
-- **Dictation session** — reachable only via per-topic Advanced options; no top-level entry.
+**Milestone / progression family** (added 2nd pass) — Mission-complete screen (inline "✓ You can
+now…" + 3 green steps), **Skill-unlocked** toast on home, **Status / role-up** toast (Newcomer →
+Settling in), **Chapter checkpoint** toast (A1 · Chapter 4 of 5 done), **full-screen Rank-up**
+(LEVEL UP → A2 "You've reached Elementary!" + confetti), and **high-capability Progress** ("Resident"
+role, A1 Complete · A2 50% · journey 50% to B2 · telc exam progress).
+
+### ⬜ Remaining (≈5%)
+- **In-session mastery ★ burst** — the animated star-burst frame mid-session (b6-mastery caught the
+  settled correct state, b8-drillbloom the settled green bloom; the burst itself is a sub-300ms frame).
+- **Dictation session** — reachable only via per-topic Advanced options; no top-level harness entry.
+- **Tutor active chat** — blocked: needs a live Anthropic key (not available in the harness).
 
 ## Findings
 
@@ -76,3 +76,10 @@ most noticeable. Worth one consistent vertical anchor across all session types.
   first** (its `tabIndex`/keydown only fire when focused) — ArrowRight = "got it", ArrowLeft = reveal.
   Added a 1.5s settle so the accuracy ring finishes counting up.
 - New `weakspots` path (home Weak-spots card → one-tap weak-words session).
+- New `skillunlock` / `statusup` paths: seed the café mission at 2/3 steps, credit the final step by
+  opening the scene, back out to home so the queued toast(s) flush.
+- New `rankup` / `progmax` paths: a **runtime** vocab seed (reads the global `V` after load, since
+  the pre-load `evaluateOnNewDocument` seed can't enumerate cards) — marks every A1 card strong &
+  not-due except one due/one-short card, then drives a single correct answer to cross A1→A2 and flush
+  the full-screen rank-up. `progmax` seeds A1-complete + half-A2 + 8 missions for the high-capability
+  Progress. Both skip the auto-seed so their post-load `localStorage` survives the reload.

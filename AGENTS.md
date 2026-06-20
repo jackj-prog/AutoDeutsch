@@ -67,6 +67,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen health arc — dentist / emergency-room / specialist-referral scenes (5→8 missions) | 2026-06-20 | ✅ done (deployed → main, build 0bb7e3ba) |
 | Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | More DACH rites — Führerschein-Umschreibung / Führungszeugnis / SCHUFA (paperwork 7→10 missions) | 2026-06-20 | ✅ done (deployed → main, build af4ebeb6) |
 | Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen roof arc — Wohnung kündigen / competitive Besichtigung (5→7 missions) | 2026-06-20 | ✅ done (deployed → main, build 889adeb5) |
+| Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen belonging arc — Sportverein / Integrationskurs (6→8 missions); arcs balanced | 2026-06-20 | ✅ done (deployed → main, build a531fe48) |
 | _(available to claim)_ — app.jsx owner | src/app.jsx (EXCLUSIVE) | **P5 placement flow** — data + scoring + build spec ready (`docs/P5-placement-buildspec.md`); also wireable: confusion-pair drill & exam mode (`docs/practice-data-spec.md`). Content lane is unblocked. | — | ⬜ ready to build |
 
 ## Build & deploy workflow (do this for every change)

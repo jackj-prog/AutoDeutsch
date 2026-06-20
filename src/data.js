@@ -7726,6 +7726,39 @@ const DIALOGUES = [
     {q:"Was wäre auch hilfreich?",opts:["Eine Mietschuldenfreiheitsbescheinigung","Ein Foto","Ein Auto"],correctIdx:0},
     {q:"Wann meldet sich der Vermieter?",opts:["In den nächsten Tagen","Nie","Sofort"],correctIdx:0}
   ]},
+  // ── Deeper belonging-arc scenes (joining a club / integration course) ──
+  {title:"Im Sportverein anmelden",level:"B1",lines:[
+    {de:"Hallo, ich interessiere mich für Ihren Volleyball-Verein.",en:"Hi, I'm interested in your volleyball club."},
+    {de:"Schön! Möchtest du erst einmal zum Probetraining kommen?",en:"Great! Would you like to come to a trial session first?"},
+    {de:"Ja, gern. Wann trainiert ihr?",en:"Yes, gladly. When do you train?"},
+    {de:"Dienstags und donnerstags um neunzehn Uhr.",en:"Tuesdays and Thursdays at 7 p.m."},
+    {de:"Was kostet die Mitgliedschaft?",en:"What does membership cost?"},
+    {de:"Der Beitrag ist zwölf Euro im Monat.",en:"The fee is twelve euros a month."},
+    {de:"Muss ich besondere Ausrüstung mitbringen?",en:"Do I need to bring any special equipment?"},
+    {de:"Nur Hallenschuhe und Sportkleidung.",en:"Just indoor shoes and sportswear."},
+    {de:"Und wie melde ich mich an?",en:"And how do I sign up?"},
+    {de:"Du füllst einfach das Anmeldeformular aus, dann bist du dabei.",en:"You just fill in the registration form, then you're in."}
+  ],questions:[
+    {q:"Was möchte die Person machen?",opts:["Einem Verein beitreten","Schuhe kaufen","Ein Spiel ansehen"],correctIdx:0},
+    {q:"Wann ist das Training?",opts:["Dienstags und donnerstags","Nur am Wochenende","Jeden Tag"],correctIdx:0},
+    {q:"Was muss man mitbringen?",opts:["Hallenschuhe und Sportkleidung","Einen Ball","Nichts"],correctIdx:0}
+  ]},
+  {title:"Sich für einen Integrationskurs anmelden",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte mich für einen Integrationskurs anmelden.",en:"Hello, I'd like to register for an integration course."},
+    {de:"Haben Sie eine Berechtigung vom Bundesamt für Migration?",en:"Do you have an authorization from the Federal Office for Migration?"},
+    {de:"Ja, den Brief habe ich bekommen.",en:"Yes, I received the letter."},
+    {de:"Sehr gut. Der Kurs umfasst Sprache und einen Orientierungsteil.",en:"Very good. The course covers language and an orientation part."},
+    {de:"Wie viele Stunden sind das?",en:"How many hours is that?"},
+    {de:"Insgesamt etwa siebenhundert Stunden, meistens vormittags.",en:"About seven hundred hours in total, mostly in the mornings."},
+    {de:"Was kostet der Kurs?",en:"What does the course cost?"},
+    {de:"Mit Berechtigung zahlen Sie nur einen kleinen Eigenanteil pro Stunde.",en:"With an authorization you only pay a small contribution per hour."},
+    {de:"Und am Ende gibt es eine Prüfung?",en:"And is there an exam at the end?"},
+    {de:"Ja, den Test „Leben in Deutschland“ und die Sprachprüfung B1.",en:"Yes, the 'Living in Germany' test and the B1 language exam."}
+  ],questions:[
+    {q:"Was braucht man für die Anmeldung?",opts:["Eine Berechtigung vom Bundesamt","Einen Pass","Nichts"],correctIdx:0},
+    {q:"Was lernt man im Kurs?",opts:["Sprache und Orientierung","Nur Mathematik","Nur Geschichte"],correctIdx:0},
+    {q:"Was gibt es am Ende?",opts:["Eine Prüfung","Ein Zertifikat ohne Test","Ein Fest"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7873,6 +7906,8 @@ const MISSIONS = [
   {id:"gym",         arc:"belonging", level:"A2", cando:"Join and use a gym", dialogues:["Joining a gym","Fitnessstudio anmelden","Freunde im Fitnessstudio"], cats:["Sport & Leisure"]},
   {id:"neighbours",  arc:"belonging", level:"B1", cando:"Introduce yourself to the neighbours", dialogues:["Nachbarn kennenlernen"], cats:["Small Talk & Social","Housing & Renting"]},
   {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Sich verabreden — einfach","Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
+  {id:"verein",      arc:"belonging", level:"B1", cando:"Join a sports or social club (Verein)", dialogues:["Im Sportverein anmelden"], cats:["Sport & Leisure","Small Talk & Social"]},
+  {id:"integrationskurs", arc:"belonging", level:"B1", cando:"Sign up for an integration course", dialogues:["Sich für einen Integrationskurs anmelden"], cats:["Work & Study","Admin & Bureaucracy"]},
   {id:"networking",  arc:"belonging", level:"B2", cando:"Network at a conference", dialogues:["Networking at a conference"], cats:["Small Talk & Social","Work & Study"]},
   {id:"kaffeekueche",arc:"belonging", level:"B2", cando:"Make small talk in the office kitchen", dialogues:["Smalltalk in der Kaffeeküche"], cats:["Small Talk & Social","Character & Personality"]},
   {id:"debate",      arc:"belonging", level:"B2", cando:"Hold your own in a debate", dialogues:["Diskussion: Elektroautos"], cats:["Opinions & Argument"]},

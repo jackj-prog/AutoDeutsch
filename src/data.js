@@ -7693,6 +7693,39 @@ const DIALOGUES = [
     {q:"Wie oft ist die Datenkopie kostenlos?",opts:["Einmal im Jahr","Jeden Monat","Nie"],correctIdx:0},
     {q:"Was zeigt die SCHUFA?",opts:["Die Bonität","Das Gehalt","Die Adresse"],correctIdx:0}
   ]},
+  // ── Deeper roof-arc rites (giving notice / competitive viewing) ──
+  {title:"Die Wohnung kündigen",level:"B1",lines:[
+    {de:"Ich möchte meine Wohnung zum Ende des Monats kündigen.",en:"I'd like to give notice on my flat at the end of the month."},
+    {de:"Die Kündigungsfrist beträgt drei Monate, das wissen Sie?",en:"The notice period is three months, you know that?"},
+    {de:"Oh, so lange? Dann eben zum übernächsten Monat.",en:"Oh, that long? Then at the end of the month after next."},
+    {de:"Genau. Und die Kündigung muss schriftlich sein.",en:"Exactly. And the notice has to be in writing."},
+    {de:"Reicht eine E-Mail?",en:"Is an email enough?"},
+    {de:"Nein, sie muss unterschrieben per Post kommen.",en:"No, it has to come signed by post."},
+    {de:"Was passiert mit meiner Kaution?",en:"What happens to my deposit?"},
+    {de:"Die bekommen Sie nach der Wohnungsübergabe zurück, wenn alles in Ordnung ist.",en:"You'll get it back after the flat handover, if everything is in order."},
+    {de:"Muss ich die Wohnung streichen?",en:"Do I have to repaint the flat?"},
+    {de:"Nur wenn es im Mietvertrag steht. Schauen Sie noch einmal nach.",en:"Only if it's in the contract. Check again."}
+  ],questions:[
+    {q:"Wie lang ist die Kündigungsfrist?",opts:["Drei Monate","Eine Woche","Ein Jahr"],correctIdx:0},
+    {q:"Wie muss die Kündigung kommen?",opts:["Schriftlich per Post","Per E-Mail","Per Telefon"],correctIdx:0},
+    {q:"Wann gibt es die Kaution zurück?",opts:["Nach der Wohnungsübergabe","Sofort","Nie"],correctIdx:0}
+  ]},
+  {title:"Wohnungsbesichtigung mit vielen Bewerbern",level:"B1",lines:[
+    {de:"Guten Tag, sind Sie wegen der Besichtigung hier?",en:"Hello, are you here for the viewing?"},
+    {de:"Ja, genau. Es sind ja viele Leute da.",en:"Yes, exactly. There are a lot of people here."},
+    {de:"Die Wohnung ist sehr begehrt. Haben Sie Ihre Unterlagen dabei?",en:"The flat is very sought-after. Do you have your documents with you?"},
+    {de:"Ja: Gehaltsnachweise, die SCHUFA-Auskunft und meinen Ausweis.",en:"Yes: proof of income, the SCHUFA report and my ID."},
+    {de:"Sehr gut. Eine Mietschuldenfreiheitsbescheinigung wäre auch hilfreich.",en:"Very good. A certificate of no rent arrears would also be helpful."},
+    {de:"Die kann ich von meinem alten Vermieter bekommen.",en:"I can get that from my old landlord."},
+    {de:"Wann könnten Sie einziehen?",en:"When could you move in?"},
+    {de:"Zum nächsten Ersten wäre perfekt.",en:"The first of next month would be perfect."},
+    {de:"Wir melden uns in den nächsten Tagen bei den Bewerbern.",en:"We'll get back to the applicants in the next few days."},
+    {de:"Danke, ich hoffe, es klappt.",en:"Thanks, I hope it works out."}
+  ],questions:[
+    {q:"Was bringt die Person zur Besichtigung mit?",opts:["Gehaltsnachweise und SCHUFA","Nur Bargeld","Nichts"],correctIdx:0},
+    {q:"Was wäre auch hilfreich?",opts:["Eine Mietschuldenfreiheitsbescheinigung","Ein Foto","Ein Auto"],correctIdx:0},
+    {q:"Wann meldet sich der Vermieter?",opts:["In den nächsten Tagen","Nie","Sofort"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7805,7 +7838,9 @@ const MISSIONS = [
   // A Roof
   {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Die Wohnung — einfach","Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
   {id:"landlord",    arc:"roof", level:"A2", cando:"Deal with your landlord", dialogues:["Reporting an issue to a landlord","Calling the landlord"], cats:["Housing & Renting"]},
+  {id:"viewing",     arc:"roof", level:"B1", cando:"Stand out at a competitive flat viewing", dialogues:["Wohnungsbesichtigung mit vielen Bewerbern"], cats:["Housing & Renting"]},
   {id:"kaution",     arc:"roof", level:"B1", cando:"Sort out the rental deposit (Mietkaution)", dialogues:["Die Mietkaution"], cats:["Housing & Renting","Banking & Finance"]},
+  {id:"givenotice",  arc:"roof", level:"B1", cando:"Give notice on your flat (Wohnung kündigen)", dialogues:["Die Wohnung kündigen"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"contract",    arc:"roof", level:"B2", cando:"Understand a rental contract", dialogues:["Discussing a rental contract"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
   // Money & Connectivity

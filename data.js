@@ -7595,6 +7595,55 @@ const DIALOGUES = [
     {q:"Wann lädt die Firma zu Gesprächen ein?",opts:["Nächste Woche","Nie","Heute"],correctIdx:0},
     {q:"Was soll Herr Krause noch schicken?",opts:["Ein Arbeitszeugnis","Ein Foto","Nichts"],correctIdx:0}
   ]},
+  // ── Deeper health-arc scenes (dentist / emergency / specialist referral) ──
+  {title:"Beim Zahnarzt",level:"B1",lines:[
+    {de:"Guten Tag, ich habe seit gestern starke Zahnschmerzen.",en:"Hello, I've had bad toothache since yesterday."},
+    {de:"Das tut mir leid. Welcher Zahn ist es denn?",en:"I'm sorry to hear that. Which tooth is it?"},
+    {de:"Hier hinten links, oben.",en:"Here at the back left, on top."},
+    {de:"Ich schaue mal nach. Machen Sie bitte den Mund weit auf.",en:"Let me take a look. Please open your mouth wide."},
+    {de:"Aua! Genau da ist es.",en:"Ouch! That's exactly where it is."},
+    {de:"Sie haben ein kleines Loch. Wir müssen den Zahn füllen.",en:"You have a small cavity. We need to fill the tooth."},
+    {de:"Tut das weh?",en:"Will it hurt?"},
+    {de:"Nein, ich gebe Ihnen vorher eine Spritze zur Betäubung.",en:"No, I'll give you an injection to numb it first."},
+    {de:"Gut. Übernimmt das die Krankenkasse?",en:"Good. Does the health insurance cover this?"},
+    {de:"Die Grundbehandlung ja; für besondere Füllungen zahlen Sie etwas dazu.",en:"The basic treatment yes; for special fillings you pay a bit extra."}
+  ],questions:[
+    {q:"Was ist das Problem?",opts:["Zahnschmerzen","Kopfschmerzen","Husten"],correctIdx:0},
+    {q:"Was muss der Zahnarzt machen?",opts:["Den Zahn füllen","Den Zahn ziehen","Nichts"],correctIdx:0},
+    {q:"Wer zahlt die Grundbehandlung?",opts:["Die Krankenkasse","Niemand","Der Arbeitgeber"],correctIdx:0}
+  ]},
+  {title:"In der Notaufnahme",level:"B1",lines:[
+    {de:"Guten Abend, was ist passiert?",en:"Good evening, what happened?"},
+    {de:"Ich bin gestürzt und mein Handgelenk tut sehr weh.",en:"I fell and my wrist hurts a lot."},
+    {de:"Können Sie die Hand bewegen?",en:"Can you move your hand?"},
+    {de:"Nur ein bisschen, es ist geschwollen.",en:"Only a little, it's swollen."},
+    {de:"Wir machen ein Röntgenbild. Haben Sie Ihre Versichertenkarte dabei?",en:"We'll take an X-ray. Do you have your insurance card with you?"},
+    {de:"Ja, hier ist sie.",en:"Yes, here it is."},
+    {de:"Bitte warten Sie im Wartezimmer, wir rufen Sie auf.",en:"Please wait in the waiting room, we'll call you."},
+    {de:"Wie lange dauert es ungefähr?",en:"Roughly how long will it take?"},
+    {de:"Bei einem Notfall geht es schnell, sonst kann es etwas dauern.",en:"In an emergency it's quick, otherwise it can take a while."}
+  ],questions:[
+    {q:"Was ist passiert?",opts:["Die Person ist gestürzt","Die Person ist krank","Nichts"],correctIdx:0},
+    {q:"Was wird gemacht?",opts:["Ein Röntgenbild","Eine Operation","Eine Impfung"],correctIdx:0},
+    {q:"Was braucht man in der Notaufnahme?",opts:["Die Versichertenkarte","Einen Pass","Bargeld"],correctIdx:0}
+  ]},
+  {title:"Termin beim Facharzt",level:"B1",lines:[
+    {de:"Praxis Dr. Berg, guten Tag.",en:"Dr. Berg's practice, hello."},
+    {de:"Guten Tag, mein Hausarzt hat mich zum Hautarzt überwiesen.",en:"Hello, my GP has referred me to a dermatologist."},
+    {de:"Haben Sie die Überweisung schon?",en:"Do you already have the referral?"},
+    {de:"Ja, die habe ich heute bekommen.",en:"Yes, I got it today."},
+    {de:"Der nächste freie Termin ist leider erst in zwei Monaten.",en:"Unfortunately the next free appointment is only in two months."},
+    {de:"So lange? Geht es nicht früher?",en:"That long? Isn't there anything sooner?"},
+    {de:"Bei dringenden Fällen können wir versuchen, etwas dazwischenzuschieben.",en:"For urgent cases we can try to squeeze something in."},
+    {de:"Es ist nicht dringend, aber unangenehm.",en:"It's not urgent, but uncomfortable."},
+    {de:"Dann trage ich Sie für den fünfzehnten Juli ein.",en:"Then I'll book you in for 15 July."},
+    {de:"In Ordnung, danke. Bekomme ich eine Erinnerung?",en:"All right, thanks. Will I get a reminder?"},
+    {de:"Ja, wir schicken Ihnen eine SMS.",en:"Yes, we'll send you a text message."}
+  ],questions:[
+    {q:"Wohin wurde die Person überwiesen?",opts:["Zum Hautarzt","Zum Zahnarzt","Ins Krankenhaus"],correctIdx:0},
+    {q:"Wann ist der nächste freie Termin?",opts:["In zwei Monaten","Morgen","In einer Woche"],correctIdx:0},
+    {q:"Was braucht man für den Facharzt?",opts:["Eine Überweisung","Ein Rezept","Bargeld"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7720,6 +7769,9 @@ const MISSIONS = [
   {id:"krankenkasse",arc:"health", level:"B1", cando:"Register with a health-insurance fund (Krankenkasse)", dialogues:["Krankenversicherung anmelden"], cats:["Health & Doctor","Admin & Bureaucracy"]},
   {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Mir geht es nicht gut — einfach","Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
   {id:"pharmacy",    arc:"health", level:"B1", cando:"Get what you need at the pharmacy", dialogues:["In der Apotheke","At the pharmacy"], cats:["Health & Doctor"]},
+  {id:"dentist",     arc:"health", level:"B1", cando:"Get treated at the dentist", dialogues:["Beim Zahnarzt"], cats:["Health & Doctor","Body & Health"]},
+  {id:"specialist",  arc:"health", level:"B1", cando:"Book a specialist with a referral (Überweisung)", dialogues:["Termin beim Facharzt"], cats:["Health & Doctor","Admin & Bureaucracy"]},
+  {id:"emergency",   arc:"health", level:"B1", cando:"Cope with a hospital emergency room", dialogues:["In der Notaufnahme"], cats:["Health & Doctor","Body & Health"]},
   {id:"results",     arc:"health", level:"B2", cando:"Discuss test results with a doctor", dialogues:["Discussing test results"], cats:["Health & Doctor","Body & Health"]},
   {id:"sick",        arc:"health", level:"B2", cando:"Call in sick to work", dialogues:["Krankmeldung im Büro"], cats:["Health & Doctor","Work & Study"]},
   // The Job

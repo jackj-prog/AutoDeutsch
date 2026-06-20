@@ -64,6 +64,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) — content lane | src/data.js (A1 dialogues+missions, CONFUSIONS, EXAM, PLACEMENT), scripts/validate-data.mjs, docs/ | A1 on-ramps for all arcs + confusion-pair, exam-format & P5 placement datasets (+ validator + specs) | 2026-06-20 | ✅ done (deployed → main 32b8fcc) |
 | Claude (Opus) — content lane | src/data.js (EXAM/CONFUSIONS/PLACEMENT deeper + 4 dialogues+missions), scripts/shoot.mjs, docs/ | Deepen practice datasets + more relocation scenes + harness paths + P5 build-spec hand-off | 2026-06-20 | ✅ done (build 7a9692b8; on branch claude/optimistic-dijkstra-kritfz, awaiting merge→main) |
 | Claude (Opus) — content lane | src/data.js (VERBS, SENTENCES) | Verb-trainer expansion (60→92 verbs, incl. relocation verbs) + 10 word-order sentence-builder items | 2026-06-20 | ✅ done (deployed → main, build 35a10847) |
+| Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen health arc — dentist / emergency-room / specialist-referral scenes (5→8 missions) | 2026-06-20 | ✅ done (deployed → main, build 0bb7e3ba) |
 | _(available to claim)_ — app.jsx owner | src/app.jsx (EXCLUSIVE) | **P5 placement flow** — data + scoring + build spec ready (`docs/P5-placement-buildspec.md`); also wireable: confusion-pair drill & exam mode (`docs/practice-data-spec.md`). Content lane is unblocked. | — | ⬜ ready to build |
 
 ## Build & deploy workflow (do this for every change)

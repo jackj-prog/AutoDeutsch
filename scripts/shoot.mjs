@@ -59,7 +59,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat, tutorChatEmpty }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -151,7 +151,8 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     // A local-only fake key unlocks the chat UI; a seeded conversation renders the bubbles.
     // No network call is made (the harness never taps Send), so the key is never used.
     localStorage.setItem("gfc-ai-key", "sk-ant-demo-localonly-not-a-real-key");
-    localStorage.setItem("gfc-tutor-msgs", JSON.stringify([
+    // tutorChatEmpty seeds the key but no messages, so the data-driven starter chips show.
+    if (!tutorChatEmpty) localStorage.setItem("gfc-tutor-msgs", JSON.stringify([
       { role: "user", text: "Hallo! Ich moechte mein Deutsch ueben." },
       { role: "assistant", text: "Sehr gern! Dein Satz ist korrekt. Erzaehl mir: Was hast du heute gemacht?" },
       { role: "user", text: "Ich habe gestern einen Termin beim Buergeramt gemacht." },
@@ -468,7 +469,7 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 1000));
     return;
   }
-  if (screen === "tutorchat") {
+  if (screen === "tutorchat" || screen === "tutorstart") {
     // aiKey + a sample conversation are seeded (tutorChat flag) → the live chat UI renders
     // with bubbles. No Send is tapped, so no network request is made.
     await clickText(page, "Chat & ask in German");
@@ -625,7 +626,7 @@ async function run() {
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", tutorChat: screen === "tutorchat" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

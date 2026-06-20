@@ -137,14 +137,33 @@ const AI_MODELS = [
   { id: "claude-haiku-4-5-20251001", label: "Haiku 4.5 — fastest & cheapest" },
   { id: "claude-opus-4-8", label: "Opus 4.8 — highest quality" },
 ];
-const TUTOR_SYSTEM = `You are a warm, patient German tutor inside a vocabulary app. Your learner is an English speaker at about B1 level — an electrical engineer relocating to a German-speaking country for work, so technical/workplace topics are welcome.
-
-Guidelines:
-- Reply mostly in clear, B1-level German. Keep replies short: 2–4 sentences unless asked for more.
-- When the learner makes a mistake, gently restate it correctly and add a brief English note in parentheses explaining the rule.
-- If they write in English, or ask for a grammar explanation, answer clearly in English.
-- End most replies with a natural follow-up question to keep the conversation going.
-- Be encouraging and concrete. Never invent vocabulary that isn't standard German.`;
+// Personalised Tutor system prompt — built per-chat from the learner's live context (level,
+// relocation goal, status, current scenario, weak words). Replaces the old static B1 prompt so
+// the Tutor is pitched to THIS learner. ctx = { level, goal, country, role, mission, weak[] }.
+function buildTutorSystem(ctx) {
+  const goalLine = ctx.goal
+    ? `Their goal: ${ctx.goal.toLowerCase()}${ctx.country ? ` in ${ctx.country}` : ""}.`
+    : "Their goal: settling into life in a German-speaking country.";
+  const lines = [
+    `You are a warm, patient German tutor inside a language app that helps people settle into life in a German-speaking country.`,
+    ``,
+    `About your learner:`,
+    `- Level: about ${ctx.level} (CEFR). Pitch your German to this level.`,
+    `- ${goalLine}${ctx.role ? ` Current stage: ${ctx.role}.` : ""}`,
+  ];
+  if (ctx.mission) lines.push(`- They're currently working on the real-life scenario: "${ctx.mission}". Offer to role-play it or help build the phrases they'd need.`);
+  if (ctx.weak && ctx.weak.length) lines.push(`- Words they keep getting wrong (weave these in naturally when it fits, don't force them): ${ctx.weak.join(", ")}.`);
+  lines.push(
+    ``,
+    `Guidelines:`,
+    `- Reply mostly in clear, ${ctx.level}-level German. Keep replies short: 2-4 sentences unless asked for more.`,
+    `- When the learner makes a mistake, gently restate it correctly and add a brief English note in parentheses explaining the rule.`,
+    `- If they write in English, or ask for a grammar explanation, answer clearly in English.`,
+    `- End most replies with a natural follow-up question to keep the conversation going.`,
+    `- Be encouraging and concrete. Never invent vocabulary that isn't standard German.`,
+  );
+  return lines.join("\n");
+}
 const tutorStarters = [
   "Stell mir eine einfache Frage auf Deutsch.",
   "Lass uns über meinen Arbeitstag sprechen.",
@@ -678,7 +697,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.16";
+const APP_VERSION = "2026.06.20.17";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1281,7 +1300,9 @@ function App() {
   const [onboardingMode, setOnboardingMode] = useState("vocab");
   // P5 placement flow state: intake → placement → result.
   const [obStep, setObStep] = useState("intake");
-  const [intakeAns, setIntakeAns] = useState({});
+  // Rehydrate the intake answers (country / reason / goal) from the saved placement so the
+  // learner's goal is available app-wide after a reload — e.g. for the context-aware Tutor.
+  const [intakeAns, setIntakeAns] = useState(() => { try { return JSON.parse(localStorage.getItem("ad-placement-v1") || "{}").intake || {}; } catch (e) { return {}; } });
   const [plItems, setPlItems] = useState([]);
   const [plIdx, setPlIdx] = useState(0);
   const [plScore, setPlScore] = useState({});
@@ -1987,7 +2008,7 @@ function App() {
         body: JSON.stringify({
           model: aiModel,
           max_tokens: 700,
-          system: TUTOR_SYSTEM,
+          system: buildTutorSystem(tutorContext),
           messages: next.slice(-20).map(m => ({ role: m.role, content: m.text })),
         }),
       });
@@ -2422,6 +2443,33 @@ function App() {
     });
     return { earned, earnedCount: earned.length, recent, byLevel, exam, role: roleFor(earned.length), nextRole: ROLES.find(r => r.min > earned.length) || null };
   }, [missionProg, deepStats.levels]);
+
+  // ── Context-aware AI Tutor (P7) ──────────────────────────────────────────────
+  // Everything the Tutor should know about THIS learner, assembled from data the app already
+  // has (level, relocation goal, status, current scenario, weak words). No new inputs/requests.
+  // Declared here, after its deps (deepStats / capability / currentMission / weakPreview); the
+  // earlier-defined sendTutor closes over these and only reads them at call time.
+  const tutorContext = useMemo(() => {
+    const country = intakeAns.country && intakeAns.country !== "Not sure yet" ? intakeAns.country : "";
+    return {
+      level: deepStats.currentLevel || "A1",
+      goal: intakeAns.goal || "", country,
+      role: capability.role?.name || "",
+      mission: currentMission?.cando || "",
+      weak: weakPreview.slice(0, 4),
+    };
+  }, [deepStats.currentLevel, intakeAns.goal, intakeAns.country, capability.role, currentMission, weakPreview]);
+
+  // Starter chips tuned to the learner: role-play their current scenario, drill their weak
+  // words, then an open prompt. Falls back to the generic set before there's any data.
+  const tutorStartersLive = useMemo(() => {
+    const out = [];
+    if (tutorContext.mission) out.push(`Lass uns eine Situation auf Deutsch üben: ${tutorContext.mission}. Spiel die andere Person.`);
+    if (tutorContext.weak.length >= 2) out.push(`Hilf mir, diese Wörter zu üben: ${tutorContext.weak.slice(0, 3).join(", ")}.`);
+    out.push(tutorStarters[0]);
+    return [...new Set(out)].slice(0, 3);
+  }, [tutorContext]);
+
   const [showUnderHood, setShowUnderHood] = useState(false);
   // Celebrate moving up a relocation status (Newcomer → Settling in → Resident → Local).
   const prevRoleRef = useRef(null);
@@ -4841,9 +4889,9 @@ function App() {
               <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, paddingBottom: 10 }}>
                 {tutorMsgs.length === 0 && (
                   <div style={{ marginTop: 8 }}>
-                    <div style={{ fontSize: 12, color: TD, lineHeight: 1.5, marginBottom: 12, textAlign: "center" }}>Chat in German with a B1 tutor. It corrects you and explains why. Tap a starter or type below.</div>
+                    <div style={{ fontSize: 12, color: TD, lineHeight: 1.5, marginBottom: 12, textAlign: "center" }}>Chat in German with a tutor pitched to your {tutorContext.level} level. It corrects you and explains why. Tap a starter or type below.</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      {tutorStarters.map((s, i) => (
+                      {tutorStartersLive.map((s, i) => (
                         <button key={i} onClick={() => sendTutor(s)} style={{ textAlign: "left", background: "#101010", border: `1px solid ${B}`, borderRadius: 12, padding: "12px 14px", color: T, fontSize: 13, cursor: "pointer", fontFamily: "inherit", lineHeight: 1.4 }}>{s}</button>
                       ))}
                     </div>

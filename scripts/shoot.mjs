@@ -185,6 +185,7 @@ async function gotoScreen(page, screen) {
     return;
   }
   if (screen === "drill") return clickText(page, "Production practice");
+  if (screen === "speaking") { await clickText(page, "Speaking"); await new Promise(r => setTimeout(r, 250)); await clickText(page, "Speaking practice"); await new Promise(r => setTimeout(r, 500)); return; }
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }

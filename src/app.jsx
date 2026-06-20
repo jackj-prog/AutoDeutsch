@@ -86,6 +86,7 @@ const cardId = (card) => card.id || card._id || card.de || card.q || card.a || (
 const MODE_SUMMARY_LABELS = {
   vocab: "recognition",
   production: "production",
+  speaking: "spoken",
   dictation: "dictation",
   article: "articles",
   plural: "plurals",
@@ -105,6 +106,7 @@ const HERO_MODES = {
   production: { sup: "Build mastery", title: "Production practice", icon: "keyboard" },
   vocab: { sup: "Quick recall", title: "Recognition practice", icon: "layers" },
   dictation: { sup: "Train your ear", title: "Dictation practice", icon: "volume" },
+  speaking: { sup: "Speak it", title: "Speaking practice", icon: "mic" },
   audio: { sup: "Hands-free", title: "Audio review", icon: "headphones" },
 };
 const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) => `${arr.length} ${modeSummaryLabel(m)}`).join(" · ");
@@ -503,6 +505,10 @@ function todayKey(date = new Date()) {
 // scheduled several days ahead and re-armed whenever the app is opened. Falls back to a
 // foreground timer (fires only while a tab is open) elsewhere; iOS has no Triggers API,
 // so there the reminder only lands if the app was left open. Purely additive + opt-in.
+// Web Speech recognition (Speaking mode). Chromium/desktop/Android support it; iOS Safari
+// does not, so the UI falls back to a self-assessed "shadowing" flow when this is null.
+const SPEECH_REC_CTOR = (typeof window !== "undefined") && (window.SpeechRecognition || window.webkitSpeechRecognition) || null;
+
 const REMINDER_TAG = "ad-daily-reminder";
 const REMINDER_TITLE = "Zeit für Deutsch! 🇩🇪";
 const REMINDER_BODY = "Your daily review is waiting — a few cards keeps your streak alive.";
@@ -661,7 +667,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.01";
+const APP_VERSION = "2026.06.20.02";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -748,6 +754,7 @@ const ICONS = {
   upload: "M12 16V4M7 9l5-5 5 5M5 20h14",
   download: "M12 4v12M7 11l5 5 5-5M5 20h14",
   volume: "M4 10v4h4l5 4V6l-5 4H4Zm13-2a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14",
+  mic: "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 23h8",
   home: "m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2V10Z",
   users: "M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12.5 10v-2a4 4 0 0 0-3-3.85M16 3.15a4 4 0 0 1 0 7.7",
   heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z",
@@ -836,7 +843,7 @@ const ICO_ANIM = {
   bolt: "drop",
   home: "build", chart: "build", bank: "build", briefcase: "build", chip: "build",
   book: "swing", key: "swing", hand: "swing", file: "swing", mail: "swing",
-  volume: "pulse", headphones: "pulse", megaphone: "pulse", message: "pulse", bell: "pulse",
+  volume: "pulse", headphones: "pulse", mic: "pulse", megaphone: "pulse", message: "pulse", bell: "pulse",
   heart: "beat", flame: "beat", trophy: "beat", flake: "beat",
 };
 const ICO_KEYFRAMES = {
@@ -1266,6 +1273,11 @@ function App() {
   const priorLastSeenRef = useRef({});
   const typedInputRef = useRef(null);      // current typed-answer <input>, for the umlaut bar
   const feedbackTimerRef = useRef(null);   // clears the answer-feedback class after it plays
+  // Speaking mode: mic state + the live SpeechRecognition instance.
+  const [listening, setListening] = useState(false);
+  const [heard, setHeard] = useState("");
+  const [speechErr, setSpeechErr] = useState("");
+  const recogRef = useRef(null);
   // Audio-mode playback control. audioTimer = setTimeout id for next step; wakeLockRef
   // holds the Screen Wake Lock so the phone doesn't dim/sleep during playback.
   const audioTimerRef = useRef(null);
@@ -1999,11 +2011,13 @@ function App() {
       ? ((prev.stats.avgTime || 0) * prev.stats.timedAttempts + recallMs) / timedAttempts
       : prev.stats.avgTime;
     const currentStreak = correct ? (prev.stats.currentStreak || 0) + 1 : 0;
-    const productionStreak = mode === "production"
+    // Speaking is spoken production, so it advances the same production-mastery track.
+    const isProdMode = mode === "production" || mode === "speaking";
+    const productionStreak = isProdMode
       ? (correct ? (prev.stats.productionStreak || 0) + 1 : 0)
       : (prev.stats.productionStreak || 0);
-    const unlockedMastery = mode === "production" && correct && (prev.stats.productionStreak || 0) < MASTERY_STREAK && productionStreak >= MASTERY_STREAK;
-    const masteredAt = mode === "production"
+    const unlockedMastery = isProdMode && correct && (prev.stats.productionStreak || 0) < MASTERY_STREAK && productionStreak >= MASTERY_STREAK;
+    const masteredAt = isProdMode
       ? (productionStreak >= MASTERY_STREAK ? (prev.stats.masteredAt || now) : null)
       : (prev.stats.masteredAt || null);
 
@@ -2146,7 +2160,7 @@ function App() {
   const resolveKey = (key) => {
     const parts = key.split("::");
     const m = parts[0];
-    if (m === "vocab" || m === "production" || m === "dictation") {
+    if (m === "vocab" || m === "production" || m === "dictation" || m === "speaking") {
       const cat = parts[1], de = parts.slice(2).join("::");
       const found = V[cat]?.find(w => w && w.de === de);
       if (found) return { ...found, _cat: cat, _mode: m };
@@ -2434,7 +2448,7 @@ function App() {
     const ls = { cat, m, count, label, ts: Date.now() };
     setLastSession(ls); saveLast(ls);
 
-    if (m === "vocab" || m === "production" || m === "dictation") {
+    if (m === "vocab" || m === "production" || m === "dictation" || m === "speaking") {
       const isAll = cat === "__all__";
       setCategory(isAll ? "All Categories" : cat);
       const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
@@ -2689,7 +2703,7 @@ function App() {
     setIdx(0); setFlipped(false); setAnswered(false); setSel(null); setShowEx(false); setShowHint(false);
     setVis(true); setInput(""); setInputResult(null); setLastElapsed(0); setRevealElapsed(0); setMasteryBurst(null); setLastBoxMove(null);
     setStats({ c: 0, w: 0 }); setFailed([]); setFailedNames([]); setCombo(0); setRpt(r => r + 1); setTStart(Date.now());
-    setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production" || m === "dictation") ? "cards" : "drill");
+    setScreen(m === "sentence" ? "sentence" : (m === "vocab" || m === "production" || m === "dictation" || m === "speaking") ? "cards" : "drill");
   };
 
   // Card flip handlers
@@ -2877,6 +2891,53 @@ function App() {
     record(false, card, Date.now() - tStart);
     speak(card.de);
   };
+
+  // ── Speaking mode ──
+  const stopListening = () => {
+    const r = recogRef.current; recogRef.current = null;
+    if (r) { try { r.onresult = r.onerror = r.onend = null; r.stop(); } catch (e) {} }
+    setListening(false);
+  };
+  // Grade a spoken attempt against the target German (case/punctuation-insensitive via
+  // checkMatch). Speech has no capitalisation, so "capital"/"eszett" count as correct.
+  const gradeSpoken = (transcript) => {
+    if (answered) return;
+    stopListening();
+    const card = cards[idx];
+    const result = checkMatch(transcript, card.de);
+    setInput(transcript); setInputResult(result); setAnswered(true);
+    if (result !== "wrong") setBloom(b => b + 1);
+    record(result !== "wrong", card, Date.now() - tStart);
+    if (result === "exact" || result === "capital" || result === "eszett") speakThenAdvance(card.de, nextCard);
+    else speak(card.de);
+  };
+  // Shadowing fallback (no SpeechRecognition, e.g. iOS): the learner self-grades.
+  const gradeSelf = (ok) => {
+    if (answered) return;
+    const card = cards[idx];
+    setInput(""); setInputResult(ok ? "exact" : "wrong"); setAnswered(true);
+    record(ok, card, Date.now() - tStart);
+    if (ok) speakThenAdvance(card.de, nextCard); else speak(card.de);
+  };
+  const startListening = () => {
+    if (answered || !SPEECH_REC_CTOR || recogRef.current) return;
+    setSpeechErr(""); setHeard("");
+    let rec;
+    try { rec = new SPEECH_REC_CTOR(); } catch (e) { setSpeechErr("Mic unavailable"); return; }
+    rec.lang = "de-DE"; rec.interimResults = true; rec.maxAlternatives = 1; rec.continuous = false;
+    rec.onresult = (ev) => {
+      let txt = "";
+      for (let i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+      setHeard(txt.trim());
+      if (ev.results[ev.results.length - 1].isFinal) gradeSpoken(txt.trim());
+    };
+    rec.onerror = (ev) => { setSpeechErr(ev.error === "not-allowed" ? "Mic blocked — allow access" : "Didn't catch that"); stopListening(); };
+    rec.onend = () => { if (recogRef.current) setListening(false); };
+    recogRef.current = rec;
+    try { rec.start(); setListening(true); } catch (e) { recogRef.current = null; setSpeechErr("Couldn't start mic"); }
+  };
+  // Stop the mic whenever we leave the session screen (and on unmount).
+  useEffect(() => { if (screen !== "cards" && recogRef.current) stopListening(); }, [screen]);
   const submitCloze = () => {
     if (answered) return;
     const card = cards[idx]; const result = checkMatch(input, card.a);
@@ -2908,11 +2969,13 @@ function App() {
   const nextCard = () => {
     cancelAutoAdvance();
     if (navLockRef.current) return;
+    if (recogRef.current) stopListening();
+    setHeard(""); setSpeechErr("");
     if (idx >= cardsLenRef.current - 1) { setScreen("results"); return; }
     navLockRef.current = true;
     // Production/dictation cards fly off on advance; Recall already flew its inner card via
     // the swipe transform, so it keeps the gentle slide instead of double-animating.
-    if (mode === "production" || mode === "dictation") setFlyOff(true);
+    if (mode === "production" || mode === "dictation" || mode === "speaking") setFlyOff(true);
     setVis(false); setFeedback(null);
     setTimeout(() => {
       resetSwipeVisuals(); // card is hidden (vis=false) now, so clearing the swipe transform can't flash
@@ -2988,7 +3051,7 @@ function App() {
       if (showSetup || showSettings || showOnboarding) return;
       const tag = ((e.target && e.target.tagName) || "").toLowerCase();
       const inField = tag === "input" || tag === "textarea" || tag === "select";
-      const flipMode = screen === "cards" && mode !== "production" && mode !== "dictation";
+      const flipMode = screen === "cards" && mode !== "production" && mode !== "dictation" && mode !== "speaking";
       if (e.key === "Enter") {
         if (inField) return; // typed inputs own their Enter (submit)
         if (screen === "cards" && answered) { e.preventDefault(); nextCard(); }
@@ -3257,7 +3320,7 @@ function App() {
     if (!n.stats.attempts) return null;
     const productionStreak = n.stats.productionStreak || 0;
     const mastered = productionStreak >= MASTERY_STREAK;
-    const unlockedNow = mode === "production" && inputResult !== "wrong" && productionStreak === MASTERY_STREAK;
+    const unlockedNow = (mode === "production" || mode === "speaking") && inputResult !== "wrong" && productionStreak === MASTERY_STREAK;
     const up = lastBoxMove && lastBoxMove.to > lastBoxMove.from;
     const down = lastBoxMove && lastBoxMove.to < lastBoxMove.from;
     const box = lastBoxMove ? lastBoxMove.to : Math.max(0, Math.min(5, Math.floor(n.srs.box || 0)));
@@ -3274,7 +3337,7 @@ function App() {
           <span aria-hidden="true" style={{ fontWeight: 900 }}>{up ? "↑" : down ? "↓" : "•"}</span>
           <span>{sched}</span>
         </div>
-        {mode === "production" && (mastered ? (
+        {(mode === "production" || mode === "speaking") && (mastered ? (
           <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, fontSize: 11, fontWeight: 800, color: G }}>
             <Icon name="check" size={13} /> {unlockedNow ? "Mastery unlocked ★ — 5 in a row" : "Mastered ★"}
           </div>
@@ -3681,7 +3744,7 @@ function App() {
               return (
                 <div style={{ marginBottom: 16 }}>
                   <div style={lbl}>Review this topic</div>
-                  <div style={gridStyle}>{[["vocab", "Recall", "DE → EN"], ["production", "Production", "EN → DE"], ["dictation", "Dictation", "Hear → type"], ["audio", "Audio", "Hands-free"]].map(btn)}</div>
+                  <div style={gridStyle}>{[["vocab", "Recall", "DE → EN"], ["production", "Production", "EN → DE"], ["speaking", "Speaking", "EN → speak"], ["dictation", "Dictation", "Hear → type"], ["audio", "Audio", "Hands-free"]].map(btn)}</div>
                   {drills.length > 0 && (<>
                     <div style={{ ...lbl, marginTop: 14 }}>Grammar drills · this topic</div>
                     <div style={gridStyle}>{drills.map(btn)}</div>
@@ -4206,8 +4269,8 @@ function App() {
           <div style={{ background: "#0C0C0C", border: `1px solid ${HAIR}`, borderRadius: 14, padding: "12px 12px 13px", display: "grid", gap: 13 }}>
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 7, paddingLeft: 2 }}>Practice mode</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
-              {[["vocab", "Recall", "layers"], ["production", "Production", "keyboard"], ["dictation", "Dictation", "volume"], ["audio", "Audio", "headphones"]].map(([m, label, icon]) => {
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
+              {[["vocab", "Recall", "layers"], ["production", "Production", "keyboard"], ["speaking", "Speaking", "mic"], ["dictation", "Dictation", "volume"], ["audio", "Audio", "headphones"]].map(([m, label, icon]) => {
                 const on = (HERO_MODES[setupMode] ? setupMode : "production") === m;
                 return (
                   <button key={m} type="button" aria-pressed={on} onClick={() => setSetupMode(m)}
@@ -4835,10 +4898,10 @@ function App() {
           the vocab/recall FLIP card needs a fixed-height container so its 1-1-auto, absolutely-
           positioned faces have a height to fill — minHeight alone collapses it to a strip. */}
       {screen === "cards" && card && <div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-        {Header({ extra: mode === "production" ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
+        {Header({ extra: (mode === "production" || mode === "speaking") ? <span style={{ color: A, marginRight: 6 }}>EN→DE</span> : "" })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
-        {(mode === "production" || mode === "dictation") ? (
+        {(mode === "production" || mode === "dictation" || mode === "speaking") ? (
           <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextCard)} style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", opacity: vis ? 1 : 0 }}>
             <div className="ad-elev" style={{ background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, padding: "28px 24px", flex: "0 0 auto", minHeight: 160, marginBottom: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)`, opacity: 0.7 }} />
@@ -4856,7 +4919,7 @@ function App() {
                 {inputResult === "close" && <div style={{ fontSize: 11, color: A, marginTop: 4 }}>Close! Check spelling.</div>}
                 {inputResult === "capital" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind the capitalisation</div>}
                 {inputResult === "eszett" && <div style={{ fontSize: 11, color: A, marginTop: 4, fontWeight: 700 }}>✓ Right — mind ß vs ss</div>}
-                {inputResult === "wrong" && input.trim() && <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>You wrote <span style={{ color: "#F87171", textDecoration: "line-through", textDecorationColor: `${R}88` }}>{input.trim()}</span></div>}
+                {inputResult === "wrong" && input.trim() && <div style={{ fontSize: 12, color: TD, marginTop: 5 }}>{mode === "speaking" ? "Heard" : "You wrote"} <span style={{ color: "#F87171", textDecoration: "line-through", textDecorationColor: `${R}88` }}>{input.trim()}</span></div>}
                 <button onClick={() => speak(card.de)} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginTop: 10, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {HintBtn({ hint: card.hint })}
@@ -4879,16 +4942,36 @@ function App() {
               </>}
             </div>
             <div style={{ marginTop: answered ? "auto" : undefined, paddingTop: 16, paddingBottom: "max(28px, env(safe-area-inset-bottom))" }}>
-              {!answered ? <><UmlautBar onInsert={insertChar} /><div style={{ display: "flex", gap: 8 }}>
+              {!answered ? (mode === "speaking" ? (
+                <div style={{ display: "grid", gap: 12, justifyItems: "center" }}>
+                  {SPEECH_REC_CTOR ? (<>
+                    <button type="button" onClick={listening ? stopListening : startListening} aria-label={listening ? "Stop listening" : "Tap and speak"}
+                      style={{ width: 86, height: 86, borderRadius: 999, border: `2px solid ${listening ? R : A}`, background: listening ? `${R}1A` : `${A}12`, color: listening ? R : A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: listening ? `0 0 0 6px ${R}14` : "none", transition: "box-shadow .2s" }}>
+                      <Icon name="mic" size={34} />
+                    </button>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: listening ? R : A }}>{listening ? "Listening… tap to stop" : "Tap and say it in German"}</div>
+                    {heard && <div style={{ fontSize: 15, color: T, fontFamily: BD }}>“{heard}”</div>}
+                    {speechErr && <div style={{ fontSize: 12, color: R }}>{speechErr}</div>}
+                  </>) : (<>
+                    <Icon name="mic" size={30} style={{ color: TD }} />
+                    <div style={{ fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, maxWidth: 280 }}>Say it aloud in German, then mark yourself. (Live speech scoring isn't supported on this browser.)</div>
+                    <div style={{ display: "flex", gap: 10 }}>
+                      <Btn bg={`${G}1A`} border={`1px solid ${G}`} color={G} onClick={() => gradeSelf(true)} style={{ width: "auto", padding: "12px 20px" }}>✓ Got it</Btn>
+                      <Btn bg={SH} border={`1px solid ${B}`} color={TD} onClick={() => gradeSelf(false)} style={{ width: "auto", padding: "12px 20px" }}>✗ Missed</Btn>
+                    </div>
+                  </>)}
+                  <button type="button" onClick={revealTyped} style={{ marginTop: 2, background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>Reveal answer</button>
+                </div>
+              ) : <><UmlautBar onInsert={insertChar} /><div style={{ display: "flex", gap: 8 }}>
                 <input ref={typedInputRef} lang="de" className="ad-input" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) submitTyped(); }}
                   placeholder="Type in German…" autoFocus autoCapitalize="off" autoCorrect="off" spellCheck="false"
                   style={{ flex: 1, padding: "14px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
                 <Btn bg={A} color="#0A0A0A" ariaLabel="Submit answer" onClick={submitTyped} style={{ width: "auto", padding: "14px 20px" }}>→</Btn>
               </div>
               <button type="button" onClick={revealTyped} style={{ marginTop: 10, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button>
-              </>
+              </>)
                 : <Btn bg={SH} border={`1px solid ${B}`} onClick={nextCard}>{idx < cards.length - 1 ? "Next →" : "Results"}</Btn>}
-              {KeyHint({ text: "Enter to submit · Enter again for next" })}
+              {mode !== "speaking" && KeyHint({ text: "Enter to submit · Enter again for next" })}
             </div>
           </div>
         ) : (
@@ -5400,7 +5483,7 @@ function App() {
         const party = (flawless || strong) && mode !== "audio";
         const headline = mode === "audio" ? "Nice listening" : flawless ? "Perfect!" : strong ? "Strong session" : good ? "Session complete" : "Keep going";
         const heroColor = good || party ? G : A;
-        const modeLabel = mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode;
+        const modeLabel = mode === "vocab" ? "DE→EN" : mode === "production" ? "EN→DE" : mode === "speaking" ? "Speak" : mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "verb" ? "Verb" : mode === "sentence" ? "Sentence" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "audio" ? "Audio" : mode;
         const R1 = 50, C1 = 2 * Math.PI * R1;
         const goalPct = Math.min(1, dailyStats.count / Math.max(dailyGoal, 1));
         return (

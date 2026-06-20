@@ -15,6 +15,9 @@
 
 ## Session run-log
 
+- Speaking production mode shipped (v2026.06.20.02): new EN→DE study mode where the learner speaks the German. Web-Speech `de-DE` recognition is matched against the target via `checkMatch` and feeds the same production-mastery track; where `SpeechRecognition` is unavailable (e.g. iOS Safari) it falls back to a self-graded shadowing flow. Added a `mic` icon, `speaking` to HERO_MODES, and surfaced it in the home Practice-mode row + topic setup.
+- Level-aware sessions + "Auto" level (v2026.06.19.10 → .20.01): session level defaults to `auto` (resolves to the learner's current CEFR level), presets no longer clobber it, one-time migration of the legacy `all` default; home Level-focus control gained an Auto chip. Fixes beginners being swamped with B2 after the deck reached 5,782 words.
+- Coordination migrated from the binary .xlsx to ROADMAP.md + CHANGELOG.md + AGENTS.md (2026-06-20).
 - AI Tutor moved out of the immediate roadmap. It remains a strong future premium feature once AutoDeutsch launches publicly. Current priority should be progression, Home experience, session composition, guided learning, and production skills. Productizing the tutor makes more sense after the core product experience is polished and user demand is validated.
 
 ### Additional changes shipped this session (not in the Top-10 lists):

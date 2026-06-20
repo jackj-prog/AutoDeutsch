@@ -25,6 +25,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Agent | Area / files | Task | Started | Status |
 |---|---|---|---|---|
 | Claude (Opus) | src/app.jsx (level focus), docs | Auto-chip fix + spreadsheet→Markdown migration | 2026-06-20 | ✅ done |
+| Claude (Opus) | src/app.jsx (session modes, render, grading) | Speaking production mode (Web Speech recognition + shadowing fallback) | 2026-06-20 | ✅ done |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

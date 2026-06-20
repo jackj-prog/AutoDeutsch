@@ -22,7 +22,7 @@ Order reflects what I learned actually building & auditing the app: friction-cut
 |  | PWA reminders / re-engagement  [DONE v2026.06.19.09] | ✅ | Shipped: opt-in Daily Reminder (Settings) — local notification at a chosen time, skips days the goal is met. Notification Triggers API where available (fires when closed), foreground-timer fallback. No backend. iOS reminds best while the app is opened periodically. | Med | Low-Med |
 |  | Aspirational empty states  [DONE v2026.06.18.8] | ✅ | Quick first-week 'aha': a brand-new user's Stats is a wall of zeros. Low effort, contained. | Low | Low |
 |  | Personalised weak-spot deck  [DONE v2026.06.18.9] | ✅ | Data already exists (per-card miss counts + the Weak queue). Turn it into a first-class 'drill your weak spots' deck. Real learning value, modest build. | Med | Low |
-| 6 | Speaking production mode | ⬜ | The biggest remaining LEARNING gap — B2 means speaking, and the app trains none. Web-Speech de-DE shadowing + scoring; speechSynthesis (output) already wired, recognition (input) is the new part. | High | Med |
+| 6 | Speaking production mode | ✅ | DONE v2026.06.20.02. New Speaking mode: EN→DE prompt, Web-Speech de-DE recognition matched against the target (feeds the production-mastery track), with a self-graded shadowing fallback where SpeechRecognition is absent (iOS). Surfaced in the home Practice row + topic setup. | High | Med |
 |  | Finish session-canvas composition (MC/tap screens)  [DONE v2026.06.18.10] | ✅ | DOWNGRADED. Worst offenders (answered state, recall card) already composed, and typed-mode 'void' is keyboard territory. Remaining: port the Audio bottom-anchor to the article/verb-MC/sentence screens. | Med | Low |
 |  | Curated Browse (grouping / sticky letters)  [DONE v2026.06.18.11] | ✅ | DOWNGRADED. Overflow fixed and search works, so the flat list is usable; curation is now polish, not a pain point. | Med | Low |
 | 9 | Relocation scenario packs + reposition | ⬜ | Identity bet (the defensible niche). Content + copy heavy; sequence after the friction/retention wins land. | Med-High | Med |
@@ -38,7 +38,7 @@ Order reflects what I learned actually building & auditing the app: friction-cut
 | 1 | Re-rank progress to a moving metric | ✅ | Layered 'Strong' metric — journey %, rank, chapters now advance on SRS box>=3 / 3-streak; Mastered * kept as deeper layer. |
 | 2 | Reviews Due as Home hero action | ✅ | Gold 'Review N due' hero on Home when reviews are due; new-session CTA demoted to outline (single focal point). |
 | 3 | Compose the session canvas / remove void | ✅ | SHIPPED v2026.06.18.10: composed the multiple-choice + tap screens (article / verb-MC / listening / sentence-builder) and every answered state — the prompt card + options now sit as one CENTERED group with balanced negative space instead of clustering at the top over a void. Typed-while-unanswered stays top-anchored (keyboard space). Card maxHeight:100%+overflowY guards the tall answered summaries. (Chose centred-group over pure bottom-anchor: keeps prompt and options together for read-then-answer scanning.) |
-| 4 | Add production-output mode (writing/speaking) | ⬜ |  |
+| 4 | Add production-output mode (writing/speaking) | 🟡 | Speaking shipped (v2026.06.20.02); AI-graded writing still pending. |
 | 5 | Redesign answered state into one calm verdict | ✅ | One calm verdict block (SRS outcome + 5-dot mastery + quiet tutor link) replaces the 5-colour chip stack. |
 | 6 | Replace Browse with curated discovery | ✅ | SHIPPED v2026.06.18.11: curated the word Browse — fixed the broken A-Z (der/die/das nouns were all clustering under D; they now file under the noun letter, e.g. der Abend under A) and added sticky A-Z section headers for rhythm and a sense of place. |
 | 7 | Aspirational empty states | ✅ | Done v2026.06.18.8 — first-run Progress shows an aspirational preview (Journey roadmap + Your-progress-live panel + Start-your-first-session CTA) instead of all-zero panels. |
@@ -66,7 +66,7 @@ Order reflects what I learned actually building & auditing the app: friction-cut
 | # | Initiative | Status | Detail |
 |---|---|---|---|
 | 1 | Layered mastery system | ✅ | Encountered -> Learning -> Strong -> Mastered; public progress advances on Strong. |
-| 2 | Speaking production mode | ⬜ |  |
+| 2 | Speaking production mode | ✅ | DONE v2026.06.20.02 — spoken EN→DE with recognition + shadowing fallback; counts toward production mastery. |
 | 3 | AI-graded writing | ⬜ |  |
 | 4 | Hand-author irregular/modal grammar rules | ✅ | verbRule now flags present-irregular (modals, sein, wissen) + separable verbs; 'wollen -> ich will' no longer mislabelled 'keeps its stem'. |
 | 5 | Validate CEFR tags | ✅ | DONE v2026.06.19.08. A1-B1 re-validated vs telc lists; +2,012 telc + +1,785 Aspekte B2 words; 100% CEFR coverage; B2-level content 419 -> 2,167. |
@@ -110,7 +110,7 @@ Order reflects what I learned actually building & auditing the app: friction-cut
 
 | # | Initiative | Status | Detail |
 |---|---|---|---|
-| 1 | Speaking with pronunciation scoring | ⬜ |  |
+| 1 | Speaking with pronunciation scoring | 🟡 | Speaking mode ships with speech-recognition matching (v2026.06.20.02); true phoneme-level pronunciation scoring is a later upgrade. |
 | 2 | AI-graded writing feedback | ⬜ |  |
 | 3 | Alive/composed session canvas | 🟡 | Session canvas partially composed (answered state, recall card, in-context example); full 'alive' canvas pending. |
 | 4 | Relocation scenario packs | ⬜ |  |

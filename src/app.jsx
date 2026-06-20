@@ -116,6 +116,15 @@ const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) =>
 const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
 const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
 const LEVELS = ["A1", "A2", "B1", "B2"];
+// P4 identity/role progression — driven by real-world can-dos earned (completed missions),
+// not card counts. Settling into Germany is the narrative, not "you processed N rows".
+const ROLES = [
+  { min: 0,  name: "Newcomer",    icon: "plane", sub: "Just landed" },
+  { min: 3,  name: "Settling in", icon: "home",  sub: "Finding your feet" },
+  { min: 8,  name: "Resident",    icon: "users", sub: "Living the daily life" },
+  { min: 18, name: "Local",       icon: "map",   sub: "At home in Germany" },
+];
+const roleFor = (n) => ROLES.reduce((acc, r) => (n >= r.min ? r : acc), ROLES[0]);
 // Difficulty bands for the Sentence Builder + Grammar Cloze (friendlier than exact CEFR levels).
 const LVL_BANDS = { easy: ["A1", "A2"], core: ["B1"], hard: ["B2"] };
 const inBand = (item, band) => band === "all" || (LVL_BANDS[band] || []).includes(item.level);
@@ -667,7 +676,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.07";
+const APP_VERSION = "2026.06.20.08";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2378,9 +2387,18 @@ function App() {
       const missionsDone = byLevel[l].total ? byLevel[l].done === byLevel[l].total : true;
       exam[l] = { pct, state: pct >= 75 && missionsDone ? "ready" : pct >= 40 ? "almost" : "building" };
     });
-    return { earned, earnedCount: earned.length, recent, byLevel, exam };
+    return { earned, earnedCount: earned.length, recent, byLevel, exam, role: roleFor(earned.length), nextRole: ROLES.find(r => r.min > earned.length) || null };
   }, [missionProg, deepStats.levels]);
   const [showUnderHood, setShowUnderHood] = useState(false);
+  // Celebrate moving up a relocation status (Newcomer → Settling in → Resident → Local).
+  const prevRoleRef = useRef(null);
+  useEffect(() => {
+    const r = capability.role.name;
+    if (prevRoleRef.current && prevRoleRef.current !== r) {
+      celebQueueRef.current.push({ kind: "toast", payload: { color: "#FFCC00", icon: capability.role.icon, tag: "New status", big: r, sub: capability.role.sub, subIcon: null } });
+    }
+    prevRoleRef.current = r;
+  }, [capability.role.name]);
 
   // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
   // CHAPTER checkpoint when you finish a chapter mid-level. Detected on upward transitions
@@ -2485,7 +2503,21 @@ function App() {
     setMissionProg(prev => {
       const cur = { ...(prev[id] || {}) };
       cur[step] = true;
-      if (cur.learned && cur.listened && cur.spoke && !cur.doneAt) cur.doneAt = Date.now();
+      const wasDone = !!(prev[id] && prev[id].doneAt);
+      if (cur.learned && cur.listened && cur.spoke && !cur.doneAt) {
+        cur.doneAt = Date.now();
+        if (!wasDone) {
+          const m = MISSIONS.find(x => x.id === id);
+          if (m) {
+            const arc = MISSION_ARCS.find(a => a.id === m.arc);
+            celebQueueRef.current.push({ kind: "toast", payload: {
+              color: "#4ADE80", icon: "check", tag: "Skill unlocked",
+              big: "You can now " + m.cando.charAt(0).toLowerCase() + m.cando.slice(1),
+              sub: arc ? `${arc.title} · real-world German` : "real-world German", subIcon: null,
+            } });
+          }
+        }
+      }
       const merged = { ...prev, [id]: cur };
       try { localStorage.setItem("ad-mission-progress-v1", JSON.stringify(merged)); } catch (e) {}
       return merged;
@@ -4782,7 +4814,10 @@ function App() {
             {/* ── P2 capability lead: what you can DO (earned can-dos), not how much you've covered ── */}
             <div style={panel}>
               {flagBar}
-              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 12, paddingTop: 4 }}>WHAT YOU CAN DO NOW</div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 12, paddingTop: 4 }}>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2 }}>WHAT YOU CAN DO NOW</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 800, color: A, border: `1px solid ${A}55`, borderRadius: 999, padding: "2px 9px 2px 7px", flexShrink: 0 }}><Icon name={capability.role.icon} size={11} style={{ color: A }} /> {capability.role.name}</span>
+              </div>
               {capability.earnedCount > 0 ? (<>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 9, marginBottom: 12 }}>
                   <span style={{ fontFamily: FN, fontSize: 34, fontWeight: 900, color: G, lineHeight: 1 }}>{capability.earnedCount}</span>
@@ -4799,6 +4834,7 @@ function App() {
               </>) : (
                 <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, marginBottom: 13 }}>Complete your first scenario to earn your first real-world skill — like ordering at a café or registering your address.</div>
               )}
+              {capability.nextRole && capability.earnedCount > 0 && <div style={{ fontSize: 11, color: TD, marginBottom: 11, lineHeight: 1.5 }}><span style={{ color: A, fontWeight: 800 }}>{capability.nextRole.min - capability.earnedCount}</span> more skill{capability.nextRole.min - capability.earnedCount === 1 ? "" : "s"} to become <span style={{ color: T, fontWeight: 800 }}>{capability.nextRole.name}</span></div>}
               <button type="button" onClick={() => currentMission ? openMission(currentMission.id) : setScreen("scenarios")} style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, background: `${A}10`, border: `1px solid ${A}3D`, borderRadius: 12, padding: "11px 13px", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
                 <IconBadge name="map" size={32} color={A} bg={`${A}12`} />
                 <span style={{ flex: 1, minWidth: 0 }}>

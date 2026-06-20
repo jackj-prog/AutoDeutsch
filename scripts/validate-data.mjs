@@ -7,12 +7,12 @@ export async function loadData(path = new URL("../src/data.js", import.meta.url)
   const code = await readFile(path, "utf8");
   const ctx = vm.createContext({ console });
   vm.runInContext(code, ctx);
-  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS: typeof MISSIONS!=='undefined'?MISSIONS:null, MISSION_ARCS: typeof MISSION_ARCS!=='undefined'?MISSION_ARCS:null, CONFUSIONS: typeof CONFUSIONS!=='undefined'?CONFUSIONS:null, EXAM: typeof EXAM!=='undefined'?EXAM:null, PLACEMENT: typeof PLACEMENT!=='undefined'?PLACEMENT:null })", ctx);
+  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS: typeof MISSIONS!=='undefined'?MISSIONS:null, MISSION_ARCS: typeof MISSION_ARCS!=='undefined'?MISSION_ARCS:null, CONFUSIONS: typeof CONFUSIONS!=='undefined'?CONFUSIONS:null, EXAM: typeof EXAM!=='undefined'?EXAM:null, PLACEMENT: typeof PLACEMENT!=='undefined'?PLACEMENT:null, MISSION_VOCAB: typeof MISSION_VOCAB!=='undefined'?MISSION_VOCAB:null })", ctx);
 }
 
 const isStr = (v) => typeof v === "string" && v.trim().length > 0;
 
-export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS, MISSION_ARCS, CONFUSIONS, EXAM, PLACEMENT }) {
+export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS, MISSION_ARCS, CONFUSIONS, EXAM, PLACEMENT, MISSION_VOCAB }) {
   const errors = [];
   const warnings = [];
   const err = (m) => errors.push(m);
@@ -222,6 +222,24 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     LEVELS.forEach(L => { if ((byLevel[L] || 0) < 3) warn(`PLACEMENT: only ${byLevel[L] || 0} item(s) at ${L} — recommend ≥3 for a reliable estimate`); });
   }
 
+  // ── Mission vocab (curated per-mission "Learn the words" list) ──
+  // Every word must be a real V card `de` (so SRS tracks it) and every key a real mission id —
+  // this is what guarantees the syllabus matches the scene the learner is tested on.
+  if (MISSION_VOCAB) {
+    if (typeof MISSION_VOCAB !== "object" || Array.isArray(MISSION_VOCAB)) err("MISSION_VOCAB must be an object { missionId: [words] }");
+    const deSet = new Set();
+    Object.values(V || {}).forEach(l => (Array.isArray(l) ? l : []).forEach(w => { if (w && isStr(w.de)) deSet.add(w.de); }));
+    const mIds = new Set((MISSIONS || []).map(m => m && m.id).filter(Boolean));
+    Object.entries(MISSION_VOCAB || {}).forEach(([mid, words]) => {
+      if (MISSIONS && !mIds.has(mid)) err(`MISSION_VOCAB: key "${mid}" is not a MISSIONS id`);
+      if (!Array.isArray(words) || !words.length) { err(`MISSION_VOCAB "${mid}": must be a non-empty array of words`); return; }
+      words.forEach(w => { if (!deSet.has(w)) err(`MISSION_VOCAB "${mid}": word "${w}" is not a V card (de) — learn step would teach a word not in the deck`); });
+      if (words.length < 5) warn(`MISSION_VOCAB "${mid}": only ${words.length} word(s) — the app should pad from the mission's cats`);
+    });
+    // Surface any mission with no curated list (will fall back to broad cats).
+    (MISSIONS || []).forEach(m => { if (m && m.id && !(m.id in MISSION_VOCAB)) warn(`MISSION_VOCAB: mission "${m.id}" has no curated word list (falls back to cats)`); });
+  }
+
   const counts = {
     vocab: Object.values(V || {}).reduce((n, l) => n + (Array.isArray(l) ? l.length : 0), 0),
     categories: Object.keys(V || {}).length,
@@ -234,6 +252,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     confusions: (CONFUSIONS || []).length,
     exam: (EXAM || []).length,
     placement: ((PLACEMENT && PLACEMENT.items) || []).length,
+    missionVocab: MISSION_VOCAB ? Object.keys(MISSION_VOCAB).length : 0,
   };
   return { errors, warnings, counts };
 }
@@ -242,7 +261,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
 if (import.meta.url === `file://${process.argv[1]}`) {
   const data = await loadData();
   const { errors, warnings, counts } = validateData(data);
-  console.log(`Content: ${counts.vocab} vocab in ${counts.categories} categories · ${counts.cloze} cloze · ${counts.verbs} verbs · ${counts.sentences} sentences · ${counts.dialogues} dialogues · ${counts.imperatives} imperatives · ${counts.missions} missions · ${counts.confusions} confusion-pairs · ${counts.exam} exam-sets · ${counts.placement} placement-items`);
+  console.log(`Content: ${counts.vocab} vocab in ${counts.categories} categories · ${counts.cloze} cloze · ${counts.verbs} verbs · ${counts.sentences} sentences · ${counts.dialogues} dialogues · ${counts.imperatives} imperatives · ${counts.missions} missions · ${counts.confusions} confusion-pairs · ${counts.exam} exam-sets · ${counts.placement} placement-items · ${counts.missionVocab} mission-vocab lists`);
   warnings.forEach(w => console.warn(`  warn: ${w}`));
   if (errors.length) {
     errors.forEach(e => console.error(`  ERROR: ${e}`));

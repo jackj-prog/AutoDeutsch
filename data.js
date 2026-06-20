@@ -8722,3 +8722,77 @@ const PLACEMENT = {
     {id:"pl-b2-10", level:"B2", skill:"reading", q:"„Die Teilnahme ist freiwillig.“ Das heißt, man …", opts:["muss nicht teilnehmen","muss teilnehmen","darf nicht teilnehmen"], correctIdx:0}
   ]
 };
+
+
+// ── MISSION VOCAB (curated per-mission word list → the "Learn the words" step) ──
+// The exact, scenario-relevant words for each mission, drawn from its dialogue + questions so the
+// syllabus matches what the learner is then tested on. Every entry is a real `V` card `de` (validated),
+// so the SRS engine still tracks it. The app's mission "Learn the words" step should drill these
+// (falling back to the mission's broad `cats` if a list is short/absent). Spec: docs/mission-vocab-spec.md.
+const MISSION_VOCAB = {
+  // Touchdown
+  cafe: ["der Kaffee","der Tee","der Kuchen","das Brötchen","der Zucker","die Milch","die Sahne","das Wasser","trinken","möchten","das Stück","der Euro"],
+  restaurant: ["die Speisekarte","die Rechnung","reservieren","bestellen","zahlen","getrennt","zusammen","empfehlen","der Tisch","die Suppe","der Salat","das Bier"],
+  supermarket: ["das Bargeld","zahlen","die Karte","die Quittung","die Milch","das Brot","der Käse","links","rechts","vorne","hinten","der Euro"],
+  directions: ["der Bahnhof","geradeaus","links","rechts","die Straße","das Museum","das Hotel","zu Fuß","weit","gehen","wohin"],
+  hotel: ["das Doppelzimmer","das Zimmer","reserviert","das Frühstück","das WLAN","das Passwort","die Nacht","buchen","der Gast","der Name"],
+  transit: ["die Fahrkarte","der Bahnhof","umsteigen","das Gleis","die Verspätung","der Zug","der Flughafen","einchecken","die Bordkarte","der Koffer","das Gepäck","das Ticket"],
+  meeting: ["Hallo","Tschüss","Guten Morgen","Freut mich","Bis bald","woher","müde","schlecht","der Mann"],
+  smalltalk: ["das Wetter","sonnig","windig","regnerisch","das Wochenende","spazieren","wandern","das Kino","heiß","kalt","warm","planen"],
+  phone: ["das Telefon","anrufen","die Nummer","ausrichten","der Moment"],
+  clothes: ["anprobieren","die Umkleide","die Größe","die Jacke","die Hose","die Schuhe","waschen","die Haare","schneiden","kurz"],
+  // The Paperwork
+  anmeldung: ["die Anmeldung","anmelden","das Formular","der Termin","der Ausweis","der Mietvertrag","die Meldebescheinigung","mitbringen","die Vollmacht","der Name"],
+  rundfunk: ["der Beitrag","der Haushalt","der Fernseher","anmelden","ausfüllen","das Formular","die Wohnung","der Mieter","der Monat","der Brief"],
+  steuerid: ["die Steuer","das Finanzamt","das Gehalt","der Wohnort","die Anmeldung","die Versichertenkarte","der Unterschied","der Brief"],
+  license: ["der Führerschein","umschreiben","die Übersetzung","die Unterlagen","die Prüfung","das Original","der Pass","mitbringen","das Foto","die Bearbeitung"],
+  fuehrungszeugnis: ["das Führungszeugnis","beantragen","der Personalausweis","der Reisepass","das Bürgeramt","die Gebühr","mitbringen","der Ausweis","online","das Foto"],
+  schufa: ["die Auskunft","der Vermieter","bestellen","kostenlos","verlangen","zuverlässig","die Adresse","das Gehalt","akzeptieren","der Monat"],
+  post: ["das Paket","abholen","die Briefmarke","schicken","der Empfänger","der Absender","die Beschwerde","erstatten","der Ausweis","der Brief"],
+  finanzamt: ["das Finanzamt","die Steuer","der Arbeitsvertrag","die Auskunft","erhalten","die Nummer","der Reisepass","das Bürgeramt","die Frage","das Amt"],
+  strom: ["der Strom","abschließen","die Kontonummer","der Haushalt","die Adresse","die Wohnung","die Daten","ändern"],
+  auslander: ["die Aufenthaltserlaubnis","das Visum","die Behörde","der Antrag","der Arbeitsvertrag","der Vertrag","der Pass","die Bearbeitung","das Foto","die Sache"],
+  // A Roof
+  rent: ["die Wohnung","die Miete","die Nebenkosten","das Zimmer","die Küche","das Bad","die Heizung","der Keller","der Altbau","der Meter","die Anzahlung"],
+  landlord: ["die Heizung","das Fenster","das Problem","der Techniker","das Wohnzimmer","der Strom","kalt","warm","vorbei","kommen"],
+  viewing: ["die Besichtigung","die Unterlagen","der Vermieter","einziehen","die Auskunft","die Wohnung","der Ausweis","begehrt","hilfreich","das Foto"],
+  kaution: ["die Kaution","die Kaltmiete","überweisen","einziehen","der Auszug","die Zinsen","zahlen","die Rate","die Nebenkosten","die Miete"],
+  givenotice: ["die Kündigung","die Kündigungsfrist","kündigen","der Mietvertrag","streichen","die Kaution","die Wohnung","der Monat","die Post","das Ende"],
+  contract: ["die Kaltmiete","die Nebenkosten","die Kaution","die Heizung","die Ratenzahlung","enthalten","einziehen","die Wohnung","das Wasser","der Strom"],
+  handover: ["das Übergabeprotokoll","der Schlüssel","der Schaden","die Kaution","putzen","der Briefkasten","beschädigt","zurückgeben","der Umzug","ordentlich"],
+  // Money & Connectivity
+  cash: ["der Geldautomat","das Bargeld","abheben","die Karte","das Geld","die Bank","zahlen","der Euro"],
+  bank: ["das Girokonto","das Sparkonto","das Konto","eröffnen","die Überweisung","die Kreditkarte","die IBAN","der Verwendungszweck","der Betrag","abheben","das Gehalt","der Arbeitsvertrag"],
+  nebenkosten: ["die Nebenkosten","die Heizung","das Wasser","die Müllabfuhr","die Hausreinigung","widersprechen","einverstanden","die Wohnung","die Miete"],
+  sim: ["die Karte","telefonieren","das Internet","die Laufzeit","der Ausweis","monatlich","die Daten","der Monat","mindestens"],
+  internet: ["das Internet","die Störung","der Techniker","beantragen","dauern","der Vormittag","bereits"],
+  insurance: ["die Versicherung","der Schaden","einreichen","übernehmen","die Rechnung","die Waschmaschine","die Spülmaschine","undicht","der Mietvertrag","melden"],
+  carworkshop: ["die Werkstatt","das Auto","kaputt","bremsen","prüfen","die Gebühr","der Nachmittag","fertig","das Problem","rufen"],
+  complaint: ["beschweren","kündigen","der Vertrag","die Laufzeit","defekt","der Kassenbon","der Nachweis","die Verpackung","die Frist","das Gerät"],
+  // Staying Well
+  krankenkasse: ["die Krankenkasse","die Versicherung","gesetzlich","privat","anmelden","der Beitrag","das Gehalt","die Versichertenkarte","der Arbeitsvertrag","der Ausweis"],
+  doctor: ["der Termin","der Arzt","die Praxis","das Rezept","das Fieber","der Kopf","der Bauch","die Kopfschmerzen","schwindelig","die Beschwerden","verschieben","absagen"],
+  pharmacy: ["das Rezept","die Kopfschmerzen","die Bauchschmerzen","empfehlen","nehmen","helfen","zweimal","das Essen","kosten","ohne"],
+  dentist: ["der Zahnarzt","der Zahn","die Zahnschmerzen","die Betäubung","die Spritze","ziehen","der Mund","husten","die Krankenkasse","hinten"],
+  specialist: ["der Facharzt","der Hausarzt","die Überweisung","der Termin","die Praxis","das Krankenhaus","die Erinnerung","dringend","das Rezept","versuchen"],
+  emergency: ["die Notaufnahme","der Notfall","das Wartezimmer","das Handgelenk","die Hand","die Operation","die Versichertenkarte","bewegen","warten","krank"],
+  results: ["der Blutdruck","die Ernährung","die Kontrolle","der Wert","empfehlen","beachten","der Kaffee","das Essen","deutlich","liegen"],
+  sick: ["die Krankschreibung","die Bescheinigung","die Erkältung","das Fieber","die Kollegin","die Besserung","der Arbeitsvertrag","das Fax","spätestens","der Arzt"],
+  // The Job
+  workhours: ["der Feierabend","das Wochenende","normalerweise","manchmal","meistens","später","zusammen"],
+  interview: ["die Stelle","der Ingenieur","der Maschinenbau","die Informatik","die Arbeit","die Schwäche","erzählen","anfangen","zuverlässig","die Herausforderung"],
+  apply: ["die Bewerbung","die Unterlagen","einreichen","die Stelle","die Antwort","der Termin","die Firma","schicken","vollständig","rechnen"],
+  firstday: ["die Mittagspause","die Kantine","der Schlüssel","der Parkplatz","das Passwort","das Netzwerk","der Empfang","der Laptop","willkommen","das Team"],
+  codereview: ["die Fehlermeldung","die Software","die Funktion","der Sensor","der Computer","der Stecker","das Protokoll","ändern","fehlen","übersehen"],
+  meeting_work: ["das Projekt","die Schnittstelle","der Zeitplan","die Meinung","der Austausch","zustimmen","die Freizeit","die Mischung","das Team","das Büro"],
+  feedback: ["die Gehaltserhöhung","die Personalabteilung","die Überstunden","die Verantwortung","die Rückmeldung","die Leistung","die Chefin","das Gehalt","zufrieden","der Urlaubstag"],
+  // Belonging
+  gym: ["das Training","anmelden","die Kontodaten","der Ausweis","treffen","kostenlos","die Arbeit","später","lieber","der Euro"],
+  invite: ["der Geburtstag","das Abendessen","der Nachtisch","das Fleisch","das Gemüse","kochen","mitbringen","der Wein","die Feier","der Freund"],
+  verein: ["der Verein","beitreten","das Training","der Volleyball","die Ausrüstung","der Beitrag","mitbringen","die Schuhe","ansehen","das Spiel"],
+  integrationskurs: ["der Integrationskurs","die Orientierung","das Zertifikat","die Prüfung","die Sprache","die Anmeldung","anmelden","die Migration","der Kurs","vormittags"],
+  neighbours: ["der Nachbar","die Ruhezeit","der Bescheid","die Wohnung","der Keller","leise","abends","der Sonntag","der Umzug","der Hof"],
+  networking: ["die Konferenz","der Vortrag","der Partner","der Bereich","die Studie","spannend","arbeiten","suchen","der Anfang","die Karte"],
+  kaffeekueche: ["das Wochenende","der Urlaub","die Aussicht","das Projekt","wandern","das Wetter","die Hütte","das Badezimmer","hervorragend","schade"],
+  debate: ["das Elektroauto","die Reichweite","der Kilometer","die Wartung","der Vorteil","der Lärm","fahren","kaufen","der Kauf","das Land"],
+};

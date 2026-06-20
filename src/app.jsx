@@ -125,6 +125,8 @@ const ROLES = [
   { min: 18, name: "Local",       icon: "map",   sub: "At home in Germany" },
 ];
 const roleFor = (n) => ROLES.reduce((acc, r) => (n >= r.min ? r : acc), ROLES[0]);
+// P5 placement: ladder rule — start at the first CEFR level the learner can't carry (≥50% correct).
+const placeLevel = (sc) => { for (const L of LEVELS) { const s = sc[L] || { c: 0, n: 0 }; if (!s.n || s.c / s.n < 0.5) return L; } return "B2"; };
 // Difficulty bands for the Sentence Builder + Grammar Cloze (friendlier than exact CEFR levels).
 const LVL_BANDS = { easy: ["A1", "A2"], core: ["B1"], hard: ["B2"] };
 const inBand = (item, band) => band === "all" || (LVL_BANDS[band] || []).includes(item.level);
@@ -676,7 +678,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.10";
+const APP_VERSION = "2026.06.20.11";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1277,6 +1279,12 @@ function App() {
   const [onboardingLevel, setOnboardingLevel] = useState("A1");
   const [onboardingGoal, setOnboardingGoal] = useState(20);
   const [onboardingMode, setOnboardingMode] = useState("vocab");
+  // P5 placement flow state: intake → placement → result.
+  const [obStep, setObStep] = useState("intake");
+  const [intakeAns, setIntakeAns] = useState({});
+  const [plItems, setPlItems] = useState([]);
+  const [plIdx, setPlIdx] = useState(0);
+  const [plScore, setPlScore] = useState({});
   const [online, setOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true);
   const [offlineReady, setOfflineReady] = useState(false);
   const [saveStatus, setSaveStatus] = useState("Saved locally");
@@ -2461,6 +2469,41 @@ function App() {
         completedAt: new Date().toISOString(),
       }));
     } catch (e) {}
+  };
+
+  // ── P5 placement flow ──
+  const startPlacement = () => {
+    const items = LEVELS.flatMap(L => {
+      const pool = PLACEMENT.items.filter(i => i.level === L);
+      return [...pool].sort(() => Math.random() - 0.5).slice(0, 3); // 3 per level, varied on retake
+    });
+    setPlItems(items); setPlIdx(0); setPlScore({}); setObStep("placement");
+  };
+  const answerPlacement = (oi) => {
+    const it = plItems[plIdx];
+    setPlScore(prev => { const s = { ...(prev[it.level] || { c: 0, n: 0 }) }; s.n++; if (oi === it.correctIdx) s.c++; return { ...prev, [it.level]: s }; });
+    if (plIdx >= plItems.length - 1) setObStep("result"); else setPlIdx(i => i + 1);
+  };
+  // Open the flow from Settings (retake).
+  const openPlacement = () => { setIntakeAns({}); setPlScore({}); setPlIdx(0); setObStep("intake"); setShowSettings(false); setShowOnboarding(true); };
+  // The arc a learner's stated goal points them at.
+  const goalArc = (goal) => goal === "Working in German" ? "job" : goal === "Settling in & making friends" ? "belonging" : "touchdown";
+  const firstMissionFor = (lvl, goal) => {
+    const arc = goalArc(goal); const li = LEVELS.indexOf(lvl);
+    const ok = (m) => LEVELS.indexOf(m.level) <= Math.min(LEVELS.length - 1, li + 1);
+    return MISSIONS.find(m => m.arc === arc && ok(m) && !(missionProg[m.id] && missionProg[m.id].doneAt)) || MISSIONS.find(m => m.arc === arc) || MISSIONS[0];
+  };
+  // Finish: seed the starting level (NOT a flat "all"), persist intake + level, route into the first mission.
+  const completePlacement = (lvl, missionId) => {
+    setSessLevel(lvl); setSessDiff(["B1", "B2"].includes(lvl) ? "hard" : "mixed");
+    const mode = intakeAns.goal === "Working in German" ? "production" : "vocab";
+    setSetupMode(mode); setShowOnboarding(false); setObStep("intake");
+    try {
+      localStorage.setItem("ad-onboarding-v1", "done");
+      localStorage.setItem("ad-onboarding-pref-v1", JSON.stringify({ level: lvl, dailyGoal, preferredMode: mode, completedAt: new Date().toISOString() }));
+      localStorage.setItem("ad-placement-v1", JSON.stringify({ intake: intakeAns, level: lvl, placedAt: Date.now() }));
+    } catch (e) {}
+    if (missionId) openMission(missionId);
   };
 
   const resetSessionState = () => {
@@ -3720,54 +3763,73 @@ function App() {
       {/* ── FIRST-RUN ONBOARDING ── */}
       {showOnboarding && <div style={{ position: "fixed", inset: 0, zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.92)", padding: 22 }}>
         <div role="dialog" aria-modal="true" aria-label="Welcome to AutoDeutsch" style={{ background: SOFT_PANEL, border: `1px solid ${A}2E`, borderRadius: 18, padding: "26px 22px 22px", width: "100%", maxWidth: 390, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 24px 80px rgba(0,0,0,0.45)" }}>
-          <div style={{ height: 3, width: 74, background: FLAG, borderRadius: 2, marginBottom: 18 }} />
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-            <IconBadge name="book" size={38} />
-            <div>
-              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2.4, textTransform: "uppercase" }}>Welcome</div>
-              <h2 style={{ fontFamily: FN, fontSize: 23, margin: "2px 0 0", lineHeight: 1.05 }}>Set up AutoDeutsch</h2>
+          <div style={{ height: 3, width: 74, background: FLAG, borderRadius: 2, marginBottom: 16 }} />
+          {obStep === "intake" && (<>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <IconBadge name="map" size={38} />
+              <div>
+                <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2.4, textTransform: "uppercase" }}>Welcome</div>
+                <h2 style={{ fontFamily: FN, fontSize: 22, margin: "2px 0 0", lineHeight: 1.05 }}>Let's set your journey</h2>
+              </div>
             </div>
-          </div>
-          <p style={{ color: TD, fontSize: 12, lineHeight: 1.55, margin: "0 0 18px" }}>A quick setup tunes your daily target and default practice style. Everything still saves locally and works offline after the first cached launch.</p>
-
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", marginBottom: 8 }}>Starting level</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
-              {["A1", "A2", "B1", "B2"].map(level => (
-                <button key={level} type="button" onClick={() => setOnboardingLevel(level)} style={{ padding: "11px 8px", borderRadius: 10, border: `1px solid ${onboardingLevel === level ? A : B}`, background: onboardingLevel === level ? `${A}18` : "#0D0D0D", color: onboardingLevel === level ? A : T, fontWeight: 800, cursor: "pointer", fontFamily: FN }}>{level}</button>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", marginBottom: 8 }}>Daily target</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {[10, 20, 30].map(goal => (
-                <button key={goal} type="button" onClick={() => setOnboardingGoal(goal)} style={{ padding: "11px 8px", borderRadius: 10, border: `1px solid ${onboardingGoal === goal ? A : B}`, background: onboardingGoal === goal ? `${A}18` : "#0D0D0D", color: onboardingGoal === goal ? A : T, fontWeight: 800, cursor: "pointer", fontFamily: FN }}>{goal}</button>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 11, color: TD, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", marginBottom: 8 }}>Preferred practice</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
-              {[["vocab", "Recognition", "German to English", "book"], ["production", "Production", "English to German", "keyboard"], ["audio", "Audio mode", "Hands-free review", "headphones"]].map(([m, title, sub, icon]) => (
-                <button key={m} type="button" onClick={() => setOnboardingMode(m)} style={{ padding: "12px 12px", borderRadius: 10, border: `1px solid ${onboardingMode === m ? A : B}`, background: onboardingMode === m ? `${A}14` : "#0D0D0D", color: T, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, textAlign: "left", fontFamily: "inherit" }}>
-                  <IconBadge name={icon} size={30} color={onboardingMode === m ? A : TD} />
-                  <span style={{ flex: 1 }}>
-                    <span style={{ display: "block", fontSize: 13, fontWeight: 800 }}>{title}</span>
-                    <span style={{ display: "block", fontSize: 11, color: TD, marginTop: 1 }}>{sub}</span>
-                  </span>
-                  {onboardingMode === m && <Icon name="check" size={17} style={{ color: A }} />}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <Btn bg={A} color="#0A0A0A" onClick={finishOnboarding} style={{ fontFamily: FN, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            Start learning <Icon name="arrowRight" size={17} />
-          </Btn>
-          <button type="button" onClick={finishOnboarding} style={{ marginTop: 12, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, cursor: "pointer", padding: 8 }}>Use defaults</button>
+            <p style={{ color: TD, fontSize: 12, lineHeight: 1.55, margin: "0 0 16px" }}>A few quick questions, then a 2-minute placement to find your level. Saves locally; works offline after first launch.</p>
+            {PLACEMENT.intake.map(q => (
+              <div key={q.id} style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 12, color: T, fontWeight: 700, marginBottom: 7 }}>{q.q}</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {q.opts.map(o => {
+                    const on = intakeAns[q.id] === o;
+                    return <button key={o} type="button" onClick={() => setIntakeAns(a => ({ ...a, [q.id]: o }))} style={{ padding: "8px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700, cursor: "pointer", background: on ? A : "#0D0D0D", color: on ? "#0A0A0A" : T, border: `1px solid ${on ? A : B}` }}>{o}</button>;
+                  })}
+                </div>
+              </div>
+            ))}
+            <Btn bg={A} color="#0A0A0A" onClick={startPlacement} style={{ marginTop: 6, fontFamily: FN, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>Start placement <Icon name="arrowRight" size={17} /></Btn>
+            <button type="button" onClick={() => completePlacement("A1", firstMissionFor("A1", intakeAns.goal).id)} style={{ marginTop: 12, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, cursor: "pointer", padding: 8 }}>Skip — I'm a beginner</button>
+          </>)}
+          {obStep === "placement" && (() => {
+            const it = plItems[plIdx]; if (!it) return null;
+            return (<>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
+                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase" }}>Placement</span>
+                <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>{plIdx + 1} / {plItems.length}</span>
+              </div>
+              <ProgBar pct={(plIdx / Math.max(1, plItems.length)) * 100} color={A} />
+              <div style={{ fontFamily: FN, fontSize: 19, fontWeight: 700, lineHeight: 1.3, margin: "16px 0" }}>{it.q}</div>
+              <div style={{ display: "grid", gap: 8 }}>
+                {it.opts.map((o, oi) => (
+                  <button key={oi} type="button" onClick={() => answerPlacement(oi)} style={{ width: "100%", textAlign: "left", padding: "13px 15px", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer", background: "#0D0D0D", color: T, border: `1px solid ${B}`, fontFamily: "inherit" }}>{o}</button>
+                ))}
+              </div>
+              <div style={{ fontSize: 11, color: TD, textAlign: "center", marginTop: 14 }}>Just pick the best answer — no scoring shown until the end.</div>
+            </>);
+          })()}
+          {obStep === "result" && (() => {
+            const lvl = placeLevel(plScore);
+            const fm = firstMissionFor(lvl, intakeAns.goal);
+            const arc = MISSION_ARCS.find(a => a.id === fm.arc) || {};
+            const TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
+            const city = intakeAns.country && intakeAns.country !== "Not sure yet" ? intakeAns.country : "Germany";
+            const goalTxt = intakeAns.goal ? intakeAns.goal.toLowerCase() : "getting settled";
+            return (<>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ width: 64, height: 64, borderRadius: 18, margin: "2px auto 12px", background: `${A}18`, border: `1.5px solid ${A}`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: FN, fontSize: 24, fontWeight: 900, color: A }}>{lvl}</span></div>
+                <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase" }}>You're starting at</div>
+                <h2 style={{ fontFamily: FN, fontSize: 24, margin: "4px 0 0" }}>{TITLES[lvl]} · {lvl}</h2>
+                <p style={{ color: TD, fontSize: 12.5, lineHeight: 1.55, margin: "10px 6px 18px" }}>Here's your path to {goalTxt} in {city}. Your first step:</p>
+              </div>
+              <button type="button" onClick={() => completePlacement(lvl, fm.id)} style={{ width: "100%", textAlign: "left", marginBottom: 12, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 14, padding: "13px 14px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 12 }}>
+                <IconBadge name={arc.icon || "map"} size={38} color={A} bg={`${A}12`} />
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.6, textTransform: "uppercase" }}>First mission</span>
+                  <span style={{ display: "block", fontSize: 14.5, fontWeight: 800, color: T }}>{fm.cando}</span>
+                </span>
+                <Icon name="arrowRight" size={17} style={{ color: A }} />
+              </button>
+              <Btn bg={A} color="#0A0A0A" onClick={() => completePlacement(lvl, fm.id)} style={{ fontFamily: FN, fontWeight: 900 }}>Start my journey</Btn>
+              <button type="button" onClick={() => completePlacement(lvl, null)} style={{ marginTop: 12, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, cursor: "pointer", padding: 8 }}>Start from home instead</button>
+            </>);
+          })()}
         </div>
       </div>}
 
@@ -4050,6 +4112,14 @@ function App() {
               Sound effects: {sfxOn ? "On" : "Off"}
             </button>
             <div style={{ fontSize: 11, color: TD, marginTop: 6, lineHeight: 1.45 }}>Subtle cues on correct, wrong, and session-complete. Spoken German pronunciation is always on.</div>
+          </div>
+
+          <h3 style={{ fontFamily: FN, fontSize: 16, margin: "0 0 10px", fontWeight: 700 }}>Your Journey</h3>
+          <div style={{ marginBottom: 20 }}>
+            <button type="button" onClick={openPlacement} style={{ width: "100%", padding: "11px 12px", borderRadius: 10, fontSize: 12, fontWeight: 800, cursor: "pointer", background: "#0A0A0A", color: A, border: `1px solid ${A}44`, textAlign: "left", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8 }}>
+              <Icon name="map" size={15} /> Placement test
+            </button>
+            <div style={{ fontSize: 11, color: TD, marginTop: 6, lineHeight: 1.45 }}>Retake the 2-minute placement to re-estimate your starting level. It only adjusts which level your sessions target — your progress is kept.</div>
           </div>
 
           {/* Daily goal — cards-per-day target shown on home's streak row */}

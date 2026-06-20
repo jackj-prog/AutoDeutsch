@@ -171,19 +171,21 @@ async function gotoScreen(page, screen) {
   if (screen === "resultswin") {
     // Recall session graded all-correct via the "I know it" gesture (→ / ArrowRight on the
     // German front) to reach the flawless results celebration (Perfect! + confetti).
+    // "Custom session" opens the __all__ setup; its "Quick" preset (Recall · 10) starts a
+    // recall session in one tap. Then drive it all-correct via the keyboard "I know it"
+    // gesture — but the swipe card only takes keys when focused (tabIndex lives on the card).
     await clickText(page, "Custom session");
-    await clickText(page, "Recall");
-    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => (b.textContent || "").trim() === "5")?.click());
-    await new Promise(r => setTimeout(r, 150));
-    await clickText(page, "Start session");
-    await new Promise(r => setTimeout(r, 400));
-    for (let k = 0; k < 24; k++) {
+    await clickText(page, "Quick");
+    await new Promise(r => setTimeout(r, 500));
+    for (let k = 0; k < 30; k++) {
       const done = await page.evaluate(() => /accuracy/i.test(document.body.innerText));
       if (done) break;
+      const focused = await page.evaluate(() => { const el = document.querySelector('[aria-label^="Swipe right"]'); if (el) { el.focus(); return true; } return false; });
+      if (!focused) break;
       await page.keyboard.press("ArrowRight"); // "I know it" → correct + fly off + next
-      await new Promise(r => setTimeout(r, 320));
+      await new Promise(r => setTimeout(r, 300));
     }
-    await new Promise(r => setTimeout(r, 250));
+    await new Promise(r => setTimeout(r, 1500)); // let the accuracy CountUp ring settle
     return;
   }
   if (screen === "drill") return clickText(page, "Production practice");
@@ -207,6 +209,14 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 300));
     await clickText(page, process.env.SHOOT_DRILL || "Grammar Cloze");
     await new Promise(r => setTimeout(r, 300));
+    // For the article/plural drills setupCat is "__all__", which the setup treats as a
+    // library category: it shows vocab presets and hides the mode-respecting "Start session"
+    // button behind "Advanced options". Reveal it if the direct button isn't present.
+    const hasStart = await page.evaluate(() => [...document.querySelectorAll("button,[role=button]")].some(e => /start session/i.test((e.textContent || ""))));
+    if (!hasStart) {
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /advanced options/i.test(b.textContent || ""))?.click());
+      await new Promise(r => setTimeout(r, 350));
+    }
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 700));
     if (process.env.SHOOT_REVEAL) {
@@ -278,20 +288,27 @@ async function gotoScreen(page, screen) {
     await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
     await new Promise(r => setTimeout(r, 700));
   }
+  if (screen === "weakspots") {
+    // Home "Weak spots" card → startWeakReview() begins a weak-words session in one tap.
+    await clickText(page, "Weak spots");
+    await new Promise(r => setTimeout(r, 600));
+    return;
+  }
   if (screen === "recall") {
-    // Custom session → Recall (DE→EN flip) → Start, then reveal the first card (tap = "I
-    // don't know") so the answer face + Next are visible.
+    // Custom session → Quick (Recall · 10) starts the flip session in one tap. Reveal the
+    // first card via the keyboard "not sure" gesture (ArrowLeft = always flips) — the card
+    // only takes keys when focused, so focus it first. Shows the answer face + Next.
     await clickText(page, "Custom session");
-    await clickText(page, "Recall");
-    await clickText(page, "Start session");
-    await page.evaluate(() => (document.querySelector('[aria-label^="Swipe right"]') || document.querySelector('[role="button"]'))?.click());
+    await clickText(page, "Quick");
+    await new Promise(r => setTimeout(r, 500));
+    await page.evaluate(() => document.querySelector('[aria-label^="Swipe right"]')?.focus());
+    await page.keyboard.press("ArrowLeft");
     await new Promise(r => setTimeout(r, 700));
   }
   if (screen === "recallfront") {
     // The un-revealed front of a recall card (German prompt + swipe hints).
     await clickText(page, "Custom session");
-    await clickText(page, "Recall");
-    await clickText(page, "Start session");
+    await clickText(page, "Quick");
     await new Promise(r => setTimeout(r, 600));
   }
   if (screen === "recallgot") {
@@ -328,18 +345,18 @@ async function gotoScreen(page, screen) {
     }
   }
   if (screen === "results") {
-    // Drive a short production session to completion (all wrong) to reach the results screen.
-    await clickText(page, "Custom session");
-    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => (b.textContent || "").trim() === "5")?.click()); // 5 cards
-    await new Promise(r => setTimeout(r, 150));
-    await clickText(page, "Start session");
+    // Drive a production session to completion (all wrong) to reach the results screen.
+    // Start via the home "Production practice" hero — going through "Custom session" lands on
+    // the "__all__" setup modal whose Start session is hidden behind Advanced options.
+    await clickText(page, "Production practice");
+    await new Promise(r => setTimeout(r, 250));
     const nativeType = (val) => page.evaluate((v) => {
       const i = document.querySelector('input[lang="de"]');
       if (!i) return false;
       i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, v); i.dispatchEvent(new Event("input", { bubbles: true }));
       return true;
     }, val);
-    for (let k = 0; k < 24; k++) {
+    for (let k = 0; k < 40; k++) {
       const done = await page.evaluate(() => /Repeat \d|Keep going|Session complete|Weiter|Back to home/i.test(document.body.innerText) && !document.querySelector('input[lang="de"]'));
       if (done) break;
       if (await nativeType("x")) {
@@ -358,6 +375,9 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 300));
     await clickText(page, "Articles"); // opens the setup modal
     await new Promise(r => setTimeout(r, 200));
+    // "__all__" setup hides the mode-respecting Start session under Advanced options.
+    const hasStart = await page.evaluate(() => [...document.querySelectorAll("button,[role=button]")].some(e => /start session/i.test((e.textContent || ""))));
+    if (!hasStart) { await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /advanced options/i.test(b.textContent || ""))?.click()); await new Promise(r => setTimeout(r, 350)); }
     await clickText(page, "Start session");
     await new Promise(r => setTimeout(r, 350));
     for (let k = 0; k < 18; k++) {

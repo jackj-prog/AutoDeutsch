@@ -7644,6 +7644,55 @@ const DIALOGUES = [
     {q:"Wann ist der nächste freie Termin?",opts:["In zwei Monaten","Morgen","In einer Woche"],correctIdx:0},
     {q:"Was braucht man für den Facharzt?",opts:["Eine Überweisung","Ein Rezept","Bargeld"],correctIdx:0}
   ]},
+  // ── More DACH bureaucratic rites (Führerschein / Führungszeugnis / SCHUFA) ──
+  {title:"Den Führerschein umschreiben",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte meinen ausländischen Führerschein umschreiben lassen.",en:"Hello, I'd like to have my foreign driving licence converted."},
+    {de:"Aus welchem Land ist Ihr Führerschein?",en:"Which country is your licence from?"},
+    {de:"Aus Kanada.",en:"From Canada."},
+    {de:"Dann brauchen Sie eine Übersetzung und müssen eventuell eine Prüfung machen.",en:"Then you need a translation and may have to take a test."},
+    {de:"Eine theoretische und eine praktische Prüfung?",en:"A theory and a practical test?"},
+    {de:"Das hängt vom Land ab. Bei manchen Ländern reicht der Umtausch.",en:"That depends on the country. For some countries an exchange is enough."},
+    {de:"Welche Unterlagen muss ich mitbringen?",en:"Which documents do I need to bring?"},
+    {de:"Ihren Pass, ein biometrisches Foto und den Führerschein im Original.",en:"Your passport, a biometric photo and the original licence."},
+    {de:"Wie lange dauert die Bearbeitung?",en:"How long does processing take?"},
+    {de:"Etwa vier bis sechs Wochen.",en:"About four to six weeks."}
+  ],questions:[
+    {q:"Was möchte die Person machen?",opts:["Den Führerschein umschreiben","Ein Auto kaufen","Ein Auto mieten"],correctIdx:0},
+    {q:"Was muss man eventuell machen?",opts:["Eine Prüfung","Einen Kurs bezahlen","Nichts"],correctIdx:0},
+    {q:"Was muss man mitbringen?",opts:["Pass, Foto und Führerschein","Nur Geld","Einen Zeugen"],correctIdx:0}
+  ]},
+  {title:"Ein Führungszeugnis beantragen",level:"B1",lines:[
+    {de:"Guten Tag, für meinen neuen Job brauche ich ein Führungszeugnis.",en:"Hello, for my new job I need a certificate of good conduct."},
+    {de:"Das können Sie hier im Bürgeramt oder online beantragen.",en:"You can apply for it here at the city office or online."},
+    {de:"Was kostet das?",en:"What does it cost?"},
+    {de:"Die Gebühr beträgt dreizehn Euro.",en:"The fee is thirteen euros."},
+    {de:"Und wie lange dauert es?",en:"And how long does it take?"},
+    {de:"Es wird Ihnen in ein bis zwei Wochen nach Hause geschickt.",en:"It will be sent to your home in one to two weeks."},
+    {de:"Kann mein Arbeitgeber es auch direkt bekommen?",en:"Can my employer also get it directly?"},
+    {de:"Ja, wenn Sie ein behördliches Führungszeugnis beantragen.",en:"Yes, if you apply for an official authority certificate."},
+    {de:"Was muss ich mitbringen?",en:"What do I need to bring?"},
+    {de:"Ihren Personalausweis oder Reisepass.",en:"Your ID card or passport."}
+  ],questions:[
+    {q:"Wofür braucht die Person das Führungszeugnis?",opts:["Für den neuen Job","Für die Wohnung","Für die Bank"],correctIdx:0},
+    {q:"Was kostet es?",opts:["Dreizehn Euro","Dreißig Euro","Nichts"],correctIdx:0},
+    {q:"Was muss man mitbringen?",opts:["Ausweis oder Pass","Ein Foto","Einen Vertrag"],correctIdx:0}
+  ]},
+  {title:"Eine SCHUFA-Auskunft holen",level:"B1",lines:[
+    {de:"Für die Wohnungsbewerbung brauche ich eine SCHUFA-Auskunft.",en:"For the flat application I need a SCHUFA credit report."},
+    {de:"Genau, viele Vermieter verlangen das.",en:"Exactly, many landlords ask for that."},
+    {de:"Wo bekomme ich sie?",en:"Where do I get it?"},
+    {de:"Sie können die kostenlose Datenkopie einmal im Jahr online bestellen.",en:"You can order the free data copy once a year online."},
+    {de:"Und wenn ich sie schneller brauche?",en:"And if I need it faster?"},
+    {de:"Dann gibt es eine kostenpflichtige Version sofort als Download.",en:"Then there's a paid version available immediately as a download."},
+    {de:"Was steht da drin?",en:"What's in it?"},
+    {de:"Ihre Bonität, also wie zuverlässig Sie Rechnungen bezahlen.",en:"Your creditworthiness — that is, how reliably you pay bills."},
+    {de:"Und wenn ich noch neu in Deutschland bin?",en:"And if I'm still new in Germany?"},
+    {de:"Dann ist der Eintrag oft leer; manche Vermieter akzeptieren dann eine Bürgschaft.",en:"Then the record is often empty; some landlords then accept a guarantee."}
+  ],questions:[
+    {q:"Wofür braucht man die SCHUFA-Auskunft?",opts:["Für die Wohnungsbewerbung","Für den Job","Für den Arzt"],correctIdx:0},
+    {q:"Wie oft ist die Datenkopie kostenlos?",opts:["Einmal im Jahr","Jeden Monat","Nie"],correctIdx:0},
+    {q:"Was zeigt die SCHUFA?",opts:["Die Bonität","Das Gehalt","Die Adresse"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7746,6 +7795,9 @@ const MISSIONS = [
   {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Einen Termin machen — einfach","Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
   {id:"rundfunk",    arc:"paperwork", level:"B1", cando:"Handle the broadcasting fee (Rundfunkbeitrag / GEZ)", dialogues:["Der Rundfunkbeitrag"], cats:["Admin & Bureaucracy","Media & Communication"]},
   {id:"steuerid",    arc:"paperwork", level:"B1", cando:"Understand your Steuer-ID and the tax on your payslip", dialogues:["Steuer-ID und Lohnsteuer"], cats:["Admin & Bureaucracy","Banking & Finance"]},
+  {id:"license",     arc:"paperwork", level:"B1", cando:"Convert a foreign driving licence (Führerschein umschreiben)", dialogues:["Den Führerschein umschreiben"], cats:["Admin & Bureaucracy","Driving & Traffic"]},
+  {id:"fuehrungszeugnis", arc:"paperwork", level:"B1", cando:"Apply for a certificate of good conduct (Führungszeugnis)", dialogues:["Ein Führungszeugnis beantragen"], cats:["Admin & Bureaucracy","Work & Study"]},
+  {id:"schufa",      arc:"paperwork", level:"B1", cando:"Get a SCHUFA credit report for renting", dialogues:["Eine SCHUFA-Auskunft holen"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},
   {id:"finanzamt",   arc:"paperwork", level:"B2", cando:"Handle a call to the Finanzamt", dialogues:["Anruf beim Finanzamt"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"strom",       arc:"paperwork", level:"B2", cando:"Set up your electricity", dialogues:["Strom anmelden"], cats:["Admin & Bureaucracy","Housing & Renting"]},

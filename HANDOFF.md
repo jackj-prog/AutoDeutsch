@@ -35,6 +35,9 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.21** Back-navigation now follows history (a real back-stack), instead of every Back button
+  hard-coding Home/scenarios — being "three clicks deep" and pressing Back returns to the previous
+  screen, not Home. (`goBack`/`goRoot` near the `screen` state in app.jsx.)
 - **Content**: +6 second dialogue scenes for single-scene B1 missions (krankenkasse, dentist, rundfunk,
   kaution, schufa, neighbours) — richer "Listen" step (now 2 dialogues each), wired into each mission's
   `dialogues`. *(This was the work the other agent had in flight when it ran out of credits — it was never

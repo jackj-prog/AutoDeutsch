@@ -705,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.20";
+const APP_VERSION = "2026.06.20.21";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1095,6 +1095,35 @@ function App() {
   const [screen, setScreen] = useState("home");
   const screenRef = useRef("home");
   screenRef.current = screen; // current screen, readable synchronously from callbacks/timers
+
+  // ── Back-navigation history ──────────────────────────────────────────────────
+  // Every forward screen change pushes the screen you left, so "Back" returns to where you
+  // actually came from (e.g. Library → arc → scenarios → mission → Back lands on scenarios,
+  // not a hard-coded Home). Bottom-nav tabs are roots: tapping one resets the stack. `goBack`
+  // pops; an empty stack falls back to Home.
+  const navHistRef = useRef([]);
+  const navPrevRef = useRef("home");
+  const navInternalRef = useRef(false); // set when WE drive the change (back/root) → don't auto-push
+  useEffect(() => {
+    const prev = navPrevRef.current;
+    navPrevRef.current = screen;
+    if (navInternalRef.current) { navInternalRef.current = false; return; }
+    if (screen === "home") { navHistRef.current = []; return; } // root — nothing behind it
+    if (prev !== screen) {
+      navHistRef.current.push(prev);
+      if (navHistRef.current.length > 40) navHistRef.current.shift();
+    }
+  }, [screen]);
+  const goBack = useCallback(() => {
+    navInternalRef.current = true;
+    const prev = navHistRef.current.pop();
+    setScreen(prev || "home");
+  }, []);
+  const goRoot = useCallback((id) => { // bottom-nav tab → fresh root
+    navInternalRef.current = true;
+    navHistRef.current = [];
+    setScreen(id);
+  }, []);
   // Milestone celebrations (streak / goal / chapter / rank-up) are held in this queue while
   // the player is in a session and only played once they're back on the calm home screen, so
   // nothing interrupts active play. Drained serially by the flush effect below.
@@ -1697,8 +1726,8 @@ function App() {
   // Exit audio mode fully (pause + cleanup)
   const audioExit = useCallback(() => {
     audioPause();
-    setScreen("home");
-  }, [audioPause]);
+    goBack();
+  }, [audioPause, goBack]);
 
   // Resume playback from current position
   const audioResume = useCallback(async () => {
@@ -3550,7 +3579,7 @@ function App() {
       marginBottom: 14,
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-        <button onClick={() => setScreen("home")} style={{
+        <button onClick={goBack} style={{
           background: "transparent", border: `1px solid ${A}33`, borderRadius: 10,
           color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px",
           fontWeight: 600, letterSpacing: 0.3, flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6
@@ -5014,7 +5043,7 @@ function App() {
         return (
           <div style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH, display: "flex", flexDirection: "column" }}>
             <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-              <button onClick={() => setScreen("library")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
+              <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Back</button>
               <div style={{ fontSize: 11, color: TD, fontWeight: 700 }}>{known.size} known · {allVocab().length} words</div>
             </div>
             <input className="ad-input" value={browseQuery} onChange={e => setBrowseQuery(e.target.value)} placeholder="Search German or English…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
@@ -5779,7 +5808,7 @@ function App() {
       {/* ── NEW: DIALOGUE SCREEN ── */}
       {screen === "scenarios" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <button onClick={() => setScreen("home")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
+          <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
         </div>
         <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, margin: "10px 0 2px" }}>Your journey</div>
         <div style={{ fontSize: 13, color: TD, marginBottom: 18 }}>Real situations on the way to living and working in Germany.</div>
@@ -5834,7 +5863,7 @@ function App() {
         ];
         return (
           <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 24px", minHeight: DVH, overflowY: "auto" }}>
-            <button onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Journey</button>
+            <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
             <div style={{ fontSize: 10.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", margin: "16px 0 6px" }}>{arc ? arc.title : ""} · {m.level}</div>
             <div style={{ fontSize: 12, color: TD, marginBottom: 2 }}>After this you'll be able to</div>
             <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, lineHeight: 1.2, marginBottom: 18 }}>{m.cando}.</div>
@@ -5867,7 +5896,7 @@ function App() {
           return (
             <>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <button onClick={() => { dlgStopPlay(); if (missionReturnRef.current) { const id = missionReturnRef.current.id; setActiveMission(id); setScreen("mission"); } else setScreen("home"); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
+                <button onClick={() => { dlgStopPlay(); goBack(); }} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, letterSpacing: 0.3 }}>← Back</button>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {dlg.level && <span style={{ fontSize: 9, fontWeight: 900, color: A, border: `1px solid ${A}55`, borderRadius: 6, padding: "2px 7px", letterSpacing: 0.5 }}>{dlg.level}</span>}
                   <div style={{ fontSize: 12, color: TD, fontWeight: 600 }}>{dlgIdx + 1}/{pool.length}</div>
@@ -5915,7 +5944,7 @@ function App() {
               <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 18, paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
                 {dlgIdx > 0 && <Btn bg={S} border={`1px solid ${B}`} onClick={() => { dlgStopPlay(); setDlgIdx(i => i - 1); setDlgRevealed({}); }} style={{ flex: 1 }}>← Prev</Btn>}
                 {dlgIdx < pool.length - 1 && <Btn bg={A} color="#0A0A0A" onClick={() => { dlgStopPlay(); setDlgIdx(i => i + 1); setDlgRevealed({}); }} style={{ flex: 1 }}>Next →</Btn>}
-                {dlgIdx === pool.length - 1 && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => { dlgStopPlay(); setScreen("home"); }} style={{ flex: 1 }}>Done</Btn>}
+                {dlgIdx === pool.length - 1 && <Btn bg={SH} border={`1px solid ${B}`} onClick={() => { dlgStopPlay(); goBack(); }} style={{ flex: 1 }}>Done</Btn>}
               </div>
             </>
           );
@@ -6177,7 +6206,7 @@ function App() {
               const active = screen === id;
               return (
                 <button key={id} type="button" aria-current={active ? "page" : undefined}
-                  onClick={() => { if (id === "tutor") tutorReturnRef.current = "home"; setScreen(id); }}
+                  onClick={() => { if (id === "tutor") tutorReturnRef.current = "home"; goRoot(id); }}
                   style={{ background: "transparent", border: "none", cursor: "pointer", padding: "10px 0 6px", display: "grid", justifyItems: "center", gap: 4, color: active ? A : TD, fontFamily: "inherit" }}>
                   {id === "stats"
                     ? <span style={{ display: "inline-flex" }}><ProgressIcon size={21} color={active ? A : TD} active={active} /></span>

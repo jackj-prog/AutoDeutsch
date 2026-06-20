@@ -59,7 +59,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -147,6 +147,17 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     addN(44, i => `listening::__listening__::dlg${i}`);
   }
   localStorage.setItem("gfc-v7", JSON.stringify(prog));
+  if (tutorChat) {
+    // A local-only fake key unlocks the chat UI; a seeded conversation renders the bubbles.
+    // No network call is made (the harness never taps Send), so the key is never used.
+    localStorage.setItem("gfc-ai-key", "sk-ant-demo-localonly-not-a-real-key");
+    localStorage.setItem("gfc-tutor-msgs", JSON.stringify([
+      { role: "user", text: "Hallo! Ich moechte mein Deutsch ueben." },
+      { role: "assistant", text: "Sehr gern! Dein Satz ist korrekt. Erzaehl mir: Was hast du heute gemacht?" },
+      { role: "user", text: "Ich habe gestern einen Termin beim Buergeramt gemacht." },
+      { role: "assistant", text: "Fast perfekt! Kleiner Hinweis: \"einen Termin vereinbaren\" klingt natuerlicher als \"machen\". Also: \"Ich habe gestern einen Termin beim Buergeramt vereinbart.\" Warum warst du dort?" },
+    ]));
+  }
   if (missionReady) {
     // Seed the café mission at 2/3 steps (learned + spoke). Crediting the third step
     // ("listened", earned just by opening the scene) completes it → fires the green
@@ -396,10 +407,99 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, screen === "statusup" ? 2900 : 900));
     return;
   }
+  if (screen === "confusionanswered") {
+    await clickText(page, "Train"); await new Promise(r => setTimeout(r, 200));
+    await clickText(page, "Confusion pairs"); await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 500));
+    await page.evaluate(() => { const g = document.querySelector('[style*="grid-template-columns"]'); const b = g && g.querySelector("button"); if (b) b.click(); });
+    await new Promise(r => setTimeout(r, 700));
+    return;
+  }
+  if (screen === "examanswered") {
+    await clickText(page, "Train"); await new Promise(r => setTimeout(r, 200));
+    await clickText(page, "Exam practice"); await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 500));
+    await page.evaluate(() => { const g = document.querySelector('[style*="grid-template-columns"]'); const b = g && g.querySelector("button"); if (b) b.click(); });
+    await new Promise(r => setTimeout(r, 700));
+    return;
+  }
+  if (screen === "speakingrevealed") {
+    await clickText(page, "Speaking"); await new Promise(r => setTimeout(r, 250));
+    await clickText(page, "Speaking practice"); await new Promise(r => setTimeout(r, 400));
+    await page.evaluate(() => [...document.querySelectorAll("button,[role=button]")].find(b => /reveal answer/i.test(b.textContent || ""))?.click());
+    await new Promise(r => setTimeout(r, 600));
+    return;
+  }
   if (screen === "weakspots") {
     // Home "Weak spots" card → startWeakReview() begins a weak-words session in one tap.
     await clickText(page, "Weak spots");
     await new Promise(r => setTimeout(r, 600));
+    return;
+  }
+  if (screen === "masteryresult") {
+    // Single due card seeded one correct-answer short of mastery → answering it crosses to
+    // mastered and the session ends on the results screen showing "+1 Mastered ★" + the
+    // newly-mastered recap panel (the in-session burst is suppressed by design).
+    await clickText(page, "Production practice");
+    await new Promise(r => setTimeout(r, 300));
+    const typeSubmit = async (val) => {
+      const ok = await page.evaluate((v) => { const i = document.querySelector('input[lang="de"]'); if (!i) return false; i.focus(); const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set; set.call(i, v); i.dispatchEvent(new Event("input", { bubbles: true })); return true; }, val);
+      if (ok) await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.getAttribute("aria-label") === "Submit answer")?.click());
+      return ok;
+    };
+    // Card 1 is the seeded due card der Bahnhof — answer it right to cross mastery; the rest
+    // can be anything (wrong is fine), we just need to reach results.
+    for (let k = 0; k < 40; k++) {
+      const done = await page.evaluate(() => /Mastered|Repeat \d|Keep going|Perfect|Strong session|Session complete|Back to home/i.test(document.body.innerText) && !document.querySelector('input[lang="de"]'));
+      if (done) break;
+      if (await typeSubmit(k === 0 ? "der Bahnhof" : "x")) await new Promise(r => setTimeout(r, 220));
+      await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /^(Next|Results)/.test((b.textContent || "").trim()))?.click());
+      await new Promise(r => setTimeout(r, 220));
+    }
+    await new Promise(r => setTimeout(r, 1000));
+    return;
+  }
+  if (screen === "tutorchat") {
+    // aiKey + a sample conversation are seeded (tutorChat flag) → the live chat UI renders
+    // with bubbles. No Send is tapped, so no network request is made.
+    await clickText(page, "Chat & ask in German");
+    await new Promise(r => setTimeout(r, 600));
+    return;
+  }
+  if (screen === "dictation") {
+    // Dictation lives under the library setup's Advanced options (Review-this-topic grid).
+    await clickText(page, "Custom session");
+    await new Promise(r => setTimeout(r, 300));
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /advanced options/i.test(b.textContent || ""))?.click());
+    await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Dictation");
+    await new Promise(r => setTimeout(r, 200));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 1100));
+    return;
+  }
+  if (screen === "comprehension") {
+    // Listening drill in "With Questions" (comprehension MCQ) mode.
+    await clickText(page, "Train");
+    await new Promise(r => setTimeout(r, 250));
+    await clickText(page, "Listening");
+    await new Promise(r => setTimeout(r, 300));
+    await page.evaluate(() => [...document.querySelectorAll("button")].find(b => /with questions|comprehension/i.test(b.textContent || ""))?.click());
+    await new Promise(r => setTimeout(r, 250));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 900));
+    return;
+  }
+  if (screen === "dialoguerevealed") {
+    // Listening scene with the German bubbles tapped open (tap-to-reveal).
+    await clickText(page, "Train");
+    await new Promise(r => setTimeout(r, 250));
+    await clickText(page, "Listening");
+    await new Promise(r => setTimeout(r, 250));
+    await clickText(page, "Start session");
+    await new Promise(r => setTimeout(r, 500));
+    await page.evaluate(() => [...document.querySelectorAll("button,[role=button]")].filter(b => /tap to listen|tap to reveal/i.test(b.textContent || "")).forEach(b => b.click()));
+    await new Promise(r => setTimeout(r, 700));
     return;
   }
   if (screen === "recall") {
@@ -516,7 +616,7 @@ async function run() {
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", tutorChat: screen === "tutorchat" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

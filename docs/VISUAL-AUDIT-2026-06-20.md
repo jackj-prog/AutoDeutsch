@@ -6,7 +6,14 @@ Captures live in `screenshots/audit/` (prefixes `b5-` drills, `b6-` feedback/res
 structure). This complements the static `docs/APP-AUDIT-2026-06-20.md` (code-level review) with
 a live, screenshot-backed sweep of the running app.
 
-## Coverage: ~95% (58 of ~61 distinct states)
+## Coverage: ~100% — every reachable screen & state captured
+
+Third pass closed the last gaps. The only thing *not* shown is the in-session mastery ★ burst,
+which is **intentionally suppressed in code** (app.jsx:2093 — "celebrations are held until home;
+mastery is recapped on the results screen"), so it is not a reachable state; it surfaces instead as
+the captured **mastery results recap** ("+1 Mastered ★" + newly-mastered panel) and the Library "New"
+badge. Speaking recognition (live mic) can't run headless, but its prompt + reveal-answer states are
+captured.
 
 ### ✅ Captured & verified clean
 **Core navigation** — Home (first / daily / advanced), Library, Browse, Progress (first / daily /
@@ -30,11 +37,16 @@ Settling in), **Chapter checkpoint** toast (A1 · Chapter 4 of 5 done), **full-s
 (LEVEL UP → A2 "You've reached Elementary!" + confetti), and **high-capability Progress** ("Resident"
 role, A1 Complete · A2 50% · journey 50% to B2 · telc exam progress).
 
-### ⬜ Remaining (≈5%)
-- **In-session mastery ★ burst** — the animated star-burst frame mid-session (b6-mastery caught the
-  settled correct state, b8-drillbloom the settled green bloom; the burst itself is a sub-300ms frame).
-- **Dictation session** — reachable only via per-topic Advanced options; no top-level harness entry.
-- **Tutor active chat** — blocked: needs a live Anthropic key (not available in the harness).
+**Final-pass additions** — Onboarding intake (first-run modal), **Tutor active chat** (seeded key +
+conversation, no network call), **Dictation** session ("Play · Tippe, was du hörst"), **Comprehension
+MCQ** (listening + questions), **revealed dialogue scene** (all bubbles open, DE+EN), **mastery results
+recap** ("+1 Mastered ★" + 5/5 streak panel), confusion-answered (rule reveal), exam-answered
+(Leseverstehen), speaking reveal-answer, library-category setup (per-topic stats), ß-vs-ss nudge, and a
+**320px overflow sweep** of stats / settings / tutor-chat / cloze / results / Progress.
+
+### Capturable states with no remaining gaps
+Every navigable screen and every distinct in-screen state has a screenshot. Not states (excluded by
+design or platform): the suppressed in-session mastery burst, and live mic speech recognition.
 
 ## Findings
 
@@ -48,6 +60,15 @@ taps *Articles → Quick* gets a DE→EN recall session, **not** an article dril
 *Fix direction:* for grammar-drill tiles, either start the drill in one tap (skip the library
 presets) or make the presets carry the drill mode. The drills themselves render perfectly once
 reached (`b5-article`, `b5-plural`).
+
+### 🟡 Typed-drill submit button overflows ~4px at 320px
+On the narrowest supported width (320px), the gold **"→" submit button** on typed-drill screens
+(cloze / plural / imperative / verb / dictation / weak / production) sits ~4px past the right edge
+(`SHOOT_OVERFLOW` report: `+4px past edge | <button> "→"`). The input + button row isn't capped to the
+viewport. Fine at 390px. Low severity (clips a few px of a square button), but it's a real edge bleed
+— same class as the grid blow-outs already fixed elsewhere. *Fix:* constrain the input row with
+`minmax(0,1fr)` on the input / `flex-shrink` on the button, or reduce the row's horizontal padding at
+≤340px.
 
 ### 🟡 Vertical rhythm differs by drill type (confirms static audit §1.2)
 MC-style drills (Article, Verb/Konjunktiv) anchor the prompt card to the **lower** third with a large
@@ -78,6 +99,9 @@ most noticeable. Worth one consistent vertical anchor across all session types.
 - New `weakspots` path (home Weak-spots card → one-tap weak-words session).
 - New `skillunlock` / `statusup` paths: seed the café mission at 2/3 steps, credit the final step by
   opening the scene, back out to home so the queued toast(s) flush.
+- New `tutorchat` (seeds `gfc-ai-key` + `gfc-tutor-msgs` — chat UI, no network), `dictation`,
+  `comprehension`, `dialoguerevealed`, `masteryresult`, `confusionanswered`, `examanswered`,
+  `speakingrevealed` paths.
 - New `rankup` / `progmax` paths: a **runtime** vocab seed (reads the global `V` after load, since
   the pre-load `evaluateOnNewDocument` seed can't enumerate cards) — marks every A1 card strong &
   not-due except one due/one-short card, then drives a single correct answer to cross A1→A2 and flush

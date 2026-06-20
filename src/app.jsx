@@ -678,7 +678,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.11";
+const APP_VERSION = "2026.06.20.12";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2449,7 +2449,7 @@ function App() {
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
     setSetupMode(dm || "vocab");
-    const mx = cat === "__all__" ? totalW : cat === "__grammar__" ? CLOZE.length : cat === "__verb__" ? 30 : cat === "__sentence__" ? SENTENCES.length : cat === "__imperativ__" ? IMPERATIVES.length : cat === "__listening__" ? DIALOGUES.length : cat === "__weak__" ? Math.max(weakCards.size, 1) : (V[cat]?.length || 25);
+    const mx = cat === "__all__" ? totalW : cat === "__grammar__" ? CLOZE.length : cat === "__verb__" ? 30 : cat === "__sentence__" ? SENTENCES.length : cat === "__imperativ__" ? IMPERATIVES.length : cat === "__listening__" ? DIALOGUES.length : cat === "__confusion__" ? 15 : cat === "__exam__" ? 15 : cat === "__weak__" ? Math.max(weakCards.size, 1) : (V[cat]?.length || 25);
     setSessLen(Math.min(15, mx));
     setShowSetup(true);
   };
@@ -2590,7 +2590,7 @@ function App() {
     missionReturnRef.current = null; // cleared by default; the mission launcher re-sets it after
     setMode(m); setShowSetup(false); resetSessionState();
     // Remember this session for one-tap resume
-    const label = cat === "__all__" ? "All Categories" : cat === "__grammar__" ? "Grammar Cloze" : cat === "__verb__" ? "Verb Trainer" : cat === "__sentence__" ? "Sentence Builder" : cat === "__imperativ__" ? "Imperative" : cat === "__listening__" ? "Listening Practice" : cat;
+    const label = cat === "__all__" ? "All Categories" : cat === "__grammar__" ? "Grammar Cloze" : cat === "__verb__" ? "Verb Trainer" : cat === "__sentence__" ? "Sentence Builder" : cat === "__imperativ__" ? "Imperative" : cat === "__listening__" ? "Listening Practice" : cat === "__confusion__" ? "Confusion Pairs" : cat === "__exam__" ? "Exam Practice" : cat;
     const ls = { cat, m, count, label, ts: Date.now() };
     setLastSession(ls); saveLast(ls);
 
@@ -2739,6 +2739,29 @@ function App() {
         setCards(expanded.slice(0, count));
         setScreen("drill"); setTStart(Date.now());
       }
+    } else if (m === "confusion") {
+      // Confusion-pair drill: each item → a binary MC (the two base words as options).
+      setCategory("Confusion Pairs");
+      const lvl = resolveLevel(setupLevel);
+      const pool = lvl === "all" ? CONFUSIONS : (CONFUSIONS.filter(c => c.level === lvl).length ? CONFUSIONS.filter(c => c.level === lvl) : CONFUSIONS);
+      const cards = sh([...pool]).flatMap(p => p.items.map((it, ii) => ({
+        _pair: p, q: it.q, opts: [p.a.de, p.b.de], correctIdx: it.correct === "a" ? 0 : 1,
+        answer: it.answer, exEn: it.en, why: it.why, rule: p.rule,
+        de: `${p.id}::${ii}`,
+      })));
+      setCards(sh(cards).slice(0, count));
+      setScreen("drill"); setTStart(Date.now());
+    } else if (m === "exam") {
+      // Exam-format practice: each question → an MC card; the passage rides along for the render.
+      setCategory("Exam Practice");
+      const lvl = resolveLevel(setupLevel);
+      const pool = lvl === "all" ? EXAM : (EXAM.filter(e => e.level === lvl).length ? EXAM.filter(e => e.level === lvl) : EXAM);
+      const cards = sh([...pool]).flatMap(s => s.questions.map((q, qi) => ({
+        _set: s, q: q.q, opts: q.opts, correctIdx: q.correctIdx, why: q.why,
+        de: `${s.id}::${qi}`,
+      })));
+      setCards(cards.slice(0, count));
+      setScreen("drill"); setTStart(Date.now());
     } else if (m === "audio") {
       // Audio mode: same pool construction as vocab, but play instead of quiz.
       // Does NOT touch SRS. Counts toward daily goal only.
@@ -3138,7 +3161,7 @@ function App() {
     const card = cards[idx]; let correct;
     if (mode === "article") correct = ["der", "die", "das"][oi] === card.article;
     else if (mode === "verb") correct = oi === card.correctIdx;
-    else if (mode === "listening") correct = oi === card.correctIdx;
+    else if (mode === "listening" || mode === "confusion" || mode === "exam") correct = oi === card.correctIdx;
     else correct = false;
     record(correct, card, Date.now() - tStart);
     // Speak the answer where there's something meaningful to hear: the full "pron +
@@ -3502,14 +3525,14 @@ function App() {
     );
   };
 
-  const maxC = setupCat === "__all__" ? totalW : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? 30 : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
+  const maxC = setupCat === "__all__" ? totalW : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? 30 : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__confusion__" ? 15 : setupCat === "__exam__" ? 15 : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
   const hasNouns = setupCat && !["__all__", "__grammar__", "__verb__", "__sentence__", "__weak__"].includes(setupCat) && nouns.some(n => n.cat === setupCat);
-  const setupSpecialCats = ["__grammar__", "__verb__", "__sentence__", "__imperativ__", "__listening__", "__weak__"];
+  const setupSpecialCats = ["__grammar__", "__verb__", "__sentence__", "__imperativ__", "__listening__", "__confusion__", "__exam__", "__weak__"];
   const setupIsLibrary = setupCat && !setupSpecialCats.includes(setupCat);
   const setupCanUseArticles = hasNouns || setupCat === "__all__";
   const setupCanUsePlural = pluralNouns.length > 0 && (setupCat === "__all__" || (setupIsLibrary && pluralNouns.some(n => n.cat === setupCat)));
   const setupMinC = Math.min(5, maxC);
-  const setupTitle = setupCat === "__all__" ? "All Categories" : setupCat === "__grammar__" ? "Grammar Cloze" : setupCat === "__verb__" ? "Verb Trainer" : setupCat === "__sentence__" ? "Sentence Builder" : setupCat === "__imperativ__" ? "Imperative" : setupCat === "__listening__" ? "Listening Practice" : setupCat === "__weak__" ? "Weak Areas" : setupCat;
+  const setupTitle = setupCat === "__all__" ? "All Categories" : setupCat === "__grammar__" ? "Grammar Cloze" : setupCat === "__verb__" ? "Verb Trainer" : setupCat === "__sentence__" ? "Sentence Builder" : setupCat === "__imperativ__" ? "Imperative" : setupCat === "__listening__" ? "Listening Practice" : setupCat === "__confusion__" ? "Confusion Pairs" : setupCat === "__exam__" ? "Exam Practice" : setupCat === "__weak__" ? "Weak Areas" : setupCat;
   const stepSessionLength = delta => setSessLen(n => Math.max(setupMinC, Math.min(maxC, n + delta)));
 
   const ProgressHub = () => {
@@ -4075,7 +4098,7 @@ function App() {
 
           {(!setupIsLibrary || showAdvanced) && <div style={{ padding: "12px 18px max(18px, env(safe-area-inset-bottom))", borderTop: `1px solid ${B}`, background: S, boxShadow: "0 -14px 22px rgba(0,0,0,0.28)" }}>
             <div style={{ fontSize: 10, color: TD, marginBottom: 10, textAlign: "center" }}>Failed cards repeat until cleared.</div>
-            <Btn bg={A} color="#0A0A0A" onClick={() => { const m = setupCat === "__grammar__" ? "cloze" : setupCat === "__verb__" ? "verb" : setupCat === "__sentence__" ? "sentence" : setupCat === "__imperativ__" ? "imperativ" : setupCat === "__listening__" ? "listening" : setupMode; startSession(setupCat, m, sessLen); }} style={{ fontFamily: FN, fontSize: 16 }}>Start session</Btn>
+            <Btn bg={A} color="#0A0A0A" onClick={() => { const m = setupCat === "__grammar__" ? "cloze" : setupCat === "__verb__" ? "verb" : setupCat === "__sentence__" ? "sentence" : setupCat === "__imperativ__" ? "imperativ" : setupCat === "__listening__" ? "listening" : setupCat === "__confusion__" ? "confusion" : setupCat === "__exam__" ? "exam" : setupMode; startSession(setupCat, m, sessLen); }} style={{ fontFamily: FN, fontSize: 16 }}>Start session</Btn>
           </div>}
         </div>
       </div>}
@@ -4598,6 +4621,8 @@ function App() {
             { m: "sentence", c: "__sentence__", icon: "keyboard", name: "Sentence Builder", desc: "Master German word order" },
             { m: "imperativ", c: "__imperativ__", icon: "target", name: "Imperative", desc: "Commands — du, ihr, Sie" },
             { m: "listening", c: "__listening__", icon: "headphones", name: "Listening", desc: "Understand spoken dialogue" },
+            { m: "confusion", c: "__confusion__", icon: "target", name: "Confusion pairs", desc: "Tell apart easily-confused words" },
+            { m: "exam", c: "__exam__", icon: "book", name: "Exam practice", desc: "telc / Goethe reading & gap-fill" },
           ];
           const rows = DRILLS.map(d => {
             const ts = trainingStats[d.m];
@@ -4607,7 +4632,7 @@ function App() {
           const avg = Math.round(rows.reduce((a, d) => a + d.pct, 0) / rows.length);
           const undone = rows.filter(d => !d.done);
           const focus = undone.length ? undone.reduce((b, d) => d.pct < b.pct ? d : b, undone[0]).m : null;
-          const lenFor = (m) => Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : m === "plural" ? Math.max(pluralNouns.length, 5) : nouns.length);
+          const lenFor = (m) => Math.min(15, m === "cloze" ? CLOZE.length : m === "verb" ? 30 : m === "sentence" ? SENTENCES.length : m === "imperativ" ? IMPERATIVES.length : m === "listening" ? DIALOGUES.length : m === "confusion" ? 15 : m === "exam" ? 15 : m === "plural" ? Math.max(pluralNouns.length, 5) : nouns.length);
           return (<>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
               <div style={{ flex: 1, height: 6, background: "#0A0A0A", border: `1px solid ${HAIR}`, borderRadius: 4, overflow: "hidden" }}>
@@ -5293,9 +5318,9 @@ function App() {
         // Compose the canvas (fill the card, drop the bottom auto-margin so there's no void)
         // whenever there's no keyboard to fill the lower half: every answered state, plus the
         // multiple-choice modes. Typed modes while unanswered stay top-anchored (keyboard space).
-        const composed = answered || mode === "article" || mode === "listening" || (mode === "verb" && !!card.opts);
+        const composed = answered || mode === "article" || mode === "listening" || mode === "confusion" || mode === "exam" || (mode === "verb" && !!card.opts);
         return (<div style={{ padding: "0 20px", height: DVH, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : "Verb"}</span> })}
+        {Header({ extra: <span style={{ color: A, marginRight: 6 }}>{mode === "article" ? "der/die/das" : mode === "plural" ? "Plural" : mode === "cloze" ? "Cloze" : mode === "imperativ" ? "Imperative" : mode === "listening" ? "Listening" : mode === "confusion" ? "Confusion" : mode === "exam" ? "Exam" : "Verb"}</span> })}
         <ProgBar pct={((idx + 1) / cards.length) * 100} color={rpt > 0 ? R : A} />
 
         <div className={cardCls} onPointerDown={onAdvPointerDown} onPointerMove={onAdvPointerMove} onPointerUp={onAdvPointerUp(answered, nextDrill)} style={{ opacity: vis ? 1 : 0, flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: composed ? "center" : "flex-start" }}>
@@ -5432,6 +5457,28 @@ function App() {
                 {SpeedBadge({ ms: lastElapsed })}{CardStats()}
               </>}
             </>}
+            {mode === "confusion" && <>
+              <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Which word fits?</div>
+              <div style={{ fontFamily: FN, fontSize: 20, textAlign: "center", lineHeight: 1.4 }}>{answered ? card.q.replace("___", card.answer) : card.q}</div>
+              {answered && <>
+                <div style={{ fontSize: 11, color: sel === card.correctIdx ? G : R, marginTop: 10, fontWeight: 700 }}>{sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.answer}`}</div>
+                <div style={{ marginTop: 10, fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, padding: "9px 14px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, maxWidth: "94%" }}>{card.exEn}<br /><span style={{ color: A, fontWeight: 700 }}>{card.why}</span></div>
+                {!skipSummary && <div style={{ fontSize: 11, color: TD, marginTop: 8, textAlign: "center", maxWidth: "92%", fontStyle: "italic" }}>{card.rule}</div>}
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
+              </>}
+            </>}
+            {mode === "exam" && card._set && <>
+              <div style={{ fontSize: 10, color: AD, letterSpacing: 2.5, textTransform: "uppercase", marginBottom: 7, fontWeight: 700 }}>{card._set.skill} · {card._set.level}</div>
+              <div style={{ fontSize: 13, color: A, fontWeight: 800, marginBottom: 8, textAlign: "center" }}>{card._set.title}</div>
+              <div style={{ width: "100%", maxHeight: 150, overflowY: "auto", background: "#0A0A0A66", borderRadius: 10, padding: "10px 14px", marginBottom: 8, borderLeft: `3px solid ${A}`, fontSize: 12.5, color: T, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{(showEx && card._set.passageEn) ? card._set.passageEn : card._set.passage}</div>
+              {card._set.passageEn && <button type="button" onClick={(e) => { e.stopPropagation(); setShowEx(v => !v); }} style={{ background: "transparent", border: "none", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", marginBottom: 12, padding: 0 }}>{showEx ? "Show German" : "Show English"}</button>}
+              <div style={{ fontFamily: FN, fontSize: 16, color: T, fontWeight: 700, textAlign: "center", lineHeight: 1.4 }}>{card.q}</div>
+              {answered && <>
+                <div style={{ fontSize: 11, color: sel === card.correctIdx ? G : R, marginTop: 8, fontWeight: 700 }}>{sel === card.correctIdx ? "✓ Correct" : `✗ Correct: ${card.opts[card.correctIdx]}`}</div>
+                {card.why && !skipSummary && <div style={{ fontSize: 11, color: TD, marginTop: 6, textAlign: "center", maxWidth: "92%" }}>{card.why}</div>}
+                {SpeedBadge({ ms: lastElapsed })}{CardStats()}
+              </>}
+            </>}
           </div>
 
           {mode === "cloze" && !answered && (
@@ -5464,12 +5511,12 @@ function App() {
             </div>
             <button type="button" onClick={revealDrill} style={{ marginBottom: 16, width: "100%", background: "transparent", border: "none", color: TD, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 6, letterSpacing: 0.3 }}>I don't know — reveal answer</button></>
           )}
-          {mode === "listening" && !answered && card.opts && (
+          {(mode === "listening" || mode === "confusion" || mode === "exam") && !answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
               {card.opts.map((opt, i) => <button key={i} onClick={() => handleDrillAnswer(i)} style={{ padding: "14px 16px", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer", background: SH, border: `2px solid ${B}`, color: T, fontFamily: BD, textAlign: "left" }}>{opt}</button>)}
             </div>
           )}
-          {mode === "listening" && answered && card.opts && (
+          {(mode === "listening" || mode === "confusion" || mode === "exam") && answered && card.opts && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
               {card.opts.map((opt, i) => { const isC = i === card.correctIdx; const wasS = i === sel;
                 return (<div key={i} style={{ padding: "14px 16px", borderRadius: 12, fontSize: 14, fontWeight: 600, background: isC ? "#0A1A0A" : wasS ? "#1A0000" : SH, border: `2px solid ${isC ? G : wasS ? R : B}`, color: isC ? G : wasS ? R : TD, fontFamily: BD, textAlign: "left" }}>{opt}{isC ? " ✓" : wasS ? " ✗" : ""}</div>);

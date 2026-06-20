@@ -12,6 +12,8 @@
 //
 // Usage:  npm run build && node scripts/shoot.mjs [screen ...]
 //   screens: home (default) | library | stats | browse | tutor | drill | all
+//   journey: scenarios | mission  ·  pending (content-lane datasets): placement | confusion | exam
+//   SHOOT_WIDTH=320 for a narrow-phone overflow check.
 // Output:  screenshots/<screen>.png   (390x844 @2x, mobile)
 import { readFile, writeFile, mkdir, rm, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -188,6 +190,13 @@ async function gotoScreen(page, screen) {
   if (screen === "speaking") { await clickText(page, "Speaking"); await new Promise(r => setTimeout(r, 250)); await clickText(page, "Speaking practice"); await new Promise(r => setTimeout(r, 500)); return; }
   if (screen === "scenarios") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "mission") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 400)); return; }
+  // Pending app.jsx screens for the content-lane datasets (PLACEMENT / CONFUSIONS / EXAM).
+  // These reference the entry labels pinned in docs/P5-placement-buildspec.md +
+  // docs/practice-data-spec.md; once the app.jsx owner builds the screens with those labels
+  // these paths shoot automatically. Kept out of ALL so `shoot all` is unaffected until then.
+  if (screen === "placement") { await clickText(page, "Settings"); await new Promise(r => setTimeout(r, 200)); await clickText(page, "Placement test"); await new Promise(r => setTimeout(r, 400)); return; }
+  if (screen === "confusion") { await clickText(page, "Train"); await new Promise(r => setTimeout(r, 200)); await clickText(page, "Confusion pairs"); await clickText(page, "Start session"); await new Promise(r => setTimeout(r, 400)); return; }
+  if (screen === "exam") { await clickText(page, "Train"); await new Promise(r => setTimeout(r, 200)); await clickText(page, "Exam practice"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "setup") return clickText(page, "Custom session");
   if (screen === "settings") return clickText(page, "Settings");
   if (screen === "audioscreen") { await clickText(page, "Audio"); await clickText(page, "Audio review"); await new Promise(r => setTimeout(r, 700)); return; }

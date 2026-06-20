@@ -11,8 +11,11 @@ Lane note: the **data + this spec are the content lane**; the **drill/exam scree
 ---
 
 ## A. `CONFUSIONS` — confusion-pair drill (Top-10 Learning #9)
-Commonly-confused German word pairs (kennen/wissen, legen/liegen, seit/seid, wenn/als, …). **14 pairs**,
-4 practice items each.
+Commonly-confused German word pairs (kennen/wissen, legen/liegen, seit/seid, wenn/als, mieten/vermieten,
+leben/wohnen, …). **20 pairs**, 4 practice items each.
+
+**Harness entry label** (pin when building): Train tab → **"Confusion pairs"** → "Start session"
+(`scripts/shoot.mjs confusion` expects these).
 
 ### Shape
 ```
@@ -48,7 +51,10 @@ learner taps stays the clean base word.
 ---
 
 ## B. `EXAM` — exam-format practice (telc/Goethe style)
-Short exam-style sets across A2/B1/B2 in two formats. **6 sets** (2 per level), each with 3–4 questions.
+Short exam-style sets across A1/A2/B1/B2 in two formats. **12 sets** (3 per level), each with 2–4 questions.
+
+**Harness entry label** (pin when building): Train tab → **"Exam practice"** (`scripts/shoot.mjs exam`
+expects this).
 
 ### Shape
 ```

@@ -7490,6 +7490,69 @@ const DIALOGUES = [
     {q:"Wann treffen sich die zwei?",opts:["Am Samstag","Am Montag","Am Sonntag"],correctIdx:0},
     {q:"Was wollen sie machen?",opts:["Einen Kaffee trinken","Ins Kino gehen","Essen kochen"],correctIdx:0}
   ]},
+  // ── Deeper relocation scenes for the thinner arcs (money / belonging / job) ──
+  {title:"Eine Überweisung machen",level:"A2",lines:[
+    {de:"Ich möchte gern eine Überweisung machen.",en:"I'd like to make a transfer."},
+    {de:"Kein Problem. Wie ist der Name des Empfängers?",en:"No problem. What's the recipient's name?"},
+    {de:"Anna Becker. Hier ist die IBAN.",en:"Anna Becker. Here is the IBAN."},
+    {de:"Und welcher Betrag soll überwiesen werden?",en:"And what amount should be transferred?"},
+    {de:"Zweihundert Euro, bitte.",en:"Two hundred euros, please."},
+    {de:"Möchten Sie einen Verwendungszweck angeben?",en:"Would you like to add a reference?"},
+    {de:"Ja: „Miete Mai“.",en:"Yes: 'rent May'."},
+    {de:"Gut. Die Überweisung ist in ein bis zwei Tagen da.",en:"Good. The transfer will arrive in one to two days."}
+  ],questions:[
+    {q:"Was möchte die Person machen?",opts:["Geld abheben","Eine Überweisung machen","Ein Konto eröffnen"],correctIdx:1},
+    {q:"Wie viel Geld wird überwiesen?",opts:["Zweihundert Euro","Zwanzig Euro","Zweitausend Euro"],correctIdx:0},
+    {q:"Was ist der Verwendungszweck?",opts:["Miete Mai","Geschenk","Gehalt"],correctIdx:0}
+  ]},
+  {title:"Die Nebenkostenabrechnung",level:"B1",lines:[
+    {de:"Ich habe die Nebenkostenabrechnung bekommen und verstehe sie nicht ganz.",en:"I've received the utility-bill statement and don't quite understand it."},
+    {de:"Lassen Sie uns gemeinsam draufschauen. Was steht unten?",en:"Let's look at it together. What does it say at the bottom?"},
+    {de:"Da steht eine Nachzahlung von hundertzwanzig Euro.",en:"It shows an additional payment of one hundred and twenty euros."},
+    {de:"Das heißt, Ihre monatlichen Vorauszahlungen waren etwas zu niedrig.",en:"That means your monthly advance payments were a bit too low."},
+    {de:"Wofür zahle ich denn genau?",en:"What exactly am I paying for?"},
+    {de:"Für Heizung, Wasser, Müllabfuhr und die Hausreinigung.",en:"For heating, water, rubbish collection and the building cleaning."},
+    {de:"Und wenn ich mit der Abrechnung nicht einverstanden bin?",en:"And if I don't agree with the statement?"},
+    {de:"Dann können Sie innerhalb von zwölf Monaten schriftlich widersprechen.",en:"Then you can object in writing within twelve months."},
+    {de:"Bis wann muss ich die Nachzahlung leisten?",en:"By when do I have to pay the extra amount?"},
+    {de:"In der Regel innerhalb von vier Wochen.",en:"As a rule, within four weeks."}
+  ],questions:[
+    {q:"Was zeigt die Abrechnung?",opts:["Eine Nachzahlung","Ein großes Guthaben","Nichts"],correctIdx:0},
+    {q:"Warum gibt es eine Nachzahlung?",opts:["Die Vorauszahlungen waren zu niedrig","Die Miete ist gestiegen","Die Wohnung ist zu groß"],correctIdx:0},
+    {q:"Wie lange kann man widersprechen?",opts:["Innerhalb von zwölf Monaten","Gar nicht","Innerhalb von einer Woche"],correctIdx:0}
+  ]},
+  {title:"Nachbarn kennenlernen",level:"B1",lines:[
+    {de:"Hallo, ich bin Ihr neuer Nachbar aus der Wohnung nebenan.",en:"Hello, I'm your new neighbour from the flat next door."},
+    {de:"Schön, Sie kennenzulernen! Herzlich willkommen im Haus.",en:"Nice to meet you! A warm welcome to the building."},
+    {de:"Danke. Gibt es etwas, das ich über das Haus wissen sollte?",en:"Thanks. Is there anything I should know about the building?"},
+    {de:"Die Mülltonnen stehen hinten im Hof, und am Sonntag ist Ruhetag.",en:"The bins are at the back in the courtyard, and Sunday is a quiet day."},
+    {de:"Gut zu wissen. Wann sollte man eher leise sein?",en:"Good to know. When should one be quieter?"},
+    {de:"Zwischen zweiundzwanzig und sechs Uhr und mittags von eins bis drei.",en:"Between 10 p.m. and 6 a.m., and at midday from one to three."},
+    {de:"Verstanden. Wir wollten nächste Woche eine kleine Einweihungsfeier machen.",en:"Understood. We wanted to have a small housewarming party next week."},
+    {de:"Sagen Sie den Nachbarn einfach kurz Bescheid, dann ist das kein Problem.",en:"Just let the neighbours know briefly, then it's no problem."},
+    {de:"Mache ich. Vielleicht kommen Sie ja auch vorbei?",en:"I will. Maybe you'd like to drop by too?"},
+    {de:"Sehr gern. Bis bald, Nachbar!",en:"I'd love to. See you soon, neighbour!"}
+  ],questions:[
+    {q:"Wo stehen die Mülltonnen?",opts:["Hinten im Hof","Vor dem Haus","Im Keller"],correctIdx:0},
+    {q:"Wann ist abends Ruhezeit?",opts:["Ab zweiundzwanzig Uhr","Ab achtzehn Uhr","Gar nicht"],correctIdx:0},
+    {q:"Was plant der neue Nachbar?",opts:["Eine Einweihungsfeier","Einen Umzug","Eine Reise"],correctIdx:0}
+  ]},
+  {title:"Telefonische Nachfrage zur Bewerbung",level:"B1",lines:[
+    {de:"Guten Tag, mein Name ist Daniel Krause. Ich habe mich bei Ihnen beworben.",en:"Hello, my name is Daniel Krause. I applied to you."},
+    {de:"Guten Tag, Herr Krause. Um welche Stelle geht es?",en:"Hello, Mr Krause. Which position is it about?"},
+    {de:"Um die Stelle als Softwareentwickler. Ich wollte nach dem Stand fragen.",en:"The software developer position. I wanted to ask about the status."},
+    {de:"Einen Moment, ich schaue nach. Ihre Unterlagen sind vollständig.",en:"One moment, I'll check. Your documents are complete."},
+    {de:"Das freut mich. Wann kann ich mit einer Antwort rechnen?",en:"I'm glad. When can I expect an answer?"},
+    {de:"Wir laden in der nächsten Woche zu Gesprächen ein.",en:"We'll be inviting people to interviews next week."},
+    {de:"Sehr gut. Soll ich noch etwas einreichen?",en:"Very good. Should I submit anything else?"},
+    {de:"Ein Arbeitszeugnis wäre hilfreich, wenn Sie eines haben.",en:"A reference from a previous employer would be helpful, if you have one."},
+    {de:"Das schicke ich Ihnen heute noch per E-Mail.",en:"I'll send it to you by email today."},
+    {de:"Wunderbar. Dann hören wir voneinander.",en:"Wonderful. Then we'll be in touch."}
+  ],questions:[
+    {q:"Warum ruft Herr Krause an?",opts:["Er fragt nach dem Stand seiner Bewerbung","Er sagt den Termin ab","Er sucht eine Wohnung"],correctIdx:0},
+    {q:"Wann lädt die Firma zu Gesprächen ein?",opts:["Nächste Woche","Nie","Heute"],correctIdx:0},
+    {q:"Was soll Herr Krause noch schicken?",opts:["Ein Arbeitszeugnis","Ein Foto","Nichts"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7604,7 +7667,8 @@ const MISSIONS = [
   {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
   // Money & Connectivity
   {id:"cash",        arc:"money", level:"A1", cando:"Withdraw cash and pay by card", dialogues:["Geld abheben — einfach","Bezahlen an der Kasse"], cats:["Banking & Finance","Shopping & Money"]},
-  {id:"bank",        arc:"money", level:"B1", cando:"Open a bank account", dialogues:["Kontoeröffnung bei der Bank","Opening a bank account"], cats:["Banking & Finance"]},
+  {id:"bank",        arc:"money", level:"B1", cando:"Open a bank account and make a transfer", dialogues:["Eine Überweisung machen","Kontoeröffnung bei der Bank","Opening a bank account"], cats:["Banking & Finance"]},
+  {id:"nebenkosten", arc:"money", level:"B1", cando:"Read and query your utility-bill statement (Nebenkostenabrechnung)", dialogues:["Die Nebenkostenabrechnung"], cats:["Banking & Finance","Housing & Renting"]},
   {id:"sim",         arc:"money", level:"B1", cando:"Get a SIM and choose a phone plan", dialogues:["Buying a SIM card","Choosing a phone plan"], cats:["Media & Communication","Shopping & Money"]},
   {id:"internet",    arc:"money", level:"B2", cando:"Fix an internet or utility problem", dialogues:["Internet outage hotline"], cats:["Media & Communication","Technology & Digital"]},
   {id:"insurance",   arc:"money", level:"B2", cando:"Make an insurance claim", dialogues:["Reporting an insurance claim"], cats:["Banking & Finance","Admin & Bureaucracy"]},
@@ -7618,6 +7682,7 @@ const MISSIONS = [
   {id:"sick",        arc:"health", level:"B2", cando:"Call in sick to work", dialogues:["Krankmeldung im Büro"], cats:["Health & Doctor","Work & Study"]},
   // The Job
   {id:"workhours",   arc:"job", level:"A2", cando:"Ask about work hours and conditions", dialogues:["Asking about work hours","Small talk at work"], cats:["Work & Study"]},
+  {id:"apply",       arc:"job", level:"B1", cando:"Follow up on a job application by phone", dialogues:["Telefonische Nachfrage zur Bewerbung"], cats:["Work & Study"]},
   {id:"interview",   arc:"job", level:"B1", cando:"Handle a job interview", dialogues:["Job interview basics","Job interview"], cats:["Work & Study"]},
   {id:"firstday",    arc:"job", level:"B2", cando:"Survive your first day at work", dialogues:["Onboarding: erster Arbeitstag"], cats:["Work & Study","Engineering Workplace"]},
   {id:"codereview",  arc:"job", level:"B2", cando:"Take part in a code review or tech problem", dialogues:["Code-Review im Team","Technisches Problem im Labor","Reporting a technical problem"], cats:["Engineering Workplace","Technology & Digital"]},
@@ -7625,6 +7690,7 @@ const MISSIONS = [
   {id:"feedback",    arc:"job", level:"B2", cando:"Have a feedback and salary conversation", dialogues:["Feedbackgespräch mit der Chefin","Salary negotiation"], cats:["Work & Study"]},
   // Belonging
   {id:"gym",         arc:"belonging", level:"A2", cando:"Join and use a gym", dialogues:["Joining a gym","Fitnessstudio anmelden","Freunde im Fitnessstudio"], cats:["Sport & Leisure"]},
+  {id:"neighbours",  arc:"belonging", level:"B1", cando:"Introduce yourself to the neighbours", dialogues:["Nachbarn kennenlernen"], cats:["Small Talk & Social","Housing & Renting"]},
   {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Sich verabreden — einfach","Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
   {id:"networking",  arc:"belonging", level:"B2", cando:"Network at a conference", dialogues:["Networking at a conference"], cats:["Small Talk & Social","Work & Study"]},
   {id:"kaffeekueche",arc:"belonging", level:"B2", cando:"Make small talk in the office kitchen", dialogues:["Smalltalk in der Kaffeeküche"], cats:["Small Talk & Social","Character & Personality"]},
@@ -7777,6 +7843,66 @@ const CONFUSIONS = [
       {q:"Ich muss heute ___ Arzt.", correct:"b", answer:"zum", en:"I have to go to the doctor today.", why:"a person/practice → zu (zum)"},
       {q:"Nach der Arbeit gehe ich ___ Hause.", correct:"a", answer:"nach", en:"After work I go home.", why:"fixed expression → nach Hause"},
       {q:"Am Wochenende fahre ich ___ meinen Eltern.", correct:"b", answer:"zu", en:"At the weekend I'm going to my parents'.", why:"to people → zu"}
+    ]},
+  {id:"leben-wohnen", level:"A2",
+    a:{de:"leben", en:"to live (be alive; live in a country / a way of life)"},
+    b:{de:"wohnen", en:"to live / reside (at a specific address or dwelling)"},
+    rule:"wohnen is about your dwelling or address (Ich wohne in der Hauptstraße 5); leben is broader — being alive, or living in a country / in a certain way (Ich lebe in Deutschland).",
+    items:[
+      {q:"Ich ___ im vierten Stock ohne Aufzug.", correct:"b", answer:"wohne", en:"I live on the fourth floor with no lift.", why:"a specific dwelling → wohnen"},
+      {q:"Im Meer ___ viele verschiedene Fische.", correct:"a", answer:"leben", en:"Many different fish live in the sea.", why:"being alive in a habitat → leben"},
+      {q:"Wo ___ du? — In der Gartenstraße.", correct:"b", answer:"wohnst", en:"Where do you live? — On Gartenstraße.", why:"an address → wohnen"},
+      {q:"In dieser Stadt kann man sehr gut ___.", correct:"a", answer:"leben", en:"You can live really well in this city.", why:"quality of life in general → leben"}
+    ]},
+  {id:"bekommen-werden", level:"A2",
+    a:{de:"bekommen", en:"to get / receive (a false friend — it never means 'become')"},
+    b:{de:"werden", en:"to become / get (a change of state)"},
+    rule:"bekommen means to receive something (Ich bekomme ein Paket); it never means 'become'. werden means to become or turn into (Es wird kalt; Sie wird Ärztin).",
+    items:[
+      {q:"Zum Geburtstag ___ ich oft Bücher.", correct:"a", answer:"bekomme", en:"For my birthday I often get books.", why:"receiving something → bekommen"},
+      {q:"Im Winter ___ es früh dunkel.", correct:"b", answer:"wird", en:"In winter it gets dark early.", why:"a change of state → werden"},
+      {q:"Meine Schwester ___ nächstes Jahr Lehrerin.", correct:"b", answer:"wird", en:"My sister is becoming a teacher next year.", why:"becoming something → werden"},
+      {q:"Hast du meine Nachricht ___?", correct:"a", answer:"bekommen", en:"Did you get my message?", why:"received → bekommen"}
+    ]},
+  {id:"lernen-studieren", level:"A2",
+    a:{de:"lernen", en:"to learn / study (a language, a skill, for school or an exam)"},
+    b:{de:"studieren", en:"to study at university (do a degree)"},
+    rule:"studieren means doing a degree at university (Ich studiere Medizin); lernen is learning in general — a language, a skill, or revising for school/exams (Ich lerne Deutsch).",
+    items:[
+      {q:"Ich ___ seit zwei Jahren Deutsch.", correct:"a", answer:"lerne", en:"I've been learning German for two years.", why:"learning a language → lernen"},
+      {q:"Meine Schwester ___ Informatik an der TU.", correct:"b", answer:"studiert", en:"My sister is studying computer science at the technical university.", why:"a degree at university → studieren"},
+      {q:"Heute Abend muss ich für die Prüfung ___.", correct:"a", answer:"lernen", en:"Tonight I have to study for the exam.", why:"revising for a test → lernen"},
+      {q:"Wo hast du ___? — An der Universität Wien.", correct:"b", answer:"studiert", en:"Where did you study? — At the University of Vienna.", why:"university → studieren"}
+    ]},
+  {id:"mieten-vermieten", level:"B1",
+    a:{de:"mieten", en:"to rent (as the tenant — you pay to use it)"},
+    b:{de:"vermieten", en:"to rent out / let (as the landlord — you provide it for payment)"},
+    rule:"You mieten a flat when you're the tenant paying to live there; the landlord vermietet it (lets it out to you).",
+    items:[
+      {q:"Wir ___ eine Wohnung im Zentrum für 800 Euro.", correct:"a", answer:"mieten", en:"We're renting a flat in the centre for 800 euros.", why:"we're the tenants paying → mieten"},
+      {q:"Der Eigentümer ___ die Wohnung an eine Familie.", correct:"b", answer:"vermietet", en:"The owner lets the flat to a family.", why:"the owner lets it out → vermieten"},
+      {q:"Für den Umzug ___ ich einen Transporter.", correct:"a", answer:"miete", en:"For the move I'm renting a van.", why:"paying to use it → mieten"},
+      {q:"Sie hat eine zweite Wohnung und ___ sie.", correct:"b", answer:"vermietet", en:"She has a second flat and rents it out.", why:"letting it out for income → vermieten"}
+    ]},
+  {id:"fragen-bitten", level:"B1",
+    a:{de:"fragen", en:"to ask (a question — seeking information)"},
+    b:{de:"bitten", en:"to ask for / request (bitten um — seeking a favour or action)"},
+    rule:"fragen seeks information (Ich frage, wie spät es ist); bitten requests a favour or action — bitten um + accusative (Ich bitte dich um Hilfe).",
+    items:[
+      {q:"Darf ich Sie etwas ___?", correct:"a", answer:"fragen", en:"May I ask you something?", why:"seeking information → fragen"},
+      {q:"Ich ___ dich um einen Gefallen.", correct:"b", answer:"bitte", en:"I'm asking you for a favour.", why:"requesting a favour (bitten um) → bitten"},
+      {q:"Sie ___ den Polizisten nach dem Weg.", correct:"a", answer:"fragt", en:"She asks the policeman for directions.", why:"asking for information → fragen"},
+      {q:"Er ___ um mehr Zeit für das Projekt.", correct:"b", answer:"bittet", en:"He asks for more time for the project.", why:"requesting something → bitten um"}
+    ]},
+  {id:"treffen-kennenlernen", level:"B1",
+    a:{de:"(sich) treffen", en:"to meet up (with someone you already know)"},
+    b:{de:"kennenlernen", en:"to get to know / meet for the first time"},
+    rule:"kennenlernen is meeting someone for the first time or getting to know them (Ich habe sie auf einer Party kennengelernt); treffen is meeting up with someone you already know (Ich treffe mich mit Freunden).",
+    items:[
+      {q:"Wir ___ uns morgen um acht vor dem Kino.", correct:"a", answer:"treffen", en:"We're meeting at eight tomorrow in front of the cinema.", why:"meeting up with people you know → (sich) treffen"},
+      {q:"Auf der Konferenz möchte ich neue Leute ___.", correct:"b", answer:"kennenlernen", en:"At the conference I want to meet new people.", why:"meeting people for the first time → kennenlernen"},
+      {q:"Ich ___ meine alten Schulfreunde jedes Jahr.", correct:"a", answer:"treffe", en:"I meet my old school friends every year.", why:"meeting known people → treffen"},
+      {q:"Wie habt ihr euch eigentlich ___?", correct:"b", answer:"kennengelernt", en:"How did you two actually meet?", why:"first getting to know each other → kennenlernen"}
     ]}
 ];
 
@@ -7840,6 +7966,59 @@ const EXAM = [
       {q:"Lücke (2)", opts:["da","obwohl","trotzdem"], correctIdx:0, why:"Grund (formell) → da/weil"},
       {q:"Lücke (3)", opts:["verschieben","verschoben","verschiebt"], correctIdx:0, why:"würde + Infinitiv → verschieben"},
       {q:"Lücke (4)", opts:["damit","dazu","daran"], correctIdx:0, why:"einverstanden sein mit → damit"}
+    ]},
+  {id:"ex-a1-oeffnung", level:"A1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Öffnungszeiten",
+    passage:"Bäckerei Sonne. Öffnungszeiten: Montag bis Freitag von 6 bis 18 Uhr. Samstag von 7 bis 12 Uhr. Sonntag geschlossen.",
+    passageEn:"Sonne Bakery. Opening hours: Monday to Friday 6 a.m. to 6 p.m. Saturday 7 a.m. to 12 noon. Sunday closed.",
+    questions:[
+      {q:"Wann ist die Bäckerei am Sonntag offen?", opts:["Gar nicht","Von 7 bis 12 Uhr","Von 6 bis 18 Uhr"], correctIdx:0},
+      {q:"Wie lange hat die Bäckerei am Samstag offen?", opts:["Von 7 bis 12 Uhr","Den ganzen Tag","Von 6 bis 18 Uhr"], correctIdx:0},
+      {q:"Wann öffnet die Bäckerei am Montag?", opts:["Um 6 Uhr","Um 7 Uhr","Um 12 Uhr"], correctIdx:0}
+    ]},
+  {id:"ex-a1-postkarte", level:"A1", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Eine Postkarte aus Berlin",
+    passage:"Liebe Oma, ich bin jetzt in Berlin. Die Stadt ist (1) schön! Ich (2) jeden Tag Deutsch. Das Wetter (3) gut. (4) Grüße, Ben",
+    questions:[
+      {q:"Lücke (1)", opts:["sehr","viel","gut"], correctIdx:0, why:"ein Adjektiv verstärken → sehr"},
+      {q:"Lücke (2)", opts:["lerne","lernen","lernst"], correctIdx:0, why:"ich-Form → lerne"},
+      {q:"Lücke (3)", opts:["ist","bin","sind"], correctIdx:0, why:"das Wetter (3. Person Singular) → ist"},
+      {q:"Lücke (4)", opts:["Viele","Viel","Vielem"], correctIdx:0, why:"Grüße ist Plural → viele Grüße"}
+    ]},
+  {id:"ex-a1-sms", level:"A1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Eine SMS von Lena",
+    passage:"Hallo Tom, ich komme heute später. Mein Zug hat Verspätung. Wir treffen uns um 19 Uhr statt 18 Uhr. Bis später! Lena",
+    passageEn:"Hi Tom, I'll be late today. My train is delayed. Let's meet at 7 p.m. instead of 6 p.m. See you later! Lena",
+    questions:[
+      {q:"Warum kommt Lena später?", opts:["Der Zug hat Verspätung","Sie schläft noch","Sie ist krank"], correctIdx:0},
+      {q:"Wann treffen sie sich jetzt?", opts:["Um 19 Uhr","Um 18 Uhr","Um 20 Uhr"], correctIdx:0}
+    ]},
+  {id:"ex-a2-email-kollege", level:"A2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"E-Mail an einen Kollegen",
+    passage:"Hallo Markus, kannst du mir morgen (1) der Präsentation helfen? Ich habe (2) Zeit, weil ich auch den Bericht schreiben muss. Wir könnten uns (3) Mittagessen treffen. Sag mir bitte, (4) du Zeit hast. Danke! Sara",
+    questions:[
+      {q:"Lücke (1)", opts:["bei","für","an"], correctIdx:0, why:"helfen bei + Dativ → bei"},
+      {q:"Lücke (2)", opts:["wenig","wenige","weniger"], correctIdx:0, why:"unbestimmte Menge (Zeit) → wenig"},
+      {q:"Lücke (3)", opts:["nach dem","beim","zum"], correctIdx:0, why:"Zeitangabe nach + Dativ → nach dem"},
+      {q:"Lücke (4)", opts:["ob","dass","weil"], correctIdx:0, why:"indirekte Ja/Nein-Frage → ob"}
+    ]},
+  {id:"ex-b1-wg", level:"B1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Forumsbeitrag: WG-Zimmer gesucht",
+    passage:"Hallo zusammen, ich suche ab dem 1. September ein WG-Zimmer in Leipzig. Ich bin 25, arbeite als Krankenpfleger und bin oft im Schichtdienst. Deshalb wäre eine ruhige Wohnung ideal. Ich koche gern und putze regelmäßig. Haustiere habe ich keine. Die Miete sollte warm nicht mehr als 450 Euro betragen. Über Angebote freue ich mich!",
+    passageEn:"Hi everyone, I'm looking for a room in a shared flat in Leipzig from 1 September. I'm 25, work as a nurse and am often on shift work. A quiet flat would therefore be ideal. I like cooking and clean regularly. I have no pets. The rent should be no more than 450 euros including utilities. I'd be glad to hear of any offers!",
+    questions:[
+      {q:"Was sucht die Person?", opts:["Ein WG-Zimmer","Eine eigene Wohnung","Einen Job"], correctIdx:0},
+      {q:"Warum möchte die Person eine ruhige Wohnung?", opts:["Wegen des Schichtdienstes","Wegen der Haustiere","Wegen der Miete"], correctIdx:0},
+      {q:"Wie viel darf die Miete höchstens kosten?", opts:["450 Euro warm","450 Euro kalt","250 Euro"], correctIdx:0}
+    ]},
+  {id:"ex-b2-bewerbung", level:"B2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Bewerbung: das Anschreiben",
+    passage:"Sehr geehrte Damen und Herren, mit großem Interesse habe ich Ihre Stellenanzeige gelesen und bewerbe mich (1) die Position als Projektleiter. Durch meine langjährige Erfahrung bin ich (2), das Team erfolgreich zu führen. (3) meiner bisherigen Tätigkeit habe ich mehrere Projekte termingerecht abgeschlossen. Über eine Einladung zu einem Gespräch (4) ich mich sehr.",
+    questions:[
+      {q:"Lücke (1)", opts:["um","für","auf"], correctIdx:0, why:"sich bewerben um + Akkusativ → um"},
+      {q:"Lücke (2)", opts:["in der Lage","möglich","bereit"], correctIdx:0, why:"in der Lage sein, etwas zu tun → in der Lage"},
+      {q:"Lücke (3)", opts:["Während","Bei","Seit"], correctIdx:0, why:"Zeitraum → während (+ Genitiv)"},
+      {q:"Lücke (4)", opts:["freue","würde","freute"], correctIdx:0, why:"Präsens, sich freuen über → freue"}
     ]}
 ];
 
@@ -7876,6 +8055,18 @@ const PLACEMENT = {
     {id:"pl-b2-1", level:"B2", skill:"grammar", q:"___ des schlechten Wetters fand das Fest statt.", opts:["Trotz","Wegen","Während"], correctIdx:0},
     {id:"pl-b2-2", level:"B2", skill:"grammar", q:"Der Bericht muss bis Freitag ___ werden.", opts:["fertiggestellt","fertigstellen","fertigstellt"], correctIdx:0},
     {id:"pl-b2-3", level:"B2", skill:"vocab",   q:"„Der Termin lässt sich verschieben.“ Das heißt, man kann ihn …", opts:["auf einen anderen Tag legen","absagen","verlängern"], correctIdx:0},
-    {id:"pl-b2-4", level:"B2", skill:"reading", q:"„Die Produktivität sinkt nicht, sondern steigt sogar.“ Die Produktivität wird …", opts:["höher","niedriger","gleich"], correctIdx:0}
+    {id:"pl-b2-4", level:"B2", skill:"reading", q:"„Die Produktivität sinkt nicht, sondern steigt sogar.“ Die Produktivität wird …", opts:["höher","niedriger","gleich"], correctIdx:0},
+    // A1 (extra)
+    {id:"pl-a1-5", level:"A1", skill:"grammar", q:"___ heißt du? — Ich heiße Sara.", opts:["Wie","Wo","Wer"], correctIdx:0},
+    {id:"pl-a1-6", level:"A1", skill:"vocab",   q:"Welche Farbe hat der Himmel bei schönem Wetter?", opts:["blau","grün","schwarz"], correctIdx:0},
+    // A2 (extra)
+    {id:"pl-a2-5", level:"A2", skill:"grammar", q:"Wenn das Wetter schön ist, ___ wir an den See.", opts:["fahren","fahrt","fährst"], correctIdx:0},
+    {id:"pl-a2-6", level:"A2", skill:"vocab",   q:"Wo kauft man Brot und Brötchen?", opts:["in der Bäckerei","in der Apotheke","auf der Bank"], correctIdx:0},
+    // B1 (extra)
+    {id:"pl-b1-5", level:"B1", skill:"grammar", q:"Der Brief, ___ ich gestern geschrieben habe, liegt noch hier.", opts:["den","dem","der"], correctIdx:0},
+    {id:"pl-b1-6", level:"B1", skill:"reading", q:"„Bitte vereinbaren Sie einen Termin.“ Sie sollen …", opts:["einen Termin ausmachen","den Termin absagen","einfach warten"], correctIdx:0},
+    // B2 (extra)
+    {id:"pl-b2-5", level:"B2", skill:"grammar", q:"Er tut so, ___ er alles wüsste.", opts:["als ob","wenn","damit"], correctIdx:0},
+    {id:"pl-b2-6", level:"B2", skill:"vocab",   q:"Eine „befristete Stelle“ ist eine Stelle …", opts:["mit einem Enddatum","ohne Bezahlung","nur im Ausland"], correctIdx:0}
   ]
 };

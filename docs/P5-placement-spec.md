@@ -16,14 +16,14 @@ PLACEMENT = {
     { id, q, opts:[…] },          // single-select; 'goal'/'reason' personalize the roadmap copy
     …                             // country · reason · timeline · goal
   ],
-  items: [                        // graded placement questions, 4 per CEFR level, ascending
+  items: [                        // graded placement questions, 6 per CEFR level, ascending
     { id, level:"A1"|"A2"|"B1"|"B2", skill:"vocab"|"grammar"|"reading", q, opts:[…], correctIdx },
-    …                             // 16 items total
+    …                             // 24 items total (the app picks a balanced subset per run)
   ]
 }
 ```
 `npm run validate` enforces: unique ids, valid levels, `correctIdx` in range, ≥2 opts, and **warns** if a
-level has < 3 items (placement reliability). Current bank: **16 items, 4 each A1–B2.**
+level has < 3 items (placement reliability). Current bank: **24 items, 6 each A1–B2.**
 
 ## 2. Intake (narrative frame, not a test)
 Four single-select questions set the journey frame from second one:

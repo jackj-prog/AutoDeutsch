@@ -12,6 +12,12 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png" />
+  <!-- Montserrat in <head> (not injected late by React) so the brand font requests fire at
+       first paint — no flash of fallback. preconnect warms the font CDN; the service worker
+       runtime-caches the CSS + woff2 (cache-first) for offline use. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" />
   <title>AutoDeutsch</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -87,7 +93,7 @@
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="data.js" integrity="sha512-MZLfkp/ArEqBgvDheViAppKMTko4ARmjN5mxyI3mBtSTZd5MsSwUb3htGmWxWsoMH/jIBsUyBLL2YuYy2xvzRg=="></script>
-  <script src="app.js" integrity="sha512-EV2PLZrCLvobfWocHYyMgImM7HQy+SmFexA8t8A7qiDSaGXNW8lZpYAQrxPeZfCTxT+DVvaOA2ZsX2/7sUBU/Q=="></script>
+  <script src="app.js" integrity="sha512-+haJeqiXD4GjXAQ4CR0sn8/2AuOqrFfQIta+dXw7ffW0WW/Si6omFpNsIfNCDqFh1LwwJwEKwTmjbLrcjct3Yw=="></script>
 
   <!-- Boot-failure self-heal: if the app didn't mount (e.g. a cached data.js/app.js was
        blocked by an SRI mismatch after a deploy), purge CacheStorage once and reload so

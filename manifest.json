@@ -1,7 +1,12 @@
 {
+  "id": "./",
+  "scope": "./",
+  "lang": "en",
+  "dir": "ltr",
   "name": "AutoDeutsch",
   "short_name": "AutoDeutsch",
   "description": "AutoDeutsch — 1000+ card German trainer with spaced repetition and audio mode",
+  "categories": ["education", "productivity"],
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
@@ -12,13 +17,19 @@
       "src": "icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

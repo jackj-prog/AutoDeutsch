@@ -10,6 +10,50 @@
 
 AI Tutor moved out of the immediate roadmap. It remains a strong future premium feature once AutoDeutsch launches publicly. Current priority should be progression, Home experience, session composition, guided learning, and production skills. Productizing the tutor makes more sense after the core product experience is polished and user demand is validated.
 
+---
+
+## 🧭 Journey Transformation Plan (north star)
+
+From the Learning Journey Audit (2026-06-20). **Thesis:** the progression is a vocabulary-completion
+meter in a CEFR costume — it measures database coverage, not real-world German ability. The deep dive
+found the cure is already in the cupboard: the **87 dialogues are a complete, CEFR-laddered relocation
+curriculum** (Arrival → Bureaucracy → Home → Money → Health → Work → Belonging), but they're buried as
+the "Listening" tile in the Train tab. The transformation is mostly **"stop burying the journey you
+already built"** — promote scenarios, name the can-dos, fill the A1 tier, and let *capability* (not card
+counts) be what the user sees moving.
+
+**North star:** _Today_ "Learn 5,782 German words, tracked by CEFR level." → _Should be_ "Go from landing
+in Germany to living and working there — one real-world situation at a time, with the vocabulary handled
+underneath." Positioning: **the German app for professionals relocating to the DACH region.**
+
+**Sequencing principle:** promote-before-build; lowest-effort/highest-leverage first; keep the excellent
+word-SRS intact *under the hood* and change what the user *sees* as progress. Phases are ordered to ship
+the "journey" feeling early (P0) and de-risk the core daily-loop change (P3) after the spine exists.
+
+| Phase | Move | Why it matters (root cause) | Effort | Risk | Status |
+|---|---|---|---|---|---|
+| **P0** | **Promote the 87 dialogues → Scenario/Mission spine.** First-class "Scenarios" surface; group into the relocation arc; name each with a can-do outcome ("You can register at the Bürgeramt"); surface a "current mission" on Home. | The richest journey asset is hidden under Train→Listening. Re-surfacing + re-framing existing, levelled content yields ~80% of the journey feel with **no new content**. Highest leverage, lowest effort. | Med | Low | ⬜ |
+| **P1** | **Fill the A1 survival tier.** ~12 A1 micro-scenarios (café, bakery, directions, greetings, numbers) so day-one isn't pure wordlists. | Dialogues are A1:0 / A2:32 / B1:23 / B2:32 — the journey is upside-down; the newest, most anxious user gets the least scaffolding. The only real *content* gap. | Med | Low | ⬜ |
+| **P2** | **Can-do CEFR + capability Progress.** Each level = a checklist of "I can…" statements mapped to scenarios. Progress leads with **"What you can do now"** + exam-readiness (telc/Goethe); demote word-count % / SRS bars to an "under the hood" view. Add level certificates/checkpoints. Fix the demoralising math (negative pace, 5,782 denominator, 1,038-to-rank-up). | CEFR is currently a word-bucket label, not a can-do journey; Progress measures completion, not ability. Reframes the *meaning* of progress. | Med-High | Med | ⬜ |
+| **P3** | **Daily loop = forward mission step.** Home leads with the current mission's next step; the review queue becomes the *secondary* habit anchor. Replace the cards/day goal with a mission-step (or minutes) goal; keep cards as a sub-metric. | The daily experience is debt-servicing ("23 due") + grinding cards, not advancing. Touches the core retention hook, so it ships *after* the spine exists. | Med | Med | ⬜ |
+| **P4** | **Reward & milestone re-wire.** Capability rewards ("You can now handle the Bürgeramt"), role/identity progression (Newcomer→Resident→Local), DACH rites as named milestones (Anmeldung, Krankenversicherung, Steuer-ID, Mietkaution, GEZ), exam-readiness celebrations. Keep streaks as the habit layer, subordinate to capability. | Achievements are disconnected from real-world capability; rewards fire on counts, not competence. | Med | Low-Med | ⬜ |
+| **P5** | **Narrative onboarding + placement + personalization.** Intake (which DACH country/city, moving for work?, timeline), a 2-min placement, then a *personalized roadmap* + the promise ("Here's your path to working in Berlin"). | Onboarding is a 3-field config that sets the "tool" frame; it never invokes the product's superpower (it's for *their* move). Sets the journey frame from second one. | Med-High | Med | ⬜ |
+| **P6** | **Library → Curriculum; taxonomy → "Dictionary."** Re-present the main content surface as the sequenced mission map; keep the 36-category taxonomy + 5,782-row Browse as an explicitly-labelled reference, not the front door. | Library/Browse expose the raw database as the primary content surface; discovery is by word-category, not life-situation. | Med | Low-Med | ⬜ |
+| **P7** | **Tutor as narrative guide (later).** The coach who walks you through the journey and role-plays each scenario — not a generic chatbot bolted on. | Owns narrative, purpose, momentum. Deferred per direction until the core journey exists and demand is validated. | High | Med | ⬜ |
+
+**Quick wins extractable early (don't need the full phase):** the demoralising-math fixes (negative pace,
+denominator, rank-up threshold) can land standalone; a single "current mission" card on Home can ship with
+P0; exam-readiness signals are near-free given the telc-validated vocab.
+
+**Challenged assumptions (audit verdicts):** vocabulary should be *fuel*, not the progression unit;
+chapters should become *named, themed missions* (or go); CEFR should be *can-do + exam-readiness*, not a
+word-bucket; Home should lead a *journey*, not expose features; Progress should measure *ability*, not
+database completion.
+
+> Full reasoning: see the Learning Journey Audit (Parts I & II) in the session log / `CHANGELOG.md`.
+
+---
+
 ## Next-Up — post-audit priority
 
 Order reflects what I learned actually building & auditing the app: friction-cuts and data-integrity rise; canvas/Browse polish falls (worst parts already done, and typed-mode 'void' is keyboard space); speaking stays the big learning bet; tutor last (per direction).

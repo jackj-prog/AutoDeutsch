@@ -661,7 +661,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.19.10";
+const APP_VERSION = "2026.06.20.01";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4223,10 +4223,12 @@ function App() {
           <div>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 7, paddingLeft: 2 }}>
               <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Level focus</span>
-              {setupLevel !== "all" && <span style={{ fontSize: 9.5, color: A, fontWeight: 700 }}>{setupLevel} only</span>}
+              {setupLevel === "auto"
+                ? <span style={{ fontSize: 9.5, color: A, fontWeight: 700 }}>Auto · {deepStats.currentLevel}</span>
+                : setupLevel !== "all" && <span style={{ fontSize: 9.5, color: A, fontWeight: 700 }}>{setupLevel} only</span>}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
-              {[["all", "All"], ["A1", "A1"], ["A2", "A2"], ["B1", "B1"], ["B2", "B2"]].map(([lv, label]) => {
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
+              {[["auto", "Auto"], ["all", "All"], ["A1", "A1"], ["A2", "A2"], ["B1", "B1"], ["B2", "B2"]].map(([lv, label]) => {
                 const on = setupLevel === lv;
                 return (
                   <button key={lv} type="button" aria-pressed={on} onClick={() => setSessLevel(lv)}

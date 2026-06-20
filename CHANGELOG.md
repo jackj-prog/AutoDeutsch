@@ -1,0 +1,48 @@
+# AutoDeutsch — Changelog
+
+> Chronological build/work log. Append new entries at the TOP of the relevant
+> section (newest first). Append-only by convention so concurrent agent edits
+> merge cleanly. Migrated from the spreadsheet on 2026-06-20.
+
+## Bugs & Fixes
+
+| Build | Issue | Root cause | Fix | Status |
+|---|---|---|---|---|
+| 2026.06.19.10 | Beginners swamped with B2 vocab; level preference silently reset | After the deck grew to 5,782 words (37% B2), the default session level was the flat "all" pool, and the one-tap presets (Quick/Standard/Deep) hardcoded level:"all" and persisted it — overwriting the learner's level and pulling B2 words into A1 sessions. | setupLevel now defaults to "auto" (resolved to the learner's current CEFR level in filterPool, auto-advancing A1→A2→B1→B2); presets honour the level filter instead of forcing/persisting "all"; added an "Auto" selector option + hint; one-time migration of the legacy "all" default to "auto" (explicit bands kept). Fresh all-categories pool: 1,038 A1 cards, not 5,782 mixed. | Fixed |
+| 2026.06.18.6 | Bottom tab bar raised up; dead gap (~1/8 screen) below it | The global overflow-x:hidden guard added in the fix above forced overflow-y:auto, turning the BODY into a scroll container; on mobile a fixed bottom bar then references the smaller layout viewport. | Removed the html/body overflow guard (overflow already prevented at source by the grid fixes). Body overflow-y back to 'visible'. Left a warning comment. | Fixed |
+| 2026.06.18.3 | Horizontal scroll in Library → word Browse on narrow phones; the 'Known' button overhung the card edge | CSS grid blow-out: grid tracks are auto-sized and items default to min-width:auto, so cards couldn't shrink below their content. | Grid -> minmax(0,1fr); card minWidth:0; left column flex:1 + every text line ellipsised. Verified 280-390px. | Fixed |
+| 2026.06.18.~ | Deploys not reaching devices ('nothing changed') | Service-worker CACHE_NAME wasn't bumped (a manual, easily-missed deploy step), so installed PWAs kept the cached bundle. | build now derives CACHE_NAME from a content hash of app.js+data.js+index.html — auto-invalidates every deploy. | Fixed |
+
+## Session run-log
+
+- AI Tutor moved out of the immediate roadmap. It remains a strong future premium feature once AutoDeutsch launches publicly. Current priority should be progression, Home experience, session composition, guided learning, and production skills. Productizing the tutor makes more sense after the core product experience is polished and user demand is validated.
+
+### Additional changes shipped this session (not in the Top-10 lists):
+- Bug fix — horizontal scroll in Library / word Browse on narrow screens — Root cause was CSS grid min-width:auto blow-out (cards couldn't shrink, 'Known' button overhung). Fixed with grid minmax(0,1fr) + minWidth:0 + ellipsised text, plus a global html/body overflow-x:hidden guard. Verified clean 280-390px. (user-reported)
+- Deploy reliability — service-worker cache auto-invalidation — build now derives CACHE_NAME from a content hash of app.js + data.js + index.html, so every deploy reaches installed PWAs (previously a manual, easily-missed step). APP_VERSION bumped each release for in-app verification (Settings -> Current build).
+- Tooling — responsive overflow audit in the screenshot harness — Added SHOOT_WIDTH + SHOOT_OVERFLOW to scripts/shoot.mjs to catch this class of layout bug automatically at narrow widths.
+
+### Deployment
+All of the above deployed to main (GitHub Pages). Current build: 2026.06.18.3.
+
+### Legend
+Status: Done = implemented & deployed this session. In Progress = partially shipped. Not Started = unchanged.
+
+### Official vocab add — progress
+- Source: telc 'Einfach gut!' A1.1-B1.2. 2,055 new content words (function/multi-form filtered out), authored with example sentences, merged via scripts/merge_vocab.mjs into existing categories.
+- Batch 1 (v2026.06.18.14): +73 — Greetings & Basics 20, Family & People 23, Clothing & Style 30. Vocab 2,001 -> 2,074.
+- Batch 2 (v2026.06.18.15): +142 — Health & Doctor 42, Body & Health 60, Driving & Traffic 40. Vocab 2,074 -> 2,216. Running total added: 215 / ~2,055.
+- Batch 3 (v2026.06.19.01): +101 — Admin & Bureaucracy 101. Relocation-critical Amt vocabulary (A2+B1). Running total added: 316/~2,055.
+- Wave 1 (v2026.06.19.02): +662 across 27 categories — subagent-authored from telc A1-B1 lists (Food, Cooking, Shopping, Banking, Everyday Actions, Travel, etc.), each word re-categorised to the correct existing category with corrected glosses/articles/plurals. Vocab 2317->2979. Running total added: 978/~2,055.
+- Wave 2 (v2026.06.19.03): +1018 across 35 categories — subagent-authored (Housing, Work & Study, Media, Engineering Workplace, Nature/Weather, Sport). Re-categorised + gloss/article/plural corrected. Vocab 2979->3997.
+- Wave 3 (v2026.06.19.04): +16 final stragglers (school subjects, die Tasse, der Plan, der Blick, niemand/irgendwer/irgendwelche). Vocab 3997->4013.
+- OFFICIAL VOCAB ADD COMPLETE: ~2,012 new telc A1-B1 words added this session (batches 1-3 + waves 1-3). Vocab 2001 -> 4013 across 36 categories. Function words, inflected forms, proper nouns and mis-glossed extraction artifacts were deliberately dropped. CEFR re-tag + official-list validation task closed out.
+- QA sweep (post-add): heuristic check of all 2,012 new cards for cross-category duplicates, examples missing the headword, and suspicious glosses. 0 real defects — 91 flags were all false positives (separable verbs that split, umlaut plurals, and true cognates like fit/modern/beige). 0 cross-category duplicate words.
+- CEFR coverage -> 100% (v2026.06.19.05): tagged the remaining 374 legacy off-telc-list cards from their curated diff field using the deck-wide empirical mode (easy->A1, medium->A2, hard->B1). Final levels A1 1038 / A2 1307 / B1 1249 / B2 419, 0 untagged. CEFR task fully closed.
+
+### B2 add — Aspekte neu B2 (source: Jack; German-only PDF, 10 chapters, no English):
+- Wave A (b0373cc, v2026.06.19.07): +591 — chapters 1-3,6 (Heimat, Sprache, Arbeit, Gesundheit).
+- Wave B (v2026.06.19.07): +601 — chapters 4,5,8 (Zusammen leben, Wissenschaft, Geschichte).
+- Wave C (v2026.06.19.08): +577 — chapters 7,9,10 (Kultur, Gefuehle, Zukunft). Repaired 3 cards truncated by an agent session-limit.
+- ASPEKTE NEU B2 ADD COMPLETE (v2026.06.19.08): +1,785 B2 words via subagents (translate+categorise+author B2 examples from source collocations), consolidated to canonical categories, deduped, validated (26/26 tests). Deck 4,013 -> 5,782. B2-level content 419 -> 2,167. QA sweep clean. 100% CEFR coverage held: A1 1038 / A2 1307 / B1 1270 / B2 2167.
+- Daily reminder shipped (v2026.06.19.09): opt-in Settings toggle + time picker; gentle local notification to defend the streak, skipped when the day’s goal is met. Uses the Notification Triggers API where available (fires when the app is closed; re-armed on open) with a foreground-timer fallback; SW notificationclick focuses/opens the app. No backend. Closes Next-Up #3 / Retention #5.

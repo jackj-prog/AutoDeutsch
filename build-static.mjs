@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, readdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import vm from "node:vm";
 import { loadData, validateData } from "./scripts/validate-data.mjs";
@@ -39,7 +39,24 @@ try {
 }
 
 // ── 3. Compile the engine (compact output ≈ one third smaller, names intact) ──
-const source = await readFile(SOURCE_FILE, "utf8");
+// Multi-file support (for splitting the monolith into per-owner modules): any *.js/*.jsx in
+// src/lib, then src/components, then src/screens are concatenated (sorted within each dir)
+// BEFORE src/app.jsx into one compilation unit — a single IIFE scope, so files share globals
+// exactly as the one-file version did (no ES imports needed). Until those dirs exist this is a
+// no-op: the compiled output is byte-identical to compiling src/app.jsx alone (Babel strips the
+// path-marker comments via comments:false). See docs/MODULARIZATION-PLAN.md.
+const SRC_DIRS = ["src/lib", "src/components", "src/screens"];
+async function collectSources() {
+  const parts = [];
+  for (const dir of SRC_DIRS) {
+    let files = [];
+    try { files = (await readdir(dir)).filter(f => /\.jsx?$/.test(f)).sort(); } catch { /* dir absent → skip */ }
+    for (const f of files) parts.push(`/* ${dir}/${f} */\n${await readFile(`${dir}/${f}`, "utf8")}`);
+  }
+  parts.push(`/* ${SOURCE_FILE} */\n${await readFile(SOURCE_FILE, "utf8")}`);
+  return parts.join("\n;\n");
+}
+const source = await collectSources();
 const output = Babel.transform(source, {
   presets: ["react"],
   comments: false,

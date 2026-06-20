@@ -45,6 +45,26 @@ clobbering each other, follow these rules **every time**:
 6. **Small, frequent commits; append-only logs.** Add `CHANGELOG.md` entries at the *top* of
    the run-log; never rewrite another agent's lines.
 
+## Scaling to two big tasks in parallel (epic lanes)
+To hand **each** agent a big task that they can churn without colliding:
+
+1. **Pick non-overlapping file footprints.** The cleanest pairing today is one **app.jsx epic** + one
+   **content/data/tooling/docs epic** (this is friction-free — it's how the whole 2026-06-20 session ran).
+   To run **two app-feature epics** in parallel, first split `src/app.jsx` into per-owner module files —
+   plan + ready build support in `docs/MODULARIZATION-PLAN.md` (the build already concatenates
+   `src/lib/`, `src/components/`, `src/screens/` before `src/app.jsx`; verified byte-identical until used).
+2. **Module-ownership map.** Once split, record `file → current owner` in the table below (Area column).
+   An epic owns a *set of files*; nobody edits a file another agent's open epic owns. `src/app.jsx`
+   becomes a thin shell/router — keep edits to it to one-line screen registrations under the deploy-lock,
+   or let one agent own the shell.
+3. **Contract-first for cross-lane dependencies.** When epic A's UI needs epic B's data/engine output,
+   write the interface in `docs/` first (shape + props), then both build against it asynchronously — the
+   proven pattern (e.g. `docs/P5-placement-buildspec.md` + the `PLACEMENT` dataset let the UI be built with
+   zero back-and-forth). Neither agent blocks on the other.
+4. **Standing deploy permission per lane** (so no one stops to ask): the content/data/tooling/docs lane has
+   standing permission to fast-forward `main` for content-only batches; still sync + check the deploy-lock
+   before each push, and still ask before anything touching `src/app.jsx`.
+
 ## Active work claims
 Before starting anything non-trivial, **add a row** here (one line, append-only). When you
 finish, mark it Done in the same row. If you see another agent's open claim that overlaps

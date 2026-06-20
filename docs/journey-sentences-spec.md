@@ -17,10 +17,10 @@ SENTENCES = [
   …
 ]
 ```
-- **33 mission-tagged sentences across 29 missions**, all 7 arcs (touchdown 6 · paperwork 6 · roof 5 ·
-  money 5 · health 4 · job 3 · belonging 4). Each is a realistic utterance from that scenario
+- **62 mission-tagged sentences — complete coverage of all 58 missions** across all 7 arcs (every mission
+  has ≥1 buildable sentence). Each is a realistic utterance from that scenario
   (e.g. `cash` → "Ich möchte Geld abheben"; `krankenkasse` → "Ich möchte mich versichern";
-  `givenotice` → "Ich möchte die Wohnung kündigen").
+  `givenotice` → "Ich möchte die Wohnung kündigen"; `debate` → "Ich bin anderer Meinung").
 - `npm run validate` enforces: if `mission` is present it **must resolve** to a real `MISSIONS` id.
 - Untagged sentences are unchanged and still feed the general Sentence-Builder drill; tagged ones appear in
   **both** the general drill and their mission.
@@ -48,5 +48,5 @@ const missionSentences = SENTENCES.filter(s => s.mission === m.id);
   pre-loaded with that mission's sentences and returns to the mission on Done. `scripts/shoot.mjs mission`.
 
 ## 4. Growing coverage (content lane)
-More missions can be covered by adding tagged `SENTENCES` (1–3 per mission). Current coverage is the 29
-highest-value missions; the remaining ~29 (mostly B2 "advanced situations") can be filled on demand.
+All 58 missions are covered (≥1 sentence each). Depth can grow by adding more tagged `SENTENCES` (2–3 per
+mission) where a richer "Build the sentence" set is wanted — e.g. the early A1/A2 missions a beginner hits first.

@@ -69,6 +69,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen roof arc — Wohnung kündigen / competitive Besichtigung (5→7 missions) | 2026-06-20 | ✅ done (deployed → main, build 889adeb5) |
 | Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS) | Deepen belonging arc — Sportverein / Integrationskurs (6→8 missions); arcs balanced | 2026-06-20 | ✅ done (deployed → main, build a531fe48) |
 | _(available to claim)_ — app.jsx owner | src/app.jsx (EXCLUSIVE) | **P5 placement flow** — data + scoring + build spec ready (`docs/P5-placement-buildspec.md`); also wireable: confusion-pair drill & exam mode (`docs/practice-data-spec.md`). Content lane is unblocked. | — | ⬜ ready to build |
+| Claude (Opus) | src/app.jsx (EXCLUSIVE) | P5 — placement flow (intake → placement test → result/roadmap), per docs/P5-placement-buildspec.md | 2026-06-20 | 🟡 in progress |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

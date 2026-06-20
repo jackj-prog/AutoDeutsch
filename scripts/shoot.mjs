@@ -216,6 +216,27 @@ async function gotoScreen(page, screen) {
   if (screen === "speaking") { await clickText(page, "Speaking"); await new Promise(r => setTimeout(r, 250)); await clickText(page, "Speaking practice"); await new Promise(r => setTimeout(r, 500)); return; }
   if (screen === "scenarios") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "mission") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 400)); return; }
+  if (screen === "longword") {
+    // Force a long German compound to the front of a recall session to verify it doesn't clip
+    // (regression guard for "die Einsatzmöglichkeiten" overflowing the card).
+    await page.evaluate(() => {
+      const D = 86400000, t = Date.now() - 20 * D;
+      const mk = () => ({ stats: { attempts: 3, correct: 3, incorrect: 0, lastSeen: t, avgTime: 5000, timedAttempts: 3, currentStreak: 1, productionStreak: 0, masteredAt: null }, srs: { box: 3, lastReviewed: t } });
+      localStorage.setItem("ad-onboarding-v1", "done");
+      localStorage.setItem("ad-level-v1", "B2"); // so the long B2 compounds are in-pool, not level-filtered
+      localStorage.setItem("gfc-v7", JSON.stringify({
+        "vocab::Engineering Workplace::die Einsatzmöglichkeiten": mk(),
+        "vocab::Opinions & Argument::die Schlussfolgerung": mk(),
+      }));
+    });
+    await page.reload({ waitUntil: "load" });
+    await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
+    await new Promise(r => setTimeout(r, 600));
+    await clickText(page, "Custom session");
+    await clickText(page, "Quick");
+    await new Promise(r => setTimeout(r, 700));
+    return;
+  }
   if (screen === "missionbuild") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Build the sentence"); await new Promise(r => setTimeout(r, 600)); return; }
   if (screen === "missionlearn") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Learn the words"); await new Promise(r => setTimeout(r, 600)); return; }
   // Pending app.jsx screens for the content-lane datasets (PLACEMENT / CONFUSIONS / EXAM).
@@ -627,7 +648,7 @@ async function run() {
       await page.setViewport({ width: +(process.env.SHOOT_WIDTH || 390), height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
-      if (screen !== "rankup" && screen !== "progmax")
+      if (screen !== "rankup" && screen !== "progmax" && screen !== "longword")
         await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });

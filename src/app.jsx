@@ -115,6 +115,14 @@ const formatModeBreakdown = (byMode) => Object.entries(byMode).map(([m, arr]) =>
 // v1 heuristic from difficulty so every card is filterable by level (A1/A2/B1).
 const LEVEL_FROM_DIFF = { easy: "A1", medium: "A2", hard: "B1" };
 const cardLevel = (w) => w.level || LEVEL_FROM_DIFF[w.diff] || "A2";
+// Big card words must fit — German compounds ("die Einsatzmöglichkeiten", 20 chars) overflow a
+// fixed font on a phone. Scale the size down to the LONGEST single token (compounds can't wrap
+// mid-word), clamped to a readable range; pair with overflow-wrap so it still never clips.
+const fitWordSize = (text, max = 46, min = 20) => {
+  const longest = String(text || "").split(/\s+/).reduce((m, w) => Math.max(m, w.length), 1);
+  if (longest <= 9) return max;
+  return Math.max(min, Math.min(max, Math.round(470 / longest)));
+};
 const LEVELS = ["A1", "A2", "B1", "B2"];
 // P4 identity/role progression — driven by real-world can-dos earned (completed missions),
 // not card counts. Settling into Germany is the narrative, not "you processed N rows".
@@ -697,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.19";
+const APP_VERSION = "2026.06.20.20";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -5361,7 +5369,7 @@ function App() {
                   <Icon name="volume" size={22} /> {answered ? "Nochmal hören" : "Play · Tippe, was du hörst"}
                 </button>
               ) : (
-                <div style={{ fontFamily: FN, fontSize: 33, fontWeight: 700, textAlign: "center", lineHeight: 1.18, color: T, letterSpacing: -0.4 }}>{card.en}</div>
+                <div style={{ fontFamily: FN, fontSize: fitWordSize(card.en, 33), fontWeight: 700, textAlign: "center", lineHeight: 1.18, color: T, letterSpacing: -0.4, maxWidth: "100%", overflowWrap: "anywhere", hyphens: "auto" }}>{card.en}</div>
               )}
               {answered && <>
                 {mode === "dictation" && <div style={{ marginTop: 12, fontSize: 13, color: TD }}>{card.en}</div>}
@@ -5444,7 +5452,7 @@ function App() {
                     <span style={{ fontSize: 10, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 800, color: TD, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>{card._cat || category}<span style={{ color: A }}> · {cardLevel(card)}</span></span>
                     {card.diff && <span style={{ flexShrink: 0, fontSize: 9, color: card.diff === "hard" ? R : card.diff === "medium" ? A : G, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8, background: "#0A0A0AAA", border: `1px solid ${card.diff === "hard" ? R : card.diff === "medium" ? A : G}40`, borderRadius: 999, padding: "3px 9px" }}>{card.diff}</span>}
                   </div>
-                  <div style={{ fontFamily: FN, fontSize: 46, fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5 }}>{card.de}</div>
+                  <div style={{ fontFamily: FN, fontSize: fitWordSize(card.de), fontWeight: 700, textAlign: "center", lineHeight: 1.08, color: T, letterSpacing: -0.5, maxWidth: "100%", overflowWrap: "anywhere", hyphens: "auto" }}>{card.de}</div>
                   <div style={{ position: "absolute", bottom: 18, display: "flex", alignItems: "center", gap: 14, fontSize: 11, letterSpacing: 0.5, fontWeight: 700, opacity: 0.75 }}>
                     <span style={{ color: A }}>← not sure</span>
                     <span style={{ color: TD, opacity: 0.5 }}>swipe</span>
@@ -5453,8 +5461,8 @@ function App() {
                 </div>
                 <div className="ad-elev" style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: CARD_GRAD, border: `1px solid ${A}22`, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", overflow: "hidden" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #1A1A1A 33%, ${R} 33% 66%, ${A} 66%)` }} />
-                  <div style={{ fontFamily: FN, fontSize: 34, fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4 }}>{card.en}</div>
-                  <div style={{ fontFamily: FN, fontSize: 19, textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6 }}>{card.de}</div>
+                  <div style={{ fontFamily: FN, fontSize: fitWordSize(card.en, 34), fontWeight: 700, textAlign: "center", lineHeight: 1.15, color: T, marginBottom: 18, letterSpacing: -0.4, maxWidth: "100%", overflowWrap: "anywhere", hyphens: "auto" }}>{card.en}</div>
+                  <div style={{ fontFamily: FN, fontSize: fitWordSize(card.de, 19, 15), textAlign: "center", lineHeight: 1.3, color: A, fontWeight: 600, marginBottom: 6, maxWidth: "100%", overflowWrap: "anywhere" }}>{card.de}</div>
                   <button onClick={e => { e.stopPropagation(); speak(card.de); }} style={{ background: "transparent", border: `1px solid ${A}44`, borderRadius: 999, padding: "5px 12px", color: A, fontSize: 11, cursor: "pointer", fontWeight: 600, marginBottom: 14, opacity: 0.9, display: "inline-flex", alignItems: "center", gap: 5 }}><Icon name="volume" size={13} /> Hören</button>
                   {HintBtn({ hint: card.hint })}
                   {showEx ? (
@@ -5498,7 +5506,7 @@ function App() {
             {answeredCorrect && <span key={bloom} className="ad-bloom" aria-hidden="true" />}
             {mode === "article" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What article?</div>
-              <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center" }}>___ {card.noun}</div>
+              <div style={{ fontFamily: FN, fontSize: fitWordSize(card.noun, 26, 17), textAlign: "center", maxWidth: "100%", overflowWrap: "anywhere", hyphens: "auto" }}>___ {card.noun}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <><div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: G }}>{card.article} {card.noun}</div><SpeakBtn text={`${card.article} ${card.noun}`} />{SpeedBadge({ ms: lastElapsed })}{CardStats()}
                 {!skipSummary && card.ex && <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${B}55`, textAlign: "center", maxWidth: "92%" }}>
@@ -5513,7 +5521,7 @@ function App() {
             </>}
             {mode === "plural" && <>
               <div style={{ fontSize: 10, color: AD, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>What's the plural?</div>
-              <div style={{ fontFamily: FN, fontSize: 26, textAlign: "center", lineHeight: 1.2 }}>{card.de}</div>
+              <div style={{ fontFamily: FN, fontSize: fitWordSize(card.de, 26, 17), textAlign: "center", lineHeight: 1.2, maxWidth: "100%", overflowWrap: "anywhere", hyphens: "auto" }}>{card.de}</div>
               <div style={{ fontSize: 12, color: TD, marginTop: 8 }}>({card.en})</div>
               {answered && <>
                 <div style={{ marginTop: 12, fontFamily: FN, fontSize: 20, color: G }}>{card.pl}</div>

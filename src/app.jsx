@@ -667,7 +667,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.02";
+const APP_VERSION = "2026.06.20.03";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -869,6 +869,7 @@ function playIconTap(svg) {
 // under "Advanced". `len` is capped to the topic's available card count at use.
 const SESSION_PRESETS = [
   { key: "quick",    label: "Quick",    tag: "Recall",  mode: "vocab",      diff: "mixed", len: 10, icon: "layers" },
+  { key: "speak",    label: "Speak",    tag: "Aloud",   mode: "speaking",   diff: "mixed", len: 12, icon: "mic" },
   { key: "standard", label: "Standard", tag: "Produce", mode: "production", diff: "mixed", len: 15, icon: "keyboard" },
   { key: "deep",     label: "Deep",     tag: "Hard",    mode: "production", diff: "hard",  len: 20, icon: "bolt" },
 ];
@@ -3703,7 +3704,7 @@ function App() {
                 so a session starts in one tap instead of after five separate choices. */}
             {setupIsLibrary && (
               <div style={{ marginBottom: 14 }}>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 8 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8 }}>
                   {SESSION_PRESETS.map(p => {
                     const len = Math.min(p.len, maxC);
                     return (
@@ -3744,7 +3745,7 @@ function App() {
               return (
                 <div style={{ marginBottom: 16 }}>
                   <div style={lbl}>Review this topic</div>
-                  <div style={gridStyle}>{[["vocab", "Recall", "DE → EN"], ["production", "Production", "EN → DE"], ["speaking", "Speaking", "EN → speak"], ["dictation", "Dictation", "Hear → type"], ["audio", "Audio", "Hands-free"]].map(btn)}</div>
+                  <div style={gridStyle}>{[["vocab", "Recall", "DE → EN"], ["speaking", "Speaking", "EN → speak"], ["production", "Production", "EN → DE"], ["dictation", "Dictation", "Hear → type"], ["audio", "Audio", "Hands-free"]].map(btn)}</div>
                   {drills.length > 0 && (<>
                     <div style={{ ...lbl, marginTop: 14 }}>Grammar drills · this topic</div>
                     <div style={gridStyle}>{drills.map(btn)}</div>
@@ -4270,7 +4271,7 @@ function App() {
           <div>
             <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 7, paddingLeft: 2 }}>Practice mode</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
-              {[["vocab", "Recall", "layers"], ["production", "Production", "keyboard"], ["speaking", "Speaking", "mic"], ["dictation", "Dictation", "volume"], ["audio", "Audio", "headphones"]].map(([m, label, icon]) => {
+              {[["vocab", "Recall", "layers"], ["speaking", "Speaking", "mic"], ["production", "Production", "keyboard"], ["dictation", "Dictation", "volume"], ["audio", "Audio", "headphones"]].map(([m, label, icon]) => {
                 const on = (HERO_MODES[setupMode] ? setupMode : "production") === m;
                 return (
                   <button key={m} type="button" aria-pressed={on} onClick={() => setSetupMode(m)}

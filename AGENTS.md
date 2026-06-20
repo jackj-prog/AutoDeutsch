@@ -17,6 +17,34 @@ diffable, greppable, and merge cleanly — especially the append-only logs below
 - **`AGENTS.md`** (this file) — protocol + the **Active work claims** table below.
 - The `.xlsx` is **deprecated**; kept one transition then removed. Do not update it.
 
+## Working in parallel — conflict-free protocol (read this first)
+Two agents push to `main`, and the app is a single ~5,600-line `src/app.jsx`. To avoid
+clobbering each other, follow these rules **every time**:
+
+1. **Ownership lanes — split by file, not by region.**
+   - `src/app.jsx` is a **single-writer resource.** Only one agent edits it at a time.
+     Claim it exclusively in the table below (Area = `src/app.jsx (EXCLUSIVE)`) before you
+     touch it; release it (mark the claim ✅) the moment you've pushed. If the other agent
+     holds an open app.jsx claim, **do not edit app.jsx** — pick content/tooling work instead.
+   - The other lane = **everything else in parallel**: `src/data.js` content (new dialogues,
+     missions, vocab — additive), `scripts/`, `docs/` specs, tests, the screenshot harness.
+     These rarely collide.
+   - Rule of thumb: one agent does the **app.jsx UI/logic phase**; the other does
+     **content + tooling + planning** at the same time.
+2. **Claim before you touch.** One append-only row per task in the table below; mark it ✅
+   when shipped. Scan open claims first; if your work overlaps an open one, choose something else.
+3. **Sync right before you build & push.** `git fetch origin main && git rebase origin/main`
+   immediately before `npm run build`, then push. Keep the build→push window to minutes.
+4. **Never hand-merge generated files.** `app.js`, the built `data.js`, `index.html` (SRI),
+   and `service-worker.js` (CACHE_NAME) are products of `npm run build`. On a rebase/merge
+   conflict in any of them, take *either* side then **re-run `npm run build`** and continue —
+   never resolve SRI hashes or the cache name by hand.
+5. **Deploy lock.** Before you build+push, add/flip a row in the claims table to
+   `🔴 DEPLOYING <build>`; push; set it back to ✅. If you see another agent's `🔴 DEPLOYING`,
+   wait until it clears before you push.
+6. **Small, frequent commits; append-only logs.** Add `CHANGELOG.md` entries at the *top* of
+   the run-log; never rewrite another agent's lines.
+
 ## Active work claims
 Before starting anything non-trivial, **add a row** here (one line, append-only). When you
 finish, mark it Done in the same row. If you see another agent's open claim that overlaps

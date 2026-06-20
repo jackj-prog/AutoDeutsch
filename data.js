@@ -7267,6 +7267,115 @@ const DIALOGUES = [
     {q:"Was war hervorragend?",opts:["Das Wetter","Der Kaiserschmarrn","Die Aussicht"],correctIdx:1},
     {q:"Welches Problem hat die andere Person?",opts:["Das Auto ist kaputt","Die Fliesen sind ausverkauft","Der Urlaub wurde storniert"],correctIdx:1}
   ]},
+  {title:"Hallo und tschüss",level:"A1",lines:[
+    {de:"Hallo! Wie geht es dir?",en:"Hello! How are you?"},
+    {de:"Gut, danke. Und dir?",en:"Good, thanks. And you?"},
+    {de:"Auch gut, danke.",en:"Also good, thanks."},
+    {de:"Tschüss, bis bald!",en:"Bye, see you soon!"}
+  ],questions:[
+    {q:"Wie geht es der zweiten Person?",opts:["Gut","Schlecht","Müde"],correctIdx:0},
+    {q:"Was sagt sie am Ende?",opts:["Guten Morgen","Tschüss","Danke schön"],correctIdx:1}
+  ]},
+  {title:"Sich vorstellen",level:"A1",lines:[
+    {de:"Hallo, ich heiße Anna. Wie heißt du?",en:"Hi, my name is Anna. What's your name?"},
+    {de:"Ich heiße Tom. Woher kommst du?",en:"My name is Tom. Where are you from?"},
+    {de:"Ich komme aus England. Und du?",en:"I'm from England. And you?"},
+    {de:"Ich komme aus Berlin. Freut mich!",en:"I'm from Berlin. Nice to meet you!"}
+  ],questions:[
+    {q:"Woher kommt Anna?",opts:["Aus Berlin","Aus England","Aus Spanien"],correctIdx:1},
+    {q:"Wie heißt der Mann?",opts:["Tom","Anna","Max"],correctIdx:0}
+  ]},
+  {title:"Im Café — einfach",level:"A1",lines:[
+    {de:"Guten Tag! Was möchten Sie?",en:"Hello! What would you like?"},
+    {de:"Einen Kaffee, bitte.",en:"A coffee, please."},
+    {de:"Mit Milch und Zucker?",en:"With milk and sugar?"},
+    {de:"Nur mit Milch, danke.",en:"Just with milk, thanks."},
+    {de:"Das macht drei Euro.",en:"That's three euros."}
+  ],questions:[
+    {q:"Was bestellt der Gast?",opts:["Einen Tee","Einen Kaffee","Ein Wasser"],correctIdx:1},
+    {q:"Wie viel kostet es?",opts:["Zwei Euro","Drei Euro","Vier Euro"],correctIdx:1}
+  ]},
+  {title:"Beim Bäcker — einfach",level:"A1",lines:[
+    {de:"Guten Morgen! Was darf es sein?",en:"Good morning! What can I get you?"},
+    {de:"Zwei Brötchen, bitte.",en:"Two bread rolls, please."},
+    {de:"Sonst noch etwas?",en:"Anything else?"},
+    {de:"Nein, danke. Das ist alles.",en:"No, thanks. That's all."}
+  ],questions:[
+    {q:"Was kauft die Person?",opts:["Ein Brot","Zwei Brötchen","Einen Kuchen"],correctIdx:1},
+    {q:"Möchte sie noch etwas?",opts:["Ja","Nein","Einen Kaffee"],correctIdx:1}
+  ]},
+  {title:"Im Supermarkt — einfach",level:"A1",lines:[
+    {de:"Entschuldigung, wo ist die Milch?",en:"Excuse me, where is the milk?"},
+    {de:"Die Milch ist dort hinten links.",en:"The milk is back there on the left."},
+    {de:"Danke. Und das Brot?",en:"Thanks. And the bread?"},
+    {de:"Das Brot ist gleich hier vorne.",en:"The bread is right here at the front."}
+  ],questions:[
+    {q:"Was sucht die Person zuerst?",opts:["Brot","Milch","Käse"],correctIdx:1},
+    {q:"Wo ist das Brot?",opts:["Hinten links","Vorne","Oben rechts"],correctIdx:1}
+  ]},
+  {title:"Bezahlen an der Kasse",level:"A1",lines:[
+    {de:"Das macht zusammen neun Euro fünfzig.",en:"That's nine euros fifty altogether."},
+    {de:"Kann ich mit Karte zahlen?",en:"Can I pay by card?"},
+    {de:"Ja, gerne. Bitte hier.",en:"Yes, of course. Here, please."},
+    {de:"Danke. Auf Wiedersehen!",en:"Thank you. Goodbye!"}
+  ],questions:[
+    {q:"Wie viel muss die Person zahlen?",opts:["Neun Euro fünfzig","Neunzehn Euro","Fünf Euro"],correctIdx:0},
+    {q:"Wie zahlt sie?",opts:["Mit Bargeld","Mit Karte","Mit dem Handy"],correctIdx:1}
+  ]},
+  {title:"Nach dem Weg fragen — einfach",level:"A1",lines:[
+    {de:"Entschuldigung, wo ist der Bahnhof?",en:"Excuse me, where is the train station?"},
+    {de:"Gehen Sie geradeaus und dann links.",en:"Go straight ahead and then left."},
+    {de:"Ist es weit?",en:"Is it far?"},
+    {de:"Nein, nur fünf Minuten.",en:"No, only five minutes."}
+  ],questions:[
+    {q:"Wohin möchte die Person?",opts:["Zum Bahnhof","Zum Hotel","Zum Café"],correctIdx:0},
+    {q:"Wie lange dauert es?",opts:["Fünf Minuten","Zwanzig Minuten","Eine Stunde"],correctIdx:0}
+  ]},
+  {title:"Im Restaurant — einfach",level:"A1",lines:[
+    {de:"Was möchten Sie essen?",en:"What would you like to eat?"},
+    {de:"Ich nehme die Suppe, bitte.",en:"I'll have the soup, please."},
+    {de:"Und zu trinken?",en:"And to drink?"},
+    {de:"Ein Wasser, bitte.",en:"A water, please."}
+  ],questions:[
+    {q:"Was isst die Person?",opts:["Salat","Suppe","Pizza"],correctIdx:1},
+    {q:"Was trinkt sie?",opts:["Wasser","Saft","Bier"],correctIdx:0}
+  ]},
+  {title:"Die Uhrzeit",level:"A1",lines:[
+    {de:"Entschuldigung, wie spät ist es?",en:"Excuse me, what time is it?"},
+    {de:"Es ist halb drei.",en:"It's half past two."},
+    {de:"Oh, der Zug kommt um drei.",en:"Oh, the train comes at three."},
+    {de:"Dann haben Sie noch Zeit.",en:"Then you still have time."}
+  ],questions:[
+    {q:"Wie spät ist es?",opts:["Halb drei","Drei Uhr","Halb vier"],correctIdx:0},
+    {q:"Wann kommt der Zug?",opts:["Um zwei","Um drei","Um vier"],correctIdx:1}
+  ]},
+  {title:"Am Telefon — einfach",level:"A1",lines:[
+    {de:"Hallo, hier ist Anna. Ist Tom da?",en:"Hello, this is Anna. Is Tom there?"},
+    {de:"Nein, er ist nicht da. Wer ist das?",en:"No, he's not here. Who is this?"},
+    {de:"Anna. Können Sie etwas ausrichten?",en:"Anna. Can you pass on a message?"},
+    {de:"Ja, natürlich.",en:"Yes, of course."}
+  ],questions:[
+    {q:"Wen sucht Anna?",opts:["Tom","Max","Lena"],correctIdx:0},
+    {q:"Ist die Person da?",opts:["Ja","Nein","Vielleicht"],correctIdx:1}
+  ]},
+  {title:"Das Wetter — einfach",level:"A1",lines:[
+    {de:"Wie ist das Wetter heute?",en:"What's the weather like today?"},
+    {de:"Es ist sonnig und warm.",en:"It's sunny and warm."},
+    {de:"Schön! Und morgen?",en:"Nice! And tomorrow?"},
+    {de:"Morgen regnet es vielleicht.",en:"Tomorrow it might rain."}
+  ],questions:[
+    {q:"Wie ist das Wetter heute?",opts:["Sonnig","Kalt","Windig"],correctIdx:0},
+    {q:"Was passiert vielleicht morgen?",opts:["Es schneit","Es regnet","Es ist heiß"],correctIdx:1}
+  ]},
+  {title:"Einkaufen — einfach",level:"A1",lines:[
+    {de:"Ich suche eine Jacke.",en:"I'm looking for a jacket."},
+    {de:"Welche Größe haben Sie?",en:"What size are you?"},
+    {de:"Größe M, bitte.",en:"Size M, please."},
+    {de:"Hier, bitte. Die ist sehr schön.",en:"Here you go. This one is very nice."}
+  ],questions:[
+    {q:"Was sucht die Person?",opts:["Eine Hose","Eine Jacke","Schuhe"],correctIdx:1},
+    {q:"Welche Größe braucht sie?",opts:["S","M","L"],correctIdx:1}
+  ]},
 ];
 
 
@@ -7355,16 +7464,16 @@ const MISSION_ARCS = [
 
 const MISSIONS = [
   // Touchdown
-  {id:"cafe",        arc:"touchdown", level:"A2", cando:"Order at a café or bakery", dialogues:["Im Café bestellen","At the café","Beim Bäcker","At the bakery"], cats:["Food & Drink","Restaurant & Dining Out"]},
-  {id:"restaurant",  arc:"touchdown", level:"A2", cando:"Eat out and pay at a restaurant", dialogues:["At the restaurant","Bezahlen im Restaurant","Tisch reservieren","Complaining politely at a restaurant"], cats:["Restaurant & Dining Out","Food & Drink"]},
-  {id:"supermarket", arc:"touchdown", level:"A2", cando:"Shop at the supermarket", dialogues:["At the supermarket","An der Supermarktkasse","Ordering online delivery"], cats:["Shopping & Money","Food & Drink"]},
-  {id:"directions",  arc:"touchdown", level:"A2", cando:"Ask for and follow directions", dialogues:["Nach dem Weg fragen","Asking for directions"], cats:["Travel & Directions"]},
+  {id:"cafe",        arc:"touchdown", level:"A1", cando:"Order at a café or bakery", dialogues:["Im Café — einfach","Beim Bäcker — einfach","Im Café bestellen","At the café","Beim Bäcker","At the bakery"], cats:["Food & Drink","Restaurant & Dining Out"]},
+  {id:"restaurant",  arc:"touchdown", level:"A1", cando:"Eat out and pay at a restaurant", dialogues:["Im Restaurant — einfach","At the restaurant","Bezahlen im Restaurant","Tisch reservieren","Complaining politely at a restaurant"], cats:["Restaurant & Dining Out","Food & Drink"]},
+  {id:"supermarket", arc:"touchdown", level:"A1", cando:"Shop at the supermarket", dialogues:["Im Supermarkt — einfach","Bezahlen an der Kasse","At the supermarket","An der Supermarktkasse","Ordering online delivery"], cats:["Shopping & Money","Food & Drink"]},
+  {id:"directions",  arc:"touchdown", level:"A1", cando:"Ask for and follow directions", dialogues:["Nach dem Weg fragen — einfach","Nach dem Weg fragen","Asking for directions"], cats:["Travel & Directions"]},
   {id:"hotel",       arc:"touchdown", level:"A2", cando:"Book and check into a hotel", dialogues:["Booking a hotel","Im Hotel einchecken","Frühstück im Hotel"], cats:["Travel & Directions"]},
   {id:"transit",     arc:"touchdown", level:"A2", cando:"Get around by train, taxi and plane", dialogues:["At the train station","Am Bahnhof — Ticket kaufen","Zug — Verspätung","Asking at the station","Taxi rufen","At the airport check-in","Train delay compensation"], cats:["Travel & Directions","Driving & Traffic"]},
-  {id:"meeting",     arc:"touchdown", level:"A2", cando:"Introduce yourself and meet people", dialogues:["Meeting someone"], cats:["Greetings & Basics","Small Talk & Social"]},
-  {id:"smalltalk",   arc:"touchdown", level:"A2", cando:"Make small talk about the weather and weekend", dialogues:["Das Wetter","Weekend plans","Small talk about weekend"], cats:["Small Talk & Social","Weather & Nature"]},
-  {id:"phone",       arc:"touchdown", level:"A2", cando:"Handle a basic phone call", dialogues:["On the phone"], cats:["Emails & Phone","Media & Communication"]},
-  {id:"clothes",     arc:"touchdown", level:"A2", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
+  {id:"meeting",     arc:"touchdown", level:"A1", cando:"Introduce yourself and meet people", dialogues:["Hallo und tschüss","Sich vorstellen","Meeting someone"], cats:["Greetings & Basics","Small Talk & Social"]},
+  {id:"smalltalk",   arc:"touchdown", level:"A1", cando:"Make small talk about the weather and weekend", dialogues:["Das Wetter — einfach","Die Uhrzeit","Das Wetter","Weekend plans","Small talk about weekend"], cats:["Small Talk & Social","Weather & Nature"]},
+  {id:"phone",       arc:"touchdown", level:"A1", cando:"Handle a basic phone call", dialogues:["Am Telefon — einfach","On the phone"], cats:["Emails & Phone","Media & Communication"]},
+  {id:"clothes",     arc:"touchdown", level:"A1", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — einfach","Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
   // The Paperwork
   {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
   {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},

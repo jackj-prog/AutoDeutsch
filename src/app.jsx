@@ -667,7 +667,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.05";
+const APP_VERSION = "2026.06.20.06";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4832,7 +4832,7 @@ function App() {
                   </div>
                   <div style={{ fontSize: 11.5, color: TD, marginBottom: 18, lineHeight: 1.5 }}>
                     {allDone ? <>You've made every level solid — the full B2 vocabulary is locked in. 🏁</>
-                      : <>Learn <span style={{ color: T, fontWeight: 800 }}>{chRemaining.toLocaleString()}</span> more to finish <span style={{ color: LEVEL_COLORS[cl], fontWeight: 800 }}>Chapter {curChapter}</span>{nextLevel ? <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to rank up to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel}</span></> : <> · <span style={{ color: T, fontWeight: 800 }}>{clRemaining.toLocaleString()}</span> to complete B2</>}</>}
+                      : <>Learn <span style={{ color: T, fontWeight: 800 }}>{chRemaining.toLocaleString()}</span> more to finish <span style={{ color: LEVEL_COLORS[cl], fontWeight: 800 }}>Chapter {curChapter} of {CHAPTERS}</span>{nextLevel ? <> — on your way to <span style={{ color: LEVEL_COLORS[nextLevel], fontWeight: 800 }}>{nextLevel}</span></> : <> to complete B2</>}.</>}
                   </div>
 
                   {/* The roadmap — 4 CEFR stages, you-are-here */}
@@ -4872,8 +4872,8 @@ function App() {
 
                   {/* Overall backdrop + pace */}
                   <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${B}66`, display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
-                    <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>Whole journey · A1 → B2</span>
-                    <span style={{ fontSize: 12.5, color: G, fontWeight: 800 }}>{jp}% · {ds.journeyStrong.toLocaleString()} / {ds.journeyTotal.toLocaleString()} words</span>
+                    <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>Across all levels · A1 → B2</span>
+                    <span style={{ fontSize: 12.5, color: G, fontWeight: 800 }}>{ds.journeyStrong.toLocaleString()} words learned</span>
                   </div>
                   <div style={{ padding: "10px 12px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${A}`, fontSize: 12, color: TD, lineHeight: 1.55 }}>
                     {ds.perWeek > 0 && journeyMonths != null ? (

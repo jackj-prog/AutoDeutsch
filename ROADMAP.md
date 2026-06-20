@@ -41,8 +41,7 @@ the "journey" feeling early (P0) and de-risk the core daily-loop change (P3) aft
 | **P6** | **Library → Curriculum; taxonomy → "Dictionary."** Re-present the main content surface as the sequenced mission map; keep the 36-category taxonomy + 5,782-row Browse as an explicitly-labelled reference, not the front door. | Library/Browse expose the raw database as the primary content surface; discovery is by word-category, not life-situation. | Med | Low-Med | ⬜ |
 | **P7** | **Tutor as narrative guide (later).** The coach who walks you through the journey and role-plays each scenario — not a generic chatbot bolted on. | Owns narrative, purpose, momentum. Deferred per direction until the core journey exists and demand is validated. | High | Med | ⬜ |
 
-**Quick wins extractable early (don't need the full phase):** the demoralising-math fixes (negative pace,
-denominator, rank-up threshold) can land standalone; a single "current mission" card on Home can ship with
+**Quick wins extractable early (don't need the full phase):** ✅ the demoralising-math fixes (denominator + rank-up wall) shipped v2026.06.20.06; a single "current mission" card on Home can ship with
 P0; exam-readiness signals are near-free given the telc-validated vocab.
 
 **Challenged assumptions (audit verdicts):** vocabulary should be *fuel*, not the progression unit;

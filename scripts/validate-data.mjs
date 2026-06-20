@@ -7,12 +7,12 @@ export async function loadData(path = new URL("../src/data.js", import.meta.url)
   const code = await readFile(path, "utf8");
   const ctx = vm.createContext({ console });
   vm.runInContext(code, ctx);
-  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS: typeof MISSIONS!=='undefined'?MISSIONS:null, MISSION_ARCS: typeof MISSION_ARCS!=='undefined'?MISSION_ARCS:null })", ctx);
+  return vm.runInContext("({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS: typeof MISSIONS!=='undefined'?MISSIONS:null, MISSION_ARCS: typeof MISSION_ARCS!=='undefined'?MISSION_ARCS:null, CONFUSIONS: typeof CONFUSIONS!=='undefined'?CONFUSIONS:null, EXAM: typeof EXAM!=='undefined'?EXAM:null, PLACEMENT: typeof PLACEMENT!=='undefined'?PLACEMENT:null })", ctx);
 }
 
 const isStr = (v) => typeof v === "string" && v.trim().length > 0;
 
-export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS, MISSION_ARCS }) {
+export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVES, MISSIONS, MISSION_ARCS, CONFUSIONS, EXAM, PLACEMENT }) {
   const errors = [];
   const warnings = [];
   const err = (m) => errors.push(m);
@@ -140,6 +140,84 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     });
   }
 
+  const LEVELS = ["A1", "A2", "B1", "B2"];
+
+  // ── Confusion pairs (confusion-pair drill) ──
+  if (CONFUSIONS) {
+    if (!Array.isArray(CONFUSIONS)) err("CONFUSIONS is not an array");
+    const seenC = new Set();
+    (CONFUSIONS || []).forEach((p, i) => {
+      if (!p) { err(`CONFUSIONS[${i}] is a hole`); return; }
+      if (!isStr(p.id)) err(`CONFUSIONS[${i}]: missing id`);
+      if (seenC.has(p.id)) err(`CONFUSIONS: duplicate id "${p.id}"`);
+      seenC.add(p.id);
+      if (p.level && !LEVELS.includes(p.level)) err(`CONFUSIONS "${p.id}": bad level "${p.level}"`);
+      ["a", "b"].forEach(side => {
+        if (!p[side] || !isStr(p[side].de) || !isStr(p[side].en)) err(`CONFUSIONS "${p.id}": side ${side} needs {de,en}`);
+      });
+      if (!isStr(p.rule)) warn(`CONFUSIONS "${p.id}": missing rule`);
+      if (!Array.isArray(p.items) || !p.items.length) { err(`CONFUSIONS "${p.id}": no items`); return; }
+      p.items.forEach((it, j) => {
+        if (!isStr(it?.q) || !it.q.includes("___")) err(`CONFUSIONS "${p.id}" item ${j}: q missing or has no ___ gap`);
+        if (it?.correct !== "a" && it?.correct !== "b") err(`CONFUSIONS "${p.id}" item ${j}: correct must be "a" or "b"`);
+        if (!isStr(it?.answer)) err(`CONFUSIONS "${p.id}" item ${j}: missing answer (surface form)`);
+        if (!isStr(it?.en)) warn(`CONFUSIONS "${p.id}" item ${j}: missing en`);
+        if (!isStr(it?.why)) warn(`CONFUSIONS "${p.id}" item ${j}: missing why`);
+      });
+    });
+  }
+
+  // ── Exam-format sets (exam mode) ──
+  if (EXAM) {
+    if (!Array.isArray(EXAM)) err("EXAM is not an array");
+    const seenE = new Set();
+    const FORMATS = ["leseverstehen", "sprachbausteine"];
+    (EXAM || []).forEach((s, i) => {
+      if (!s) { err(`EXAM[${i}] is a hole`); return; }
+      if (!isStr(s.id)) err(`EXAM[${i}]: missing id`);
+      if (seenE.has(s.id)) err(`EXAM: duplicate id "${s.id}"`);
+      seenE.add(s.id);
+      if (s.level && !LEVELS.includes(s.level)) err(`EXAM "${s.id}": bad level "${s.level}"`);
+      if (!FORMATS.includes(s.format)) err(`EXAM "${s.id}": format "${s.format}" not in ${FORMATS.join("|")}`);
+      if (!isStr(s.title)) warn(`EXAM "${s.id}": missing title`);
+      if (!isStr(s.passage)) err(`EXAM "${s.id}": missing passage`);
+      if (!Array.isArray(s.questions) || !s.questions.length) { err(`EXAM "${s.id}": no questions`); return; }
+      // sprachbausteine gaps are numbered (1)…(n) in the passage; check each gap is referenced.
+      if (s.format === "sprachbausteine" && isStr(s.passage)) {
+        const gaps = (s.passage.match(/\(\d+\)/g) || []).length;
+        if (gaps !== s.questions.length) warn(`EXAM "${s.id}": ${gaps} gap(s) in passage but ${s.questions.length} question(s)`);
+      }
+      s.questions.forEach((q, j) => {
+        if (!isStr(q?.q) || !Array.isArray(q?.opts) || q.opts.length < 2) err(`EXAM "${s.id}" question ${j}: malformed`);
+        else if (!(q.correctIdx >= 0 && q.correctIdx < q.opts.length)) err(`EXAM "${s.id}" question ${j}: correctIdx out of range`);
+      });
+    });
+  }
+
+  // ── Placement test (P5 onboarding) ──
+  if (PLACEMENT) {
+    if (typeof PLACEMENT !== "object" || Array.isArray(PLACEMENT)) err("PLACEMENT must be an object { intake, items }");
+    (PLACEMENT.intake || []).forEach((q, i) => {
+      if (!isStr(q?.id)) err(`PLACEMENT.intake[${i}]: missing id`);
+      if (!isStr(q?.q)) err(`PLACEMENT.intake[${i}]: missing q`);
+      if (!Array.isArray(q?.opts) || q.opts.length < 2) err(`PLACEMENT.intake[${i}] "${q?.id}": needs ≥2 opts`);
+    });
+    if (!Array.isArray(PLACEMENT?.items) || !PLACEMENT.items.length) err("PLACEMENT.items missing or empty");
+    const seenP = new Set();
+    const byLevel = {};
+    (PLACEMENT?.items || []).forEach((it, i) => {
+      if (!isStr(it?.id)) err(`PLACEMENT.items[${i}]: missing id`);
+      if (seenP.has(it.id)) err(`PLACEMENT.items: duplicate id "${it.id}"`);
+      seenP.add(it.id);
+      if (!LEVELS.includes(it?.level)) err(`PLACEMENT.items "${it?.id}": bad/missing level "${it?.level}"`);
+      else byLevel[it.level] = (byLevel[it.level] || 0) + 1;
+      if (!isStr(it?.q)) err(`PLACEMENT.items "${it?.id}": missing q`);
+      if (!Array.isArray(it?.opts) || it.opts.length < 2) err(`PLACEMENT.items "${it?.id}": needs ≥2 opts`);
+      else if (!(it.correctIdx >= 0 && it.correctIdx < it.opts.length)) err(`PLACEMENT.items "${it?.id}": correctIdx out of range`);
+    });
+    LEVELS.forEach(L => { if ((byLevel[L] || 0) < 3) warn(`PLACEMENT: only ${byLevel[L] || 0} item(s) at ${L} — recommend ≥3 for a reliable estimate`); });
+  }
+
   const counts = {
     vocab: Object.values(V || {}).reduce((n, l) => n + (Array.isArray(l) ? l.length : 0), 0),
     categories: Object.keys(V || {}).length,
@@ -148,6 +226,10 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
     sentences: (SENTENCES || []).length,
     dialogues: (DIALOGUES || []).length,
     imperatives: (IMPERATIVES || []).length,
+    missions: (MISSIONS || []).length,
+    confusions: (CONFUSIONS || []).length,
+    exam: (EXAM || []).length,
+    placement: ((PLACEMENT && PLACEMENT.items) || []).length,
   };
   return { errors, warnings, counts };
 }
@@ -156,7 +238,7 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
 if (import.meta.url === `file://${process.argv[1]}`) {
   const data = await loadData();
   const { errors, warnings, counts } = validateData(data);
-  console.log(`Content: ${counts.vocab} vocab in ${counts.categories} categories · ${counts.cloze} cloze · ${counts.verbs} verbs · ${counts.sentences} sentences · ${counts.dialogues} dialogues · ${counts.imperatives} imperatives`);
+  console.log(`Content: ${counts.vocab} vocab in ${counts.categories} categories · ${counts.cloze} cloze · ${counts.verbs} verbs · ${counts.sentences} sentences · ${counts.dialogues} dialogues · ${counts.imperatives} imperatives · ${counts.missions} missions · ${counts.confusions} confusion-pairs · ${counts.exam} exam-sets · ${counts.placement} placement-items`);
   warnings.forEach(w => console.warn(`  warn: ${w}`));
   if (errors.length) {
     errors.forEach(e => console.error(`  ERROR: ${e}`));

@@ -60,7 +60,8 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/app.jsx | P4a — capability rewards (mission-complete celebration) + identity/role progression | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) | src/app.jsx | P3a — Home forward-momentum (mission next-step + status chip; goal engine untouched) | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) | src/app.jsx | Fix: Scenarios screen horizontal overflow (mission-card grid blow-out) | 2026-06-20 | ✅ done (app.jsx released) |
-| Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS), scripts/validate-data.mjs | DACH-rite scenarios (Krankenversicherung, Rundfunkbeitrag/GEZ, Mietkaution, Steuer-ID/Lohnsteuer) + validator entry-level check — feeds P4 milestones | 2026-06-20 | ✅ done (build 087e3e92; on branch claude/optimistic-dijkstra-kritfz, awaiting merge→main) |
+| Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS), scripts/validate-data.mjs | DACH-rite scenarios (Krankenversicherung, Rundfunkbeitrag/GEZ, Mietkaution, Steuer-ID/Lohnsteuer) + validator entry-level check — feeds P4 milestones | 2026-06-20 | ✅ done (deployed → main 81b6463) |
+| Claude (Opus) — content lane | src/data.js (A1 dialogues+missions, CONFUSIONS, EXAM, PLACEMENT), scripts/validate-data.mjs, docs/ | A1 on-ramps for all arcs + confusion-pair, exam-format & P5 placement datasets (+ validator + specs) | 2026-06-20 | ✅ done (build 7cd13dca; on branch claude/optimistic-dijkstra-kritfz, awaiting merge→main) |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

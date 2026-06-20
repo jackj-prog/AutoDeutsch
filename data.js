@@ -7441,6 +7441,55 @@ const DIALOGUES = [
     {q:"Wovon hängt die Lohnsteuer vor allem ab?",opts:["Vom Alter","Von der Steuerklasse","Vom Wohnort"],correctIdx:1},
     {q:"Wo findet man die Steuer-Identifikationsnummer?",opts:["Nur online","Auf der Gehaltsabrechnung","Auf der Versichertenkarte"],correctIdx:1}
   ]},
+  // ── A1 entry on-ramps for the later arcs (extend the survival tier beyond Touchdown) ──
+  {title:"Geld abheben — einfach",level:"A1",lines:[
+    {de:"Entschuldigung, wo ist ein Geldautomat?",en:"Excuse me, where is a cash machine?"},
+    {de:"Dort drüben, neben der Bank.",en:"Over there, next to the bank."},
+    {de:"Danke. Kann ich hier Geld abheben?",en:"Thanks. Can I withdraw money here?"},
+    {de:"Ja, mit Ihrer Karte. Es kostet nichts.",en:"Yes, with your card. It's free."}
+  ],questions:[
+    {q:"Was sucht die Person?",opts:["Eine Bank","Einen Geldautomaten","Ein Café"],correctIdx:1},
+    {q:"Was kostet das Geldabheben?",opts:["Nichts","Zwei Euro","Fünf Euro"],correctIdx:0}
+  ]},
+  {title:"Mir geht es nicht gut — einfach",level:"A1",lines:[
+    {de:"Wie geht es Ihnen?",en:"How are you?"},
+    {de:"Nicht so gut. Mein Kopf tut weh.",en:"Not so good. My head hurts."},
+    {de:"Haben Sie auch Fieber?",en:"Do you also have a fever?"},
+    {de:"Ja, ein bisschen. Ich brauche einen Arzt.",en:"Yes, a little. I need a doctor."}
+  ],questions:[
+    {q:"Was tut weh?",opts:["Der Bauch","Der Kopf","Der Fuß"],correctIdx:1},
+    {q:"Was braucht die Person?",opts:["Einen Arzt","Ein Taxi","Ein Hotel"],correctIdx:0}
+  ]},
+  {title:"Einen Termin machen — einfach",level:"A1",lines:[
+    {de:"Guten Tag, ich möchte einen Termin.",en:"Hello, I'd like an appointment."},
+    {de:"Gern. Wann haben Sie Zeit?",en:"Sure. When do you have time?"},
+    {de:"Am Montag, bitte.",en:"On Monday, please."},
+    {de:"Montag um zehn Uhr. Geht das?",en:"Monday at ten o'clock. Does that work?"},
+    {de:"Ja, das passt. Danke!",en:"Yes, that works. Thank you!"}
+  ],questions:[
+    {q:"Was möchte die Person?",opts:["Einen Termin","Ein Zimmer","Einen Kaffee"],correctIdx:0},
+    {q:"Wann ist der Termin?",opts:["Am Montag","Am Freitag","Am Sonntag"],correctIdx:0}
+  ]},
+  {title:"Die Wohnung — einfach",level:"A1",lines:[
+    {de:"Die Wohnung hat zwei Zimmer.",en:"The flat has two rooms."},
+    {de:"Ist eine Küche dabei?",en:"Is a kitchen included?"},
+    {de:"Ja, eine Küche und ein Bad.",en:"Yes, a kitchen and a bathroom."},
+    {de:"Wie viel kostet die Miete?",en:"How much is the rent?"},
+    {de:"Sechshundert Euro im Monat.",en:"Six hundred euros a month."}
+  ],questions:[
+    {q:"Wie viele Zimmer hat die Wohnung?",opts:["Eins","Zwei","Drei"],correctIdx:1},
+    {q:"Wie viel kostet die Miete?",opts:["Sechshundert Euro","Sechzig Euro","Tausend Euro"],correctIdx:0}
+  ]},
+  {title:"Sich verabreden — einfach",level:"A1",lines:[
+    {de:"Hast du am Samstag Zeit?",en:"Do you have time on Saturday?"},
+    {de:"Ja, warum?",en:"Yes, why?"},
+    {de:"Wir können einen Kaffee trinken.",en:"We could have a coffee."},
+    {de:"Gute Idee! Um drei Uhr?",en:"Good idea! At three o'clock?"},
+    {de:"Perfekt. Bis Samstag!",en:"Perfect. See you Saturday!"}
+  ],questions:[
+    {q:"Wann treffen sich die zwei?",opts:["Am Samstag","Am Montag","Am Sonntag"],correctIdx:0},
+    {q:"Was wollen sie machen?",opts:["Einen Kaffee trinken","Ins Kino gehen","Essen kochen"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7540,7 +7589,7 @@ const MISSIONS = [
   {id:"phone",       arc:"touchdown", level:"A1", cando:"Handle a basic phone call", dialogues:["Am Telefon — einfach","On the phone"], cats:["Emails & Phone","Media & Communication"]},
   {id:"clothes",     arc:"touchdown", level:"A1", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — einfach","Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
   // The Paperwork
-  {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
+  {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Einen Termin machen — einfach","Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
   {id:"rundfunk",    arc:"paperwork", level:"B1", cando:"Handle the broadcasting fee (Rundfunkbeitrag / GEZ)", dialogues:["Der Rundfunkbeitrag"], cats:["Admin & Bureaucracy","Media & Communication"]},
   {id:"steuerid",    arc:"paperwork", level:"B1", cando:"Understand your Steuer-ID and the tax on your payslip", dialogues:["Steuer-ID und Lohnsteuer"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},
@@ -7548,12 +7597,13 @@ const MISSIONS = [
   {id:"strom",       arc:"paperwork", level:"B2", cando:"Set up your electricity", dialogues:["Strom anmelden"], cats:["Admin & Bureaucracy","Housing & Renting"]},
   {id:"auslander",   arc:"paperwork", level:"B2", cando:"Get through an appointment at the Ausländerbehörde", dialogues:["Termin bei der Ausländerbehörde"], cats:["Admin & Bureaucracy"]},
   // A Roof
-  {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
+  {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Die Wohnung — einfach","Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
   {id:"landlord",    arc:"roof", level:"A2", cando:"Deal with your landlord", dialogues:["Reporting an issue to a landlord","Calling the landlord"], cats:["Housing & Renting"]},
   {id:"kaution",     arc:"roof", level:"B1", cando:"Sort out the rental deposit (Mietkaution)", dialogues:["Die Mietkaution"], cats:["Housing & Renting","Banking & Finance"]},
   {id:"contract",    arc:"roof", level:"B2", cando:"Understand a rental contract", dialogues:["Discussing a rental contract"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
   // Money & Connectivity
+  {id:"cash",        arc:"money", level:"A1", cando:"Withdraw cash and pay by card", dialogues:["Geld abheben — einfach","Bezahlen an der Kasse"], cats:["Banking & Finance","Shopping & Money"]},
   {id:"bank",        arc:"money", level:"B1", cando:"Open a bank account", dialogues:["Kontoeröffnung bei der Bank","Opening a bank account"], cats:["Banking & Finance"]},
   {id:"sim",         arc:"money", level:"B1", cando:"Get a SIM and choose a phone plan", dialogues:["Buying a SIM card","Choosing a phone plan"], cats:["Media & Communication","Shopping & Money"]},
   {id:"internet",    arc:"money", level:"B2", cando:"Fix an internet or utility problem", dialogues:["Internet outage hotline"], cats:["Media & Communication","Technology & Digital"]},
@@ -7562,7 +7612,7 @@ const MISSIONS = [
   {id:"complaint",   arc:"money", level:"B2", cando:"Make a complaint and cancel a contract", dialogues:["Making a complaint","Cancelling a gym contract"], cats:["Admin & Bureaucracy"]},
   // Staying Well
   {id:"krankenkasse",arc:"health", level:"B1", cando:"Register with a health-insurance fund (Krankenkasse)", dialogues:["Krankenversicherung anmelden"], cats:["Health & Doctor","Admin & Bureaucracy"]},
-  {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
+  {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Mir geht es nicht gut — einfach","Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
   {id:"pharmacy",    arc:"health", level:"B1", cando:"Get what you need at the pharmacy", dialogues:["In der Apotheke","At the pharmacy"], cats:["Health & Doctor"]},
   {id:"results",     arc:"health", level:"B2", cando:"Discuss test results with a doctor", dialogues:["Discussing test results"], cats:["Health & Doctor","Body & Health"]},
   {id:"sick",        arc:"health", level:"B2", cando:"Call in sick to work", dialogues:["Krankmeldung im Büro"], cats:["Health & Doctor","Work & Study"]},
@@ -7575,8 +7625,257 @@ const MISSIONS = [
   {id:"feedback",    arc:"job", level:"B2", cando:"Have a feedback and salary conversation", dialogues:["Feedbackgespräch mit der Chefin","Salary negotiation"], cats:["Work & Study"]},
   // Belonging
   {id:"gym",         arc:"belonging", level:"A2", cando:"Join and use a gym", dialogues:["Joining a gym","Fitnessstudio anmelden","Freunde im Fitnessstudio"], cats:["Sport & Leisure"]},
-  {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
+  {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Sich verabreden — einfach","Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
   {id:"networking",  arc:"belonging", level:"B2", cando:"Network at a conference", dialogues:["Networking at a conference"], cats:["Small Talk & Social","Work & Study"]},
   {id:"kaffeekueche",arc:"belonging", level:"B2", cando:"Make small talk in the office kitchen", dialogues:["Smalltalk in der Kaffeeküche"], cats:["Small Talk & Social","Character & Personality"]},
   {id:"debate",      arc:"belonging", level:"B2", cando:"Hold your own in a debate", dialogues:["Diskussion: Elektroautos"], cats:["Opinions & Argument"]},
 ];
+
+
+// ── CONFUSION PAIRS (commonly-confused German words → confusion-pair drill) ──
+// Each pair has two words (a/b), a one-line rule, and gapped practice items. In a drill the
+// learner sees the gapped sentence and the two base forms (a.de / b.de) as options; `correct`
+// says which one fits, `answer` is the surface form, `why` is the one-line justification.
+// Shape spec + intended UI: docs/practice-data-spec.md.
+const CONFUSIONS = [
+  {id:"kennen-wissen", level:"A2",
+    a:{de:"kennen", en:"to know (be familiar with — a person, place or thing)"},
+    b:{de:"wissen", en:"to know (a fact)"},
+    rule:"kennen takes a noun object (a person/place/thing); wissen takes a fact, often a dass-/ob-/wo-clause.",
+    items:[
+      {q:"Ich ___ Berlin ziemlich gut.", correct:"a", answer:"kenne", en:"I know Berlin quite well.", why:"a place as object → kennen"},
+      {q:"___ du, wann der Zug kommt?", correct:"b", answer:"Weißt", en:"Do you know when the train comes?", why:"an indirect question (a fact) → wissen"},
+      {q:"___ du meinen Bruder?", correct:"a", answer:"Kennst", en:"Do you know my brother?", why:"a person as object → kennen"},
+      {q:"Ich ___ nicht, ob das stimmt.", correct:"b", answer:"weiß", en:"I don't know whether that's true.", why:"an ob-clause (a fact) → wissen"}
+    ]},
+  {id:"legen-liegen", level:"B1",
+    a:{de:"legen", en:"to lay / put down (an action — takes an object, accusative)"},
+    b:{de:"liegen", en:"to lie / be lying (a position — no object, dative)"},
+    rule:"legen is putting something down (wohin? + accusative); liegen describes where something already is (wo? + dative).",
+    items:[
+      {q:"Ich ___ den Schlüssel auf den Tisch.", correct:"a", answer:"lege", en:"I put the key on the table.", why:"an action with an object → legen (+ accusative)"},
+      {q:"Der Schlüssel ___ auf dem Tisch.", correct:"b", answer:"liegt", en:"The key is lying on the table.", why:"a position, no object → liegen (+ dative)"},
+      {q:"Bitte ___ die Papiere in die Schublade.", correct:"a", answer:"leg", en:"Please put the papers in the drawer.", why:"putting something somewhere → legen"},
+      {q:"Die Katze ___ den ganzen Tag auf dem Sofa.", correct:"b", answer:"liegt", en:"The cat lies on the sofa all day.", why:"describing where it is → liegen"}
+    ]},
+  {id:"stellen-stehen", level:"B1",
+    a:{de:"stellen", en:"to stand sth up / place upright (action — accusative)"},
+    b:{de:"stehen", en:"to stand / be standing (position — dative)"},
+    rule:"stellen puts something into an upright position (wohin? + accusative); stehen says where it already stands (wo? + dative).",
+    items:[
+      {q:"Ich ___ die Vase auf das Regal.", correct:"a", answer:"stelle", en:"I put the vase on the shelf.", why:"placing it upright → stellen (+ accusative)"},
+      {q:"Die Vase ___ auf dem Regal.", correct:"b", answer:"steht", en:"The vase stands on the shelf.", why:"where it already is → stehen (+ dative)"},
+      {q:"___ bitte die Gläser in den Schrank.", correct:"a", answer:"Stell", en:"Please put the glasses in the cupboard.", why:"putting them somewhere → stellen"},
+      {q:"Das Auto ___ vor dem Haus.", correct:"b", answer:"steht", en:"The car is parked in front of the house.", why:"position → stehen"}
+    ]},
+  {id:"setzen-sitzen", level:"B1",
+    a:{de:"sich setzen", en:"to sit down (the action of taking a seat — accusative)"},
+    b:{de:"sitzen", en:"to sit / be seated (the position — dative)"},
+    rule:"sich setzen is the movement of sitting down (wohin? + accusative); sitzen is already being seated (wo? + dative).",
+    items:[
+      {q:"Ich ___ mich auf den Stuhl.", correct:"a", answer:"setze", en:"I sit down on the chair.", why:"the action of sitting down → (sich) setzen"},
+      {q:"Ich ___ schon eine Stunde auf diesem Stuhl.", correct:"b", answer:"sitze", en:"I've been sitting on this chair for an hour.", why:"already seated → sitzen"},
+      {q:"Bitte ___ Sie sich!", correct:"a", answer:"setzen", en:"Please take a seat!", why:"inviting the action → sich setzen"},
+      {q:"Die Kinder ___ am Tisch und essen.", correct:"b", answer:"sitzen", en:"The children are sitting at the table eating.", why:"position → sitzen"}
+    ]},
+  {id:"seit-seid", level:"A2",
+    a:{de:"seit", en:"since / for (preposition of time + dative)"},
+    b:{de:"seid", en:"are (the 'ihr' form of sein — you all are)"},
+    rule:"seit is a time preposition (seit 2020, seit drei Tagen); seid is the verb — the 'ihr' form of sein.",
+    items:[
+      {q:"Wir wohnen ___ drei Jahren in Berlin.", correct:"a", answer:"seit", en:"We've been living in Berlin for three years.", why:"a span of time → seit"},
+      {q:"___ ihr schon fertig?", correct:"b", answer:"Seid", en:"Are you all ready?", why:"the verb after ihr → seid"},
+      {q:"Ich kenne sie ___ der Schulzeit.", correct:"a", answer:"seit", en:"I've known her since school.", why:"a starting point in time → seit"},
+      {q:"Ihr ___ heute sehr leise.", correct:"b", answer:"seid", en:"You're all very quiet today.", why:"ihr + sein → seid"}
+    ]},
+  {id:"das-dass", level:"A2",
+    a:{de:"das", en:"the / that / which (article or relative pronoun — points to a noun)"},
+    b:{de:"dass", en:"that (conjunction introducing a clause)"},
+    rule:"Use das if you can replace it with 'dieses' or 'welches' (it points to a noun); use dass when it just links two clauses (I think that …).",
+    items:[
+      {q:"Ich glaube, ___ es morgen regnet.", correct:"b", answer:"dass", en:"I think that it'll rain tomorrow.", why:"links two clauses → dass"},
+      {q:"Das Buch, ___ du mir gegeben hast, ist toll.", correct:"a", answer:"das", en:"The book that you gave me is great.", why:"relative pronoun (= welches) → das"},
+      {q:"Es freut mich, ___ du kommst.", correct:"b", answer:"dass", en:"I'm glad that you're coming.", why:"introduces a clause → dass"},
+      {q:"Wo ist ___ Auto?", correct:"a", answer:"das", en:"Where is the car?", why:"article before a noun → das"}
+    ]},
+  {id:"wenn-als", level:"B1",
+    a:{de:"wenn", en:"when / whenever (present, future, or repeated past) — also 'if'"},
+    b:{de:"als", en:"when (one single event in the past)"},
+    rule:"Use als for a single point in the past (Als ich 18 war …); use wenn for present/future or things that happened repeatedly (Immer wenn …).",
+    items:[
+      {q:"___ ich klein war, wohnten wir in Köln.", correct:"b", answer:"Als", en:"When I was little, we lived in Cologne.", why:"one past situation → als"},
+      {q:"Ruf mich an, ___ du angekommen bist.", correct:"a", answer:"wenn", en:"Call me when you've arrived.", why:"future event → wenn"},
+      {q:"Immer ___ es regnet, bleibe ich zu Hause.", correct:"a", answer:"wenn", en:"Whenever it rains, I stay home.", why:"repeated event → wenn"},
+      {q:"___ ich gestern aufwachte, schien die Sonne.", correct:"b", answer:"Als", en:"When I woke up yesterday, the sun was shining.", why:"a single past moment → als"}
+    ]},
+  {id:"moegen-gefallen", level:"A2",
+    a:{de:"mögen", en:"to like (I like it — Ich mag …)"},
+    b:{de:"gefallen", en:"to please / appeal to (it pleases me — … gefällt mir)"},
+    rule:"With mögen the person is the subject (Ich mag …). With gefallen the thing is the subject and the person is in the dative (Das gefällt mir) — often for how something looks or a first impression.",
+    items:[
+      {q:"Ich ___ klassische Musik.", correct:"a", answer:"mag", en:"I like classical music.", why:"I'm the subject → mögen"},
+      {q:"Die neue Wohnung ___ mir sehr.", correct:"b", answer:"gefällt", en:"I really like the new flat.", why:"the flat is the subject, mir is dative → gefallen"},
+      {q:"___ du Hunde?", correct:"a", answer:"Magst", en:"Do you like dogs?", why:"you're the subject → mögen"},
+      {q:"Wie ___ dir mein Kleid?", correct:"b", answer:"gefällt", en:"How do you like my dress?", why:"the dress is the subject, dir is dative → gefallen"}
+    ]},
+  {id:"bringen-holen", level:"A2",
+    a:{de:"bringen", en:"to bring / take (carry something to a place or person)"},
+    b:{de:"holen", en:"to fetch / go and get (and bring back)"},
+    rule:"bringen = carry something to where it should go; holen = go somewhere, get it, and come back with it.",
+    items:[
+      {q:"Kannst du mir bitte ein Glas Wasser ___?", correct:"b", answer:"holen", en:"Can you go and get me a glass of water?", why:"go and fetch it → holen"},
+      {q:"Der Kellner ___ uns die Speisekarte.", correct:"a", answer:"bringt", en:"The waiter brings us the menu.", why:"carries it to us → bringen"},
+      {q:"Ich ___ die Kinder morgen zur Schule.", correct:"a", answer:"bringe", en:"I'll take the children to school tomorrow.", why:"take them to a place → bringen"},
+      {q:"Ich gehe schnell Brötchen ___.", correct:"b", answer:"holen", en:"I'll quickly go get some rolls.", why:"go out and fetch → holen"}
+    ]},
+  {id:"fahren-gehen", level:"A1",
+    a:{de:"fahren", en:"to go (by vehicle) / to drive"},
+    b:{de:"gehen", en:"to go (on foot) / to walk"},
+    rule:"Use fahren when a vehicle is involved (car, train, bike); use gehen for going on foot.",
+    items:[
+      {q:"Ich ___ mit dem Zug nach München.", correct:"a", answer:"fahre", en:"I'm going to Munich by train.", why:"by train → fahren"},
+      {q:"Wir ___ zu Fuß ins Büro.", correct:"b", answer:"gehen", en:"We walk to the office.", why:"on foot → gehen"},
+      {q:"___ du mit dem Auto oder mit dem Rad?", correct:"a", answer:"Fährst", en:"Are you going by car or by bike?", why:"a vehicle → fahren"},
+      {q:"Am Abend ___ wir oft spazieren.", correct:"b", answer:"gehen", en:"In the evening we often go for a walk.", why:"on foot → gehen"}
+    ]},
+  {id:"sagen-erzaehlen", level:"B1",
+    a:{de:"sagen", en:"to say (a short statement — tell someone something briefly)"},
+    b:{de:"erzählen", en:"to tell / narrate (a story or longer account)"},
+    rule:"sagen is for a single short statement (Sag mir die Wahrheit); erzählen is for relating a story or longer account (Erzähl mir von deiner Reise).",
+    items:[
+      {q:"Kannst du mir ___, wie spät es ist?", correct:"a", answer:"sagen", en:"Can you tell me what time it is?", why:"a short piece of info → sagen"},
+      {q:"Opa ___ uns oft Geschichten von früher.", correct:"b", answer:"erzählt", en:"Grandpa often tells us stories from the old days.", why:"narrating stories → erzählen"},
+      {q:"Was hat der Arzt ___?", correct:"a", answer:"gesagt", en:"What did the doctor say?", why:"a brief statement → sagen"},
+      {q:"___ mir bitte von deinem Urlaub!", correct:"b", answer:"Erzähl", en:"Tell me about your holiday!", why:"a longer account → erzählen"}
+    ]},
+  {id:"denn-dann", level:"A2",
+    a:{de:"denn", en:"because / for (gives a reason)"},
+    b:{de:"dann", en:"then / after that (next in a sequence)"},
+    rule:"denn gives a reason (… denn ich bin müde = because I'm tired); dann puts events in order (erst …, dann …).",
+    items:[
+      {q:"Ich bleibe heute zu Hause, ___ ich bin krank.", correct:"a", answer:"denn", en:"I'm staying home today because I'm ill.", why:"a reason → denn"},
+      {q:"Zuerst frühstücke ich, ___ gehe ich zur Arbeit.", correct:"b", answer:"dann", en:"First I have breakfast, then I go to work.", why:"the next step → dann"},
+      {q:"Wir können nicht kommen, ___ wir haben keine Zeit.", correct:"a", answer:"denn", en:"We can't come because we have no time.", why:"a reason → denn"},
+      {q:"Mach die Aufgabe fertig, ___ kannst du spielen.", correct:"b", answer:"dann", en:"Finish the task, then you can play.", why:"sequence → dann"}
+    ]},
+  {id:"wo-wohin", level:"A2",
+    a:{de:"wo", en:"where (location — at what place)"},
+    b:{de:"wohin", en:"where to (direction — to what place)"},
+    rule:"wo asks about a fixed location (Wo wohnst du?); wohin asks about a direction of movement (Wohin gehst du?).",
+    items:[
+      {q:"___ ist die nächste Apotheke?", correct:"a", answer:"Wo", en:"Where is the nearest pharmacy?", why:"a location → wo"},
+      {q:"___ fährst du in den Urlaub?", correct:"b", answer:"Wohin", en:"Where are you going on holiday?", why:"direction of movement → wohin"},
+      {q:"___ soll ich das Paket schicken?", correct:"b", answer:"Wohin", en:"Where should I send the parcel?", why:"movement to a place → wohin"},
+      {q:"___ arbeitest du?", correct:"a", answer:"Wo", en:"Where do you work?", why:"a fixed location → wo"}
+    ]},
+  {id:"nach-zu", level:"B1",
+    a:{de:"nach", en:"to (cities, countries without an article, and 'nach Hause')"},
+    b:{de:"zu", en:"to (people and specific places: zum Arzt, zur Arbeit)"},
+    rule:"Use nach with cities and most countries (nach Berlin, nach Italien) and in 'nach Hause'; use zu with people and specific places/institutions (zum Arzt, zur Bank).",
+    items:[
+      {q:"Im Sommer fliegen wir ___ Spanien.", correct:"a", answer:"nach", en:"In summer we're flying to Spain.", why:"a country without an article → nach"},
+      {q:"Ich muss heute ___ Arzt.", correct:"b", answer:"zum", en:"I have to go to the doctor today.", why:"a person/practice → zu (zum)"},
+      {q:"Nach der Arbeit gehe ich ___ Hause.", correct:"a", answer:"nach", en:"After work I go home.", why:"fixed expression → nach Hause"},
+      {q:"Am Wochenende fahre ich ___ meinen Eltern.", correct:"b", answer:"zu", en:"At the weekend I'm going to my parents'.", why:"to people → zu"}
+    ]}
+];
+
+
+// ── EXAM-FORMAT PRACTICE (telc/Goethe-style sets → exam mode) ──
+// format: "leseverstehen" (read a short text, answer comprehension MC) or
+// "sprachbausteine" (a short text with numbered gaps (1)…(n); each question is one gap).
+// questions reuse the dialogue question shape {q, opts, correctIdx} so the existing
+// MC renderer can show them. Shape spec + intended UI: docs/practice-data-spec.md.
+const EXAM = [
+  {id:"ex-a2-aushang", level:"A2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Aushang im Treppenhaus",
+    passage:"Liebe Hausbewohner, am Samstag, den 12. Mai, wird das Treppenhaus gestrichen. Bitte stellen Sie an diesem Tag keine Schuhe oder Pflanzen in den Flur. Der Aufzug funktioniert nicht. Die Arbeiten dauern von 8 bis 16 Uhr. Vielen Dank für Ihr Verständnis. Die Hausverwaltung",
+    passageEn:"Dear residents, on Saturday 12 May the stairwell will be painted. Please don't put any shoes or plants in the hallway that day. The lift won't work. The work lasts from 8 a.m. to 4 p.m. Thank you for your understanding. The building management.",
+    questions:[
+      {q:"Was passiert am Samstag?", opts:["Das Treppenhaus wird geputzt","Das Treppenhaus wird gestrichen","Der Aufzug wird repariert"], correctIdx:1},
+      {q:"Was sollen die Bewohner tun?", opts:["Nichts in den Flur stellen","Zu Hause bleiben","Die Treppe putzen"], correctIdx:0},
+      {q:"Wie lange dauern die Arbeiten?", opts:["Von 8 bis 16 Uhr","Den ganzen Tag und die Nacht","Nur eine Stunde"], correctIdx:0}
+    ]},
+  {id:"ex-a2-brief", level:"A2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Ein kurzer Brief an eine Freundin",
+    passage:"Hallo Lisa, ich wohne jetzt (1) Hamburg. Die Stadt gefällt (2) sehr gut. Am Wochenende gehe ich oft (3) Park. Hast du Zeit, mich (4) besuchen? Viele Grüße, Tom",
+    questions:[
+      {q:"Lücke (1)", opts:["in","nach","aus"], correctIdx:0, why:"wohnen + Stadt → in (+ Dativ)"},
+      {q:"Lücke (2)", opts:["mich","mir","ich"], correctIdx:1, why:"gefallen + Person im Dativ → mir"},
+      {q:"Lücke (3)", opts:["in den","im","am"], correctIdx:0, why:"Bewegung wohin? → in + Akkusativ (in den Park)"},
+      {q:"Lücke (4)", opts:["zu","um","für"], correctIdx:0, why:"Zeit haben, etwas zu tun → zu + Infinitiv"}
+    ]},
+  {id:"ex-b1-kurs", level:"B1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"E-Mail: Anmeldung zum Deutschkurs",
+    passage:"Sehr geehrte Damen und Herren, ich interessiere mich für Ihren Abendkurs Deutsch B1. Ich arbeite tagsüber und kann deshalb nur nach 18 Uhr teilnehmen. Können Sie mir sagen, ob es noch freie Plätze gibt und was der Kurs kostet? Außerdem würde ich gern wissen, ob man am Ende eine Prüfung machen kann. Über eine schnelle Antwort freue ich mich. Mit freundlichen Grüßen, Marco Rossi",
+    passageEn:"Dear Sir or Madam, I'm interested in your evening course German B1. I work during the day and can therefore only attend after 6 p.m. Could you tell me whether there are still free places and what the course costs? I'd also like to know whether you can take an exam at the end. I look forward to a quick reply. Kind regards, Marco Rossi.",
+    questions:[
+      {q:"Warum kann Marco nur abends teilnehmen?", opts:["Er arbeitet tagsüber","Er schläft morgens","Der Kurs ist nur abends"], correctIdx:0},
+      {q:"Was möchte Marco NICHT wissen?", opts:["Den Preis","Ob es freie Plätze gibt","Wer die Lehrerin ist"], correctIdx:2},
+      {q:"Was fragt er über das Kursende?", opts:["Ob es eine Prüfung gibt","Ob es ein Fest gibt","Ob er ein Buch bekommt"], correctIdx:0}
+    ]},
+  {id:"ex-b1-konnektoren", level:"B1", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Konnektoren: ein verpasster Kinobesuch",
+    passage:"Ich wollte gestern ins Kino gehen, (1) der Film war leider ausverkauft. (2) habe ich mir zu Hause eine Serie angesehen. Heute versuche ich es noch einmal, (3) ich vorher online eine Karte kaufe. (4) der Film gut ist, gehe ich nächste Woche vielleicht wieder.",
+    questions:[
+      {q:"Lücke (1)", opts:["aber","weil","dass"], correctIdx:0, why:"Gegensatz zwischen zwei Hauptsätzen → aber"},
+      {q:"Lücke (2)", opts:["Deshalb","Obwohl","Sondern"], correctIdx:0, why:"Folge/Konsequenz → deshalb (mit Inversion)"},
+      {q:"Lücke (3)", opts:["indem","obwohl","sondern"], correctIdx:0, why:"Mittel/Methode (wodurch?) → indem"},
+      {q:"Lücke (4)", opts:["Wenn","Als","Während"], correctIdx:0, why:"Bedingung/Zukunft → wenn"}
+    ]},
+  {id:"ex-b2-homeoffice", level:"B2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Kurzartikel: Arbeiten im Homeoffice",
+    passage:"Seit der Pandemie arbeiten viele Beschäftigte zumindest teilweise von zu Hause. Untersuchungen zeigen, dass die Produktivität dabei nicht sinkt, sondern in vielen Fällen sogar leicht steigt. Allerdings klagen manche Arbeitnehmer über fehlenden Kontakt zu Kollegen und über Schwierigkeiten, Beruf und Privatleben zu trennen. Experten empfehlen deshalb ein hybrides Modell, bei dem die Mitarbeitenden einige Tage im Büro und einige Tage zu Hause arbeiten.",
+    passageEn:"Since the pandemic, many employees work at least partly from home. Studies show that productivity does not fall but in many cases even rises slightly. However, some employees complain about a lack of contact with colleagues and about difficulties separating work and private life. Experts therefore recommend a hybrid model in which staff work some days in the office and some days at home.",
+    questions:[
+      {q:"Was sagen Untersuchungen über die Produktivität im Homeoffice?", opts:["Sie sinkt stark","Sie bleibt gleich oder steigt leicht","Sie lässt sich nicht messen"], correctIdx:1},
+      {q:"Worüber klagen manche Arbeitnehmer?", opts:["Über zu viel Kontakt","Über fehlenden Kontakt zu Kollegen","Über zu wenig Arbeit"], correctIdx:1},
+      {q:"Was empfehlen Experten?", opts:["Nur im Büro arbeiten","Nur zu Hause arbeiten","Ein hybrides Modell"], correctIdx:2}
+    ]},
+  {id:"ex-b2-email", level:"B2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Formelle E-Mail: einen Termin verschieben",
+    passage:"Sehr geehrte Frau Dr. Wagner, ich beziehe mich (1) Ihr Schreiben vom 3. März. Leider muss ich Ihnen mitteilen, dass ich den vereinbarten Termin nicht wahrnehmen kann, (2) ich an diesem Tag verreist bin. Ich würde den Termin daher gern (3). Wären Sie (4) einverstanden, wenn wir uns nächste Woche treffen?",
+    questions:[
+      {q:"Lücke (1)", opts:["auf","an","über"], correctIdx:0, why:"sich beziehen auf + Akkusativ → auf"},
+      {q:"Lücke (2)", opts:["da","obwohl","trotzdem"], correctIdx:0, why:"Grund (formell) → da/weil"},
+      {q:"Lücke (3)", opts:["verschieben","verschoben","verschiebt"], correctIdx:0, why:"würde + Infinitiv → verschieben"},
+      {q:"Lücke (4)", opts:["damit","dazu","daran"], correctIdx:0, why:"einverstanden sein mit → damit"}
+    ]}
+];
+
+
+// ── PLACEMENT TEST (P5 narrative onboarding + 2-min CEFR placement) ──
+// `intake` frames the journey and personalizes the roadmap; `items` are graded, ascending
+// in difficulty (4 per CEFR level). Scoring walks A1→B2 and stops where the learner can no
+// longer answer the majority correctly — see docs/P5-placement-spec.md for the algorithm and
+// how the result seeds the starting level, the first mission/arc, and the roadmap copy.
+const PLACEMENT = {
+  intake:[
+    {id:"country", q:"Where are you moving — or have you moved?", opts:["Germany","Austria","Switzerland","Not sure yet"]},
+    {id:"reason",  q:"What's bringing you there?", opts:["A job","Study","Family or partner","Something else"]},
+    {id:"timeline",q:"When?", opts:["I'm already there","Within 3 months","In 3–12 months","Just exploring"]},
+    {id:"goal",    q:"Your main goal right now?", opts:["Everyday survival","Working in German","Passing an exam (telc/Goethe)","Settling in & making friends"]}
+  ],
+  items:[
+    // A1
+    {id:"pl-a1-1", level:"A1", skill:"vocab",   q:"„Guten Morgen!“ sagt man …", opts:["am Morgen","am Abend","in der Nacht"], correctIdx:0},
+    {id:"pl-a1-2", level:"A1", skill:"grammar", q:"Ich ___ Anna und komme aus Italien.", opts:["heiße","heißen","heißt"], correctIdx:0},
+    {id:"pl-a1-3", level:"A1", skill:"vocab",   q:"Was trinkt man morgens oft? — einen …", opts:["Kaffee","Stuhl","Schuh"], correctIdx:0},
+    {id:"pl-a1-4", level:"A1", skill:"grammar", q:"Das ist ___ Apfel.", opts:["ein","eine","einen"], correctIdx:0},
+    // A2
+    {id:"pl-a2-1", level:"A2", skill:"grammar", q:"Gestern ___ ich ins Kino gegangen.", opts:["bin","habe","war"], correctIdx:0},
+    {id:"pl-a2-2", level:"A2", skill:"vocab",   q:"Beim Arzt bekommt man manchmal ein …", opts:["Rezept","Ticket","Konto"], correctIdx:0},
+    {id:"pl-a2-3", level:"A2", skill:"grammar", q:"Ich fahre ___ dem Bus zur Arbeit.", opts:["mit","für","ohne"], correctIdx:0},
+    {id:"pl-a2-4", level:"A2", skill:"reading", q:"„Der Zug fällt heute aus.“ Das bedeutet: Der Zug …", opts:["fährt nicht","ist pünktlich","ist billig"], correctIdx:0},
+    // B1
+    {id:"pl-b1-1", level:"B1", skill:"grammar", q:"Ich suche eine Wohnung, ___ nicht zu teuer ist.", opts:["die","das","wer"], correctIdx:0},
+    {id:"pl-b1-2", level:"B1", skill:"vocab",   q:"Wenn man krank ist, braucht man für die Arbeit eine …", opts:["Krankmeldung","Bewerbung","Rechnung"], correctIdx:0},
+    {id:"pl-b1-3", level:"B1", skill:"grammar", q:"Ich rufe dich an, ___ ich angekommen bin.", opts:["wenn","als","ob"], correctIdx:0},
+    {id:"pl-b1-4", level:"B1", skill:"reading", q:"„Die Kaution beträgt drei Kaltmieten.“ Die Kaution ist …", opts:["eine Sicherheit fürs Wohnen","eine Steuer","ein Trinkgeld"], correctIdx:0},
+    // B2
+    {id:"pl-b2-1", level:"B2", skill:"grammar", q:"___ des schlechten Wetters fand das Fest statt.", opts:["Trotz","Wegen","Während"], correctIdx:0},
+    {id:"pl-b2-2", level:"B2", skill:"grammar", q:"Der Bericht muss bis Freitag ___ werden.", opts:["fertiggestellt","fertigstellen","fertigstellt"], correctIdx:0},
+    {id:"pl-b2-3", level:"B2", skill:"vocab",   q:"„Der Termin lässt sich verschieben.“ Das heißt, man kann ihn …", opts:["auf einen anderen Tag legen","absagen","verlängern"], correctIdx:0},
+    {id:"pl-b2-4", level:"B2", skill:"reading", q:"„Die Produktivität sinkt nicht, sondern steigt sogar.“ Die Produktivität wird …", opts:["höher","niedriger","gleich"], correctIdx:0}
+  ]
+};

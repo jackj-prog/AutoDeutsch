@@ -676,7 +676,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.09";
+const APP_VERSION = "2026.06.20.10";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -5502,12 +5502,12 @@ function App() {
                 </div>
                 <div style={{ fontSize: 11, color: done === total && total ? G : TD, fontWeight: 800 }}>{done}/{total}</div>
               </div>
-              <div style={{ display: "grid", gap: 8 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 8 }}>
                 {ms.map(m => {
                   const st = missionStatus(m.id);
                   const isCur = currentMission && currentMission.id === m.id;
                   return (
-                    <button key={m.id} onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", width: "100%", background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "12px 13px", cursor: "pointer", fontFamily: "inherit" }}>
+                    <button key={m.id} onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", width: "100%", minWidth: 0, background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "12px 13px", cursor: "pointer", fontFamily: "inherit" }}>
                       <span style={{ width: 22, height: 22, borderRadius: 999, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: st === "done" ? G : st === "started" ? `${A}22` : "transparent", border: `1.5px solid ${st === "done" ? G : st === "started" ? A : B}` }}>
                         {st === "done" ? <Icon name="check" size={13} style={{ color: "#0A0A0A" }} /> : null}
                       </span>

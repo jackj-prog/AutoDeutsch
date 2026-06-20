@@ -93,6 +93,8 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/app.jsx | Wire CONFUSIONS + EXAM → confusion-pair drill + exam mode (Train tiles + drill modes), per docs/practice-data-spec.md | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) | src/app.jsx (setup modal), scripts/shoot.mjs | Visual-audit fixes (v.13): Train Articles/Plural tiles drill the right mode (not vocab presets); `.ad-input` min-width:0 (320px submit-button overflow) | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) — content lane | src/data.js (CONFUSIONS, EXAM) | Doubled the weakest areas — CONFUSIONS 20→40, EXAM 12→24 (6 sets/level) for the live drill + exam modes | 2026-06-20 | ✅ done (deployed → main) |
+| Claude (Opus) — content lane | src/data.js (SENTENCES), scripts/validate-data.mjs, docs/ | Journey-linked sentence builders — 33 mission-tagged sentences (29 missions, all 7 arcs) + validator mission-ref check + spec | 2026-06-20 | ✅ done (deployed → main) |
+| _(available to claim)_ — app.jsx owner | src/app.jsx (EXCLUSIVE, mission detail ~5532) | **"Build the sentence" mission step** — `SENTENCES` now carry an optional `mission` tag; add a conditional 4th mission step that loads `SENTENCES.filter(s=>s.mission===m.id)` into the existing sentence-builder. Contract: `docs/journey-sentences-spec.md`. Content lane is unblocked. | — | ⬜ ready to build |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

@@ -75,12 +75,16 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
   });
 
   // ── Sentences ──
+  // Sentences may carry an optional `mission` tag (a MISSIONS id) so the journey can surface a
+  // per-mission "Build the sentence" step — see docs/journey-sentences-spec.md. If present it must resolve.
+  const missionIdSet = new Set((MISSIONS || []).map(m => m && m.id).filter(Boolean));
   const seenS = new Set();
   (SENTENCES || []).forEach((s, i) => {
     if (!s) { err(`SENTENCES[${i}] is a hole`); return; }
     if (!Array.isArray(s.correct) || s.correct.length < 2 || !s.correct.every(isStr)) err(`SENTENCES[${i}]: correct must be an array of words`);
     if (!isStr(s.en) || !isStr(s.rule)) err(`SENTENCES[${i}] "${(s.correct || []).join(" ")}": missing en/rule`);
     if (s.level && !["A1", "A2", "B1", "B2"].includes(s.level)) err(`SENTENCES[${i}] "${(s.correct || []).join(" ")}": bad level "${s.level}"`);
+    if (s.mission && MISSIONS && !missionIdSet.has(s.mission)) err(`SENTENCES[${i}] "${(s.correct || []).join(" ")}": mission "${s.mission}" not found in MISSIONS`);
     const key = s.id || (s.correct || []).join(" ");
     if (seenS.has(key)) err(`SENTENCES: duplicate "${key}"`);
     seenS.add(key);

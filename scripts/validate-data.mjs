@@ -113,6 +113,8 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
   // ── Missions (P0 scenario spine) ──
   if (MISSIONS) {
     const dlgTitles = new Set((DIALOGUES || []).map(d => d.title));
+    const dlgLevel = new Map((DIALOGUES || []).map(d => [d.title, d.level]));
+    const LV = { A1: 1, A2: 2, B1: 3, B2: 4 };
     const arcIds = new Set((MISSION_ARCS || []).map(a => a.id));
     const catNames = new Set(Object.keys(V || {}));
     const seenM = new Set();
@@ -127,6 +129,14 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
       (m.dialogues || []).forEach(t => { if (!dlgTitles.has(t)) err(`MISSIONS "${m.id}": dialogue "${t}" not found`); else dialogueRefsCovered++; });
       (m.cats || []).forEach(c => { if (!catNames.has(c)) err(`MISSIONS "${m.id}": category "${c}" not found`); });
       if (!(m.dialogues || []).length) warn(`MISSIONS "${m.id}": no dialogues`);
+      // Journey integrity: a mission promising a CEFR level should have an entry-point
+      // dialogue at/below that level — otherwise a learner at the mission's level is thrown
+      // into harder content (the "upside-down journey" P1 fixed). Warn, don't block.
+      const dlgLvls = (m.dialogues || []).map(t => LV[dlgLevel.get(t)]).filter(Boolean);
+      if (m.level && dlgLvls.length && Math.min(...dlgLvls) > (LV[m.level] || 0)) {
+        const easiest = Object.keys(LV).find(k => LV[k] === Math.min(...dlgLvls));
+        warn(`MISSIONS "${m.id}": level ${m.level} but its easiest dialogue is ${easiest} — no entry-level content for a learner at ${m.level}`);
+      }
     });
   }
 

@@ -7376,6 +7376,71 @@ const DIALOGUES = [
     {q:"Was sucht die Person?",opts:["Eine Hose","Eine Jacke","Schuhe"],correctIdx:1},
     {q:"Welche Größe braucht sie?",opts:["S","M","L"],correctIdx:1}
   ]},
+  // ── DACH rites (relocation milestones — feed P4) ──
+  {title:"Krankenversicherung anmelden",level:"B1",lines:[
+    {de:"Guten Tag, ich möchte mich bei Ihrer Krankenkasse anmelden.",en:"Hello, I'd like to register with your health insurance fund."},
+    {de:"Gern. Sind Sie gesetzlich oder privat versichert?",en:"Certainly. Are you in statutory or private insurance?"},
+    {de:"Gesetzlich. Ich habe gerade eine neue Stelle angefangen.",en:"Statutory. I've just started a new job."},
+    {de:"Dann brauche ich Ihre Personalien und den Namen Ihres Arbeitgebers.",en:"Then I need your personal details and the name of your employer."},
+    {de:"Hier ist mein Ausweis. Was kostet die Versicherung?",en:"Here is my ID card. What does the insurance cost?"},
+    {de:"Der Beitrag wird automatisch vom Gehalt abgezogen; etwa die Hälfte zahlt der Arbeitgeber.",en:"The contribution is deducted automatically from your salary; the employer pays about half."},
+    {de:"Bekomme ich eine Versichertenkarte?",en:"Do I get an insurance card?"},
+    {de:"Ja, die schicken wir Ihnen in etwa einer Woche per Post zu.",en:"Yes, we'll send it to you by post in about a week."},
+    {de:"Und mein Arbeitgeber braucht eine Bestätigung, oder?",en:"And my employer needs confirmation, right?"},
+    {de:"Genau. Die Mitgliedsbescheinigung stelle ich Ihnen sofort aus.",en:"Exactly. I'll issue the membership certificate for you right away."}
+  ],questions:[
+    {q:"Wie ist die Person versichert?",opts:["Privat","Gesetzlich","Gar nicht"],correctIdx:1},
+    {q:"Wer zahlt einen Teil des Beitrags?",opts:["Der Arbeitgeber","Die Stadt","Niemand"],correctIdx:0},
+    {q:"Was bekommt die Person für den Arbeitgeber?",opts:["Eine Rechnung","Eine Mitgliedsbescheinigung","Einen Arbeitsvertrag"],correctIdx:1}
+  ]},
+  {title:"Der Rundfunkbeitrag",level:"B1",lines:[
+    {de:"Guten Tag, ich habe einen Brief vom Beitragsservice bekommen. Worum geht es?",en:"Hello, I've received a letter from the broadcasting-fee service. What is it about?"},
+    {de:"Das ist der Rundfunkbeitrag. Jeder Haushalt in Deutschland zahlt ihn.",en:"That's the broadcasting fee. Every household in Germany pays it."},
+    {de:"Auch wenn ich keinen Fernseher habe?",en:"Even if I don't have a television?"},
+    {de:"Ja, der Beitrag gilt pro Wohnung, unabhängig von den Geräten.",en:"Yes, the fee applies per flat, regardless of the devices."},
+    {de:"Wie hoch ist er denn?",en:"How much is it, then?"},
+    {de:"Zurzeit sind es 18,36 Euro im Monat, meistens zahlt man alle drei Monate.",en:"Currently it's 18.36 euros a month; most people pay every three months."},
+    {de:"Muss ich mich selbst anmelden?",en:"Do I have to register myself?"},
+    {de:"Wenn Sie den Brief schon haben, müssen Sie nur das Formular ausfüllen.",en:"If you already have the letter, you just need to fill in the form."},
+    {de:"Gibt es Ausnahmen?",en:"Are there any exceptions?"},
+    {de:"Studierende mit BAföG oder Menschen mit bestimmten Sozialleistungen können sich befreien lassen.",en:"Students on a grant, or people on certain benefits, can apply for an exemption."}
+  ],questions:[
+    {q:"Wer zahlt den Rundfunkbeitrag?",opts:["Nur Haushalte mit Fernseher","Jeder Haushalt","Nur Studierende"],correctIdx:1},
+    {q:"Wie hoch ist der Beitrag pro Monat?",opts:["18,36 Euro","5 Euro","50 Euro"],correctIdx:0},
+    {q:"Wer kann sich befreien lassen?",opts:["Alle Mieter","Studierende mit BAföG","Niemand"],correctIdx:1}
+  ]},
+  {title:"Die Mietkaution",level:"B1",lines:[
+    {de:"Bevor Sie einziehen, müssen Sie noch die Kaution überweisen.",en:"Before you move in, you still need to transfer the deposit."},
+    {de:"Wie hoch ist die Kaution?",en:"How high is the deposit?"},
+    {de:"Drei Kaltmieten, also die Miete ohne Nebenkosten.",en:"Three months' base rent — that is, the rent without utilities."},
+    {de:"Kann ich die Kaution in Raten zahlen?",en:"Can I pay the deposit in instalments?"},
+    {de:"Ja, das Gesetz erlaubt bis zu drei Monatsraten.",en:"Yes, the law allows up to three monthly instalments."},
+    {de:"Wo wird das Geld aufbewahrt?",en:"Where is the money kept?"},
+    {de:"Auf einem getrennten Kautionskonto; dort bekommt es sogar etwas Zinsen.",en:"In a separate deposit account, where it even earns a little interest."},
+    {de:"Und wann bekomme ich die Kaution zurück?",en:"And when do I get the deposit back?"},
+    {de:"Nach dem Auszug, wenn die Wohnung in Ordnung ist — meist innerhalb von sechs Monaten.",en:"After you move out, if the flat is in order — usually within six months."},
+    {de:"Gut, dann überweise ich die erste Rate noch heute.",en:"Good, then I'll transfer the first instalment today."}
+  ],questions:[
+    {q:"Wie hoch ist die Kaution?",opts:["Eine Kaltmiete","Drei Kaltmieten","Ein Jahr Miete"],correctIdx:1},
+    {q:"Wie kann man die Kaution zahlen?",opts:["Nur auf einmal","In bis zu drei Raten","Gar nicht"],correctIdx:1},
+    {q:"Wann gibt es die Kaution zurück?",opts:["Nie","Nach dem Auszug, wenn alles in Ordnung ist","Sofort"],correctIdx:1}
+  ]},
+  {title:"Steuer-ID und Lohnsteuer",level:"B1",lines:[
+    {de:"Du hast deine erste Gehaltsabrechnung bekommen — alles klar damit?",en:"You've got your first payslip — is everything clear with it?"},
+    {de:"Nicht ganz. Was ist der Unterschied zwischen brutto und netto?",en:"Not quite. What's the difference between gross and net?"},
+    {de:"Brutto ist dein volles Gehalt, netto das, was nach den Abzügen übrig bleibt.",en:"Gross is your full salary; net is what's left after the deductions."},
+    {de:"Und was wird alles abgezogen?",en:"And what all gets deducted?"},
+    {de:"Lohnsteuer, Sozialabgaben und, wenn du Mitglied bist, die Kirchensteuer.",en:"Wage tax, social-security contributions and, if you're a member, church tax."},
+    {de:"Wovon hängt die Höhe der Lohnsteuer ab?",en:"What does the amount of wage tax depend on?"},
+    {de:"Vor allem von deiner Steuerklasse. Als Single hast du meistens Klasse eins.",en:"Mainly on your tax class. As a single person you usually have class one."},
+    {de:"Wo finde ich eigentlich meine Steuer-Identifikationsnummer?",en:"Where do I actually find my tax identification number?"},
+    {de:"Die steht auf der Abrechnung und in dem Brief vom Finanzamt nach der Anmeldung.",en:"It's on the payslip and in the letter from the tax office after you register your address."},
+    {de:"Danke, jetzt ergibt das alles mehr Sinn.",en:"Thanks — now it all makes more sense."}
+  ],questions:[
+    {q:"Was bedeutet „netto“?",opts:["Das volle Gehalt","Das Gehalt nach den Abzügen","Nur die Steuer"],correctIdx:1},
+    {q:"Wovon hängt die Lohnsteuer vor allem ab?",opts:["Vom Alter","Von der Steuerklasse","Vom Wohnort"],correctIdx:1},
+    {q:"Wo findet man die Steuer-Identifikationsnummer?",opts:["Nur online","Auf der Gehaltsabrechnung","Auf der Versichertenkarte"],correctIdx:1}
+  ]},
 ];
 
 
@@ -7476,6 +7541,8 @@ const MISSIONS = [
   {id:"clothes",     arc:"touchdown", level:"A1", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — einfach","Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
   // The Paperwork
   {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
+  {id:"rundfunk",    arc:"paperwork", level:"B1", cando:"Handle the broadcasting fee (Rundfunkbeitrag / GEZ)", dialogues:["Der Rundfunkbeitrag"], cats:["Admin & Bureaucracy","Media & Communication"]},
+  {id:"steuerid",    arc:"paperwork", level:"B1", cando:"Understand your Steuer-ID and the tax on your payslip", dialogues:["Steuer-ID und Lohnsteuer"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},
   {id:"finanzamt",   arc:"paperwork", level:"B2", cando:"Handle a call to the Finanzamt", dialogues:["Anruf beim Finanzamt"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"strom",       arc:"paperwork", level:"B2", cando:"Set up your electricity", dialogues:["Strom anmelden"], cats:["Admin & Bureaucracy","Housing & Renting"]},
@@ -7483,6 +7550,7 @@ const MISSIONS = [
   // A Roof
   {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
   {id:"landlord",    arc:"roof", level:"A2", cando:"Deal with your landlord", dialogues:["Reporting an issue to a landlord","Calling the landlord"], cats:["Housing & Renting"]},
+  {id:"kaution",     arc:"roof", level:"B1", cando:"Sort out the rental deposit (Mietkaution)", dialogues:["Die Mietkaution"], cats:["Housing & Renting","Banking & Finance"]},
   {id:"contract",    arc:"roof", level:"B2", cando:"Understand a rental contract", dialogues:["Discussing a rental contract"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
   // Money & Connectivity
@@ -7493,6 +7561,7 @@ const MISSIONS = [
   {id:"carworkshop", arc:"money", level:"B2", cando:"Deal with a car workshop", dialogues:["At the car workshop"], cats:["Driving & Traffic"]},
   {id:"complaint",   arc:"money", level:"B2", cando:"Make a complaint and cancel a contract", dialogues:["Making a complaint","Cancelling a gym contract"], cats:["Admin & Bureaucracy"]},
   // Staying Well
+  {id:"krankenkasse",arc:"health", level:"B1", cando:"Register with a health-insurance fund (Krankenkasse)", dialogues:["Krankenversicherung anmelden"], cats:["Health & Doctor","Admin & Bureaucracy"]},
   {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
   {id:"pharmacy",    arc:"health", level:"B1", cando:"Get what you need at the pharmacy", dialogues:["In der Apotheke","At the pharmacy"], cats:["Health & Doctor"]},
   {id:"results",     arc:"health", level:"B2", cando:"Discuss test results with a doctor", dialogues:["Discussing test results"], cats:["Health & Doctor","Body & Health"]},

@@ -44,6 +44,8 @@ the "journey" feeling early (P0) and de-risk the core daily-loop change (P3) aft
 **Quick wins extractable early (don't need the full phase):** ✅ the demoralising-math fixes (denominator + rank-up wall) shipped v2026.06.20.06; a single "current mission" card on Home can ship with
 P0; exam-readiness signals are near-free given the telc-validated vocab.
 
+**P4 content ready (content lane, 2026-06-20):** the named DACH bureaucratic rites — **Krankenversicherung**, **Rundfunkbeitrag (GEZ)**, **Mietkaution**, **Steuer-ID/Lohnsteuer** — are now authored as B1 scenarios + missions in `data.js` (`krankenkasse`/`rundfunk`/`kaution`/`steuerid`), so P4's milestone/celebration UI can reference real, levelled content. Validator gained an entry-level-coverage warning.
+
 **Challenged assumptions (audit verdicts):** vocabulary should be *fuel*, not the progression unit;
 chapters should become *named, themed missions* (or go); CEFR should be *can-do + exam-readiness*, not a
 word-bucket; Home should lead a *journey*, not expose features; Progress should measure *ability*, not

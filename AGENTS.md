@@ -60,6 +60,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/app.jsx | P4a — capability rewards (mission-complete celebration) + identity/role progression | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) | src/app.jsx | P3a — Home forward-momentum (mission next-step + status chip; goal engine untouched) | 2026-06-20 | ✅ done (app.jsx released) |
 | Claude (Opus) | src/app.jsx | Fix: Scenarios screen horizontal overflow (mission-card grid blow-out) | 2026-06-20 | ✅ done (app.jsx released) |
+| Claude (Opus) — content lane | src/data.js (DIALOGUES, MISSIONS), scripts/validate-data.mjs | DACH-rite scenarios (Krankenversicherung, Rundfunkbeitrag/GEZ, Mietkaution, Steuer-ID/Lohnsteuer) + validator entry-level check — feeds P4 milestones | 2026-06-20 | 🔴 DEPLOYING d3ac6b7 |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

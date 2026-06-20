@@ -697,7 +697,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.18";
+const APP_VERSION = "2026.06.20.19";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2639,7 +2639,7 @@ function App() {
       return merged;
     });
   }, []);
-  // Launch a mission step through an existing engine; mark "learned"/"spoke" on results.
+  // Launch a mission step through an existing engine; mark "learned"/"spoke"/"built" on results.
   const launchMissionStep = (m, step) => {
     if (step === "listened") {
       const dlgs = missionDialogues(m);
@@ -2650,9 +2650,24 @@ function App() {
       setScreen("dialogues"); setTStart(Date.now());
       return;
     }
-    const cat = m.cats[0];
+    if (step === "built") {
+      // Bonus step: build the exact sentences from this scenario (mission-tagged SENTENCES).
+      const ss = SENTENCES.filter(s => s.mission === m.id);
+      if (!ss.length) return;
+      startSession(m.cats[0], "sentence", ss.length, { level: m.level, pool: ss, poolLabel: "Build · " + m.cando });
+      missionReturnRef.current = { id: m.id, step };
+      return;
+    }
+    // Learn / Speak: drill the mission's EXACT scenario words (the same set the scene plays and
+    // the questions test), not 12 random words from a broad category. Falls back to the category.
     const sessMode = step === "spoke" ? "speaking" : "vocab";
-    startSession(cat, sessMode, 12, { level: m.level });
+    const want = MISSION_VOCAB[m.id];
+    const pool = want ? allVocab().filter(w => want.includes(w.de)) : null;
+    if (pool && pool.length >= 5) {
+      startSession(m.cats[0], sessMode, pool.length, { level: m.level, pool, poolLabel: m.cando });
+    } else {
+      startSession(m.cats[0], sessMode, 12, { level: m.level }); // fallback (broad category)
+    }
     missionReturnRef.current = { id: m.id, step }; // startSession cleared it; re-set so results credits it
   };
   const openMission = (id) => { setActiveMission(id); setScreen("mission"); };
@@ -2679,8 +2694,10 @@ function App() {
 
     if (m === "vocab" || m === "production" || m === "dictation" || m === "speaking") {
       const isAll = cat === "__all__";
-      setCategory(isAll ? "All Categories" : cat);
-      const rawPool = isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat }));
+      // opts.pool = an explicit card set (e.g. a mission's exact scenario words) — overrides the
+      // category pool but keeps all the SRS seeding/weighting below. opts.poolLabel names it.
+      setCategory(opts.poolLabel || (isAll ? "All Categories" : cat));
+      const rawPool = opts.pool || (isAll ? allVocab() : V[cat].map(w => ({ ...w, _cat: cat })));
       // Presets pass explicit diff/level so a one-tap start isn't raced by async setState.
       const pool = filterPool(rawPool, opts.level);
       const pk = c => `${m}::${c._cat}::${c.de}`;
@@ -2785,14 +2802,19 @@ function App() {
       }));
       setScreen("drill"); setTStart(Date.now());
     } else if (m === "sentence") {
-      setCategory("Sentence Builder");
-      let sordered;
-      if (diffBand === "all") sordered = sh([...SENTENCES]);
+      setCategory(opts.poolLabel || "Sentence Builder");
+      let pool;
+      if (opts.pool) pool = sh([...opts.pool]); // a mission's tagged sentences — drill them all
       else {
-        const hit = sh(SENTENCES.filter(s => inBand(s, diffBand)));
-        sordered = hit.length >= Math.min(count, SENTENCES.length) ? hit : [...hit, ...sh(SENTENCES.filter(s => !inBand(s, diffBand)))];
+        let sordered;
+        if (diffBand === "all") sordered = sh([...SENTENCES]);
+        else {
+          const hit = sh(SENTENCES.filter(s => inBand(s, diffBand)));
+          sordered = hit.length >= Math.min(count, SENTENCES.length) ? hit : [...hit, ...sh(SENTENCES.filter(s => !inBand(s, diffBand)))];
+        }
+        pool = sordered.slice(0, Math.min(count, SENTENCES.length));
       }
-      const pool = sordered.slice(0, Math.min(count, SENTENCES.length));
+      if (guardEmpty(pool)) return;
       setCards(pool); setScreen("sentence");
       const first = pool[0]; setSbPool(sh([...first.correct])); setSbPicked([]); setSbChecked(false); setSbCorrect(false);
       setTStart(Date.now());
@@ -5793,10 +5815,14 @@ function App() {
         const m = missionById(activeMission); if (!m) return null;
         const arc = MISSION_ARCS.find(a => a.id === m.arc);
         const done = missionStatus(m.id) === "done";
+        const missionWords = MISSION_VOCAB[m.id];
+        const missionSentences = SENTENCES.filter(s => s.mission === m.id);
         const steps = [
-          { key: "learned", label: "Learn the words", sub: m.cats.join(" · "), icon: "layers" },
+          { key: "learned", label: "Learn the words", sub: missionWords && missionWords.length >= 5 ? `${missionWords.length} key words` : m.cats.join(" · "), icon: "layers" },
           { key: "listened", label: "Listen to the scene", sub: `${missionDialogues(m).length} dialogue${missionDialogues(m).length > 1 ? "s" : ""}`, icon: "headphones" },
           { key: "spoke", label: "Say it out loud", sub: "Speaking practice", icon: "mic" },
+          // Bonus 4th step (only when the scenario has tagged sentences) — doesn't gate completion.
+          ...(missionSentences.length ? [{ key: "built", label: "Build the sentence", sub: `${missionSentences.length} sentence${missionSentences.length > 1 ? "s" : ""} · bonus`, icon: "grid" }] : []),
         ];
         return (
           <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 24px", minHeight: DVH, overflowY: "auto" }}>

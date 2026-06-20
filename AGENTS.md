@@ -58,7 +58,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/data.js (DIALOGUES, MISSIONS) | P1 — A1 survival tier (12 A1 dialogues; Touchdown missions → A1) | 2026-06-20 | ✅ done |
 | Claude (Opus) | src/app.jsx (stats/Progress screen) | P2 — can-do CEFR + capability Progress (per docs/P2-capability-spec.md) | 2026-06-20 | ✅ done |
 | Claude (Opus) | src/app.jsx | P4a — capability rewards (mission-complete celebration) + identity/role progression | 2026-06-20 | ✅ done (app.jsx released) |
-| Claude (Opus) | src/app.jsx (EXCLUSIVE) | P3a — Home forward-momentum (mission next-step + status chip; goal engine untouched) | 2026-06-20 | 🟡 in progress |
+| Claude (Opus) | src/app.jsx | P3a — Home forward-momentum (mission next-step + status chip; goal engine untouched) | 2026-06-20 | ✅ done (app.jsx released) |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

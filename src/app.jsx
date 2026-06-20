@@ -676,7 +676,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.08";
+const APP_VERSION = "2026.06.20.09";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4241,19 +4241,20 @@ function App() {
         {currentMission && (() => {
           const m = currentMission;
           const arc = MISSION_ARCS.find(a => a.id === m.arc);
-          const stepsDone = ["learned", "listened", "spoke"].filter(s => missionStepDone(m.id, s)).length;
+          const STEP_LABELS = { learned: "Learn the words", listened: "Listen to the scene", spoke: "Say it out loud" };
+          const nextStep = ["learned", "listened", "spoke"].find(s => !missionStepDone(m.id, s)) || "learned";
           return (
             <>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", margin: "2px 2px 10px" }}>
-                <span style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Your mission</span>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "2px 2px 10px" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, fontWeight: 800, color: A, letterSpacing: 0.6, textTransform: "uppercase" }}><Icon name={capability.role.icon} size={12} style={{ color: A }} /> {capability.role.name}</span>
                 <button type="button" onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: "none", color: A, fontSize: 11, fontWeight: 800, cursor: "pointer", padding: 0 }}>All scenarios →</button>
               </div>
               <button type="button" onClick={() => openMission(m.id)} style={{ width: "100%", textAlign: "left", marginBottom: 20, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 16, padding: "14px 15px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 13 }}>
                 <IconBadge name={arc ? arc.icon : "map"} size={40} color={A} bg={`${A}12`} />
                 <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase" }}>{arc ? arc.title : ""}</span>
+                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase" }}>{arc ? arc.title : "Your mission"} · {m.level}</span>
                   <span style={{ display: "block", fontSize: 15, fontWeight: 800, color: T, lineHeight: 1.2 }}>{m.cando}</span>
-                  <span style={{ display: "block", fontSize: 11, color: A, fontWeight: 700, marginTop: 3 }}>{stepsDone}/3 steps · {m.level}</span>
+                  <span style={{ display: "block", fontSize: 11, color: A, fontWeight: 700, marginTop: 3 }}>Next: {STEP_LABELS[nextStep]} →</span>
                 </span>
                 <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />
               </button>

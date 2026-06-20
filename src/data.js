@@ -7891,7 +7891,29 @@ const IMPERATIVES = [
   {base:"sich freuen",en:"be happy",du:"freu dich",ihr:"freut euch",sie:"freuen Sie sich",hint:"reflexive: dich / euch / sich",ex:"Freu dich doch!"},
   {base:"sich entspannen",en:"relax",du:"entspann dich",ihr:"entspannt euch",sie:"entspannen Sie sich",hint:"reflexive: dich / euch / sich",ex:"Entspann dich mal!"},
   {base:"kommen",en:"come",du:"komm",ihr:"kommt",sie:"kommen Sie",hint:"regular, frequent",ex:"Komm bitte her!"},
-  {base:"gehen",en:"go",du:"geh",ihr:"geht",sie:"gehen Sie",hint:"regular, frequent",ex:"Geh nach Hause!"}
+  {base:"gehen",en:"go",du:"geh",ihr:"geht",sie:"gehen Sie",hint:"regular, frequent",ex:"Geh nach Hause!"},
+  {base:"ausfüllen",en:"fill out",du:"füll aus",ihr:"füllt aus",sie:"füllen Sie aus",hint:"separable: aus goes to the end",ex:"Füllen Sie bitte das Formular aus!"},
+  {base:"unterschreiben",en:"sign",du:"unterschreib",ihr:"unterschreibt",sie:"unterschreiben Sie",hint:"inseparable (unter- stays)",ex:"Unterschreiben Sie bitte hier unten."},
+  {base:"einreichen",en:"submit / hand in",du:"reich ein",ihr:"reicht ein",sie:"reichen Sie ein",hint:"separable",ex:"Reichen Sie die Unterlagen bis Freitag ein."},
+  {base:"abgeben",en:"hand in",du:"gib ab",ihr:"gebt ab",sie:"geben Sie ab",hint:"separable; geben → du gibst",ex:"Geben Sie das Formular am Schalter ab."},
+  {base:"ankreuzen",en:"tick / check a box",du:"kreuz an",ihr:"kreuzt an",sie:"kreuzen Sie an",hint:"separable",ex:"Kreuzen Sie das richtige Feld an."},
+  {base:"buchstabieren",en:"spell",du:"buchstabier",ihr:"buchstabiert",sie:"buchstabieren Sie",hint:"-ieren verb (no ge- in Perfekt)",ex:"Buchstabieren Sie bitte Ihren Namen."},
+  {base:"wiederholen",en:"repeat",du:"wiederhol",ihr:"wiederholt",sie:"wiederholen Sie",hint:"inseparable here",ex:"Wiederholen Sie das bitte langsam."},
+  {base:"entschuldigen",en:"excuse",du:"entschuldige",ihr:"entschuldigt",sie:"entschuldigen Sie",hint:"polite opener: Entschuldigen Sie!",ex:"Entschuldigen Sie, wo ist der Ausgang?"},
+  {base:"folgen",en:"follow",du:"folg",ihr:"folgt",sie:"folgen Sie",hint:"+ dative",ex:"Folgen Sie mir bitte."},
+  {base:"umsteigen",en:"change (trains)",du:"steig um",ihr:"steigt um",sie:"steigen Sie um",hint:"separable",ex:"Steigen Sie in Köln um."},
+  {base:"aufschreiben",en:"write down",du:"schreib auf",ihr:"schreibt auf",sie:"schreiben Sie auf",hint:"separable",ex:"Schreiben Sie die Nummer auf."},
+  {base:"durchlesen",en:"read through",du:"lies durch",ihr:"lest durch",sie:"lesen Sie durch",hint:"separable; lesen → du liest",ex:"Lesen Sie den Vertrag genau durch."},
+  {base:"erklären",en:"explain",du:"erklär",ihr:"erklärt",sie:"erklären Sie",hint:"inseparable",ex:"Erklären Sie mir das bitte."},
+  {base:"vorbeikommen",en:"drop by",du:"komm vorbei",ihr:"kommt vorbei",sie:"kommen Sie vorbei",hint:"separable",ex:"Kommen Sie morgen vorbei."},
+  {base:"mitnehmen",en:"take along",du:"nimm mit",ihr:"nehmt mit",sie:"nehmen Sie mit",hint:"separable; nehmen → du nimmst",ex:"Nehmen Sie Ihren Ausweis mit."},
+  {base:"einzahlen",en:"pay in / deposit",du:"zahl ein",ihr:"zahlt ein",sie:"zahlen Sie ein",hint:"separable",ex:"Zahlen Sie die Kaution ein."},
+  {base:"überweisen",en:"transfer (money)",du:"überweis",ihr:"überweist",sie:"überweisen Sie",hint:"inseparable",ex:"Überweisen Sie die Miete bis zum Ersten."},
+  {base:"melden",en:"report / get in touch",du:"meld dich",ihr:"meldet euch",sie:"melden Sie sich",hint:"reflexive: dich / euch / sich",ex:"Melden Sie sich beim Bürgeramt."},
+  {base:"vorzeigen",en:"show / present",du:"zeig vor",ihr:"zeigt vor",sie:"zeigen Sie vor",hint:"separable",ex:"Zeigen Sie Ihren Ausweis vor."},
+  {base:"anstellen",en:"queue up",du:"stell dich an",ihr:"stellt euch an",sie:"stellen Sie sich an",hint:"reflexive + separable",ex:"Stellen Sie sich bitte hinten an."},
+  {base:"drücken",en:"press / push",du:"drück",ihr:"drückt",sie:"drücken Sie",hint:"regular",ex:"Drücken Sie den grünen Knopf."},
+  {base:"wenden",en:"turn to / contact",du:"wende dich",ihr:"wendet euch",sie:"wenden Sie sich",hint:"reflexive; sich wenden an + Akk.",ex:"Wenden Sie sich an die Hotline."}
 ];
 
 // ── P0: Scenario / Mission spine (relocation journey) ──────────────────────────

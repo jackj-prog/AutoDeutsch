@@ -678,7 +678,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.12";
+const APP_VERSION = "2026.06.20.13";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3525,14 +3525,19 @@ function App() {
     );
   };
 
-  const maxC = setupCat === "__all__" ? totalW : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? 30 : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__confusion__" ? 15 : setupCat === "__exam__" ? 15 : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
+  const maxC = setupCat === "__all__" ? (setupMode === "article" ? Math.max(nouns.length, 5) : setupMode === "plural" ? Math.max(pluralNouns.length, 5) : totalW) : setupCat === "__grammar__" ? CLOZE.length : setupCat === "__verb__" ? 30 : setupCat === "__sentence__" ? SENTENCES.length : setupCat === "__imperativ__" ? IMPERATIVES.length : setupCat === "__listening__" ? DIALOGUES.length : setupCat === "__confusion__" ? 15 : setupCat === "__exam__" ? 15 : setupCat === "__weak__" ? Math.max(weakCards.size, 1) : (V[setupCat]?.length || nouns.length);
   const hasNouns = setupCat && !["__all__", "__grammar__", "__verb__", "__sentence__", "__weak__"].includes(setupCat) && nouns.some(n => n.cat === setupCat);
   const setupSpecialCats = ["__grammar__", "__verb__", "__sentence__", "__imperativ__", "__listening__", "__confusion__", "__exam__", "__weak__"];
   const setupIsLibrary = setupCat && !setupSpecialCats.includes(setupCat);
+  // The Train-tab Articles/Plural drills run over the whole noun pool, so they use cat
+  // "__all__" — which the setup would otherwise treat as a *library* vocab session (showing
+  // Recall/Speak/Produce presets that ignore the drill mode). Flag that case so the setup
+  // shows the drill's own Start button instead of the mode-discarding presets.
+  const setupIsGrammarDrill = setupCat === "__all__" && (setupMode === "article" || setupMode === "plural");
   const setupCanUseArticles = hasNouns || setupCat === "__all__";
   const setupCanUsePlural = pluralNouns.length > 0 && (setupCat === "__all__" || (setupIsLibrary && pluralNouns.some(n => n.cat === setupCat)));
   const setupMinC = Math.min(5, maxC);
-  const setupTitle = setupCat === "__all__" ? "All Categories" : setupCat === "__grammar__" ? "Grammar Cloze" : setupCat === "__verb__" ? "Verb Trainer" : setupCat === "__sentence__" ? "Sentence Builder" : setupCat === "__imperativ__" ? "Imperative" : setupCat === "__listening__" ? "Listening Practice" : setupCat === "__confusion__" ? "Confusion Pairs" : setupCat === "__exam__" ? "Exam Practice" : setupCat === "__weak__" ? "Weak Areas" : setupCat;
+  const setupTitle = setupCat === "__all__" ? (setupMode === "article" ? "Article Drill" : setupMode === "plural" ? "Plural Drill" : "All Categories") : setupCat === "__grammar__" ? "Grammar Cloze" : setupCat === "__verb__" ? "Verb Trainer" : setupCat === "__sentence__" ? "Sentence Builder" : setupCat === "__imperativ__" ? "Imperative" : setupCat === "__listening__" ? "Listening Practice" : setupCat === "__confusion__" ? "Confusion Pairs" : setupCat === "__exam__" ? "Exam Practice" : setupCat === "__weak__" ? "Weak Areas" : setupCat;
   const stepSessionLength = delta => setSessLen(n => Math.max(setupMinC, Math.min(maxC, n + delta)));
 
   const ProgressHub = () => {
@@ -3681,7 +3686,9 @@ function App() {
         .ad-card-enter.is-out { opacity: 0; transform: translateX(26px); }
         .ad-card-enter.is-fly { opacity: 0; transform: translateX(118%) rotate(5deg); transition: opacity .14s ease-in, transform .3s cubic-bezier(.4,0,.7,.2); }
         .ad-spark { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ad-draw 950ms ease-out forwards; }
-        .ad-input { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+        /* min-width:0 lets the input shrink inside its flex row so the adjacent submit
+           button can't be pushed past the viewport edge on narrow (≤320px) phones. */
+        .ad-input { min-width: 0; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
         .ad-input:focus { outline: none; border-color: #FFCC00 !important; box-shadow: 0 0 0 3px rgba(255,204,0,.16); background: #1d1d1d; }
         .ad-uk:active { transform: translateY(1px) scale(.95); border-color: #FFCC00; }
         .ad-elev { box-shadow: 0 20px 44px -24px rgba(0,0,0,.85), 0 0 30px -16px rgba(255,204,0,.16); }
@@ -3864,9 +3871,9 @@ function App() {
             <div style={{ fontSize: 10, color: R, fontWeight: 800, letterSpacing: 3.2, textTransform: "uppercase", marginBottom: 6 }}>Setup</div>
             <h3 style={{ fontFamily: FN, fontSize: 20, margin: "0 0 4px", fontWeight: 800, lineHeight: 1.18 }}>{setupTitle}</h3>
             <div style={{ fontSize: 11, color: TD, minHeight: 15 }}>
-              {setupCat === "__imperativ__" ? "Imperativ" : setupCat === "__listening__" ? "Hör-Training" : setupMode === "production" ? "German recall and spelling" : "Choose the session shape"}
+              {setupIsGrammarDrill ? (setupMode === "article" ? "der · die · das — across every noun" : "Build the plural of any noun") : setupCat === "__imperativ__" ? "Imperativ" : setupCat === "__listening__" ? "Hör-Training" : setupMode === "production" ? "German recall and spelling" : "Choose the session shape"}
             </div>
-            {setupIsLibrary && (() => {
+            {setupIsLibrary && !setupIsGrammarDrill && (() => {
               const cs = getCatStats(setupCat);
               return cs.total > 0 && (
                 <div style={{ display: "flex", gap: 14, marginTop: 9, paddingTop: 9, borderTop: `1px solid ${B}66` }}>
@@ -3889,7 +3896,7 @@ function App() {
           <div style={{ padding: "0 18px 14px", overflowY: "auto" }}>
             {/* Presets: three one-tap session shapes. The full configurator lives under Advanced
                 so a session starts in one tap instead of after five separate choices. */}
-            {setupIsLibrary && (
+            {setupIsLibrary && !setupIsGrammarDrill && (
               <div style={{ marginBottom: 14 }}>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8 }}>
                   {SESSION_PRESETS.map(p => {
@@ -4072,7 +4079,7 @@ function App() {
               </div>
             )}
 
-            {(!setupIsLibrary || showAdvanced) && (<>
+            {(!setupIsLibrary || showAdvanced || setupIsGrammarDrill) && (<>
             <div style={{ marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 9 }}>
                 <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8 }}>Cards</div>
@@ -4096,7 +4103,7 @@ function App() {
             </>)}
           </div>
 
-          {(!setupIsLibrary || showAdvanced) && <div style={{ padding: "12px 18px max(18px, env(safe-area-inset-bottom))", borderTop: `1px solid ${B}`, background: S, boxShadow: "0 -14px 22px rgba(0,0,0,0.28)" }}>
+          {(!setupIsLibrary || showAdvanced || setupIsGrammarDrill) && <div style={{ padding: "12px 18px max(18px, env(safe-area-inset-bottom))", borderTop: `1px solid ${B}`, background: S, boxShadow: "0 -14px 22px rgba(0,0,0,0.28)" }}>
             <div style={{ fontSize: 10, color: TD, marginBottom: 10, textAlign: "center" }}>Failed cards repeat until cleared.</div>
             <Btn bg={A} color="#0A0A0A" onClick={() => { const m = setupCat === "__grammar__" ? "cloze" : setupCat === "__verb__" ? "verb" : setupCat === "__sentence__" ? "sentence" : setupCat === "__imperativ__" ? "imperativ" : setupCat === "__listening__" ? "listening" : setupCat === "__confusion__" ? "confusion" : setupCat === "__exam__" ? "exam" : setupMode; startSession(setupCat, m, sessLen); }} style={{ fontFamily: FN, fontSize: 16 }}>Start session</Btn>
           </div>}

@@ -430,6 +430,15 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 600));
     return;
   }
+  if (screen === "drillsetup") {
+    // The drill setup modal itself (before starting) — verifies the Articles/Plural tiles open
+    // a drill setup with a Start button, not the mode-discarding vocab presets.
+    await clickText(page, "Train");
+    await new Promise(r => setTimeout(r, 300));
+    await clickText(page, process.env.SHOOT_DRILL || "Articles");
+    await new Promise(r => setTimeout(r, 400));
+    return;
+  }
   if (screen === "weakspots") {
     // Home "Weak spots" card → startWeakReview() begins a weak-words session in one tap.
     await clickText(page, "Weak spots");

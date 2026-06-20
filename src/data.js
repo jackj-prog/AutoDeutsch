@@ -8119,6 +8119,206 @@ const CONFUSIONS = [
       {q:"Auf der Konferenz möchte ich neue Leute ___.", correct:"b", answer:"kennenlernen", en:"At the conference I want to meet new people.", why:"meeting people for the first time → kennenlernen"},
       {q:"Ich ___ meine alten Schulfreunde jedes Jahr.", correct:"a", answer:"treffe", en:"I meet my old school friends every year.", why:"meeting known people → treffen"},
       {q:"Wie habt ihr euch eigentlich ___?", correct:"b", answer:"kennengelernt", en:"How did you two actually meet?", why:"first getting to know each other → kennenlernen"}
+    ]},
+  {id:"wann-wenn", level:"A2",
+    a:{de:"wann", en:"when (in a question or indirect question)"},
+    b:{de:"wenn", en:"when / whenever / if (conjunction — condition or repeated time)"},
+    rule:"wann asks or reports a time (a question word: Wann …? / Ich weiß nicht, wann …); wenn introduces a condition or a repeated/future time (Wenn es regnet, …).",
+    items:[
+      {q:"___ kommt der nächste Bus?", correct:"a", answer:"Wann", en:"When does the next bus come?", why:"a direct question about time → wann"},
+      {q:"Ruf mich an, ___ du Zeit hast.", correct:"b", answer:"wenn", en:"Call me when you have time.", why:"a condition → wenn"},
+      {q:"Weißt du, ___ der Film anfängt?", correct:"a", answer:"wann", en:"Do you know when the film starts?", why:"indirect question about time → wann"},
+      {q:"Immer ___ ich ihn sehe, lacht er.", correct:"b", answer:"wenn", en:"Whenever I see him, he laughs.", why:"a repeated time → wenn"}
+    ]},
+  {id:"ob-wenn", level:"B1",
+    a:{de:"ob", en:"whether / if (introduces an open yes/no question)"},
+    b:{de:"wenn", en:"if / when (introduces a condition)"},
+    rule:"ob = whether (an open yes/no question: Ich frage mich, ob …); wenn = if (a condition with a consequence: Wenn …, dann …).",
+    items:[
+      {q:"Ich weiß nicht, ___ er heute kommt.", correct:"a", answer:"ob", en:"I don't know whether he's coming today.", why:"an open yes/no question → ob"},
+      {q:"___ es morgen schneit, bleibe ich zu Hause.", correct:"b", answer:"Wenn", en:"If it snows tomorrow, I'll stay home.", why:"a condition → wenn"},
+      {q:"Sie fragt, ___ der Laden noch offen ist.", correct:"a", answer:"ob", en:"She's asking whether the shop is still open.", why:"indirect yes/no question → ob"},
+      {q:"Ich helfe dir, ___ du mich brauchst.", correct:"b", answer:"wenn", en:"I'll help you if you need me.", why:"a condition → wenn"}
+    ]},
+  {id:"als-wie", level:"A2",
+    a:{de:"als", en:"than (after a comparative — inequality)"},
+    b:{de:"wie", en:"as / like (equality: so … wie)"},
+    rule:"Use als after a comparative for inequality (größer als); use wie for equality (so groß wie) or 'like'.",
+    items:[
+      {q:"Er ist größer ___ ich.", correct:"a", answer:"als", en:"He is taller than me.", why:"comparative (taller) → als"},
+      {q:"Sie ist so alt ___ ich.", correct:"b", answer:"wie", en:"She is as old as me.", why:"equality (so … wie) → wie"},
+      {q:"Heute ist es kälter ___ gestern.", correct:"a", answer:"als", en:"Today it's colder than yesterday.", why:"comparative → als"},
+      {q:"Das schmeckt ___ Honig.", correct:"b", answer:"wie", en:"That tastes like honey.", why:"'like' (resemblance) → wie"}
+    ]},
+  {id:"schon-noch", level:"A2",
+    a:{de:"schon", en:"already"},
+    b:{de:"noch", en:"still / (with a negation) not yet"},
+    rule:"schon = already (it has happened); noch = still (it continues), or with a negation 'not yet' (noch nicht).",
+    items:[
+      {q:"Bist du ___ fertig?", correct:"a", answer:"schon", en:"Are you already done?", why:"already? → schon"},
+      {q:"Ich wohne ___ in Berlin.", correct:"b", answer:"noch", en:"I still live in Berlin.", why:"still ongoing → noch"},
+      {q:"Wir haben ___ gegessen, danke.", correct:"a", answer:"schon", en:"We've already eaten, thanks.", why:"already happened → schon"},
+      {q:"Er ist ___ nicht angekommen.", correct:"b", answer:"noch", en:"He hasn't arrived yet.", why:"not yet (noch nicht) → noch"}
+    ]},
+  {id:"viel-viele", level:"A1",
+    a:{de:"viel", en:"much / a lot of (uncountable, singular)"},
+    b:{de:"viele", en:"many (countable plural)"},
+    rule:"viel with uncountable singular nouns (viel Zeit, viel Geld); viele with countable plurals (viele Leute, viele Bücher).",
+    items:[
+      {q:"Ich habe nicht ___ Zeit.", correct:"a", answer:"viel", en:"I don't have much time.", why:"Zeit is uncountable → viel"},
+      {q:"Auf der Party waren ___ Leute.", correct:"b", answer:"viele", en:"There were many people at the party.", why:"Leute is a countable plural → viele"},
+      {q:"Er trinkt zu ___ Kaffee.", correct:"a", answer:"viel", en:"He drinks too much coffee.", why:"Kaffee uncountable → viel"},
+      {q:"Sie hat ___ Freunde.", correct:"b", answer:"viele", en:"She has many friends.", why:"Freunde is plural → viele"}
+    ]},
+  {id:"wissen-koennen", level:"A2",
+    a:{de:"wissen", en:"to know (a fact)"},
+    b:{de:"können", en:"can / to be able to (a skill)"},
+    rule:"wissen for facts/information (Ich weiß die Antwort); können for abilities/skills (Ich kann schwimmen).",
+    items:[
+      {q:"Ich ___ die Antwort nicht.", correct:"a", answer:"weiß", en:"I don't know the answer.", why:"a fact → wissen"},
+      {q:"___ du Klavier spielen?", correct:"b", answer:"Kannst", en:"Can you play the piano?", why:"a skill → können"},
+      {q:"___ du, wo er wohnt?", correct:"a", answer:"Weißt", en:"Do you know where he lives?", why:"a fact → wissen"},
+      {q:"Sie ___ sehr gut kochen.", correct:"b", answer:"kann", en:"She can cook very well.", why:"an ability → können"}
+    ]},
+  {id:"duerfen-koennen", level:"A2",
+    a:{de:"dürfen", en:"may / to be allowed to (permission)"},
+    b:{de:"können", en:"can / to be able to (ability or possibility)"},
+    rule:"dürfen = permission (Darf ich …? = am I allowed?); können = ability/possibility (Kann ich …? = am I able / is it possible?).",
+    items:[
+      {q:"___ ich hier rauchen? — Nein, das ist verboten.", correct:"a", answer:"Darf", en:"May I smoke here? — No, it's forbidden.", why:"asking permission → dürfen"},
+      {q:"___ du mir helfen?", correct:"b", answer:"Kannst", en:"Can you help me?", why:"ability → können"},
+      {q:"Kinder ___ diesen Film nicht sehen.", correct:"a", answer:"dürfen", en:"Children aren't allowed to watch this film.", why:"not allowed → dürfen"},
+      {q:"Ich ___ leider nicht schwimmen.", correct:"b", answer:"kann", en:"Unfortunately I can't swim.", why:"ability → können"}
+    ]},
+  {id:"muessen-sollen", level:"A2",
+    a:{de:"müssen", en:"must / to have to (necessity)"},
+    b:{de:"sollen", en:"should / to be supposed to (someone else's instruction or advice)"},
+    rule:"müssen = necessity/obligation (Ich muss arbeiten); sollen = a should/expectation from someone else (Der Arzt sagt, ich soll mehr schlafen).",
+    items:[
+      {q:"Ich ___ heute lange arbeiten.", correct:"a", answer:"muss", en:"I have to work late today.", why:"necessity → müssen"},
+      {q:"Du ___ mehr Wasser trinken, sagt der Arzt.", correct:"b", answer:"sollst", en:"You should drink more water, the doctor says.", why:"advice from someone → sollen"},
+      {q:"Wir ___ den Zug nehmen, sonst kommen wir zu spät.", correct:"a", answer:"müssen", en:"We have to take the train, otherwise we'll be late.", why:"necessity → müssen"},
+      {q:"Die Chefin sagt, wir ___ pünktlich sein.", correct:"b", answer:"sollen", en:"The boss says we should be on time.", why:"an instruction → sollen"}
+    ]},
+  {id:"bevor-vorher", level:"B1",
+    a:{de:"bevor", en:"before (conjunction — joins two clauses)"},
+    b:{de:"vorher", en:"beforehand / before that (adverb)"},
+    rule:"bevor connects two clauses (Bevor ich gehe, …); vorher is an adverb meaning 'beforehand' (Ich rufe vorher an).",
+    items:[
+      {q:"___ ich schlafen gehe, lese ich noch.", correct:"a", answer:"Bevor", en:"Before I go to sleep, I read a bit.", why:"joins two clauses → bevor"},
+      {q:"Wir essen um acht; ___ trinken wir etwas.", correct:"b", answer:"vorher", en:"We eat at eight; before that we have a drink.", why:"adverb 'beforehand' → vorher"},
+      {q:"Putz dir die Zähne, ___ du ins Bett gehst.", correct:"a", answer:"bevor", en:"Brush your teeth before you go to bed.", why:"conjunction + clause → bevor"},
+      {q:"Der Film war toll. ___ hatten wir gegessen.", correct:"b", answer:"Vorher", en:"The film was great. Beforehand we had eaten.", why:"adverb → vorher"}
+    ]},
+  {id:"nachdem-danach", level:"B1",
+    a:{de:"nachdem", en:"after (conjunction — joins two clauses)"},
+    b:{de:"danach", en:"after that / afterwards (adverb)"},
+    rule:"nachdem joins two clauses (Nachdem ich gegessen hatte, …); danach is an adverb (… und danach …).",
+    items:[
+      {q:"___ ich gegessen hatte, ging ich spazieren.", correct:"a", answer:"Nachdem", en:"After I had eaten, I went for a walk.", why:"joins two clauses → nachdem"},
+      {q:"Zuerst arbeite ich, ___ entspanne ich.", correct:"b", answer:"danach", en:"First I work, afterwards I relax.", why:"adverb 'afterwards' → danach"},
+      {q:"___ wir angekommen waren, haben wir ausgepackt.", correct:"a", answer:"Nachdem", en:"After we had arrived, we unpacked.", why:"conjunction → nachdem"},
+      {q:"Wir gehen essen und ___ ins Kino.", correct:"b", answer:"danach", en:"We're going to eat and afterwards to the cinema.", why:"adverb → danach"}
+    ]},
+  {id:"obwohl-trotzdem", level:"B1",
+    a:{de:"obwohl", en:"although (conjunction — joins two clauses)"},
+    b:{de:"trotzdem", en:"nevertheless / anyway (adverb)"},
+    rule:"obwohl joins two clauses (Obwohl es regnet, …); trotzdem is an adverb in the main clause (Es regnet; trotzdem gehe ich).",
+    items:[
+      {q:"___ es regnet, gehen wir spazieren.", correct:"a", answer:"Obwohl", en:"Although it's raining, we're going for a walk.", why:"joins two clauses → obwohl"},
+      {q:"Es war teuer. ___ habe ich es gekauft.", correct:"b", answer:"Trotzdem", en:"It was expensive. Nevertheless I bought it.", why:"adverb 'nevertheless' → trotzdem"},
+      {q:"Er ist krank, arbeitet aber ___.", correct:"b", answer:"trotzdem", en:"He's ill but works anyway.", why:"adverb → trotzdem"},
+      {q:"Ich mag ihn, ___ er manchmal unhöflich ist.", correct:"a", answer:"obwohl", en:"I like him although he's sometimes rude.", why:"conjunction → obwohl"}
+    ]},
+  {id:"weil-deshalb", level:"B1",
+    a:{de:"weil", en:"because (conjunction — gives the reason)"},
+    b:{de:"deshalb", en:"therefore / that's why (adverb — gives the consequence)"},
+    rule:"weil introduces the reason (…, weil es regnet); deshalb introduces the consequence (Es regnet, deshalb …).",
+    items:[
+      {q:"Ich bleibe zu Hause, ___ ich krank bin.", correct:"a", answer:"weil", en:"I'm staying home because I'm ill.", why:"the reason → weil"},
+      {q:"Ich bin krank, ___ bleibe ich zu Hause.", correct:"b", answer:"deshalb", en:"I'm ill, that's why I'm staying home.", why:"the consequence → deshalb"},
+      {q:"Wir nehmen ein Taxi, ___ es spät ist.", correct:"a", answer:"weil", en:"We're taking a taxi because it's late.", why:"reason → weil"},
+      {q:"Es ist spät, ___ nehmen wir ein Taxi.", correct:"b", answer:"deshalb", en:"It's late, therefore we're taking a taxi.", why:"consequence → deshalb"}
+    ]},
+  {id:"fuer-seit", level:"A2",
+    a:{de:"für", en:"for (a planned/intended length of time)"},
+    b:{de:"seit", en:"since / for (a period that began in the past and still lasts)"},
+    rule:"für + a planned span (Ich fahre für zwei Wochen weg); seit + a span that began in the past and still lasts (Ich wohne seit zwei Jahren hier).",
+    items:[
+      {q:"Ich fahre ___ eine Woche nach Spanien.", correct:"a", answer:"für", en:"I'm going to Spain for a week.", why:"a planned duration → für"},
+      {q:"Wir kennen uns ___ drei Jahren.", correct:"b", answer:"seit", en:"We've known each other for three years.", why:"started in the past, still true → seit"},
+      {q:"Sie geht ___ ein Jahr ins Ausland.", correct:"a", answer:"für", en:"She's going abroad for a year.", why:"a planned span → für"},
+      {q:"Es regnet ___ gestern.", correct:"b", answer:"seit", en:"It's been raining since yesterday.", why:"started in the past, ongoing → seit"}
+    ]},
+  {id:"vor-seit", level:"B1",
+    a:{de:"vor", en:"ago (a point in the past — vor + Dativ)"},
+    b:{de:"seit", en:"since / for (a duration from then until now)"},
+    rule:"vor names a point in the past (vor zwei Jahren = two years ago); seit names a duration up to now (seit zwei Jahren = for two years / since then).",
+    items:[
+      {q:"Ich habe ihn ___ einer Woche gesehen.", correct:"a", answer:"vor", en:"I saw him a week ago.", why:"a point in the past (ago) → vor"},
+      {q:"Ich lerne ___ einem Jahr Deutsch.", correct:"b", answer:"seit", en:"I've been learning German for a year.", why:"duration up to now → seit"},
+      {q:"Der Zug ist ___ fünf Minuten abgefahren.", correct:"a", answer:"vor", en:"The train left five minutes ago.", why:"a moment ago → vor"},
+      {q:"Sie ist ___ Montag krank.", correct:"b", answer:"seit", en:"She's been ill since Monday.", why:"since a start point, still → seit"}
+    ]},
+  {id:"brauchen-benutzen", level:"A2",
+    a:{de:"brauchen", en:"to need"},
+    b:{de:"benutzen", en:"to use"},
+    rule:"brauchen = to need something (Ich brauche einen Stift); benutzen = to use something (Ich benutze einen Stift).",
+    items:[
+      {q:"Ich ___ deine Hilfe.", correct:"a", answer:"brauche", en:"I need your help.", why:"to need → brauchen"},
+      {q:"Darf ich dein Telefon ___?", correct:"b", answer:"benutzen", en:"May I use your phone?", why:"to use → benutzen"},
+      {q:"Wir ___ noch Milch und Eier.", correct:"a", answer:"brauchen", en:"We still need milk and eggs.", why:"to need → brauchen"},
+      {q:"Er ___ den Computer für die Arbeit.", correct:"b", answer:"benutzt", en:"He uses the computer for work.", why:"to use → benutzen"}
+    ]},
+  {id:"lassen-verlassen", level:"B1",
+    a:{de:"lassen", en:"to leave (something somewhere) / to let"},
+    b:{de:"verlassen", en:"to leave (a place or a person)"},
+    rule:"lassen = leave something behind or let (Ich lasse den Schlüssel hier); verlassen = leave a place/person (Ich verlasse das Haus).",
+    items:[
+      {q:"Ich ___ meinen Mantel im Auto.", correct:"a", answer:"lasse", en:"I'm leaving my coat in the car.", why:"leave something behind → lassen"},
+      {q:"Sie ___ das Büro um fünf Uhr.", correct:"b", answer:"verlässt", en:"She leaves the office at five.", why:"leave a place → verlassen"},
+      {q:"___ bitte die Tür offen.", correct:"a", answer:"Lass", en:"Please leave the door open.", why:"let it stay (a state) → lassen"},
+      {q:"Er hat seine Familie nie ___.", correct:"b", answer:"verlassen", en:"He never left his family.", why:"leave a person → verlassen"}
+    ]},
+  {id:"uhr-stunde", level:"A1",
+    a:{de:"die Uhr", en:"clock / o'clock (a point in time)"},
+    b:{de:"die Stunde", en:"hour (a length of time)"},
+    rule:"Uhr for clock time (Es ist drei Uhr = it's three o'clock); Stunde for a duration (eine Stunde warten = wait an hour).",
+    items:[
+      {q:"Es ist acht ___.", correct:"a", answer:"Uhr", en:"It's eight o'clock.", why:"clock time → Uhr"},
+      {q:"Der Film dauert zwei ___.", correct:"b", answer:"Stunden", en:"The film lasts two hours.", why:"a duration → Stunde(n)"},
+      {q:"Wir treffen uns um sieben ___.", correct:"a", answer:"Uhr", en:"We're meeting at seven o'clock.", why:"a point in time → Uhr"},
+      {q:"Ich habe eine ___ geschlafen.", correct:"b", answer:"Stunde", en:"I slept for an hour.", why:"duration → Stunde"}
+    ]},
+  {id:"zeit-mal", level:"A2",
+    a:{de:"die Zeit", en:"time (in general / duration)"},
+    b:{de:"das Mal", en:"time / occasion (a countable instance)"},
+    rule:"Zeit = time in general or duration (Ich habe keine Zeit); Mal = a single occasion you can count (das erste Mal, drei Mal).",
+    items:[
+      {q:"Ich habe heute keine ___.", correct:"a", answer:"Zeit", en:"I have no time today.", why:"time in general → Zeit"},
+      {q:"Das war das erste ___.", correct:"b", answer:"Mal", en:"That was the first time.", why:"a countable occasion → Mal"},
+      {q:"Nimm dir ___ für die Antwort.", correct:"a", answer:"Zeit", en:"Take your time with the answer.", why:"duration → Zeit"},
+      {q:"Ich war schon drei ___ in Berlin.", correct:"b", answer:"Mal", en:"I've been to Berlin three times.", why:"counting occasions → Mal"}
+    ]},
+  {id:"passen-passieren", level:"B1",
+    a:{de:"passen", en:"to fit / to suit"},
+    b:{de:"passieren", en:"to happen"},
+    rule:"passen = to fit or suit (Das Hemd passt; der Termin passt mir); passieren = to happen (Was ist passiert?). False friend — passieren is NOT 'to pass'.",
+    items:[
+      {q:"Die Hose ___ mir nicht, sie ist zu klein.", correct:"a", answer:"passt", en:"The trousers don't fit me, they're too small.", why:"to fit → passen"},
+      {q:"Was ist gestern ___?", correct:"b", answer:"passiert", en:"What happened yesterday?", why:"to happen → passieren"},
+      {q:"Der Termin am Montag ___ mir gut.", correct:"a", answer:"passt", en:"The Monday appointment suits me well.", why:"to suit → passen"},
+      {q:"Ein Unfall ist ___.", correct:"b", answer:"passiert", en:"An accident happened.", why:"to happen → passieren"}
+    ]},
+  {id:"antworten-beantworten", level:"B1",
+    a:{de:"antworten", en:"to answer / reply (antworten auf + Akk., or jemandem antworten)"},
+    b:{de:"beantworten", en:"to answer something (beantworten + direct object)"},
+    rule:"antworten takes a person (dative) or auf + accusative (Ich antworte dir / auf die Frage); beantworten takes the thing directly (Ich beantworte die Frage).",
+    items:[
+      {q:"Kannst du mir bitte ___?", correct:"a", answer:"antworten", en:"Can you please answer me?", why:"antworten + person (dative) → antworten"},
+      {q:"Bitte ___ Sie alle Fragen.", correct:"b", answer:"beantworten", en:"Please answer all the questions.", why:"direct object (die Fragen) → beantworten"},
+      {q:"Sie hat auf meine E-Mail nicht ___.", correct:"a", answer:"geantwortet", en:"She didn't reply to my email.", why:"antworten auf + Akk. → antworten"},
+      {q:"Ich kann diese Frage leicht ___.", correct:"b", answer:"beantworten", en:"I can answer this question easily.", why:"etwas beantworten (direct object) → beantworten"}
     ]}
 ];
 
@@ -8235,6 +8435,112 @@ const EXAM = [
       {q:"Lücke (2)", opts:["in der Lage","möglich","bereit"], correctIdx:0, why:"in der Lage sein, etwas zu tun → in der Lage"},
       {q:"Lücke (3)", opts:["Während","Bei","Seit"], correctIdx:0, why:"Zeitraum → während (+ Genitiv)"},
       {q:"Lücke (4)", opts:["freue","würde","freute"], correctIdx:0, why:"Präsens, sich freuen über → freue"}
+    ]},
+  {id:"ex-a1-einladung", level:"A1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Eine Einladung",
+    passage:"Hallo Sara, ich habe am Samstag Geburtstag. Wir feiern bei mir zu Hause ab 19 Uhr. Bring bitte gute Laune mit! Sag mir bis Freitag, ob du kommst. Liebe Grüße, Max",
+    passageEn:"Hi Sara, it's my birthday on Saturday. We're celebrating at my place from 7 p.m. Please bring good spirits! Let me know by Friday whether you're coming. Best, Max",
+    questions:[
+      {q:"Was feiert Max?", opts:["Seinen Geburtstag","Eine Hochzeit","Weihnachten"], correctIdx:0},
+      {q:"Wann ist die Party?", opts:["Am Samstag","Am Freitag","Am Sonntag"], correctIdx:0},
+      {q:"Was soll Sara bis Freitag sagen?", opts:["Ob sie kommt","Was sie schenkt","Wann sie geht"], correctIdx:0}
+    ]},
+  {id:"ex-a1-restaurant", level:"A1", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Im Restaurant bestellen",
+    passage:"Kellner: Was möchten Sie (1)? Gast: Ich (2) eine Pizza, bitte. Kellner: Und (3) trinken? Gast: Ein Wasser, (4).",
+    questions:[
+      {q:"Lücke (1)", opts:["essen","esse","isst"], correctIdx:0, why:"Modalverb möchten + Infinitiv → essen"},
+      {q:"Lücke (2)", opts:["nehme","nehmen","nimmt"], correctIdx:0, why:"ich-Form → nehme"},
+      {q:"Lücke (3)", opts:["zu","für","mit"], correctIdx:0, why:"zu trinken (zu + Infinitiv) → zu"},
+      {q:"Lücke (4)", opts:["bitte","danke","gern"], correctIdx:0, why:"höfliche Bitte → bitte"}
+    ]},
+  {id:"ex-a1-wetter", level:"A1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Der Wetterbericht",
+    passage:"Das Wetter heute: Am Morgen ist es kalt, nur fünf Grad. Am Mittag scheint die Sonne. Am Abend regnet es. Nehmen Sie einen Regenschirm mit!",
+    passageEn:"Today's weather: in the morning it's cold, only five degrees. At midday the sun shines. In the evening it rains. Take an umbrella with you!",
+    questions:[
+      {q:"Wie ist das Wetter am Morgen?", opts:["Kalt","Warm","Heiß"], correctIdx:0},
+      {q:"Was soll man mitnehmen?", opts:["Einen Regenschirm","Eine Sonnenbrille","Einen Hut"], correctIdx:0}
+    ]},
+  {id:"ex-a2-anzeige", level:"A2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Anzeige: Fahrrad zu verkaufen",
+    passage:"Verkaufe gebrauchtes Fahrrad, gut gepflegt. Preis: 80 Euro. Das Fahrrad ist drei Jahre alt und fährt sehr gut. Nur Abholung in Köln. Bei Interesse rufen Sie bitte abends an.",
+    passageEn:"Selling a used bike, well looked after. Price: 80 euros. The bike is three years old and rides very well. Pick-up in Cologne only. If interested, please call in the evening.",
+    questions:[
+      {q:"Was wird verkauft?", opts:["Ein Fahrrad","Ein Auto","Ein Motorrad"], correctIdx:0},
+      {q:"Wie viel kostet es?", opts:["80 Euro","18 Euro","800 Euro"], correctIdx:0},
+      {q:"Wann soll man anrufen?", opts:["Abends","Morgens","Mittags"], correctIdx:0}
+    ]},
+  {id:"ex-a2-sms", level:"A2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Eine Verabredung (SMS)",
+    passage:"Hallo Tim, hast du am Wochenende Zeit? Wir könnten (1) Schwimmbad gehen. Ich hole dich (2) zwölf Uhr ab. Vergiss deine Badehose (3)! Schreib mir, (4) du Lust hast.",
+    questions:[
+      {q:"Lücke (1)", opts:["ins","im","zum"], correctIdx:0, why:"Bewegung wohin → in + Akkusativ (ins Schwimmbad)"},
+      {q:"Lücke (2)", opts:["um","am","im"], correctIdx:0, why:"Uhrzeit → um zwölf Uhr"},
+      {q:"Lücke (3)", opts:["nicht","kein","nichts"], correctIdx:0, why:"das Verb verneinen → nicht"},
+      {q:"Lücke (4)", opts:["ob","dass","weil"], correctIdx:0, why:"indirekte Ja/Nein-Frage → ob"}
+    ]},
+  {id:"ex-a2-reservierung", level:"A2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"E-Mail: Reservierung bestätigt",
+    passage:"Sehr geehrter Herr Klein, vielen Dank für Ihre Reservierung. Wir haben einen Tisch für vier Personen am Freitag um 20 Uhr für Sie reserviert. Bitte sagen Sie Bescheid, falls Sie später kommen. Wir freuen uns auf Ihren Besuch. Restaurant Adler",
+    passageEn:"Dear Mr Klein, thank you for your reservation. We've reserved a table for four people for you on Friday at 8 p.m. Please let us know if you'll be late. We look forward to your visit. Restaurant Adler.",
+    questions:[
+      {q:"Für wie viele Personen ist der Tisch?", opts:["Vier","Zwei","Sechs"], correctIdx:0},
+      {q:"Wann ist die Reservierung?", opts:["Am Freitag um 20 Uhr","Am Samstag um 18 Uhr","Am Freitag um 12 Uhr"], correctIdx:0},
+      {q:"Was soll Herr Klein tun, wenn er später kommt?", opts:["Bescheid sagen","Nicht kommen","Vorher bezahlen"], correctIdx:0}
+    ]},
+  {id:"ex-b1-fitness", level:"B1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Aushang: Studio geschlossen",
+    passage:"Liebe Mitglieder, vom 1. bis 14. August bleibt unser Fitnessstudio wegen Renovierung geschlossen. Bereits gebuchte Kurse werden auf September verschoben. Ihre Mitgliedschaft verlängert sich automatisch um zwei Wochen. Bei Fragen erreichen Sie uns per E-Mail. Ihr FitClub-Team",
+    passageEn:"Dear members, from 1 to 14 August our gym will be closed for renovation. Courses already booked will be moved to September. Your membership is automatically extended by two weeks. For questions, reach us by email. Your FitClub team.",
+    questions:[
+      {q:"Warum ist das Studio geschlossen?", opts:["Wegen Renovierung","Wegen Urlaub","Wegen eines Feiertags"], correctIdx:0},
+      {q:"Was passiert mit gebuchten Kursen?", opts:["Sie werden verschoben","Sie fallen aus","Sie kosten mehr"], correctIdx:0},
+      {q:"Was passiert mit der Mitgliedschaft?", opts:["Sie verlängert sich um zwei Wochen","Sie endet sofort","Sie wird teurer"], correctIdx:0}
+    ]},
+  {id:"ex-b1-reklamation", level:"B1", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Eine Reklamation",
+    passage:"Sehr geehrte Damen und Herren, vor einer Woche habe ich bei Ihnen eine Lampe bestellt, (1) sie ist beschädigt angekommen. Ich möchte sie (2) eine neue umtauschen. (3) ich keine Rechnung erhalten habe, schicke ich Ihnen die Bestellnummer. Bitte teilen Sie mir mit, (4) ich die Lampe zurückschicken soll.",
+    questions:[
+      {q:"Lücke (1)", opts:["aber","weil","damit"], correctIdx:0, why:"Gegensatz zwischen zwei Hauptsätzen → aber"},
+      {q:"Lücke (2)", opts:["gegen","für","mit"], correctIdx:0, why:"umtauschen gegen → gegen"},
+      {q:"Lücke (3)", opts:["Da","Obwohl","Trotzdem"], correctIdx:0, why:"Grund am Satzanfang → da"},
+      {q:"Lücke (4)", opts:["wohin","wo","woher"], correctIdx:0, why:"Richtung (zurückschicken wohin?) → wohin"}
+    ]},
+  {id:"ex-b1-konto", level:"B1", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Forumsfrage: Konto wechseln",
+    passage:"Hallo, ich bin mit meiner Bank unzufrieden, weil die Gebühren zu hoch sind. Ich überlege, das Konto zu wechseln. Hat jemand Erfahrung mit Onlinebanken? Sind die wirklich kostenlos? Und wie lange dauert so ein Wechsel? Danke für eure Tipps!",
+    passageEn:"Hi, I'm unhappy with my bank because the fees are too high. I'm thinking of switching accounts. Does anyone have experience with online banks? Are they really free? And how long does such a switch take? Thanks for your tips!",
+    questions:[
+      {q:"Warum will die Person die Bank wechseln?", opts:["Die Gebühren sind zu hoch","Die Bank ist zu weit weg","Die App funktioniert nicht"], correctIdx:0},
+      {q:"Wonach fragt die Person?", opts:["Nach Erfahrungen mit Onlinebanken","Nach einem Kredit","Nach einer Versicherung"], correctIdx:0}
+    ]},
+  {id:"ex-b2-ehrenamt", level:"B2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Kurzartikel: Ehrenamt",
+    passage:"Immer mehr Menschen engagieren sich ehrenamtlich, also unbezahlt, in Vereinen oder sozialen Projekten. Studien zeigen, dass freiwillige Arbeit nicht nur der Gesellschaft nützt, sondern auch das eigene Wohlbefinden steigert. Wer hilft, fühlt sich oft zufriedener und knüpft neue Kontakte. Kritiker warnen jedoch, dass der Staat sich nicht auf unbezahlte Arbeit verlassen dürfe.",
+    passageEn:"More and more people volunteer — that is, work unpaid — in clubs or social projects. Studies show that voluntary work not only benefits society but also raises one's own well-being. Those who help often feel more content and make new contacts. Critics warn, however, that the state must not rely on unpaid work.",
+    questions:[
+      {q:"Was bedeutet „ehrenamtlich“?", opts:["Unbezahlt","Gut bezahlt","Verpflichtend"], correctIdx:0},
+      {q:"Welchen Vorteil nennt der Text für die Helfenden?", opts:["Mehr Zufriedenheit und Kontakte","Mehr Geld","Weniger Arbeit"], correctIdx:0},
+      {q:"Was sagen Kritiker?", opts:["Der Staat darf sich nicht darauf verlassen","Ehrenamt ist sinnlos","Ehrenamt schadet der Gesundheit"], correctIdx:0}
+    ]},
+  {id:"ex-b2-laerm", level:"B2", format:"sprachbausteine", skill:"Sprachbausteine",
+    title:"Beschwerde über Lärm",
+    passage:"Sehr geehrter Herr Berg, ich wende mich (1) Sie, weil der Lärm aus der Nachbarwohnung unerträglich geworden ist. Trotz mehrerer Bitten wird (2) nachts laut Musik gespielt. Ich bitte Sie (3), umgehend einzugreifen. Sollte sich nichts ändern, sehe ich mich (4), die Miete zu mindern.",
+    questions:[
+      {q:"Lücke (1)", opts:["an","auf","über"], correctIdx:0, why:"sich wenden an + Akkusativ → an"},
+      {q:"Lücke (2)", opts:["weiterhin","schon","gerade"], correctIdx:0, why:"„weiterhin“ = es geht ununterbrochen weiter"},
+      {q:"Lücke (3)", opts:["darum","damit","dazu"], correctIdx:0, why:"bitten um → bitten darum, etwas zu tun"},
+      {q:"Lücke (4)", opts:["gezwungen","zwingen","zwang"], correctIdx:0, why:"sich gezwungen sehen (Partizip II) → gezwungen"}
+    ]},
+  {id:"ex-b2-lernen", level:"B2", format:"leseverstehen", skill:"Leseverstehen",
+    title:"Kurzartikel: Lebenslanges Lernen",
+    passage:"In einer sich schnell wandelnden Arbeitswelt reicht eine einmalige Ausbildung kaum noch aus. Wer beruflich am Ball bleiben will, muss sich ständig weiterbilden. Viele Unternehmen bieten deshalb interne Schulungen an, und auch Online-Kurse werden immer beliebter. Wichtig ist dabei nicht, möglichst viele Zertifikate zu sammeln, sondern Fähigkeiten zu erwerben, die im Alltag wirklich gebraucht werden.",
+    passageEn:"In a fast-changing world of work, a one-off qualification is hardly enough anymore. Whoever wants to stay on the ball professionally has to keep training. Many companies therefore offer internal courses, and online courses are getting ever more popular. What matters is not collecting as many certificates as possible, but acquiring skills that are genuinely needed in everyday life.",
+    questions:[
+      {q:"Warum reicht eine einmalige Ausbildung kaum noch?", opts:["Die Arbeitswelt wandelt sich schnell","Ausbildungen sind zu teuer","Es gibt keine Jobs mehr"], correctIdx:0},
+      {q:"Was bieten viele Unternehmen an?", opts:["Interne Schulungen","Längeren Urlaub","Höhere Gehälter"], correctIdx:0},
+      {q:"Worauf kommt es laut Text an?", opts:["Nützliche Fähigkeiten zu erwerben","Viele Zertifikate zu sammeln","Möglichst schnell fertig zu werden"], correctIdx:0}
     ]}
 ];
 

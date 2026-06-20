@@ -8699,6 +8699,26 @@ const PLACEMENT = {
     {id:"pl-b1-6", level:"B1", skill:"reading", q:"„Bitte vereinbaren Sie einen Termin.“ Sie sollen …", opts:["einen Termin ausmachen","den Termin absagen","einfach warten"], correctIdx:0},
     // B2 (extra)
     {id:"pl-b2-5", level:"B2", skill:"grammar", q:"Er tut so, ___ er alles wüsste.", opts:["als ob","wenn","damit"], correctIdx:0},
-    {id:"pl-b2-6", level:"B2", skill:"vocab",   q:"Eine „befristete Stelle“ ist eine Stelle …", opts:["mit einem Enddatum","ohne Bezahlung","nur im Ausland"], correctIdx:0}
+    {id:"pl-b2-6", level:"B2", skill:"vocab",   q:"Eine „befristete Stelle“ ist eine Stelle …", opts:["mit einem Enddatum","ohne Bezahlung","nur im Ausland"], correctIdx:0},
+    // A1 (extra)
+    {id:"pl-a1-7", level:"A1", skill:"vocab",   q:"Was isst man oft zum Frühstück?", opts:["Brötchen","Schuhe","Bücher"], correctIdx:0},
+    {id:"pl-a1-8", level:"A1", skill:"grammar", q:"Das ___ meine Schwester.", opts:["ist","bist","sind"], correctIdx:0},
+    {id:"pl-a1-9", level:"A1", skill:"vocab",   q:"Wie viele Tage hat eine Woche?", opts:["sieben","drei","zwölf"], correctIdx:0},
+    {id:"pl-a1-10", level:"A1", skill:"grammar", q:"___ ihr müde?", opts:["Seid","Bist","Ist"], correctIdx:0},
+    // A2 (extra)
+    {id:"pl-a2-7", level:"A2", skill:"grammar", q:"Gestern ___ ich einen Film gesehen.", opts:["habe","bin","war"], correctIdx:0},
+    {id:"pl-a2-8", level:"A2", skill:"vocab",   q:"Wo arbeitet ein Lehrer?", opts:["in der Schule","im Krankenhaus","auf der Bank"], correctIdx:0},
+    {id:"pl-a2-9", level:"A2", skill:"grammar", q:"Ich gehe zum Arzt, ___ ich krank bin.", opts:["weil","aber","oder"], correctIdx:0},
+    {id:"pl-a2-10", level:"A2", skill:"reading", q:"„Der Bus kommt in fünf Minuten.“ Der Bus kommt …", opts:["bald","gestern","nie"], correctIdx:0},
+    // B1 (extra)
+    {id:"pl-b1-7", level:"B1", skill:"grammar", q:"Das ist der Mann, ___ Auto kaputt ist.", opts:["dessen","der","den"], correctIdx:0},
+    {id:"pl-b1-8", level:"B1", skill:"vocab",   q:"Eine „Bewerbung“ schreibt man, wenn man ___ sucht.", opts:["einen Job","einen Arzt","einen Freund"], correctIdx:0},
+    {id:"pl-b1-9", level:"B1", skill:"grammar", q:"Wenn ich mehr Zeit ___, würde ich mehr lesen.", opts:["hätte","habe","hatte"], correctIdx:0},
+    {id:"pl-b1-10", level:"B1", skill:"reading", q:"„Bitte melden Sie sich bis Freitag.“ Man soll …", opts:["bis Freitag antworten","am Freitag kommen","nichts tun"], correctIdx:0},
+    // B2 (extra)
+    {id:"pl-b2-7", level:"B2", skill:"grammar", q:"___ er sich beeilte, verpasste er den Zug.", opts:["Obwohl","Weil","Damit"], correctIdx:0},
+    {id:"pl-b2-8", level:"B2", skill:"vocab",   q:"Eine „Frist“ ist …", opts:["ein Zeitpunkt, bis zu dem etwas erledigt sein muss","eine Art Vertrag","eine Gebühr"], correctIdx:0},
+    {id:"pl-b2-9", level:"B2", skill:"grammar", q:"Es ist wichtig, ___ man die Regeln kennt.", opts:["dass","ob","damit"], correctIdx:0},
+    {id:"pl-b2-10", level:"B2", skill:"reading", q:"„Die Teilnahme ist freiwillig.“ Das heißt, man …", opts:["muss nicht teilnehmen","muss teilnehmen","darf nicht teilnehmen"], correctIdx:0}
   ]
 };

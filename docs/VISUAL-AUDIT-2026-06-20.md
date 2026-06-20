@@ -6,6 +6,20 @@ Captures live in `screenshots/audit/` (prefixes `b5-` drills, `b6-` feedback/res
 structure). This complements the static `docs/APP-AUDIT-2026-06-20.md` (code-level review) with
 a live, screenshot-backed sweep of the running app.
 
+## Audit gap closed: longest-content pass (2026-06-20, after v.20)
+The original sweep drove whatever card the seed surfaced first — always a **short** word — so it
+never exercised long content, and a fixed-font clipping bug (long German compounds bleeding off the
+card) reached a user. Lesson: **content-length extremes belong in the audit set alongside the 320px
+width sweep.** Added permanent regression harness paths that force the deck's longest content through
+the screens that render it big, all verified non-clipping after the `fitWordSize` fix (v.20):
+- `shoot.mjs longword` — longest single German compound (29 chars, "die Kommunikationsmöglichkeit")
+  on the recall front. Fits on one line.
+- `shoot.mjs longprompt` — longest English gloss (65 chars) as a production prompt. Wraps 4 lines
+  inside the card.
+- `shoot.mjs longcando` — longest mission can-do (66 chars, "…(Nebenkostenabrechnung)") on the
+  mission detail. Wraps 3 lines, no horizontal overflow.
+Verb infinitives (≤14 chars @22px) and list can-dos (nowrap + ellipsis, by design) are unaffected.
+
 ## Coverage: ~100% — every reachable screen & state captured
 
 Third pass closed the last gaps. The only thing *not* shown is the in-session mastery ★ burst,

@@ -697,7 +697,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.17";
+const APP_VERSION = "2026.06.20.18";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4774,26 +4774,73 @@ function App() {
 
       {/* ── LIBRARY TAB — themed, collapsible groups instead of a flat 36-card wall ── */}
       {screen === "library" && <div className="ad-screen-in" style={{ padding: "0 20px 8px" }}>
-        <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10 }}>
-          <div>
-            <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Library</div>
-            <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>{totalW.toLocaleString()} words · {CATS.length} topics</div>
+        <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14 }}>
+          <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Library</div>
+          <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your path to settling in — and every word behind it</div>
+        </div>
+
+        {/* ── CURRICULUM — the front door: the sequenced mission map, not the database. ── */}
+        {(() => {
+          const allDone = MISSIONS.every(m => missionStatus(m.id) === "done");
+          if (currentMission && !allDone) {
+            const arc = MISSION_ARCS.find(a => a.id === currentMission.arc) || {};
+            const cont = missionStatus(currentMission.id) === "started";
+            return (
+              <button type="button" onClick={() => openMission(currentMission.id)} style={{ width: "100%", textAlign: "left", marginBottom: 16, background: "linear-gradient(135deg, #1A170B 0%, #0E0E0E 62%)", border: `1px solid ${A}55`, borderRadius: 16, padding: "15px 16px", cursor: "pointer", fontFamily: "inherit", boxShadow: `0 12px 30px -12px ${A}44` }}>
+                <div style={{ fontSize: 10, color: A, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>{arc.title || "Your journey"} · {currentMission.level} · {cont ? "Continue" : "Start here"}</div>
+                <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: T, lineHeight: 1.2 }}>{currentMission.cando}</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 10, fontSize: 12, fontWeight: 800, color: A }}>{cont ? "Continue your journey" : "Begin this scenario"} <Icon name="arrowRight" size={14} /></div>
+              </button>
+            );
+          }
+          return (
+            <div style={{ marginBottom: 16, background: `linear-gradient(135deg, ${G}14, #0E0E0E 62%)`, border: `1px solid ${G}55`, borderRadius: 16, padding: "15px 16px", display: "flex", alignItems: "center", gap: 12 }}>
+              <IconBadge name="check" size={34} color={G} bg={`${G}1A`} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: T }}>Every scenario complete</div>
+                <div style={{ fontSize: 11.5, color: TD, marginTop: 1 }}>You've worked through the whole journey — keep your words sharp below.</div>
+              </div>
+            </div>
+          );
+        })()}
+
+        <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase", margin: "0 2px 9px" }}>Your journey</div>
+        <div style={{ display: "grid", gap: 8, marginBottom: 8 }}>
+          {MISSION_ARCS.map(arc => {
+            const done = arcDone(arc.id), total = arcTotal(arc.id);
+            const pct = total ? (done / total) * 100 : 0;
+            const complete = done === total && total > 0;
+            return (
+              <button key={arc.id} type="button" onClick={() => setScreen("scenarios")} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", minWidth: 0, textAlign: "left", background: "linear-gradient(180deg, #161616 0%, #0F0F0F 100%)", border: `1px solid ${complete ? `${G}55` : HAIR}`, borderRadius: 13, padding: "12px 14px", cursor: "pointer", fontFamily: "inherit" }}>
+                <IconBadge name={arc.icon} size={32} color={complete ? G : A} bg={complete ? `${G}12` : `${A}10`} />
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                    <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{arc.title}</span>
+                  </span>
+                  <span style={{ display: "block", fontSize: 11, color: TD, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 7 }}>{arc.sub}</span>
+                  <span style={{ display: "block", height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
+                    <span style={{ position: "absolute", inset: 0, width: `${pct}%`, background: complete ? G : `${A}CC`, borderRadius: 2, transition: "width .5s" }} />
+                  </span>
+                </span>
+                <span style={{ fontSize: 11, color: complete ? G : TD, fontWeight: 800, flexShrink: 0 }}>{done}/{total}</span>
+                <Icon name="chevron" size={15} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── DICTIONARY — the 36-category taxonomy + Browse, explicitly demoted to reference. ── */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10, margin: "22px 0 4px" }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase" }}>Dictionary</div>
+            <div style={{ fontSize: 11, color: TD, marginTop: 3, opacity: 0.85 }}>Every word by topic — a reference, not a path</div>
           </div>
           <button type="button" onClick={() => { setBrowseQuery(""); setBrowseFilter("all"); setScreen("browse"); }}
-            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "6px 13px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5, marginBottom: 2 }}>
+            style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 999, padding: "6px 13px", color: A, fontSize: 11, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
             <Icon name="book" size={12} /> Browse & search
           </button>
         </div>
-        {currentMission && (
-          <button type="button" onClick={() => setScreen("scenarios")} style={{ width: "100%", textAlign: "left", marginBottom: 14, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 14, padding: "13px 14px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 12 }}>
-            <IconBadge name="map" size={36} color={A} bg={`${A}12`} />
-            <span style={{ flex: 1, minWidth: 0 }}>
-              <span style={{ display: "block", fontSize: 13.5, fontWeight: 800, color: T }}>Your journey — real-world scenarios</span>
-              <span style={{ display: "block", fontSize: 11, color: TD }}>Next: {currentMission.cando}</span>
-            </span>
-            <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />
-          </button>
-        )}
+        <div style={{ fontSize: 10.5, color: TD, marginBottom: 11 }}>{totalW.toLocaleString()} words · {CATS.length} topics</div>
         <div style={{ display: "grid", gap: 8 }}>
           {libGroups.map((g, gi) => {
             const agg = g.cats.reduce((a, cat) => {

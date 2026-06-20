@@ -1,8 +1,21 @@
 # AGENTS.md — AI collaboration guide for AutoDeutsch
 
+> **▶ Returning to this repo? Read `HANDOFF.md` first** — it's the living "where are we" single-pager
+> (operating mode, current build, what shipped, what's in flight, open hand-offs, gotchas). Then this
+> file (protocol + claims), `ROADMAP.md` (status), `CHANGELOG.md` (log).
+
 Two AI agents work on this repo. This file is how they stay out of each other's way.
 It replaces the old `AutoDeutsch_Roadmap_Checklist.xlsx` as the coordination surface,
-together with `ROADMAP.md` (plans + status) and `CHANGELOG.md` (what shipped).
+together with `HANDOFF.md` (resume-here state), `ROADMAP.md` (plans + status) and `CHANGELOG.md` (what shipped).
+
+## Recording discipline (so no one comes back blind)
+Every change must leave a paper trail — assume whoever picks this up next has zero memory of it:
+1. **Ship → `CHANGELOG.md` entry** (newest at top; bug-fixes in the table, work in the run-log).
+2. **State change → update `HANDOFF.md`** in the same commit (current build, recently-shipped,
+   in-flight, open hand-offs). If you pause mid-task, record the file + line + what's left there.
+3. **New feature/epic → a `docs/*-spec.md`** contract before/with the build (the proven pattern).
+4. **Status → `ROADMAP.md`** (✅/🟡/⬜) and **claims → the table below**.
+Commit messages explain *why*; the docs explain *where we are*. Small, frequent commits.
 
 ## Why text, not a spreadsheet
 The `.xlsx` was binary: git couldn't diff or merge it, so concurrent edits clobbered
@@ -97,6 +110,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/app.jsx (mission detail + launchMissionStep + startSession) | **"Build the sentence" mission step** (per docs/journey-sentences-spec.md) — conditional 4th bonus step loads the mission-tagged `SENTENCES` into the sentence-builder | 2026-06-20 | ✅ done (v.19, app.jsx released) |
 | Claude (Opus) — content lane | src/data.js (SENTENCES, IMPERATIVES, PLACEMENT, MISSION_VOCAB), scripts/, docs/ | Curated player content: 243 sentences (58/58 missions, early ×3) · imperatives 65→87 · placement 24→40 · **MISSION_VOCAB** (exact per-mission word lists, all 58) + validator + extractor | 2026-06-20 | ✅ done (deployed → main) |
 | Claude (Opus) | src/app.jsx (launchMissionStep + startSession opts.pool) | **Syllabus→test: mission Learn/Speak drills the exact scene words** (per docs/mission-vocab-spec.md) — learn + speaking steps now drill `MISSION_VOCAB[m.id]` via a new `opts.pool` path (fallback to `cats`) | 2026-06-20 | ✅ done (v.19, app.jsx released) |
+| Claude (Opus) — **solo this week** | HANDOFF.md, AGENTS.md, src/data.js (DIALOGUES + 6 missions) | Continuity/handoff system (HANDOFF.md + recording discipline) + completed the in-flight 6 second-dialogue scenes (richer Listen step) the other agent had unsaved when credits ran out | 2026-06-20 | ✅ done (deployed → main) |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

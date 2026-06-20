@@ -247,6 +247,7 @@ async function gotoScreen(page, screen) {
     return;
   }
   if (screen === "missionbuild") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Build the sentence"); await new Promise(r => setTimeout(r, 600)); return; }
+  if (screen === "missionhealth") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Register with a health-insurance fund"); await new Promise(r => setTimeout(r, 450)); return; }
   if (screen === "missionlearn") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Learn the words"); await new Promise(r => setTimeout(r, 600)); return; }
   // Pending app.jsx screens for the content-lane datasets (PLACEMENT / CONFUSIONS / EXAM).
   // These reference the entry labels pinned in docs/P5-placement-buildspec.md +

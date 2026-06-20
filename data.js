@@ -7847,6 +7847,87 @@ const DIALOGUES = [
     {q:"Was lernt man im Kurs?",opts:["Sprache und Orientierung","Nur Mathematik","Nur Geschichte"],correctIdx:0},
     {q:"Was gibt es am Ende?",opts:["Eine Prüfung","Ein Zertifikat ohne Test","Ein Fest"],correctIdx:0}
   ]},
+
+  // ── Second scenes for single-dialogue relocation missions (richer "Listen" step; reuse each
+  //    mission's vocab). Each title is also appended to its mission's `dialogues` array. ──
+  {title:"Was die Krankenkasse zahlt",level:"B1",lines:[
+    {de:"Ich wollte fragen, was die gesetzliche Krankenkasse alles übernimmt.",en:"I wanted to ask what the statutory health insurance covers."},
+    {de:"Arztbesuche, Medikamente auf Rezept und den Krankenhausaufenthalt.",en:"Doctor's visits, prescription medicine and the hospital stay."},
+    {de:"Und beim Zahnarzt?",en:"And at the dentist?"},
+    {de:"Die Grundbehandlung ja, für besondere Leistungen zahlen Sie etwas dazu.",en:"Basic treatment yes; for special services you pay a bit extra."},
+    {de:"Wie hoch ist mein Beitrag?",en:"How high is my contribution?"},
+    {de:"Etwa vierzehn Prozent vom Gehalt, die Hälfte zahlt der Arbeitgeber.",en:"About fourteen percent of your salary; the employer pays half."},
+    {de:"Bekomme ich eine neue Versichertenkarte?",en:"Do I get a new insurance card?"},
+    {de:"Ja, die kommt in einer Woche mit der Post.",en:"Yes, it comes in a week by post."}
+  ],questions:[
+    {q:"Was übernimmt die Krankenkasse?",opts:["Arztbesuche und Medikamente","Nur die Miete","Nichts"],correctIdx:0},
+    {q:"Wer zahlt die Hälfte des Beitrags?",opts:["Der Arbeitgeber","Die Stadt","Der Arzt"],correctIdx:0}
+  ]},
+  {title:"Zahnreinigung und Kontrolle",level:"B1",lines:[
+    {de:"Ich möchte einen Termin zur Kontrolle und Zahnreinigung.",en:"I'd like an appointment for a check-up and cleaning."},
+    {de:"Waren Sie schon einmal bei uns?",en:"Have you been to us before?"},
+    {de:"Nein, ich bin neu in der Stadt.",en:"No, I'm new in town."},
+    {de:"Kein Problem. Bringen Sie bitte Ihre Versichertenkarte mit.",en:"No problem. Please bring your insurance card."},
+    {de:"Zahlt die Krankenkasse die Reinigung?",en:"Does the health insurance pay for the cleaning?"},
+    {de:"Die Kontrolle ja, die Reinigung meistens nur teilweise.",en:"The check-up yes, the cleaning usually only partly."},
+    {de:"Tut die Kontrolle weh?",en:"Does the check-up hurt?"},
+    {de:"Nein, der Zahnarzt schaut nur kurz nach.",en:"No, the dentist just takes a quick look."}
+  ],questions:[
+    {q:"Warum kommt die Person?",opts:["Für Kontrolle und Zahnreinigung","Wegen Zahnschmerzen","Für eine Spritze"],correctIdx:0},
+    {q:"Was soll man mitbringen?",opts:["Die Versichertenkarte","Bargeld","Ein Foto"],correctIdx:0}
+  ]},
+  {title:"Rundfunkbeitrag — Befreiung",level:"B1",lines:[
+    {de:"Ich bekomme BAföG. Muss ich den Rundfunkbeitrag trotzdem zahlen?",en:"I get a student grant. Do I still have to pay the broadcasting fee?"},
+    {de:"Nein, mit BAföG können Sie sich befreien lassen.",en:"No, with the grant you can get an exemption."},
+    {de:"Wie funktioniert das?",en:"How does that work?"},
+    {de:"Sie füllen das Formular zur Befreiung aus und schicken einen Nachweis mit.",en:"You fill in the exemption form and send proof with it."},
+    {de:"Welchen Nachweis brauche ich?",en:"What proof do I need?"},
+    {de:"Den aktuellen BAföG-Bescheid.",en:"The current grant decision letter."},
+    {de:"Wie lange gilt die Befreiung?",en:"How long does the exemption last?"},
+    {de:"So lange wie Ihre Förderung, danach müssen Sie es neu beantragen.",en:"As long as your funding; after that you reapply."}
+  ],questions:[
+    {q:"Wer kann sich befreien lassen?",opts:["Menschen mit BAföG","Alle Mieter","Niemand"],correctIdx:0},
+    {q:"Was muss man mitschicken?",opts:["Einen Nachweis","Geld","Ein Foto"],correctIdx:0}
+  ]},
+  {title:"Die Kaution zurückbekommen",level:"B1",lines:[
+    {de:"Ich bin letzte Woche ausgezogen. Wann bekomme ich meine Kaution zurück?",en:"I moved out last week. When do I get my deposit back?"},
+    {de:"Nach dem Auszug prüfen wir die Wohnung, das dauert ein paar Wochen.",en:"After the move-out we check the flat; that takes a few weeks."},
+    {de:"Und wenn alles in Ordnung ist?",en:"And if everything is in order?"},
+    {de:"Dann überweisen wir Ihnen die volle Kaution mit den Zinsen.",en:"Then we transfer you the full deposit with interest."},
+    {de:"Und wenn es Schäden gibt?",en:"And if there are damages?"},
+    {de:"Dann ziehen wir die Reparaturkosten ab.",en:"Then we deduct the repair costs."},
+    {de:"Bis wann muss das spätestens passieren?",en:"By when does this have to happen at the latest?"},
+    {de:"In der Regel innerhalb von sechs Monaten.",en:"As a rule, within six months."}
+  ],questions:[
+    {q:"Wann gibt es die Kaution zurück?",opts:["Nach der Prüfung der Wohnung","Sofort","Nie"],correctIdx:0},
+    {q:"Was passiert bei Schäden?",opts:["Die Kosten werden abgezogen","Nichts","Man zahlt mehr Miete"],correctIdx:0}
+  ]},
+  {title:"SCHUFA online bestellen",level:"B1",lines:[
+    {de:"Ich brauche meine SCHUFA-Auskunft. Geht das online?",en:"I need my SCHUFA report. Can I do it online?"},
+    {de:"Ja, die kostenlose Datenkopie können Sie auf der Webseite bestellen.",en:"Yes, you can order the free data copy on the website."},
+    {de:"Was muss ich angeben?",en:"What do I have to provide?"},
+    {de:"Ihren Namen, Ihre Adresse und eine Ausweiskopie.",en:"Your name, address and a copy of your ID."},
+    {de:"Wie lange dauert es?",en:"How long does it take?"},
+    {de:"Die kostenlose Version kommt nach ein paar Tagen per Post.",en:"The free version comes after a few days by post."},
+    {de:"Und wenn ich sie sofort brauche?",en:"And if I need it immediately?"},
+    {de:"Dann gibt es eine kostenpflichtige Version sofort als Download.",en:"Then there's a paid version available immediately as a download."}
+  ],questions:[
+    {q:"Wie bekommt man die kostenlose Auskunft?",opts:["Online bestellen","Beim Arzt","Bei der Bank"],correctIdx:0},
+    {q:"Was muss man angeben?",opts:["Name, Adresse und Ausweiskopie","Nur das Gehalt","Nichts"],correctIdx:0}
+  ]},
+  {title:"Lärm vom Nachbarn",level:"B1",lines:[
+    {de:"Entschuldigung, könnten Sie abends etwas leiser sein?",en:"Excuse me, could you be a bit quieter in the evening?"},
+    {de:"Oh, war die Musik zu laut?",en:"Oh, was the music too loud?"},
+    {de:"Ja, nach zweiundzwanzig Uhr ist ja Ruhezeit.",en:"Yes, after 10 p.m. it's quiet time."},
+    {de:"Das tut mir leid, das wusste ich nicht.",en:"I'm sorry, I didn't know that."},
+    {de:"Kein Problem, ich wollte es nur kurz sagen.",en:"No problem, I just wanted to mention it."},
+    {de:"Ich mache die Musik ab jetzt leiser.",en:"I'll turn the music down from now on."},
+    {de:"Danke. Sonst verstehen wir uns ja gut.",en:"Thanks. Otherwise we get along well."},
+    {de:"Genau. Sagen Sie ruhig Bescheid, wenn etwas ist.",en:"Exactly. Do let me know if there's anything."}
+  ],questions:[
+    {q:"Worum bittet der Nachbar?",opts:["Abends leiser zu sein","Um Geld","Um Hilfe beim Umzug"],correctIdx:0},
+    {q:"Ab wann ist Ruhezeit?",opts:["Ab zweiundzwanzig Uhr","Ab achtzehn Uhr","Gar nicht"],correctIdx:0}
+  ]},
 ];
 
 
@@ -7969,11 +8050,11 @@ const MISSIONS = [
   {id:"clothes",     arc:"touchdown", level:"A1", cando:"Shop for clothes and get a haircut", dialogues:["Einkaufen — einfach","Einkaufen — Kleidung","Beim Frisör"], cats:["Clothing & Style"]},
   // The Paperwork
   {id:"anmeldung",   arc:"paperwork", level:"A2", cando:"Register your address at the Bürgeramt", dialogues:["Einen Termin machen — einfach","Registering at the Bürgeramt","Registering at the city office"], cats:["Admin & Bureaucracy"]},
-  {id:"rundfunk",    arc:"paperwork", level:"B1", cando:"Handle the broadcasting fee (Rundfunkbeitrag / GEZ)", dialogues:["Der Rundfunkbeitrag"], cats:["Admin & Bureaucracy","Media & Communication"]},
+  {id:"rundfunk",    arc:"paperwork", level:"B1", cando:"Handle the broadcasting fee (Rundfunkbeitrag / GEZ)", dialogues:["Der Rundfunkbeitrag","Rundfunkbeitrag — Befreiung"], cats:["Admin & Bureaucracy","Media & Communication"]},
   {id:"steuerid",    arc:"paperwork", level:"B1", cando:"Understand your Steuer-ID and the tax on your payslip", dialogues:["Steuer-ID und Lohnsteuer"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"license",     arc:"paperwork", level:"B1", cando:"Convert a foreign driving licence (Führerschein umschreiben)", dialogues:["Den Führerschein umschreiben"], cats:["Admin & Bureaucracy","Driving & Traffic"]},
   {id:"fuehrungszeugnis", arc:"paperwork", level:"B1", cando:"Apply for a certificate of good conduct (Führungszeugnis)", dialogues:["Ein Führungszeugnis beantragen"], cats:["Admin & Bureaucracy","Work & Study"]},
-  {id:"schufa",      arc:"paperwork", level:"B1", cando:"Get a SCHUFA credit report for renting", dialogues:["Eine SCHUFA-Auskunft holen"], cats:["Admin & Bureaucracy","Banking & Finance"]},
+  {id:"schufa",      arc:"paperwork", level:"B1", cando:"Get a SCHUFA credit report for renting", dialogues:["Eine SCHUFA-Auskunft holen","SCHUFA online bestellen"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"post",        arc:"paperwork", level:"A2", cando:"Send and collect post and parcels", dialogues:["At the post office","Paket abholen","Missing parcel","Im Fundbüro","Lost property office"], cats:["Media & Communication","Shopping & Money"]},
   {id:"finanzamt",   arc:"paperwork", level:"B2", cando:"Handle a call to the Finanzamt", dialogues:["Anruf beim Finanzamt"], cats:["Admin & Bureaucracy","Banking & Finance"]},
   {id:"strom",       arc:"paperwork", level:"B2", cando:"Set up your electricity", dialogues:["Strom anmelden"], cats:["Admin & Bureaucracy","Housing & Renting"]},
@@ -7982,7 +8063,7 @@ const MISSIONS = [
   {id:"rent",        arc:"roof", level:"A2", cando:"Find and view a flat", dialogues:["Die Wohnung — einfach","Renting a flat","Flat viewing"], cats:["Housing & Renting"]},
   {id:"landlord",    arc:"roof", level:"A2", cando:"Deal with your landlord", dialogues:["Reporting an issue to a landlord","Calling the landlord"], cats:["Housing & Renting"]},
   {id:"viewing",     arc:"roof", level:"B1", cando:"Stand out at a competitive flat viewing", dialogues:["Wohnungsbesichtigung mit vielen Bewerbern"], cats:["Housing & Renting"]},
-  {id:"kaution",     arc:"roof", level:"B1", cando:"Sort out the rental deposit (Mietkaution)", dialogues:["Die Mietkaution"], cats:["Housing & Renting","Banking & Finance"]},
+  {id:"kaution",     arc:"roof", level:"B1", cando:"Sort out the rental deposit (Mietkaution)", dialogues:["Die Mietkaution","Die Kaution zurückbekommen"], cats:["Housing & Renting","Banking & Finance"]},
   {id:"givenotice",  arc:"roof", level:"B1", cando:"Give notice on your flat (Wohnung kündigen)", dialogues:["Die Wohnung kündigen"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"contract",    arc:"roof", level:"B2", cando:"Understand a rental contract", dialogues:["Discussing a rental contract"], cats:["Housing & Renting","Admin & Bureaucracy"]},
   {id:"handover",    arc:"roof", level:"B2", cando:"Move in or out (Wohnungsübergabe)", dialogues:["Wohnungsübergabe","Umzugsunternehmen beauftragen","Die Wohnung putzen"], cats:["Housing & Renting"]},
@@ -7996,10 +8077,10 @@ const MISSIONS = [
   {id:"carworkshop", arc:"money", level:"B2", cando:"Deal with a car workshop", dialogues:["At the car workshop"], cats:["Driving & Traffic"]},
   {id:"complaint",   arc:"money", level:"B2", cando:"Make a complaint and cancel a contract", dialogues:["Making a complaint","Cancelling a gym contract"], cats:["Admin & Bureaucracy"]},
   // Staying Well
-  {id:"krankenkasse",arc:"health", level:"B1", cando:"Register with a health-insurance fund (Krankenkasse)", dialogues:["Krankenversicherung anmelden"], cats:["Health & Doctor","Admin & Bureaucracy"]},
+  {id:"krankenkasse",arc:"health", level:"B1", cando:"Register with a health-insurance fund (Krankenkasse)", dialogues:["Krankenversicherung anmelden","Was die Krankenkasse zahlt"], cats:["Health & Doctor","Admin & Bureaucracy"]},
   {id:"doctor",      arc:"health", level:"A2", cando:"Make and attend a doctor's appointment", dialogues:["Mir geht es nicht gut — einfach","Beim Arzt — Termin machen","At the doctor","At the doctor's","Rescheduling an appointment"], cats:["Health & Doctor","Body & Health"]},
   {id:"pharmacy",    arc:"health", level:"B1", cando:"Get what you need at the pharmacy", dialogues:["In der Apotheke","At the pharmacy"], cats:["Health & Doctor"]},
-  {id:"dentist",     arc:"health", level:"B1", cando:"Get treated at the dentist", dialogues:["Beim Zahnarzt"], cats:["Health & Doctor","Body & Health"]},
+  {id:"dentist",     arc:"health", level:"B1", cando:"Get treated at the dentist", dialogues:["Beim Zahnarzt","Zahnreinigung und Kontrolle"], cats:["Health & Doctor","Body & Health"]},
   {id:"specialist",  arc:"health", level:"B1", cando:"Book a specialist with a referral (Überweisung)", dialogues:["Termin beim Facharzt"], cats:["Health & Doctor","Admin & Bureaucracy"]},
   {id:"emergency",   arc:"health", level:"B1", cando:"Cope with a hospital emergency room", dialogues:["In der Notaufnahme"], cats:["Health & Doctor","Body & Health"]},
   {id:"results",     arc:"health", level:"B2", cando:"Discuss test results with a doctor", dialogues:["Discussing test results"], cats:["Health & Doctor","Body & Health"]},
@@ -8014,7 +8095,7 @@ const MISSIONS = [
   {id:"feedback",    arc:"job", level:"B2", cando:"Have a feedback and salary conversation", dialogues:["Feedbackgespräch mit der Chefin","Salary negotiation"], cats:["Work & Study"]},
   // Belonging
   {id:"gym",         arc:"belonging", level:"A2", cando:"Join and use a gym", dialogues:["Joining a gym","Fitnessstudio anmelden","Freunde im Fitnessstudio"], cats:["Sport & Leisure"]},
-  {id:"neighbours",  arc:"belonging", level:"B1", cando:"Introduce yourself to the neighbours", dialogues:["Nachbarn kennenlernen"], cats:["Small Talk & Social","Housing & Renting"]},
+  {id:"neighbours",  arc:"belonging", level:"B1", cando:"Introduce yourself to the neighbours", dialogues:["Nachbarn kennenlernen","Lärm vom Nachbarn"], cats:["Small Talk & Social","Housing & Renting"]},
   {id:"invite",      arc:"belonging", level:"B1", cando:"Invite friends and make plans", dialogues:["Sich verabreden — einfach","Einen Freund einladen","Texting a friend to meet","Geburtstag planen","Urlaubspläne"], cats:["Small Talk & Social"]},
   {id:"verein",      arc:"belonging", level:"B1", cando:"Join a sports or social club (Verein)", dialogues:["Im Sportverein anmelden"], cats:["Sport & Leisure","Small Talk & Social"]},
   {id:"integrationskurs", arc:"belonging", level:"B1", cando:"Sign up for an integration course", dialogues:["Sich für einen Integrationskurs anmelden"], cats:["Work & Study","Admin & Bureaucracy"]},

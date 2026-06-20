@@ -28,6 +28,7 @@ your files/area, pick something else or coordinate via a CHANGELOG note.
 | Claude (Opus) | src/app.jsx (session modes, render, grading) | Speaking production mode (Web Speech recognition + shadowing fallback) | 2026-06-20 | ✅ done |
 | Claude (Opus) | src/data.js (MISSIONS), src/app.jsx (scenarios/mission screens, Home card), validator | P0 — Scenario/Mission spine (per docs/P0-scenarios-spec.md) | 2026-06-20 | ✅ done |
 | Claude (Opus) | src/data.js (DIALOGUES, MISSIONS) | P1 — A1 survival tier (12 A1 dialogues; Touchdown missions → A1) | 2026-06-20 | ✅ done |
+| Claude (Opus) | src/app.jsx (stats/Progress screen) | P2 — can-do CEFR + capability Progress (per docs/P2-capability-spec.md) | 2026-06-20 | ✅ done |
 
 ## Build & deploy workflow (do this for every change)
 1. Edit `src/app.jsx` (app logic) and/or `src/data.js` (content). These are the sources.

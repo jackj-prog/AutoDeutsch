@@ -667,7 +667,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.06";
+const APP_VERSION = "2026.06.20.07";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2363,6 +2363,24 @@ function App() {
     const notDone = (m) => !(missionProg[m.id] && missionProg[m.id].doneAt);
     return MISSIONS.find(m => notDone(m) && lvlOk(m)) || MISSIONS.find(notDone) || MISSIONS[0];
   }, [missionProg, deepStats.currentLevel]);
+
+  // P2 capability model: what the learner can DO (earned can-dos = completed missions) + a
+  // telc/Goethe exam-readiness estimate per level (vocab-strength proxy). Reads, never writes.
+  const capability = useMemo(() => {
+    const earned = MISSIONS.filter(m => missionProg[m.id] && missionProg[m.id].doneAt);
+    const recent = [...earned].sort((a, b) => (missionProg[b.id].doneAt || 0) - (missionProg[a.id].doneAt || 0)).slice(0, 3);
+    const byLevel = {}; const exam = {};
+    LEVELS.forEach(l => {
+      const ms = MISSIONS.filter(m => m.level === l);
+      byLevel[l] = { done: ms.filter(m => missionProg[m.id] && missionProg[m.id].doneAt).length, total: ms.length };
+      const lv = deepStats.levels[l] || { strong: 0, total: 0 };
+      const pct = lv.total ? Math.round((lv.strong / lv.total) * 100) : 0;
+      const missionsDone = byLevel[l].total ? byLevel[l].done === byLevel[l].total : true;
+      exam[l] = { pct, state: pct >= 75 && missionsDone ? "ready" : pct >= 40 ? "almost" : "building" };
+    });
+    return { earned, earnedCount: earned.length, recent, byLevel, exam };
+  }, [missionProg, deepStats.levels]);
+  const [showUnderHood, setShowUnderHood] = useState(false);
 
   // Progress milestones: a full-screen RANK-UP when a CEFR level is completed, and a lighter
   // CHAPTER checkpoint when you finish a chapter mid-level. Detected on upward transitions
@@ -4758,7 +4776,37 @@ function App() {
           <div className="ad-screen-in" style={{ padding: "0 20px max(28px, env(safe-area-inset-bottom))", minHeight: DVH }}>
             <div style={{ paddingTop: "max(16px, env(safe-area-inset-top))", marginBottom: 14 }}>
               <div style={{ fontFamily: FN, fontSize: 22, fontWeight: 800, color: T, letterSpacing: -0.3 }}>Progress</div>
-              <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your journey to B2, level by level</div>
+              <div style={{ fontSize: 11, color: TD, marginTop: 2 }}>Your journey to living and working in Germany</div>
+            </div>
+
+            {/* ── P2 capability lead: what you can DO (earned can-dos), not how much you've covered ── */}
+            <div style={panel}>
+              {flagBar}
+              <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 12, paddingTop: 4 }}>WHAT YOU CAN DO NOW</div>
+              {capability.earnedCount > 0 ? (<>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 9, marginBottom: 12 }}>
+                  <span style={{ fontFamily: FN, fontSize: 34, fontWeight: 900, color: G, lineHeight: 1 }}>{capability.earnedCount}</span>
+                  <span style={{ fontSize: 13, color: T, fontWeight: 700, lineHeight: 1.3 }}>real-world thing{capability.earnedCount === 1 ? "" : "s"} you can do in German</span>
+                </div>
+                <div style={{ display: "grid", gap: 7, marginBottom: 13 }}>
+                  {capability.recent.map(m => (
+                    <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 12.5, color: T }}>
+                      <span style={{ width: 18, height: 18, borderRadius: 999, background: G, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon name="check" size={11} style={{ color: "#0A0A0A" }} /></span>
+                      <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.cando}</span>
+                    </div>
+                  ))}
+                </div>
+              </>) : (
+                <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, marginBottom: 13 }}>Complete your first scenario to earn your first real-world skill — like ordering at a café or registering your address.</div>
+              )}
+              <button type="button" onClick={() => currentMission ? openMission(currentMission.id) : setScreen("scenarios")} style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, background: `${A}10`, border: `1px solid ${A}3D`, borderRadius: 12, padding: "11px 13px", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+                <IconBadge name="map" size={32} color={A} bg={`${A}12`} />
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.6, textTransform: "uppercase" }}>Next skill</span>
+                  <span style={{ display: "block", fontSize: 13.5, fontWeight: 800, color: T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{currentMission ? currentMission.cando : "Browse scenarios"}</span>
+                </span>
+                <Icon name="chevron" size={15} style={{ color: TD, transform: "rotate(-90deg)" }} />
+              </button>
             </div>
 
             {/* ── Your German Journey: a CEFR roadmap (rank · current focus · milestones · path) — the
@@ -4864,8 +4912,20 @@ function App() {
                             <div style={{ position: "absolute", inset: 0, width: `${strongPct}%`, background: done ? G : LEVEL_COLORS[l], borderRadius: 2, transition: "width .5s" }} />
                             <div style={{ position: "absolute", inset: 0, width: `${mPct}%`, background: G, opacity: 0.9, borderRadius: 2, transition: "width .5s" }} />
                           </div>
+                          {(() => {
+                            const bl = capability.byLevel[l] || { done: 0, total: 0 };
+                            const ex = capability.exam[l] || { state: "building" };
+                            const exTxt = ex.state === "ready" ? "exam-ready" : ex.state === "almost" ? "exam ~" + ex.pct + "%" : "building";
+                            const exCol = ex.state === "ready" ? G : ex.state === "almost" ? A : TD;
+                            return (
+                              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 5 }}>
+                                {bl.total > 0 && <span style={{ fontSize: 10, color: TD, fontWeight: 700 }}>{bl.done}/{bl.total} can-dos</span>}
+                                <span style={{ fontSize: 9, fontWeight: 800, color: exCol, border: `1px solid ${exCol}55`, borderRadius: 6, padding: "1px 6px", letterSpacing: 0.2 }}>telc {l} · {exTxt}</span>
+                              </div>
+                            );
+                          })()}
                         </div>
-                        <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
+                        <Icon name="chevron" size={14} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0, alignSelf: "flex-start", marginTop: 10 }} />
                       </button>
                     );
                   })}
@@ -4916,6 +4976,10 @@ function App() {
                 <Btn bg={A} color="#0A0A0A" onClick={() => startSession("__all__", "vocab", 12)} style={{ marginTop: 16, fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Start your first session →</Btn>
               </div>
             ) : (<>
+            <button type="button" onClick={() => setShowUnderHood(v => !v)} aria-expanded={showUnderHood} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, background: "transparent", border: "none", color: TD, fontSize: 11.5, fontWeight: 800, letterSpacing: 0.4, cursor: "pointer", padding: "2px 0 12px" }}>
+              {showUnderHood ? "Hide the numbers" : "Under the hood — the numbers"} <Icon name="chevron" size={13} style={{ transform: showUnderHood ? "rotate(180deg)" : "none", transition: "transform .18s" }} />
+            </button>
+            {showUnderHood && <>
             {ProgressHub()}
 
             {/* SRS box histogram */}
@@ -4974,6 +5038,7 @@ function App() {
                 );
               })}
             </div>
+            </>}
             </>)}
           </div>
         );

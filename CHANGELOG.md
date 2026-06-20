@@ -15,6 +15,8 @@
 
 ## Session run-log
 
+- P2 can-do CEFR + capability Progress (v2026.06.20.07): the Progress screen now **leads with "What you can do now"** — a count of real-world can-dos earned (completed missions) + the next skill, tappable into the journey. The CEFR roadmap rows gained per-level **can-do counts** and a **telc exam-readiness chip** (ready / ~% / building, a vocab-strength estimate). The word-count, memory-strength, all-time and drill-coverage panels are demoted under a collapsible **"Under the hood — the numbers"** (default collapsed). Reads `missionProg`/`deepStats` only; no SRS/metric changes. Per docs/P2-capability-spec.md.
+
 - Progress de-demoralising quick wins (v2026.06.20.06): the Stats journey panel led with the diluted whole-deck metric ("0.2% · 11 / 5,782 words") and a rank-up wall ("1,038 to rank up to A2"). Reframed to positive, reachable signals — "Across all levels · A1 → B2 · N words learned" (no tiny % / giant denominator) and "finish Chapter X of 5 — on your way to A2" (rank-up framed via the 5 reachable chapter checkpoints, not the raw word count). (The "−1.0/week" pace was a misread of the "~" approximation symbol — perWeek is gated ≥0, no bug.)
 
 - P1 A1 survival tier (v2026.06.20.05): authored 12 A1 dialogues (greetings, introduce yourself, café/bakery, supermarket, paying, directions, restaurant, time, phone, weather, shopping) — dialogues A1 0→12 (total 99). Wired them into the 8 Touchdown missions, which now enter at **A1**, so a true beginner starts in real situations instead of wordlists. Fixes the upside-down journey.

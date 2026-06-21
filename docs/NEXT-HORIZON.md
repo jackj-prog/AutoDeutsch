@@ -14,8 +14,21 @@ re-engagement system; `src/app.jsx` is ~6.65k lines; `src/data.js` ships ~1.2 MB
 ## Recommended order: H1 → H2 → H3 → H4
 Sharpen the base, then the biggest user-value bet (voice), then the return loop (retention), then depth.
 
-### H1 — Stabilize & sharpen *(foundation; mostly invisible, high future-velocity)*
+### H1 — Stabilize & sharpen *(foundation; mostly invisible, high future-velocity)* — IN PROGRESS (v.29)
 Six features shipped fast onto a 6.65k-line monolith. Pay it down before building more.
+- **DONE (v.29):** ① **regression sweep** — 320px overflow clean across home/library/stats/browse/tutor/
+  scenarios/mission/roleplay/journeypath/maintenance/progmax/arccomplete (the only "past-edge" hits are
+  `aria-hidden` confetti inside `overflow:hidden`, no real scroll); first-run + daily home spot-checked,
+  no J1–J6 regressions. ② **modularization kicked off + proven:** `PAL` → `src/lib/palette.js` (build
+  concatenates lib first; validate + 26/26 + identical render). Pattern + TDZ rule recorded in
+  `docs/MODULARIZATION-PLAN.md` §0b. ③ **perf assessed:** ~461 KB gzipped cold load (app 83 + data 378),
+  GH-Pages-gzipped + SW-cached after first load = one-time cost; vocab `V` (964 KB raw) dominates and is
+  needed at first interaction so can't be deferred; deferring drill-only data (DIALOGUES/CLOZE/VERBS/EXAM/
+  CONFUSION) is a small, low-priority future win not worth the two-script/SRI/race complexity now.
+- **NEXT (continue H1):** extract the **icon system** (`ICONS`/`SOLID_ICONS`/`Icon`/`IconBadge`/
+  `ProgressIcon`/`ICO_*`/`playIconTap`, ~135 lines, app.jsx ~795–929) → `src/components/icons.jsx`
+  (references `PAL`, now earlier — safe); then `src/lib/constants.js` (LEVELS/SRS_INTERVALS/etc.). Then
+  pause stateless Phase 1 and decide on Phase 2 (context + screens) as its own dedicated session.
 - **Full regression sweep** with the visual-audit harness across every screen at 320 + 390, including the
   new journey flows (J1–J6: journeypath, arccomplete, roleplay, roleplaychat, maintenance). Fix anything
   the rapid streak introduced. Refresh `docs/VISUAL-AUDIT-*` to 100%.

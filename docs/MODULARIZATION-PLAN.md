@@ -13,6 +13,17 @@ Verified: with none of those dirs present the compiled `app.js` is **byte-identi
 dropped into `src/lib/` is compiled in; removing it restores the identical output. So the pipeline is ready
 **now** and the split can land incrementally, one file at a time, each independently shippable.
 
+## 0b. PROVEN (v.29, H1 step 1) — `src/lib/palette.js`
+First real extraction landed: `const PAL` (the palette) moved out of `app.jsx` into `src/lib/palette.js`.
+The build concatenated it (lib is first), `npm run validate` + 26/26 tests passed, and the home/scenarios/
+stats screenshots render **identically** (colours + icons intact). The pipeline works for a real extraction.
+**Correction to §0's wording:** "byte-identical" describes the build *plumbing* being inert when the dirs
+are empty — an actual extraction **reorders source, so `app.js` bytes change**. Verify each extraction by
+**validate + 26/26 + a visual sweep** (the app white-screens or loses styling/icons if a scope/order ref
+breaks), not by diffing `app.js`. The TDZ rule that makes this safe: components/data referenced only at
+*render* time (not module-load) can live in a file concatenated after their consumers; pure data/constants
+referenced at module-load must be concatenated **before** their consumers (lib → components → screens → app).
+
 ## 1. Scope rules (because it's one shared scope)
 - **No duplicate top-level names across files.** Everything concatenates into one scope, so two files
   can't both declare `const A = …`. Keep the existing module-scope names unique (they already are).

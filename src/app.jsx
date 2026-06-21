@@ -598,10 +598,8 @@ async function clearScheduledReminders(reg) {
 }
 
 // ── Color palette (module scope so hoisted components can reference) ──
-const PAL = {
-  A: "#FFCC00", AD: "#CC9900", BG: "#0A0A0A", S: "#111111", SH: "#1A1A1A", B: "#2A2A2A",
-  G: "#4ADE80", R: "#DD0000", T: "#F0EDE5", TD: "#97938B", BL: "#60A5FA", CARD: "#151515",
-};
+// `PAL` (the palette) now lives in src/lib/palette.js — concatenated before this file by the build,
+// same shared scope. See docs/MODULARIZATION-PLAN.md (H1 modularization, step 1).
 // CEFR level identity — title + accent — shared by the home rank card, the Stats roadmap,
 // and the rank-up celebration so the progression reads as one system.
 const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
@@ -729,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.28";
+const APP_VERSION = "2026.06.20.29";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero

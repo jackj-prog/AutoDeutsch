@@ -121,9 +121,11 @@ Found already-solid foundations: file **export/import** of progress exists, a **
 - **C5 ✅ (v.42) — shareable: Open Graph / Twitter cards + accurate meta.** Shared URLs now preview with a
   title/blurb/icon; replaced the stale pre-journey meta description; descriptive `<title>`. (`index.html`;
   survives the SRI-patching build.)
+- **C6 ✅ (v.43) — a11y recheck.** Dynamic status/error messages now announced (`role="alert"` / `role="status"`
+  aria-live; WCAG 4.1.3) incl. the offline notices + roleplay verdict; `aria-pressed` on the roleplay mic. New
+  surfaces already had aria-labels; AA tokens reused.
 - **C-backlog (candidate next, highest-value first):** micro-polish/visual-consistency sweep; Library→"Learn"
-  rename (user-facing label — confirm first); a11y recheck of the new screens (mic/voice toggles, welcome
-  step). Plus the modularization/mic-unify internal items.
+  rename (user-facing label — confirm first). Plus the modularization/mic-unify internal items.
   *(Note: `og:url`/`og:image` assume the GitHub Pages URL `jackj-prog.github.io/autodeutsch/` — update if a
   custom domain is added; a dedicated 1200×630 share image would beat the square icon for `summary_large_image`.)*
 

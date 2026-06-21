@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.42";
+const APP_VERSION = "2026.06.20.43";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4506,7 +4506,7 @@ function App() {
               }
             }} style={{ fontFamily: FN, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Icon name="refresh" size={16} /> Check for updates</Btn>
             {updateCheckMsg && (
-              <div style={{ fontSize: 11, color: updateCheckMsg.startsWith("✓") ? G : updateCheckMsg.startsWith("Check failed") ? R : TD, marginTop: 8, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8 }}>{updateCheckMsg}</div>
+              <div role="status" aria-live="polite" style={{ fontSize: 11, color: updateCheckMsg.startsWith("✓") ? G : updateCheckMsg.startsWith("Check failed") ? R : TD, marginTop: 8, padding: "8px 12px", background: "#0A0A0A66", borderRadius: 8 }}>{updateCheckMsg}</div>
             )}
           </div>
 
@@ -4526,7 +4526,7 @@ function App() {
           </div>
 
           {importError && (
-            <div style={{ fontSize: 11, color: importError.startsWith("✓") ? G : R, marginBottom: 14, padding: "8px 12px", background: importError.startsWith("✓") ? "#0A1A0A" : "#1A0000", borderRadius: 8, borderLeft: `3px solid ${importError.startsWith("✓") ? G : R}` }}>{importError}</div>
+            <div role="status" aria-live="polite" style={{ fontSize: 11, color: importError.startsWith("✓") ? G : R, marginBottom: 14, padding: "8px 12px", background: importError.startsWith("✓") ? "#0A1A0A" : "#1A0000", borderRadius: 8, borderLeft: `3px solid ${importError.startsWith("✓") ? G : R}` }}>{importError}</div>
           )}
 
           <div style={{ marginTop: 18, padding: "10px 12px", background: "#0A0A0A66", borderRadius: 8, fontSize: 11, color: TD, lineHeight: 1.5, borderLeft: `3px solid ${BL}` }}>
@@ -5206,7 +5206,7 @@ function App() {
                   <div key={i} style={{ alignSelf: m.role === "user" ? "flex-end" : "flex-start", maxWidth: "88%", background: m.role === "user" ? A : "#161616", color: m.role === "user" ? "#0A0A0A" : T, border: m.role === "user" ? "none" : `1px solid ${B}`, borderRadius: 16, borderBottomRightRadius: m.role === "user" ? 4 : 16, borderBottomLeftRadius: m.role === "user" ? 16 : 4, padding: "10px 14px", fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-wrap", fontWeight: m.role === "user" ? 600 : 400 }}>{m.text}</div>
                 ))}
                 {tutorBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>Tutor denkt nach…</div>}
-                {tutorError && <div style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{tutorError}</div>}
+                {tutorError && <div role="alert" style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{tutorError}</div>}
               </div>
               {/* P7-deeper: turn the chat into action — jump straight from the Tutor into a drill on the
                   learner's actual weak words (the same SRS weak-review used on Home). */}
@@ -5306,9 +5306,9 @@ function App() {
                     </div>
                   ))}
                   {rpBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>…</div>}
-                  {rpError && <div style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{rpError}</div>}
+                  {rpError && <div role="alert" style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{rpError}</div>}
                   {rpVerdict && (
-                    <div style={{ alignSelf: "stretch", background: `${vColor}10`, border: `1px solid ${vColor}55`, borderRadius: 16, padding: "16px", marginTop: 6 }}>
+                    <div role="status" aria-live="polite" style={{ alignSelf: "stretch", background: `${vColor}10`, border: `1px solid ${vColor}55`, borderRadius: 16, padding: "16px", marginTop: 6 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 10 }}>
                         <IconBadge name={/keep/i.test(rpVerdict.verdict) ? "refresh" : "check"} size={36} color={vColor} bg={`${vColor}18`} />
                         <div>
@@ -5329,7 +5329,7 @@ function App() {
                   <div style={{ paddingTop: 8, borderTop: `1px solid ${B}` }}>
                     <div style={{ display: "flex", gap: 8 }}>
                       {SPEECH_REC_CTOR && (
-                        <button type="button" onClick={rpListening ? rpStopListening : rpStartListening} aria-label={rpListening ? "Stop speaking" : "Speak your answer"}
+                        <button type="button" aria-pressed={rpListening} onClick={rpListening ? rpStopListening : rpStartListening} aria-label={rpListening ? "Stop speaking" : "Speak your answer"}
                           style={{ flexShrink: 0, width: 48, borderRadius: 12, border: `1px solid ${rpListening ? R : `${A}55`}`, background: rpListening ? `${R}1A` : `${A}10`, color: rpListening ? R : A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: rpListening ? `0 0 0 4px ${R}14` : "none", transition: "box-shadow .2s" }}>
                           <Icon name="mic" size={18} />
                         </button>
@@ -5779,7 +5779,7 @@ function App() {
                     </button>
                     <div style={{ fontSize: 13, fontWeight: 800, color: listening ? R : A }}>{listening ? "Listening… tap to stop" : "Tap and say it in German"}</div>
                     {heard && <div style={{ fontSize: 15, color: T, fontFamily: BD }}>“{heard}”</div>}
-                    {speechErr && <div style={{ fontSize: 12, color: RT }}>{speechErr}</div>}
+                    {speechErr && <div role="alert" style={{ fontSize: 12, color: RT }}>{speechErr}</div>}
                   </>) : (<>
                     <Icon name="mic" size={30} style={{ color: TD }} />
                     <div style={{ fontSize: 12, color: TD, textAlign: "center", lineHeight: 1.5, maxWidth: 280 }}>Say it aloud in German, then mark yourself. (Live speech scoring isn't supported on this browser.)</div>

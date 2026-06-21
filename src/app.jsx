@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.40";
+const APP_VERSION = "2026.06.20.41";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1949,6 +1949,8 @@ function App() {
   const sendTutor = async (text) => {
     const body = (text || tutorInput).trim();
     if (!body || tutorBusy || !aiKey) return;
+    // C4: a clear offline message beats a cryptic "Failed to fetch" — the Tutor needs the network.
+    if (typeof navigator !== "undefined" && navigator.onLine === false) { setTutorError("You're offline — reconnect to chat with the Tutor. Your scenarios and drills still work offline."); return; }
     const next = [...tutorMsgs, { role: "user", text: body }];
     setTutorMsgs(next); persistTutor(next); setTutorInput(""); setTutorBusy(true); setTutorError("");
     try {
@@ -1988,6 +1990,8 @@ function App() {
 
   // ── J4 roleplay: one Anthropic call in character. `grading` swaps the parse to verdict mode. ──
   const callRoleplay = async (history, mission, grading) => {
+    // C4: friendly offline message (thrown → shown via rpError by launch/send/finish).
+    if (typeof navigator !== "undefined" && navigator.onLine === false) throw new Error("You're offline — reconnect to do the live roleplay. (You can still rehearse the scene's phrases out loud.)");
     const words = (MISSION_VOCAB[mission.id] || []).slice(0, 12);
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",

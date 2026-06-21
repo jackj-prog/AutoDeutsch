@@ -115,9 +115,12 @@ Found already-solid foundations: file **export/import** of progress exists, a **
 - **C3 ✅ (v.40) — first-run value pitch.** Onboarding now opens on a welcome step (headline + 3
   differentiators + "Get started") before the intake questionnaire — sells the product before asking for
   input. Retakes skip it. Harness: `SHOOT_OBSTEP=intake`.
-- **C-backlog (candidate next, highest-value first):** a friendly **error-state/empty-state** sweep;
-  micro-polish consistency; Library→"Learn" rename (user-facing label — confirm first); remaining a11y on
-  new screens (mic/voice toggles, welcome step). Plus the modularization/mic-unify internal items.
+- **C4 ✅ (v.41) — graceful offline handling for the AI features.** Tutor + roleplay now detect offline and
+  show a clear, reassuring message (pointing at what works offline) instead of "Failed to fetch". Confirmed
+  the rest of the empty/error coverage is solid. Harness: `tutoroffline`.
+- **C-backlog (candidate next, highest-value first):** micro-polish/visual-consistency sweep; Library→"Learn"
+  rename (user-facing label — confirm first); a11y recheck of the new screens (mic/voice toggles, welcome
+  step). Plus the modularization/mic-unify internal items.
 
 ## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
 - **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,

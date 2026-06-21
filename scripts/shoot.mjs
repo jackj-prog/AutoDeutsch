@@ -579,11 +579,14 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 1000));
     return;
   }
-  if (screen === "tutorchat" || screen === "tutorstart") {
+  if (screen === "tutorchat" || screen === "tutorstart" || screen === "tutoroffline") {
     // aiKey + a sample conversation are seeded (tutorChat flag) → the live chat UI renders
     // with bubbles. No Send is tapped, so no network request is made.
     await clickText(page, "Chat & ask in German");
     await new Promise(r => setTimeout(r, 600));
+    // C4: tutoroffline stubs navigator.onLine=false (run()), then taps a starter → the friendly
+    // offline message renders instead of a network error.
+    if (screen === "tutoroffline") { await clickText(page, "Stell mir"); await new Promise(r => setTimeout(r, 500)); }
     return;
   }
   if (screen === "dictation") {
@@ -756,7 +759,10 @@ async function run() {
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax" && screen !== "maintenance" && screen !== "longword" && screen !== "longprompt")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat" || screen === "roleplayvoice", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat" || screen === "roleplayvoice", tutorChat: screen === "tutorchat" || screen === "tutorstart" || screen === "tutoroffline", tutorChatEmpty: screen === "tutorstart" || screen === "tutoroffline" });
+      // C4: stub offline before app load so navigator.onLine is false when the Tutor tries to send.
+      if (screen === "tutoroffline")
+        await page.evaluateOnNewDocument(() => { try { Object.defineProperty(navigator, "onLine", { get: () => false, configurable: true }); } catch (e) {} });
       // H2: stub Web Speech recognition (absent in headless) so the roleplay mic button renders.
       if (screen === "roleplayvoice")
         await page.evaluateOnNewDocument(() => { window.SpeechRecognition = class { start() {} stop() {} }; });

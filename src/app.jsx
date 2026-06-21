@@ -729,7 +729,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.26";
+const APP_VERSION = "2026.06.20.27";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -2604,6 +2604,28 @@ function App() {
     return { earned, earnedCount: earned.length, recent, byLevel, exam, role: roleFor(earned.length), nextRole: ROLES.find(r => r.min > earned.length) || null };
   }, [missionProg, deepStats.levels]);
 
+  // J5 — journey maintenance: completed missions whose SCENE WORDS have decayed (gone due in the
+  // SRS). This reframes daily review as *keeping your earned scenarios sharp* — the habit loop and
+  // the journey become one system. Each entry = a done mission + how many of its words slipped.
+  const journeyMaintenance = useMemo(() => {
+    const catOf = {};
+    allVocab().forEach(w => { if (!(w.de in catOf)) catOf[w.de] = w._cat; });
+    const out = [];
+    let totalDue = 0;
+    MISSIONS.forEach(m => {
+      const p = missionProg[m.id];
+      if (!p || !p.doneAt) return; // only earned scenarios can decay
+      const words = MISSION_VOCAB[m.id] || [];
+      const dueWords = words.filter(de => {
+        const c = catOf[de]; if (!c) return false;
+        return dueCards.has(`vocab::${c}::${de}`) || dueCards.has(`production::${c}::${de}`);
+      });
+      if (dueWords.length) { out.push({ mission: m, dueWords }); totalDue += dueWords.length; }
+    });
+    out.sort((a, b) => b.dueWords.length - a.dueWords.length);
+    return { list: out, totalDue, catOf };
+  }, [missionProg, dueCards]);
+
   // ── Context-aware AI Tutor (P7) ──────────────────────────────────────────────
   // Everything the Tutor should know about THIS learner, assembled from data the app already
   // has (level, relocation goal, status, current scenario, weak words). No new inputs/requests.
@@ -3111,6 +3133,18 @@ function App() {
       setMode("vocab"); setCategory("Today's Review"); setScreen("cards");
     }
     setTStart(Date.now());
+  };
+
+  // J5 — refresh decayed scenario words. `entry` = one maintenance entry, or null for ALL slipping
+  // scenarios at once. Drills the exact earned-scenario words that have gone due (recall mode).
+  const startJourneyRefresh = (entry) => {
+    const entries = entry ? [entry] : journeyMaintenance.list;
+    const want = [...new Set(entries.flatMap(e => e.dueWords))];
+    if (!want.length) return;
+    const pool = allVocab().filter(w => want.includes(w.de));
+    if (!pool.length) return;
+    const label = entry ? "Refresh · " + entry.mission.cando : "Keep your journey sharp";
+    startSession(pool[0]._cat, "vocab", pool.length, { level: "all", pool, poolLabel: label });
   };
 
   const startAlmostReview = () => {
@@ -4643,6 +4677,33 @@ function App() {
           );
         })()}
 
+        {/* ── JOURNEY MAINTENANCE (J5) — earned scenarios whose words have decayed. Daily review,
+            reframed as keeping the journey sharp: it names the actual scenarios slipping and drills
+            their exact words. Sits right under the journey hero so the habit loop IS the journey. ── */}
+        {journeyMaintenance.list.length > 0 && (() => {
+          const top = journeyMaintenance.list.slice(0, 2);
+          const more = journeyMaintenance.list.length - top.length;
+          return (
+            <button type="button" onClick={() => startJourneyRefresh(null)} aria-label={`Refresh ${journeyMaintenance.totalDue} slipping scenario words`}
+              style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer", fontFamily: "inherit", background: "linear-gradient(135deg, #131A14 0%, #0E0E0E 70%)", border: `1px solid ${G}3D`, borderRadius: 16, padding: "14px 15px", marginBottom: 14, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
+                <IconBadge name="refresh" size={34} color={G} bg={`${G}16`} />
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 10, color: G, fontWeight: 800, letterSpacing: 0.5, textTransform: "uppercase" }}>Keep your journey sharp</span>
+                  <span style={{ display: "block", fontFamily: FN, fontSize: 15.5, fontWeight: 800, color: T, marginTop: 1 }}>{journeyMaintenance.list.length} earned scenario{journeyMaintenance.list.length === 1 ? "" : "s"} slipping</span>
+                </span>
+                <Icon name="arrowRight" size={18} style={{ color: G }} />
+              </div>
+              <span style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 11 }}>
+                {top.map(e => (
+                  <span key={e.mission.id} style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 11, fontWeight: 700, color: T, background: "#0A0A0A", border: `1px solid ${HAIR}`, borderRadius: 999, padding: "5px 11px" }}>{e.mission.cando} · {e.dueWords.length}</span>
+                ))}
+                {more > 0 && <span style={{ fontSize: 11, fontWeight: 700, color: TD, padding: "5px 4px", alignSelf: "center" }}>+{more} more</span>}
+              </span>
+            </button>
+          );
+        })()}
+
         {/* Journey rank — your current CEFR level + progress toward the next, surfaced as a
             tappable identity (matches the Stats roadmap). Novice sees a clear rank + climb. */}
         {(() => {
@@ -4654,8 +4715,10 @@ function App() {
           const clPct = CL.total ? (CL.strong / CL.total) * 100 : 0;
           const clSeenPct = CL.total ? (CL.seen / CL.total) * 100 : 0;
           return (
-            <button type="button" onClick={() => setScreen("stats")} aria-label={`Level ${cl} ${TITLES[cl]} — open your journey`}
+            <button type="button" onClick={() => setScreen("stats")} aria-label={`Language level ${cl} ${TITLES[cl]} — open your progress`}
               style={{ width: "100%", marginTop: 14, marginBottom: 4, background: "linear-gradient(100deg, #131313 0%, #0E0E0E 70%)", border: `1px solid ${HAIR}`, borderRadius: 13, padding: "11px 13px 12px", cursor: "pointer", fontFamily: "inherit", display: "block", textAlign: "left" }}>
+              {/* J5: explicitly the language-level sub-metric (CEFR), distinct from the journey (scenarios) above. */}
+              <div style={{ fontSize: 9, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 7 }}>Language level</div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                 <span style={{ width: 28, height: 28, borderRadius: 9, background: `${LC[cl]}1A`, border: `1px solid ${LC[cl]}`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: FN, fontSize: 12, fontWeight: 900, color: LC[cl], flexShrink: 0 }}>{cl}</span>
                 <span style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 800, color: T }}>{TITLES[cl]}<span style={{ color: TD, fontWeight: 600, fontSize: 11 }}> · {curIdx === -1 ? "journey to B2" : `Chapter ${deepStats.currentChapter} of ${CHAPTERS}`}</span></span>
@@ -5413,6 +5476,17 @@ function App() {
               </>) : (
                 <div style={{ fontSize: 13, color: TD, lineHeight: 1.55, marginBottom: 13 }}>Complete your first scenario to earn your first real-world skill — like ordering at a café or registering your address.</div>
               )}
+              {/* J5 — the journey spine: scenarios completed is the headline progress metric;
+                  role is who that makes you, and the CEFR panel below is your language level. */}
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 6 }}>
+                  <span style={{ fontSize: 11, color: TD, fontWeight: 700 }}>Your journey</span>
+                  <span style={{ fontSize: 11, color: T, fontWeight: 800 }}>{capability.earnedCount} / {MISSIONS.length} scenarios</span>
+                </div>
+                <div style={{ height: 7, background: "#0A0A0A", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${MISSIONS.length ? (capability.earnedCount / MISSIONS.length) * 100 : 0}%`, background: `linear-gradient(90deg, ${G} 0%, ${A} 100%)`, borderRadius: 4, transition: "width .5s" }} />
+                </div>
+              </div>
               {capability.nextRole && capability.earnedCount > 0 && <div style={{ fontSize: 11, color: TD, marginBottom: 11, lineHeight: 1.5 }}><span style={{ color: A, fontWeight: 800 }}>{capability.nextRole.min - capability.earnedCount}</span> more skill{capability.nextRole.min - capability.earnedCount === 1 ? "" : "s"} to become <span style={{ color: T, fontWeight: 800 }}>{capability.nextRole.name}</span></div>}
               <button type="button" onClick={() => currentMission ? openMission(currentMission.id) : setScreen("scenarios")} style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, background: `${A}10`, border: `1px solid ${A}3D`, borderRadius: 12, padding: "11px 13px", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
                 <IconBadge name="map" size={32} color={A} bg={`${A}12`} />
@@ -5442,7 +5516,7 @@ function App() {
               return (
                 <div style={panel}>
                   {flagBar}
-                  <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 14, paddingTop: 4 }}>YOUR JOURNEY TO B2</div>
+                  <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2, marginBottom: 14, paddingTop: 4 }}>YOUR LANGUAGE LEVEL · CEFR</div>
 
                   {/* Current-level rank hero */}
                   <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>

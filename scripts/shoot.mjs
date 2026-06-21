@@ -413,6 +413,30 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, 500));
     return;
   }
+  if (screen === "maintenance") {
+    // J5 journey-maintenance card: a few COMPLETED missions whose scene words have gone DUE in the
+    // SRS. Seed each mission's MISSION_VOCAB words into prog with an old lastReviewed (→ due), and
+    // mark those missions done → Home shows the green "Keep your journey sharp" card.
+    await page.evaluate(() => {
+      const D = 86400000, now = Date.now();
+      const catOf = {};
+      for (const cat of Object.keys(V)) for (const w of V[cat]) if (!(w.de in catOf)) catOf[w.de] = cat;
+      const missions = ["cafe", "restaurant", "supermarket"];
+      const prog = {};
+      missions.forEach(id => (MISSION_VOCAB[id] || []).forEach(de => {
+        const cat = catOf[de]; if (!cat) return;
+        prog[`vocab::${cat}::${de}`] = { stats: { attempts: 3, correct: 3, incorrect: 0, lastSeen: now - 30 * D, avgTime: 5000, timedAttempts: 3, currentStreak: 2, productionStreak: 0, masteredAt: null }, srs: { box: 2, lastReviewed: now - 30 * D } };
+      }));
+      localStorage.setItem("gfc-v7", JSON.stringify(prog));
+      localStorage.setItem("ad-onboarding-v1", "done");
+      localStorage.setItem("gfc-daily-v7", JSON.stringify({ date: new Date().toISOString().slice(0, 10), count: 8, streak: 11 }));
+      localStorage.setItem("ad-mission-progress-v1", JSON.stringify(Object.fromEntries(missions.map(id => [id, { learned: true, listened: true, spoke: true, doneAt: now - 5 * D }]))));
+    });
+    await page.reload({ waitUntil: "load" });
+    await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });
+    await new Promise(r => setTimeout(r, 700));
+    return; // Home is the default screen — the maintenance card sits under the journey hero.
+  }
   if (screen === "rankup") {
     // The full-screen CEFR rank-up fires when deepStats.currentLevel rises during a session.
     // currentLevel = lowest level not yet fully STRONG, so seed EVERY A1 card strong & not-due
@@ -722,7 +746,7 @@ async function run() {
       }
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
-      if (screen !== "rankup" && screen !== "progmax" && screen !== "longword" && screen !== "longprompt")
+      if (screen !== "rankup" && screen !== "progmax" && screen !== "maintenance" && screen !== "longword" && screen !== "longprompt")
         await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });

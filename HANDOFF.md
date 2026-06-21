@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.26`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.27`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,12 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.27** J5 (unify progression + daily-maintains-journey): one spine — role = headline, **scenarios
+  completed = the journey** (primary metric), **CEFR = language-level sub-metric** (Progress panel 2
+  renamed; Home CEFR card gets a "Language level" eyebrow; panel 1 gains a "{done}/58 scenarios" bar).
+  New `journeyMaintenance` (completed missions whose scene words went due) → green **"Keep your journey
+  sharp"** Home card naming the slipping scenarios → `startJourneyRefresh` drills those exact words.
+  Harness: `maintenance`. (J1–J5 done; **J6 = content depth/personalization, largely content-lane**.)
 - **v.26** J4 (mission roleplay climax): every mission ends with **"Do it for real"** — a live roleplay
   where the **Tutor becomes the other party** (café server, clerk…), stays in German/in character,
   then on Finish returns a **verdict** (Passed/Almost/Keep practising + went-well/to-improve). Credits a

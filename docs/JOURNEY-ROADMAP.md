@@ -119,12 +119,22 @@ path. Harness: `roleplay` (no-key) + `roleplaychat` (mocked endpoint — interce
 *content*, since the system prompt itself names the `__GRADE__` token). *Possible follow-ups: surface the
 roleplay verdict on Progress / arc payoff; per-mission opening-line flavour; voice input.*
 
-### J5 — Unify progression + make daily practice maintain the journey
+### J5 — Unify progression + make daily practice maintain the journey — ✅ DONE (v.27)
 Collapse the two progress systems into one legible spine: **status/role is the headline** (Newcomer→
 Local), **CEFR is the "language level" sub-metric**, and the **journey % = missions done**. Then make
 the daily review visibly **maintenance for the journey** — surface "refresh" of completed-mission
 scenarios when their words decay (`doneAt` + SRS strength), so the habit loop and the journey are one
 system. *Effort: Med-High · app.jsx. Risk: Med (touches Progress + Home framing).*
+
+**Shipped:** **(A)** new `journeyMaintenance` (completed missions whose `MISSION_VOCAB` words are in
+`dueCards`) drives a green **"Keep your journey sharp — N earned scenarios slipping"** Home card under
+the journey hero — it names the actual decaying scenarios and `startJourneyRefresh` drills those exact
+words, so daily review *is* journey maintenance. **(B)** one spine: role = headline, **scenarios done =
+the journey** (Progress panel 1 gains a "{done}/58 scenarios" bar as the primary metric), **CEFR = the
+language-level sub-metric** (panel 2 renamed "Your journey to B2" → "Your language level · CEFR"; Home
+CEFR card gains a "Language level" eyebrow — kills the dual-"journey" naming collision). Harness:
+`maintenance`. *Possible follow-ups: surface the same maintenance prompt on Progress; reframe the daily
+**goal ring** as journey upkeep (P3b); fold the generic Due/Weak cards into the maintenance frame.*
 
 ### J6 — Personalization + content depth  *(some of this is the content lane)*
 Goal-based emphasis (reorder/spotlight arcs for "Working in German" vs "Settling in & making friends");
@@ -132,11 +142,11 @@ finish multi-scene coverage (24 single-scene missions → 2 scenes); light per-a
 mission-step variety. *Effort: Med, mostly additive `src/data.js`. Risk: Low.*
 
 ## Recommended order & why
-**J1 ✅ → J3 ✅ → J2 ✅ → J4 ✅ → J5 (next) → J6.** J1 made the journey the flagship immediately (the
-explicit goal) and was low-risk. J3 (arc payoff) was cheap and added the missing motivation loop. J2
-(path/map) was the bigger UX build that benefited from J1/J3 being in place. J4 (mission roleplay climax
-via the Tutor) was the marquee depth upgrade — *perform the scenario*, not just drill it. **All four are
-now live (v.23/24/25/26).** **J5 (unify progression + make daily practice maintain the journey) is next**
-— collapse the two progress systems into one legible spine and reframe the daily review as journey
-maintenance. J6 deepens content in parallel (content lane can run it anytime). Each ships independently;
-we can resequence on your call.
+**J1 ✅ → J3 ✅ → J2 ✅ → J4 ✅ → J5 ✅ → J6 (next).** J1 made the journey the flagship immediately
+(the explicit goal) and was low-risk. J3 (arc payoff) was cheap and added the missing motivation loop.
+J2 (path/map) was the bigger UX build that benefited from J1/J3 being in place. J4 (mission roleplay
+climax via the Tutor) was the marquee depth upgrade — *perform the scenario*, not just drill it. J5
+unified the progression spine and made daily review *journey maintenance*. **All five are now live
+(v.23–27)** — the journey UX/pedagogy frame is complete. **J6 (personalization + content depth) is the
+last phase and is largely a content-lane job** (additive `src/data.js`): goal-based arc emphasis,
+finishing multi-scene coverage, per-arc narrative framing. Each ships independently; resequence on call.

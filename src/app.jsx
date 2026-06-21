@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.32";
+const APP_VERSION = "2026.06.20.33";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1147,6 +1147,9 @@ function App() {
   const [notifPerm, setNotifPerm] = useState(() => (typeof Notification !== "undefined" ? Notification.permission : "unsupported"));
   const reminderTimerRef = useRef(null);
   const dailyRef = useRef(null); // latest {count, goal, date} read inside the fire callback
+  // H3 — journey-aware reminder copy. Updated from live journey state (below), read at schedule time
+  // so the re-engagement nudge names the actual slipping scenarios / current mission, not a generic line.
+  const reminderBodyRef = useRef(REMINDER_BODY);
   // Audio mode state
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPauseLen, setAudioPauseLen] = useState(3500); // ms between utterances
@@ -1489,7 +1492,7 @@ function App() {
       try {
         for (const ts of reminderTimes(reminderTime, 7)) {
           await reg.showNotification(REMINDER_TITLE, {
-            tag: REMINDER_TAG + "-" + ts, body: REMINDER_BODY,
+            tag: REMINDER_TAG + "-" + ts, body: reminderBodyRef.current,
             icon: "./icons/icon-192x192.png", badge: "./icons/icon-192x192.png",
             showTrigger: new window.TimestampTrigger(ts), data: { url: "./" },
           });
@@ -1507,8 +1510,8 @@ function App() {
         const d = dailyRef.current;
         const metToday = d && d.date === todayKey() && d.count >= d.goal;
         if (!metToday && typeof Notification !== "undefined" && Notification.permission === "granted") {
-          if (reg) reg.showNotification(REMINDER_TITLE, { tag: REMINDER_TAG, body: REMINDER_BODY, icon: "./icons/icon-192x192.png", data: { url: "./" } });
-          else new Notification(REMINDER_TITLE, { body: REMINDER_BODY });
+          if (reg) reg.showNotification(REMINDER_TITLE, { tag: REMINDER_TAG, body: reminderBodyRef.current, icon: "./icons/icon-192x192.png", data: { url: "./" } });
+          else new Notification(REMINDER_TITLE, { body: reminderBodyRef.current });
         }
       } catch (e) {}
       rescheduleReminder();
@@ -2525,6 +2528,16 @@ function App() {
     out.sort((a, b) => b.dueWords.length - a.dueWords.length);
     return { list: out, totalDue, catOf };
   }, [missionProg, dueCards]);
+
+  // H3 — keep the daily-reminder copy journey-aware: name the slipping earned scenarios, else nudge
+  // the current mission, else fall back to the generic line. Read in rescheduleReminder at schedule
+  // time (Notification Triggers bake the text in advance, but we reschedule on every app open).
+  useEffect(() => {
+    const n = journeyMaintenance.list.length;
+    if (n > 0) reminderBodyRef.current = `${n} earned scenario${n === 1 ? "" : "s"} slipping — a few minutes keeps ${n === 1 ? "it" : "them"} sharp.`;
+    else if (currentMission && missionStatus(currentMission.id) !== "done") reminderBodyRef.current = `Continue your journey: ${currentMission.cando}.`;
+    else reminderBodyRef.current = REMINDER_BODY;
+  }, [journeyMaintenance, currentMission, missionProg]);
 
   // ── Context-aware AI Tutor (P7) ──────────────────────────────────────────────
   // Everything the Tutor should know about THIS learner, assembled from data the app already

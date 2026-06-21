@@ -62,15 +62,22 @@ Settling-in German is a **spoken** skill. The engine exists; it's just not where
   into one `useSpeechInput` hook — fits the **modularization** lane (H1), not a user-facing item. TTS already
   has voice-pick + rate. *Net: you can now hold the café/clerk conversation entirely out loud.*
 
-### H3 — The return loop: retention & re-engagement *(turn a one-time journey into a daily habit)*
+### H3 — The return loop: retention & re-engagement *(turn a one-time journey into a daily habit)* — IN PROGRESS (v.33)
 A settling-in app is used over months; today there's no reason to come back tomorrow.
-- **Re-engagement within PWA limits:** opt-in local reminders (Notification API + SW), honest about iOS
-  web-push constraints. Daily-review reminder; a **J5 maintenance nudge** ("your café scenario is
-  slipping"); streak-at-risk ping. No server — schedule what the platform allows, degrade gracefully.
-- **Streak safety:** freeze/recovery polish so one missed day doesn't nuke momentum.
-- **P3b — daily-goal reframe:** make the daily ring read as *journey upkeep*, not raw card count (ties to
-  J5). Fold the generic Due/Weak cards into the maintenance frame.
-- *Risk: Med (notification UX + platform limits; don't be naggy/permission-spammy). Deliver: a daily pull.*
+- **PRE-EXISTING (found, not built):** the **machinery was already here and is solid** — opt-in **local
+  reminders via Notification Triggers** (`showTrigger`/`TimestampTrigger`, server-less, schedules a week,
+  foreground-timer fallback, reschedules on app open; the correct no-backend approach) AND a full
+  **streak-freeze** system (banked freezes auto-absorb missed days, with a "streak saved" notice). So H3 is
+  *connecting* these to the journey, not building re-engagement from scratch. **No backend = no true
+  background push** beyond what Notification Triggers allow (Chromium); iOS stays best-effort-while-open.
+- **DONE (v.33) — journey-aware re-engagement:** the reminder body is no longer generic. `reminderBodyRef`
+  is kept fresh from live journey state and read at schedule time: **"{N} earned scenarios slipping — a few
+  minutes keeps them sharp"** (the J5 maintenance nudge), else **"Continue your journey: {current mission}"**,
+  else the generic line. Re-engagement now pulls you back to *the journey*, by name.
+- **REMAINING H3:** **P3b — daily-goal reframe** (make the home "Today" ring read as *journey upkeep*, not
+  raw "cards per day"; fold the generic Due/Weak cards into the J5 maintenance frame). Optional: a
+  streak-at-risk in-app banner late in the day. *These are home/Progress framing changes — medium risk.*
+- *Risk: Low for what shipped (copy from existing state). Deliver: the daily nudge is about the journey.*
 
 ### H4 — Depth & correctness *(make every mission rich and right)*
 The journey frame is done; now fill it out. Mostly content lane — but I own correctness.

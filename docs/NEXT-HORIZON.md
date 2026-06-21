@@ -81,13 +81,15 @@ A settling-in app is used over months; today there's no reason to come back tomo
 - *Shipped. (Optional future: a streak-at-risk in-app banner late in the day; fold Due/Weak into the
   maintenance frame.) Deliver: the daily habit reads as keeping your journey alive, and the nudge names it.*
 
-### H4 — Depth & correctness *(make every mission rich and right)*
+### H4 — Depth & correctness *(make every mission rich and right)* — IN PROGRESS (v.35)
 The journey frame is done; now fill it out. Mostly content lane — but I own correctness.
-- **Finish multi-scene coverage:** the ~24 single-scene missions each get a 2nd dialogue (same pattern as
-  the 6 already added; remember to wire the title into the mission's `dialogues`). Top open hand-off.
-- **More build-sentences** on early A1/A2 missions (only ≥1 guaranteed today).
-- **German + audio correctness audit:** spot-check dialogues/sentences for natural, correct German; check
-  TTS pronunciation of tricky items. Additive `src/data.js`, validator-checked.
+- **DONE (v.35) — multi-scene coverage complete:** the 24 single-scene missions each got a 2nd dialogue
+  (DIALOGUES 128 → 152); **all 58 missions are now 2-scene**. Each new scene advances the scenario to a
+  distinct beat (not a repeat), authored at the mission's level (B1/B2) + 2 questions, via the idempotent
+  splice tool `scripts/h4-second-scenes.mjs`. Validate OK; 0 single-scene remain.
+- **NEXT (finish H4):** more build-sentences on early A1/A2 missions (only ≥1 guaranteed today); a German +
+  audio correctness spot-check pass over the new dialogues / sentences. Both additive `src/data.js`,
+  validator-checked.
 - *Risk: Low (additive). Deliver: no thin missions; trustworthy German.*
 
 ---

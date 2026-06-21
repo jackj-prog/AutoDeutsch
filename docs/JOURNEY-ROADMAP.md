@@ -67,11 +67,23 @@ Make the journey the first thing you see and do. Shipped: the **gold "Continue y
 secondary cards — so the journey is the single gold focal point. `allDone` shows a "Journey complete"
 hero. *Possible follow-up: the hero could one-tap into the next step (currently opens the mission hub).*
 
-### J2 — A felt path: arc focus, sequencing & a map
+### J2 — A felt path: arc focus, sequencing & a map — ✅ DONE (v.25)
 Replace the flat Scenarios list with a **focused current-arc view**: the active arc up top with its
 missions as ordered stops (done ✓ / current ● / upcoming ○), your position marked; other arcs
 collapsed/peeked. Add a lightweight **journey map** (arcs as a route, you as a pin). Keep everything
 reachable (soft sequencing, not hard locks). *Effort: Med-High · app.jsx. Risk: Low-Med.*
+
+**Shipped:** the Scenarios screen is now a **map you walk**. (1) An **overview header** — role +
+"{done}/58 scenarios" + a progress bar + "Next: {role} at {n}" — gives the whole-journey glance.
+(2) Arcs are **foldable chapters**; by default only the **active** arc (the one holding `currentMission`)
+is open, with completed/future arcs collapsed to a one-line summary (icon, payoff/sub, "✓" or
+"{done}/{total}", chevron) — focusing the screen on where you are. The active arc wears a gold
+**"YOU ARE HERE"** chip. (3) Inside an open arc the missions sit on a **connected vertical trail**: a
+spine line threads through node dots that fill **green** as completed (walked segments turn green too),
+the current step is a **gold pulsing node** ("START HERE" / "CONTINUE →"), done can-dos mute. Soft
+sequencing only — everything stays tappable (`openMission`), no hard locks. `arcOpen` fold state;
+harness `journeypath` (`journeyMid` seed). *Possible follow-up: a true top-down route/pin map graphic;
+remember the user's manual fold choices across visits (currently resets per screen mount).*
 
 ### J3 — Arc as a chapter: intro, payoff, transition — ✅ DONE (v.24)
 Give each arc a short **intro** ("The Paperwork — make yourself official") and, on completion, a
@@ -108,8 +120,9 @@ finish multi-scene coverage (24 single-scene missions → 2 scenes); light per-a
 mission-step variety. *Effort: Med, mostly additive `src/data.js`. Risk: Low.*
 
 ## Recommended order & why
-**J1 → J3 → J2 → J4 → J5 → J6.** J1 makes the journey the flagship immediately (the explicit goal) and
-is low-risk. J3 (arc payoff) is cheap and adds the missing motivation loop. J2 (path/map) is the bigger
-UX build that benefits from J1/J3 being in place. J4 (roleplay) is the marquee depth upgrade — do it
-once the frame is right. J5 unifies the story. J6 deepens content in parallel (content lane can run it
-anytime). Each ships independently; we can resequence on your call.
+**J1 ✅ → J3 ✅ → J2 ✅ → J4 (next) → J5 → J6.** J1 made the journey the flagship immediately (the
+explicit goal) and was low-risk. J3 (arc payoff) was cheap and added the missing motivation loop. J2
+(path/map) was the bigger UX build that benefited from J1/J3 being in place — **all three are now live
+(v.23/24/25)**. **J4 (mission roleplay climax via the Tutor) is the next and marquee depth upgrade** —
+the frame is now right for it. J5 unifies the story. J6 deepens content in parallel (content lane can
+run it anytime). Each ships independently; we can resequence on your call.

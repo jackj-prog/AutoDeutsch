@@ -705,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.24";
+const APP_VERSION = "2026.06.20.25";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1318,6 +1318,7 @@ function App() {
   const [celebration, setCelebration] = useState(null);
   const [rankUp, setRankUp] = useState(null); // {from, to} — a full CEFR level was just completed
   const [arcCeleb, setArcCeleb] = useState(null); // {arcId, nextArcId} — a whole journey arc was just completed
+  const [arcOpen, setArcOpen] = useState({}); // J2: per-arc expand override on the Scenarios "path" (default: only the active arc open)
   const prevLevelRef = useRef(null);
   const prevChaptersRef = useRef(null);
   const celebrateTimerRef = useRef(null);
@@ -5867,49 +5868,91 @@ function App() {
       </div>}
 
       {/* ── NEW: DIALOGUE SCREEN ── */}
-      {screen === "scenarios" && <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
-        </div>
-        <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, margin: "10px 0 2px" }}>Your journey</div>
-        <div style={{ fontSize: 13, color: TD, marginBottom: 18 }}>Real situations on the way to living and working in Germany.</div>
-        {MISSION_ARCS.map(arc => {
-          const ms = MISSIONS.filter(m => m.arc === arc.id);
-          const done = arcDone(arc.id), total = arcTotal(arc.id);
-          const arcComplete = total > 0 && done === total;
-          return (
-            <div key={arc.id} style={{ marginBottom: 22 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 10 }}>
-                <IconBadge name={arc.icon} size={34} color={arcComplete ? G : A} bg={arcComplete ? `${G}14` : `${A}12`} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800 }}>{arc.title}</div>
-                  {/* Complete arcs show their payoff ("you've landed…"); in-progress show the theme. */}
-                  <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400 }}>{arcComplete ? arc.payoff : arc.sub}</div>
-                </div>
-                <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: 800, flexShrink: 0 }}>{arcComplete ? "✓ Complete" : `${done}/${total}`}</div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 8 }}>
-                {ms.map(m => {
-                  const st = missionStatus(m.id);
-                  const isCur = currentMission && currentMission.id === m.id;
-                  return (
-                    <button key={m.id} onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", width: "100%", minWidth: 0, background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "12px 13px", cursor: "pointer", fontFamily: "inherit" }}>
-                      <span style={{ width: 22, height: 22, borderRadius: 999, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: st === "done" ? G : st === "started" ? `${A}22` : "transparent", border: `1.5px solid ${st === "done" ? G : st === "started" ? A : B}` }}>
-                        {st === "done" ? <Icon name="check" size={13} style={{ color: "#0A0A0A" }} /> : null}
-                      </span>
-                      <span style={{ flex: 1, minWidth: 0 }}>
-                        <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.cando}</span>
-                        {isCur && st !== "done" && <span style={{ fontSize: 10.5, color: A, fontWeight: 800, letterSpacing: 0.3 }}>START HERE</span>}
-                      </span>
-                      <span style={{ fontSize: 9, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{m.level}</span>
-                    </button>
-                  );
-                })}
-              </div>
+      {screen === "scenarios" && (() => {
+        // J2 — the journey as a felt PATH, not a flat list:
+        //  • an overview "map" header (overall progress + role) so you see the whole trip at a glance;
+        //  • each arc is a chapter you can fold/unfold — by default only the ACTIVE arc (the one holding
+        //    your current mission) is open, so the screen focuses on where you are;
+        //  • inside an arc the missions sit on a connected vertical TRAIL: a spine line runs through
+        //    node dots that fill green as you complete them, with your current step a gold pulsing node.
+        const activeArcId = currentMission ? currentMission.arc : null;
+        const isArcOpen = (arc, arcComplete) => (arc.id in arcOpen) ? arcOpen[arc.id] : (arc.id === activeArcId);
+        const totalDone = capability.earnedCount, totalAll = MISSIONS.length;
+        return (
+        <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+            <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
+          </div>
+          <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, margin: "10px 0 2px" }}>Your journey</div>
+          <div style={{ fontSize: 13, color: TD, marginBottom: 14 }}>Real situations on the way to living and working in Germany.</div>
+          {/* Map-at-a-glance overview: where you are across the whole journey. */}
+          <div style={{ background: "linear-gradient(135deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${HAIR}`, borderRadius: 14, padding: "13px 15px", marginBottom: 22 }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
+              <div style={{ fontSize: 11.5, color: TD, fontWeight: 700 }}><span style={{ color: A, fontWeight: 900 }}>{capability.role.name}</span> · {totalDone}/{totalAll} scenarios</div>
+              {capability.nextRole && <div style={{ fontSize: 10.5, color: TD }}>Next: {capability.nextRole.name} at {capability.nextRole.min}</div>}
             </div>
-          );
-        })}
-      </div>}
+            <ProgBar pct={totalAll ? (totalDone / totalAll) * 100 : 0} color={A} />
+          </div>
+          {MISSION_ARCS.map(arc => {
+            const ms = MISSIONS.filter(m => m.arc === arc.id);
+            const done = arcDone(arc.id), total = arcTotal(arc.id);
+            const arcComplete = total > 0 && done === total;
+            const isActive = arc.id === activeArcId;
+            const open = isArcOpen(arc, arcComplete);
+            return (
+              <div key={arc.id} style={{ marginBottom: 14 }}>
+                {/* Arc header doubles as a fold toggle. The active chapter is highlighted gold. */}
+                <button type="button" onClick={() => setArcOpen(p => ({ ...p, [arc.id]: !open }))} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", minWidth: 0, textAlign: "left", background: isActive ? `${A}0D` : "transparent", border: `1px solid ${isActive ? `${A}55` : arcComplete ? `${G}33` : "transparent"}`, borderRadius: 12, padding: "8px 9px", cursor: "pointer", fontFamily: "inherit" }}>
+                  <IconBadge name={arc.icon} size={34} color={arcComplete ? G : isActive ? A : TD} bg={arcComplete ? `${G}14` : isActive ? `${A}12` : `${TD}14`} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                      <span style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: arcComplete || isActive ? T : TD }}>{arc.title}</span>
+                      {isActive && <span style={{ fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.6, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px" }}>YOU ARE HERE</span>}
+                    </div>
+                    {/* Complete arcs show their payoff ("you've landed…"); in-progress show the theme. */}
+                    <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{arcComplete ? arc.payoff : arc.sub}</div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                    <span style={{ fontSize: 11, color: arcComplete ? G : isActive ? A : TD, fontWeight: 800 }}>{arcComplete ? "✓" : `${done}/${total}`}</span>
+                    <Icon name="chevron" size={14} style={{ color: TD, transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.15s" }} />
+                  </div>
+                </button>
+                {open && (
+                  <div style={{ marginTop: 6, paddingLeft: 8 }}>
+                    {ms.map((m, i) => {
+                      const st = missionStatus(m.id);
+                      const isCur = currentMission && currentMission.id === m.id;
+                      const isDone = st === "done";
+                      const prevDone = i > 0 && missionStatus(ms[i - 1].id) === "done";
+                      const nodeColor = isDone ? G : (isCur || st === "started") ? A : B;
+                      return (
+                        <div key={m.id} style={{ display: "flex", alignItems: "stretch", gap: 11, minWidth: 0 }}>
+                          {/* Trail rail: a spine line through the node dot. The line fills green where the path is walked. */}
+                          <div style={{ position: "relative", width: 24, flexShrink: 0, display: "flex", justifyContent: "center" }}>
+                            {i > 0 && <span style={{ position: "absolute", top: 0, height: "50%", width: 2, background: prevDone ? G : B }} />}
+                            {i < ms.length - 1 && <span style={{ position: "absolute", bottom: 0, height: "50%", width: 2, background: isDone ? G : B }} />}
+                            <span style={{ position: "relative", marginTop: 13, alignSelf: "flex-start", width: 22, height: 22, borderRadius: 999, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? G : isCur ? `${A}22` : "#0C0C0C", border: `2px solid ${nodeColor}`, boxShadow: isCur ? `0 0 0 4px ${A}1F` : "none" }}>
+                              {isDone ? <Icon name="check" size={12} style={{ color: "#0A0A0A" }} /> : isCur ? <span style={{ width: 7, height: 7, borderRadius: 999, background: A }} /> : null}
+                            </span>
+                          </div>
+                          <button onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", flex: 1, minWidth: 0, margin: "6px 0", background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "11px 13px", cursor: "pointer", fontFamily: "inherit" }}>
+                            <span style={{ flex: 1, minWidth: 0 }}>
+                              <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: isDone ? TD : T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.cando}</span>
+                              {isCur && st !== "done" && <span style={{ fontSize: 10.5, color: A, fontWeight: 800, letterSpacing: 0.3 }}>{st === "started" ? "CONTINUE →" : "START HERE"}</span>}
+                            </span>
+                            <span style={{ fontSize: 9, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{m.level}</span>
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        );
+      })()}
 
       {screen === "mission" && (() => {
         const m = missionById(activeMission); if (!m) return null;

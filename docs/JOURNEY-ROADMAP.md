@@ -136,13 +136,22 @@ CEFR card gains a "Language level" eyebrow — kills the dual-"journey" naming c
 `maintenance`. *Possible follow-ups: surface the same maintenance prompt on Progress; reframe the daily
 **goal ring** as journey upkeep (P3b); fold the generic Due/Weak cards into the maintenance frame.*
 
-### J6 — Personalization + content depth  *(some of this is the content lane)*
+### J6 — Personalization + content depth  *(some of this is the content lane)* — ✅ APP SIDE DONE (v.28)
 Goal-based emphasis (reorder/spotlight arcs for "Working in German" vs "Settling in & making friends");
 finish multi-scene coverage (24 single-scene missions → 2 scenes); light per-arc narrative framing;
 mission-step variety. *Effort: Med, mostly additive `src/data.js`. Risk: Low.*
 
+**Shipped (app):** (1) **goal spotlight** — Scenarios shows "🎯 Your goal points at {Arc}" + a
+"YOUR GOAL" chip on the matching chapter (`Working in German`→Job, `Settling in & making friends`→
+Belonging; everyday/exam goals stay on Touchdown). *Soft* — the sequential path is untouched, so
+beginners build up to their goal arc rather than being dropped into it. (2) **per-arc narrative intros**
+— a new `intro` field on all 7 `MISSION_ARCS` opens each expanded chapter as a story beat (closes the
+J3 arc-intro follow-on). **Remaining = content lane (additive `src/data.js`, low-risk):** finish
+multi-scene coverage for the ~24 single-scene missions (a richer 2-dialogue "Listen" step each), more
+build-sentences on early missions, and any mission-step variety. None of that needs an app change.
+
 ## Recommended order & why
-**J1 ✅ → J3 ✅ → J2 ✅ → J4 ✅ → J5 ✅ → J6 (next).** J1 made the journey the flagship immediately
+**J1 ✅ → J3 ✅ → J2 ✅ → J4 ✅ → J5 ✅ → J6 ✅ (app side).** J1 made the journey the flagship immediately
 (the explicit goal) and was low-risk. J3 (arc payoff) was cheap and added the missing motivation loop.
 J2 (path/map) was the bigger UX build that benefited from J1/J3 being in place. J4 (mission roleplay
 climax via the Tutor) was the marquee depth upgrade — *perform the scenario*, not just drill it. J5

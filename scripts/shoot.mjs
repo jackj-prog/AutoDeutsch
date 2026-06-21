@@ -194,6 +194,8 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
     ["cafe", "restaurant", "supermarket", "directions", "hotel", "transit", "meeting", "smalltalk", "phone", "clothes"].forEach(id => { prog[id] = done; });
     prog.anmeldung = { learned: true }; // first Paperwork mission started → current, "CONTINUE →"
     localStorage.setItem("ad-mission-progress-v1", JSON.stringify(prog));
+    // J6: a stated goal ("Working in German" → the Job arc) so the goal spotlight + chip render.
+    localStorage.setItem("ad-placement-v1", JSON.stringify({ intake: { goal: "Working in German" }, level: "A2", placedAt: Date.now() }));
   }
 }
 

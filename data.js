@@ -8026,14 +8026,16 @@ const IMPERATIVES = [
 // Curated ordering of the existing DIALOGUES into real-world missions with a plain-language
 // "can-do" outcome. Dialogues are referenced by title (their stable key). Vocab `cats` must be
 // V categories. The build validator resolves every reference. See docs/P0-scenarios-spec.md.
+// `intro` is the chapter's narrative opener (2nd person, sets the scene) — distinct from the terse
+// `sub` (theme) and `payoff` (the line you earn on completion). Shown atop the open arc on Scenarios.
 const MISSION_ARCS = [
-  {id:"touchdown", title:"Touchdown",     sub:"Your first days",          icon:"plane",     payoff:"You've landed and found your feet."},
-  {id:"paperwork", title:"The Paperwork", sub:"Anmeldung & the offices",   icon:"file",      payoff:"You're official — registered and on the grid."},
-  {id:"roof",      title:"A Roof",        sub:"Finding & keeping a flat",  icon:"home",      payoff:"You've got a place to call home."},
-  {id:"money",     title:"Money & Connectivity", sub:"Bank, SIM, contracts", icon:"card",    payoff:"You're banked, connected and set up."},
-  {id:"health",    title:"Staying Well",  sub:"Doctor, pharmacy, sick notes", icon:"heart",  payoff:"You can look after your health here."},
-  {id:"job",       title:"The Job",       sub:"Working in German",         icon:"briefcase", payoff:"You can hold your own at work in German."},
-  {id:"belonging", title:"Belonging",     sub:"Small talk & social life",  icon:"users",     payoff:"You belong — you can connect and make friends."},
+  {id:"touchdown", title:"Touchdown",     sub:"Your first days",          icon:"plane",     intro:"You've just landed. Before anything official, handle the everyday moments that carry you through your first days.", payoff:"You've landed and found your feet."},
+  {id:"paperwork", title:"The Paperwork", sub:"Anmeldung & the offices",   icon:"file",      intro:"In Germany, life starts at the registration desk. Face the offices, forms and appointments that make you official.", payoff:"You're official — registered and on the grid."},
+  {id:"roof",      title:"A Roof",        sub:"Finding & keeping a flat",  icon:"home",      intro:"A place of your own changes everything. Hunt for a flat, get through the viewing, and sign the lease.", payoff:"You've got a place to call home."},
+  {id:"money",     title:"Money & Connectivity", sub:"Bank, SIM, contracts", icon:"card",    intro:"Get the plumbing of daily life working: a bank account, a SIM, and the contracts everything else runs on.", payoff:"You're banked, connected and set up."},
+  {id:"health",    title:"Staying Well",  sub:"Doctor, pharmacy, sick notes", icon:"heart",  intro:"Sooner or later you'll need a doctor. Learn to register, describe what's wrong, and get what you need.", payoff:"You can look after your health here."},
+  {id:"job",       title:"The Job",       sub:"Working in German",         icon:"briefcase", intro:"Working in German is a different gear. Handle the interview, your colleagues and the workplace with confidence.", payoff:"You can hold your own at work in German."},
+  {id:"belonging", title:"Belonging",     sub:"Small talk & social life",  icon:"users",     intro:"This is where a new country becomes home — small talk, friendships and a social life, all in German.", payoff:"You belong — you can connect and make friends."},
 ];
 
 const MISSIONS = [

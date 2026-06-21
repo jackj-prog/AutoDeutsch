@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.27`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.28`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,11 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.28** J6 (personalization + arc narrative): Scenarios spotlights the learner's **goal arc**
+  ("🎯 Your goal points at {Arc}" + a "YOUR GOAL" chip; `Working in German`→Job, `Settling in`→Belonging;
+  soft — path order untouched). New **`intro`** field on all 7 `MISSION_ARCS` opens each expanded chapter
+  as a story beat. **Completes the J1–J6 journey build-out** (app side). Remaining: multi-scene content
+  depth for ~24 single-scene missions = additive content-lane job. Harness: `journeypath` seeds a goal.
 - **v.27** J5 (unify progression + daily-maintains-journey): one spine — role = headline, **scenarios
   completed = the journey** (primary metric), **CEFR = language-level sub-metric** (Progress panel 2
   renamed; Home CEFR card gets a "Language level" eyebrow; panel 1 gains a "{done}/58 scenarios" bar).
@@ -85,13 +90,16 @@ opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" 
 - **v.13** Articles/Plural tiles drill the right mode; 320px typed-drill submit-button overflow.
 
 ## In flight / partially done
-- **Nothing half-built right now.** The repo is clean at the latest commit. (If you pause mid-task, record
-  it HERE with the file + line + what's left.)
+- **Nothing half-built right now.** The repo is clean at the latest commit. The **J1–J6 journey
+  build-out is complete on the app side** (v.23–28; full plan + status in `docs/JOURNEY-ROADMAP.md`).
+  (If you pause mid-task, record it HERE with the file + line + what's left.)
 
 ## Open hand-offs & next candidates (pick from here)
-- **Content depth (no app change):** the early A1/A2 missions a beginner hits first could use 2–3
-  build-sentences each (only ≥1 guaranteed today). More second-scenes for any remaining single-dialogue
-  missions. Both are additive `src/data.js` + validator-checked.
+- **★ Journey content depth (content lane, no app change) — the main remaining journey item:** finish
+  **multi-scene coverage** for the ~24 single-scene missions (each gets a 2nd dialogue so the "Listen"
+  step is 2 scenes — same pattern as the 6 already added; append the title to the mission's `dialogues`
+  array or it won't wire). Plus 2–3 build-sentences on early A1/A2 missions (only ≥1 guaranteed today).
+  All additive `src/data.js` + validator-checked. The app already renders whatever's there.
 - **ROADMAP open items:** P3b (daily-goal reframe). P7 deeper (Tutor launches a drill on your weak words
   from chat) — spec in `docs/P7-tutor-context-spec.md` §out-of-scope. Library tab rename ("Library"→"Learn")
   noted in `docs/P6-curriculum-spec.md`.

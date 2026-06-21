@@ -729,7 +729,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.27";
+const APP_VERSION = "2026.06.20.28";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -6169,6 +6169,10 @@ function App() {
         const activeArcId = currentMission ? currentMission.arc : null;
         const isArcOpen = (arc, arcComplete) => (arc.id in arcOpen) ? arcOpen[arc.id] : (arc.id === activeArcId);
         const totalDone = capability.earnedCount, totalAll = MISSIONS.length;
+        // J6 — personalize: spotlight the chapter the learner's stated goal points at (only the
+        // distinctive goals map to a specific arc; "everyday survival"/"exam" default to touchdown).
+        const goalArcId = (intakeAns.goal === "Working in German" || intakeAns.goal === "Settling in & making friends") ? goalArc(intakeAns.goal) : null;
+        const goalArcObj = goalArcId ? MISSION_ARCS.find(a => a.id === goalArcId) : null;
         return (
         <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
@@ -6183,6 +6187,7 @@ function App() {
               {capability.nextRole && <div style={{ fontSize: 10.5, color: TD }}>Next: {capability.nextRole.name} at {capability.nextRole.min}</div>}
             </div>
             <ProgBar pct={totalAll ? (totalDone / totalAll) * 100 : 0} color={A} />
+            {goalArcObj && <div style={{ fontSize: 10.5, color: TD, marginTop: 9, display: "flex", alignItems: "center", gap: 6 }}><Icon name="target" size={12} style={{ color: A, flexShrink: 0 }} /><span style={{ minWidth: 0 }}>Your goal points at <span style={{ color: A, fontWeight: 800 }}>{goalArcObj.title}</span> — but the path builds up to it.</span></div>}
           </div>
           {MISSION_ARCS.map(arc => {
             const ms = MISSIONS.filter(m => m.arc === arc.id);
@@ -6199,6 +6204,7 @@ function App() {
                     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                       <span style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: arcComplete || isActive ? T : TD }}>{arc.title}</span>
                       {isActive && <span style={{ fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.6, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px" }}>YOU ARE HERE</span>}
+                      {arc.id === goalArcId && !isActive && <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.4, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px 1px 4px", flexShrink: 0 }}><Icon name="target" size={9} /> YOUR GOAL</span>}
                     </div>
                     {/* Complete arcs show their payoff ("you've landed…"); in-progress show the theme. */}
                     <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{arcComplete ? arc.payoff : arc.sub}</div>
@@ -6210,6 +6216,8 @@ function App() {
                 </button>
                 {open && (
                   <div style={{ marginTop: 6, paddingLeft: 8 }}>
+                    {/* J6 — the chapter's narrative opener, so an arc reads as a story beat, not a folder. */}
+                    {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 6px 12px 0" }}>{arc.intro}</div>}
                     {ms.map((m, i) => {
                       const st = missionStatus(m.id);
                       const isCur = currentMission && currentMission.id === m.id;

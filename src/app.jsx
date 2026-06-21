@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.39";
+const APP_VERSION = "2026.06.20.40";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1253,7 +1253,7 @@ function App() {
   const [onboardingGoal, setOnboardingGoal] = useState(20);
   const [onboardingMode, setOnboardingMode] = useState("vocab");
   // P5 placement flow state: intake → placement → result.
-  const [obStep, setObStep] = useState("intake");
+  const [obStep, setObStep] = useState("welcome"); // first-run opens on a value pitch; retakes go to "intake"
   // Rehydrate the intake answers (country / reason / goal) from the saved placement so the
   // learner's goal is available app-wide after a reload — e.g. for the context-aware Tutor.
   const [intakeAns, setIntakeAns] = useState(() => { try { return JSON.parse(localStorage.getItem("ad-placement-v1") || "{}").intake || {}; } catch (e) { return {}; } });
@@ -4048,6 +4048,30 @@ function App() {
       {showOnboarding && <div style={{ position: "fixed", inset: 0, zIndex: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.92)", padding: 22 }}>
         <div ref={modalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Welcome to AutoDeutsch" style={{ outline: "none", background: SOFT_PANEL, border: `1px solid ${A}2E`, borderRadius: 18, padding: "26px 22px 22px", width: "100%", maxWidth: 390, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 24px 80px rgba(0,0,0,0.45)" }}>
           <div style={{ height: 3, width: 74, background: FLAG, borderRadius: 2, marginBottom: 16 }} />
+          {/* C3 — first-run value pitch: tell a new visitor what this is and why it's worth it BEFORE
+              asking them to answer questions. Shown only on first run; retakes (openPlacement) skip to intake. */}
+          {obStep === "welcome" && (<>
+            <div style={{ fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 2.4, textTransform: "uppercase", marginBottom: 6 }}>Willkommen</div>
+            <h2 style={{ fontFamily: FN, fontSize: 25, margin: "0 0 8px", lineHeight: 1.08, fontWeight: 800 }}>Learn the German you'll<br />actually use.</h2>
+            <p style={{ color: TD, fontSize: 13, lineHeight: 1.55, margin: "0 0 18px" }}>A guided journey through the real situations of settling into life in a German-speaking country — and the words for each one, until you can handle it for real.</p>
+            <div style={{ display: "grid", gap: 12, marginBottom: 20 }}>
+              {[
+                { icon: "map", t: "Follow the journey", s: "58 real scenarios — Anmeldung, the doctor, your first day at work — in the order you'll hit them." },
+                { icon: "message", t: "Do it for real", s: "Learn the exact words, hear the scene, then perform it out loud against an AI that plays the other person." },
+                { icon: "flake", t: "Free, private, offline", s: "No account, no ads, no tracking. Your progress stays on your device and works offline." },
+              ].map((f, i) => (
+                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                  <IconBadge name={f.icon} size={34} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 800, color: T }}>{f.t}</div>
+                    <div style={{ fontSize: 11.5, color: TD, lineHeight: 1.45, marginTop: 1 }}>{f.s}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Btn bg={A} color="#0A0A0A" onClick={() => setObStep("intake")} style={{ fontFamily: FN, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>Get started <Icon name="arrowRight" size={17} /></Btn>
+            <div style={{ fontSize: 10.5, color: TD, textAlign: "center", marginTop: 12, opacity: 0.85 }}>Two quick steps: a few questions, then a 2-minute level check.</div>
+          </>)}
           {obStep === "intake" && (<>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
               <IconBadge name="map" size={38} />

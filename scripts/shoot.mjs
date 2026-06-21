@@ -213,7 +213,12 @@ async function clickText(page, txt) {
 }
 
 async function gotoScreen(page, screen) {
-  if (screen === "home" || screen === "onboarding" || screen === "freezeused") return;
+  if (screen === "home" || screen === "freezeused") return;
+  if (screen === "onboarding") {
+    // C3: the modal opens on the welcome/value step. SHOOT_OBSTEP=intake clicks through to the form.
+    if (process.env.SHOOT_OBSTEP === "intake") { await clickText(page, "Get started"); await new Promise(r => setTimeout(r, 350)); }
+    return;
+  }
   if (screen === "stats") return clickText(page, "Progress"); // the Stats tab is labelled "Progress"
   if (["train", "library", "tutor"].includes(screen)) return clickText(page, screen);
   if (screen === "browse") { await clickText(page, "Library"); return clickText(page, "Browse"); }

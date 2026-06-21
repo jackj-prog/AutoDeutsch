@@ -110,10 +110,11 @@ Found already-solid foundations: file **export/import** of progress exists, a **
   plainly what the app is and that **data stays on-device** (no account, no tracking/ads/analytics, no
   servers; the AI key is local and talks only to Anthropic; back up via Export). Surfaces the local-first
   architecture as the selling point it is. Harness: `SHOOT_SCROLL=bottom` (new) to capture tall modals.
+- **C2 ✅ (v.39) — German correctness proofread.** Native-level proofread of the 24 new dialogues; found +
+  fixed 2 real errors ("niemand anders" misuse; a verb-second relative clause). The rest read clean.
 - **C-backlog (candidate next, highest-value first):** first-run value-prop polish (does a new visitor
-  instantly get it?); a friendly **error-state/empty-state** sweep; **native German proofread** of content
-  (a language app's credibility); micro-polish consistency; Library→"Learn" rename; remaining a11y on new
-  screens. Plus the modularization/mic-unify internal items.
+  instantly get it?); a friendly **error-state/empty-state** sweep; micro-polish consistency; Library→"Learn"
+  rename; remaining a11y on new screens. Plus the modularization/mic-unify internal items.
 
 ## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
 - **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,

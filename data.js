@@ -6549,7 +6549,7 @@ const DIALOGUES = [
     title:"Fragen in der Probezeit", level:"B2",
     lines:[
     {de:"Darf ich in der Probezeit eigentlich viele Fragen stellen?",en:"Am I actually allowed to ask a lot of questions during the probation period?"},
-    {de:"Unbedingt, gerade am Anfang erwartet das niemand anders.",en:"Absolutely; especially at the start nobody expects otherwise."},
+    {de:"Unbedingt, gerade am Anfang ist das ganz normal.",en:"Absolutely; especially at the start that's completely normal."},
     {de:"An wen wende ich mich bei fachlichen Problemen?",en:"Who do I turn to with technical problems?"},
     {de:"Erst an mich, und sonst an die Kollegin am Nebenplatz.",en:"First to me, and otherwise to the colleague at the next desk."},
     {de:"Wie bekomme ich Rückmeldung zu meiner Arbeit?",en:"How do I get feedback on my work?"},
@@ -6847,7 +6847,7 @@ const DIALOGUES = [
     {de:"Kann ich trotzdem schon fahren?",en:"Can I still drive in the meantime?"},
     {de:"In den ersten sechs Monaten ja, danach nicht mehr.",en:"In the first six months yes, after that no longer."},
     {de:"Wo melde ich mich für die Prüfung an?",en:"Where do I register for the test?"},
-    {de:"Am besten über eine Fahrschule, die organisiert alles.",en:"Best through a driving school; it organises everything."},
+    {de:"Am besten über eine Fahrschule, die alles organisiert.",en:"Best through a driving school; it organises everything."},
     ],
     questions:[
     {q:"Wovon hängt die Prüfungspflicht ab?",opts:["Vom Alter","Vom Herkunftsland","Vom Wohnort"],correctIdx:1},

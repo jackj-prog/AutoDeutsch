@@ -25,10 +25,14 @@ Six features shipped fast onto a 6.65k-line monolith. Pay it down before buildin
   GH-Pages-gzipped + SW-cached after first load = one-time cost; vocab `V` (964 KB raw) dominates and is
   needed at first interaction so can't be deferred; deferring drill-only data (DIALOGUES/CLOZE/VERBS/EXAM/
   CONFUSION) is a small, low-priority future win not worth the two-script/SRI/race complexity now.
-- **NEXT (continue H1):** extract the **icon system** (`ICONS`/`SOLID_ICONS`/`Icon`/`IconBadge`/
-  `ProgressIcon`/`ICO_*`/`playIconTap`, ~135 lines, app.jsx ~795–929) → `src/components/icons.jsx`
-  (references `PAL`, now earlier — safe); then `src/lib/constants.js` (LEVELS/SRS_INTERVALS/etc.). Then
-  pause stateless Phase 1 and decide on Phase 2 (context + screens) as its own dedicated session.
+- **DONE (v.30):** ④ **icon system** (`ICONS`/`SOLID_ICONS`/`Icon`/`IconBadge`/`ProgressIcon`/`ICO_*`/
+  `playIconTap`, ~135 lines) → `src/components/icons.jsx` — validate + 26/26 + icons render everywhere;
+  app.jsx 6655 → 6520. Surfaced + recorded the **alphabetical-sort ordering trap** for `src/lib/` files
+  (`MODULARIZATION-PLAN.md` §0c) before it bites the next extraction.
+- **NEXT (continue H1):** `src/lib/constants.js` with **only PAL-independent** constants (LEVELS /
+  LEVEL_TITLES / CHAPTERS / SRS_INTERVALS / MASTERY_STREAK / STREAK_MILESTONES — leave `LEVEL_COLOR` in
+  app.jsx, it reads PAL at module-load and would sort before palette.js). Then pause stateless Phase 1 and
+  take Phase 2 (context + screens) as its own dedicated session (that's where behaviour risk lives).
 - **Full regression sweep** with the visual-audit harness across every screen at 320 + 390, including the
   new journey flows (J1–J6: journeypath, arccomplete, roleplay, roleplaychat, maintenance). Fix anything
   the rapid streak introduced. Refresh `docs/VISUAL-AUDIT-*` to 100%.

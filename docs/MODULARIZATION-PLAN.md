@@ -24,6 +24,24 @@ breaks), not by diffing `app.js`. The TDZ rule that makes this safe: components/
 *render* time (not module-load) can live in a file concatenated after their consumers; pure data/constants
 referenced at module-load must be concatenated **before** their consumers (lib → components → screens → app).
 
+## 0c. PROVEN (v.30, H1 step 2) — `src/components/icons.jsx`
+Second extraction: the whole icon system (`ICONS` path map, `SOLID_ICONS`, `Icon`/`IconBadge`/
+`ProgressIcon`, `ICO_ANIM`/`ICO_KEYFRAMES`/`ICO_TIMING`/`ICO_EASE`, `playIconTap`) — ~135 lines — moved to
+`src/components/icons.jsx`. It reads `PAL` (now in `src/lib/palette.js`, concatenated earlier) only at
+render/runtime, so it's safe. Verified: validate + 26/26 + icons render across home/library/train/progress
+(incl. the bottom-nav `ProgressIcon` bars). `app.jsx`: 6655 → 6520 lines. Moved with a Node slice script
+(135 lines is too many to hand-copy into an Edit reliably) — anchor on `const ICONS = {` … `// One-tap
+session presets`.
+
+**⚠️ ORDERING TRAP (must read before the next `src/lib/` file).** The build sorts **alphabetically within
+each dir**. lib → components → screens → app is fixed *between* dirs, but **two files in `src/lib/` order by
+filename**. So a `src/lib/constants.js` would concatenate **before** `src/lib/palette.js` (c < p) — and if it
+holds `LEVEL_COLOR = { A1: PAL.G … }` (evaluated at *module-load*), that's a **TDZ crash on `PAL`**. Fixes:
+(a) only put *PAL-independent* constants in `constants.js` (LEVELS / LEVEL_TITLES / CHAPTERS / SRS_INTERVALS /
+MASTERY_STREAK / STREAK_MILESTONES), leaving `LEVEL_COLOR` (and anything reading PAL at module-load) in
+`app.jsx` or a file that sorts *after* `palette.js`; or (b) name files to encode order (e.g. `00-palette.js`,
+`10-constants.js`). Render-time PAL refs are always fine; only *module-load* refs care about order.
+
 ## 1. Scope rules (because it's one shared scope)
 - **No duplicate top-level names across files.** Everything concatenates into one scope, so two files
   can't both declare `const A = …`. Keep the existing module-scope names unique (they already are).

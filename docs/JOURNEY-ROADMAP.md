@@ -100,12 +100,24 @@ green badge + payoff line + "✓ Complete" when the arc is done. Harness path: `
 **intro** copy is a small remaining follow-on — the payoff/transition half is the felt motivation
 loop and is live.)*
 
-### J4 — The "do it" climax: mission roleplay  *(biggest pedagogical upgrade)*
+### J4 — The "do it" climax: mission roleplay  *(biggest pedagogical upgrade)* — ✅ DONE (v.26)
 Add a final **roleplay** step to each mission: the context-aware Tutor plays the other party ("I'm the
 barista — order in German") and grades whether you pulled it off, using the mission's vocab + scene.
 This turns a mission from *drill the words* into *perform the scenario* — the real proof of "you can
 now…". Falls back gracefully without an API key (scripted self-check). *Effort: High · app.jsx +
 Tutor. Risk: Med (BYO-key; needs a no-key fallback).*
+
+**Shipped:** a gold **"The real thing · Do it for real"** climax card on the mission hub opens a focused
+roleplay chat. With a key, the **Tutor stops tutoring and becomes the other party** (`buildRoleplaySystem`
++ a `__BEGIN__` opener kick): German-only, in character, turn-by-turn; **"Finish & see how I did"** sends a
+`__GRADE__` turn and the model drops character for a parsed **verdict** (Passed / Almost / Keep practising
++ went-well + to-improve). Finishing credits a **bonus `roleplayed` step** (does NOT gate the learn/listen/
+speak completion). **No-key fallback** = a scripted self-check: the mission's real phrases (tagged SENTENCES,
+each with audio) to rehearse out loud + a "Could you do this for real?" self-rate that credits the step.
+Own chat state (`rpMsgs`/`rpVerdict`/`rpMission`…), kept out of the Tutor history; reuses the BYOK Anthropic
+path. Harness: `roleplay` (no-key) + `roleplaychat` (mocked endpoint — interception keyed on message
+*content*, since the system prompt itself names the `__GRADE__` token). *Possible follow-ups: surface the
+roleplay verdict on Progress / arc payoff; per-mission opening-line flavour; voice input.*
 
 ### J5 — Unify progression + make daily practice maintain the journey
 Collapse the two progress systems into one legible spine: **status/role is the headline** (Newcomer→
@@ -120,9 +132,11 @@ finish multi-scene coverage (24 single-scene missions → 2 scenes); light per-a
 mission-step variety. *Effort: Med, mostly additive `src/data.js`. Risk: Low.*
 
 ## Recommended order & why
-**J1 ✅ → J3 ✅ → J2 ✅ → J4 (next) → J5 → J6.** J1 made the journey the flagship immediately (the
+**J1 ✅ → J3 ✅ → J2 ✅ → J4 ✅ → J5 (next) → J6.** J1 made the journey the flagship immediately (the
 explicit goal) and was low-risk. J3 (arc payoff) was cheap and added the missing motivation loop. J2
-(path/map) was the bigger UX build that benefited from J1/J3 being in place — **all three are now live
-(v.23/24/25)**. **J4 (mission roleplay climax via the Tutor) is the next and marquee depth upgrade** —
-the frame is now right for it. J5 unifies the story. J6 deepens content in parallel (content lane can
-run it anytime). Each ships independently; we can resequence on your call.
+(path/map) was the bigger UX build that benefited from J1/J3 being in place. J4 (mission roleplay climax
+via the Tutor) was the marquee depth upgrade — *perform the scenario*, not just drill it. **All four are
+now live (v.23/24/25/26).** **J5 (unify progression + make daily practice maintain the journey) is next**
+— collapse the two progress systems into one legible spine and reframe the daily review as journey
+maintenance. J6 deepens content in parallel (content lane can run it anytime). Each ships independently;
+we can resequence on your call.

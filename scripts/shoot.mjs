@@ -59,7 +59,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat, tutorChatEmpty, arcReady, journeyMid }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat, tutorChatEmpty, arcReady, journeyMid, roleplayKey }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -159,6 +159,11 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
       { role: "assistant", text: "Fast perfekt! Kleiner Hinweis: \"einen Termin vereinbaren\" klingt natuerlicher als \"machen\". Also: \"Ich habe gestern einen Termin beim Buergeramt vereinbart.\" Warum warst du dort?" },
     ]));
   }
+  if (roleplayKey) {
+    // J4 live roleplay: a local-only fake key unlocks the chat UI. The Anthropic endpoint is
+    // mocked in run() (request interception), so no real call is made.
+    localStorage.setItem("gfc-ai-key", "sk-ant-demo-localonly-not-a-real-key");
+  }
   if (missionReady) {
     // Seed the café mission at 2/3 steps (learned + spoke). Crediting the third step
     // ("listened", earned just by opening the scene) completes it → fires the green
@@ -235,6 +240,24 @@ async function gotoScreen(page, screen) {
   if (screen === "speaking") { await clickText(page, "Speaking"); await new Promise(r => setTimeout(r, 250)); await clickText(page, "Speaking practice"); await new Promise(r => setTimeout(r, 500)); return; }
   if (screen === "scenarios" || screen === "journeypath") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 400)); return; }
   if (screen === "mission") { await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350)); await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 400)); return; }
+  if (screen === "roleplay") {
+    // J4 no-key path: mission → "Do it for real" → scripted self-check (no API key seeded).
+    await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Do it for real"); await new Promise(r => setTimeout(r, 450));
+    return;
+  }
+  if (screen === "roleplaychat") {
+    // J4 live path: fake key + mocked Anthropic endpoint (see run()). Open the roleplay (opener
+    // bubble arrives), say a line, then Finish to render the graded verdict.
+    await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350));
+    await clickText(page, "Do it for real"); await new Promise(r => setTimeout(r, 700));
+    await page.type(".ad-input", "Ich möchte bitte einen Kaffee und ein Stück Kuchen.");
+    await clickText(page, "→"); await new Promise(r => setTimeout(r, 700));
+    await clickText(page, "Finish"); await new Promise(r => setTimeout(r, 800));
+    return;
+  }
   if (screen === "longword" || screen === "longprompt") {
     // Regression guards for long-content clipping. longword: the longest single German compound
     // ("die Kommunikationsmöglichkeit", 29) at the front of a recall session. longprompt: the
@@ -677,10 +700,30 @@ async function run() {
     for (const screen of screens) {
       const page = await browser.newPage();
       await page.setViewport({ width: +(process.env.SHOOT_WIDTH || 390), height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+      // J4: mock the Anthropic endpoint so the live roleplay renders without a real key/network.
+      // Returns an in-character German line, or a formatted VERDICT when the scene is graded.
+      if (screen === "roleplaychat") {
+        await page.setRequestInterception(true);
+        page.on("request", req => {
+          if (req.url().includes("api.anthropic.com")) {
+            // Detect intent from the message content (NOT the whole body — the system prompt itself
+            // mentions the __GRADE__ token, so a naive includes() always matched grading).
+            const body = req.postData() || "";
+            let text;
+            if (body.includes('"content":"__GRADE__"'))
+              text = "VERDICT: Passed\nWELL: You greeted the server and ordered clearly with a polite \"ich möchte\".\nIMPROVE: Add the price question \"Was macht das?\" to close the exchange naturally.";
+            else if (body.includes('"content":"__BEGIN__"'))
+              text = "Guten Tag! Was darf es sein?";
+            else
+              text = "Gerne! Ein Kaffee und ein Stück Kuchen. Möchten Sie sonst noch etwas?";
+            req.respond({ status: 200, contentType: "application/json", body: JSON.stringify({ content: [{ type: "text", text }] }) });
+          } else req.continue();
+        });
+      }
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax" && screen !== "longword" && screen !== "longprompt")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

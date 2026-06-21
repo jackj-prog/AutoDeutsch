@@ -172,6 +172,30 @@ function buildTutorSystem(ctx) {
   );
   return lines.join("\n");
 }
+// J4 — mission roleplay climax. The Tutor stops being a tutor and BECOMES the other party in the
+// scenario (barista, clerk, landlord…), staying in German + in character, then — on the __GRADE__
+// token — drops character and returns a short structured English verdict on whether the learner
+// pulled the scenario off. ctx = learner context; mission = the MISSION; words = its key vocab.
+function buildRoleplaySystem(ctx, mission, words) {
+  return [
+    `You are role-playing a real-life situation so a German learner can practise doing it for real. Stay fully in character as the OTHER person in the scene — never break character until you are told the scene is over.`,
+    ``,
+    `The scenario: "${mission.cando}". You play the other party — whoever the learner would actually talk to here (e.g. the café server, the clerk at the office, the landlord, the doctor, the neighbour). The learner is the customer / applicant / patient / visitor.`,
+    `The learner is about ${ctx.level} (CEFR). Speak natural but ${ctx.level}-appropriate German. Keep each of your turns short — 1–2 sentences. React like the real person would to whatever they say.`,
+    words && words.length ? `Words the learner has studied for this scene (use some naturally): ${words.join(", ")}.` : ``,
+    ``,
+    `Rules:`,
+    `- While in character, speak ONLY German. No English, no translations, no grammar notes, no stage directions.`,
+    `- Drive the scene: greet them, then respond turn-by-turn as the real person — ask what they want, give a price, ask a follow-up, raise a small complication. Keep it a short, realistic exchange.`,
+    `- If they say something unclear or wrong, react like a real person (a gentle "Wie bitte?" or a clarifying question) — do NOT correct their grammar mid-scene.`,
+    `- When you receive the exact token __BEGIN__, ignore it and just open the scene in character with your first line.`,
+    `- When you receive the exact token __GRADE__, the scene is OVER. Stop being in character and reply in ENGLISH in EXACTLY this format, nothing else:`,
+    `VERDICT: <Passed | Almost | Keep practising>`,
+    `WELL: <one short sentence on what they did well>`,
+    `IMPROVE: <one short, concrete sentence on what to work on>`,
+    `Judge only whether they accomplished the goal of "${mission.cando}" in understandable German. Be encouraging — ${ctx.level} learners make mistakes and that's fine.`,
+  ].filter(Boolean).join("\n");
+}
 const tutorStarters = [
   "Stell mir eine einfache Frage auf Deutsch.",
   "Lass uns über meinen Arbeitstag sprechen.",
@@ -705,7 +729,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.25";
+const APP_VERSION = "2026.06.20.26";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1190,6 +1214,13 @@ function App() {
   const [tutorInput, setTutorInput] = useState("");
   const [tutorBusy, setTutorBusy] = useState(false);
   const [tutorError, setTutorError] = useState("");
+  // J4 — mission roleplay climax (its own chat, kept out of the Tutor history).
+  const [rpMission, setRpMission] = useState(null); // the MISSION being role-played
+  const [rpMsgs, setRpMsgs] = useState([]);          // {role:"user"|"assistant", text}
+  const [rpInput, setRpInput] = useState("");
+  const [rpBusy, setRpBusy] = useState(false);
+  const [rpError, setRpError] = useState("");
+  const [rpVerdict, setRpVerdict] = useState(null);  // {verdict, well, improve} once graded
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -2081,6 +2112,84 @@ function App() {
     }
   };
   const clearTutor = () => { setTutorMsgs([]); setTutorError(""); try { localStorage.removeItem("gfc-tutor-msgs"); } catch (e) {} };
+
+  // ── J4 roleplay: one Anthropic call in character. `grading` swaps the parse to verdict mode. ──
+  const callRoleplay = async (history, mission, grading) => {
+    const words = (MISSION_VOCAB[mission.id] || []).slice(0, 12);
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": aiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: aiModel,
+        max_tokens: grading ? 280 : 360,
+        system: buildRoleplaySystem(tutorContext, mission, words),
+        messages: history.slice(-22).map(m => ({ role: m.role, content: m.text })),
+      }),
+    });
+    if (!res.ok) {
+      let detail = `HTTP ${res.status}`;
+      try { const j = await res.json(); detail = j?.error?.message || detail; } catch (e) {}
+      if (res.status === 401) detail = "Invalid API key — check it in Settings.";
+      else if (res.status === 429) detail = "Rate limited or out of credit. Try again shortly.";
+      throw new Error(detail);
+    }
+    const data = await res.json();
+    return (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n").trim();
+  };
+  // Open the roleplay for a mission. With a key, the other party speaks first (__BEGIN__ kick,
+  // not shown). Without a key, the screen falls back to a scripted self-check (no call).
+  const launchRoleplay = async (m) => {
+    setRpMission(m); setRpMsgs([]); setRpInput(""); setRpError(""); setRpVerdict(null); setRpBusy(false);
+    setScreen("roleplay");
+    if (!aiKey) return; // no-key → scripted self-check renders instead
+    setRpBusy(true);
+    try {
+      const opener = await callRoleplay([{ role: "user", text: "__BEGIN__" }], m, false);
+      setRpMsgs([{ role: "assistant", text: opener || "Hallo!" }]);
+    } catch (e) {
+      setRpError(e.message || "Couldn't start the roleplay. Check your connection.");
+    } finally { setRpBusy(false); }
+  };
+  const sendRoleplay = async (text) => {
+    const body = (text || rpInput).trim();
+    if (!body || rpBusy || rpVerdict || !aiKey || !rpMission) return;
+    const next = [...rpMsgs, { role: "user", text: body }];
+    setRpMsgs(next); setRpInput(""); setRpBusy(true); setRpError("");
+    try {
+      const reply = await callRoleplay(next, rpMission, false);
+      setRpMsgs([...next, { role: "assistant", text: reply || "…" }]);
+    } catch (e) {
+      setRpError(e.message || "Request failed. Check your connection.");
+    } finally { setRpBusy(false); }
+  };
+  // End the scene → ask for a verdict, parse it, credit the bonus step (any verdict counts as
+  // "you performed it"; the verdict is feedback, not a gate).
+  const finishRoleplay = async () => {
+    if (rpBusy || rpVerdict || !aiKey || !rpMission) return;
+    if (!rpMsgs.some(m => m.role === "user")) { setRpError("Say at least one line first — then I can tell you how you did."); return; }
+    setRpBusy(true); setRpError("");
+    try {
+      const raw = await callRoleplay([...rpMsgs, { role: "user", text: "__GRADE__" }], rpMission, true);
+      const grab = (re) => { const m = raw.match(re); return m ? m[1].trim() : ""; };
+      const verdict = grab(/VERDICT:\s*(.+)/i) || "Done";
+      setRpVerdict({ verdict, well: grab(/WELL:\s*(.+)/i), improve: grab(/IMPROVE:\s*(.+)/i), raw });
+      markMissionStep(rpMission.id, "roleplayed");
+    } catch (e) {
+      setRpError(e.message || "Couldn't grade the roleplay. Check your connection.");
+    } finally { setRpBusy(false); }
+  };
+  // No-key path: the learner self-confirms they could do it for real → credit the bonus step.
+  const selfCheckRoleplay = (ok) => {
+    if (!rpMission) return;
+    if (ok) { markMissionStep(rpMission.id, "roleplayed"); setRpVerdict({ verdict: "Self-checked", well: "", improve: "", self: true }); }
+    else { goBack(); }
+  };
+
   // "Why?" bridge: jump from an answered card into the Tutor with a prepared question,
   // and remember where to return so Back resumes the session.
   const tutorReturnRef = useRef("home");
@@ -5082,6 +5191,114 @@ function App() {
         </div>
       )}
 
+      {/* ── J4 MISSION ROLEPLAY (do-it-for-real climax) ── */}
+      {screen === "roleplay" && (() => {
+        const m = rpMission; if (!m) return null;
+        const arc = MISSION_ARCS.find(a => a.id === m.arc);
+        // Scripted self-check fallback (no API key): show the real phrases to rehearse out loud.
+        const phrases = SENTENCES.filter(s => s.mission === m.id).map(s => (s.correct || []).join(" ")).filter(Boolean).slice(0, 5);
+        const fallbackWords = (MISSION_VOCAB[m.id] || []).slice(0, 8);
+        const vColor = rpVerdict ? (/pass/i.test(rpVerdict.verdict) ? G : /almost/i.test(rpVerdict.verdict) ? A : /self/i.test(rpVerdict.verdict) ? G : BL) : A;
+        return (
+          <div className="ad-screen-in" style={{ padding: "0 16px calc(max(16px, env(safe-area-inset-bottom)) + 16px)", minHeight: DVH, display: "flex", flexDirection: "column" }}>
+            <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Mission</button>
+              <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>Do it for real</div>
+              <span style={{ width: 76 }} />
+            </div>
+            <div style={{ background: "linear-gradient(135deg, #1A170B 0%, #0E0E0E 70%)", border: `1px solid ${A}44`, borderRadius: 14, padding: "12px 14px", marginBottom: 12 }}>
+              <div style={{ fontSize: 9.5, color: A, fontWeight: 900, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3 }}>{arc ? arc.title : "Roleplay"} · {m.level}</div>
+              <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: T, lineHeight: 1.25 }}>{m.cando}</div>
+            </div>
+
+            {!aiKey ? (
+              // ── Scripted self-check (graceful no-key fallback) ──
+              <div style={{ flex: 1, overflowY: "auto" }}>
+                {!rpVerdict ? (
+                  <>
+                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, marginBottom: 14 }}>No API key yet — so here's a self-check. Imagine you're in the scene and <b style={{ color: T }}>say each line out loud</b>. When you can get through it without stalling, you've got it. <span style={{ color: TD }}>Add a key in Settings for a live, graded roleplay with the tutor playing the other person.</span></div>
+                    {phrases.length > 0 ? (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+                        {phrases.map((p, i) => (
+                          <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: "#101010", border: `1px solid ${B}`, borderRadius: 12, padding: "11px 13px" }}>
+                            <span style={{ flex: 1, minWidth: 0, fontSize: 14, color: T, fontWeight: 600 }}>{p}</span>
+                            <button type="button" aria-label="Hear it" onClick={() => speak(p)} style={{ background: `${A}12`, border: `1px solid ${A}33`, borderRadius: 10, width: 36, height: 36, color: A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon name="volume" size={15} /></button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+                        {fallbackWords.map((w, i) => <span key={i} style={{ background: "#101010", border: `1px solid ${B}`, borderRadius: 999, padding: "7px 13px", fontSize: 13, color: T, fontWeight: 600 }}>{w}</span>)}
+                      </div>
+                    )}
+                    <div style={{ fontSize: 12, color: TD, textAlign: "center", marginBottom: 10 }}>Could you handle this scene out loud, for real?</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+                      <Btn bg={G} color="#0A0A0A" onClick={() => selfCheckRoleplay(true)} style={{ fontFamily: FN, fontWeight: 800 }}>Yes — I could do this ✓</Btn>
+                      <Btn bg="#141414" color={T} onClick={() => selfCheckRoleplay(false)} style={{ border: `1px solid ${B}` }}>Not yet — practise more</Btn>
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ textAlign: "center", padding: "20px 8px" }}>
+                    <IconBadge name="check" size={48} color={G} bg={`${G}14`} />
+                    <div style={{ fontFamily: FN, fontSize: 19, fontWeight: 800, color: T, margin: "14px 0 6px" }}>Nice — you've got this one.</div>
+                    <div style={{ fontSize: 13, color: TD, lineHeight: 1.5, maxWidth: 320, margin: "0 auto 20px" }}>Roleplay marked done. Add an API key in Settings to do a live, graded version with the tutor playing the other person.</div>
+                    <Btn bg={A} color="#0A0A0A" onClick={goBack} style={{ fontFamily: FN, width: "auto", padding: "13px 24px" }}>Back to mission</Btn>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // ── Live roleplay chat ──
+              <>
+                <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, paddingBottom: 10 }}>
+                  {rpMsgs.length === 0 && !rpBusy && !rpError && (
+                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, textAlign: "center", marginTop: 12 }}>The other person will start in German. Reply in character — order, ask, explain — like you really would. Tap <b style={{ color: T }}>Finish</b> when you're done and I'll tell you how you did.</div>
+                  )}
+                  {rpMsgs.map((mm, i) => (
+                    <div key={i} style={{ alignSelf: mm.role === "user" ? "flex-end" : "flex-start", maxWidth: "88%" }}>
+                      {mm.role === "assistant" && <div style={{ fontSize: 9.5, color: A, fontWeight: 800, letterSpacing: 0.5, margin: "0 0 3px 6px", textTransform: "uppercase" }}>The other person</div>}
+                      <div style={{ background: mm.role === "user" ? A : "#161616", color: mm.role === "user" ? "#0A0A0A" : T, border: mm.role === "user" ? "none" : `1px solid ${B}`, borderRadius: 16, borderBottomRightRadius: mm.role === "user" ? 4 : 16, borderBottomLeftRadius: mm.role === "user" ? 16 : 4, padding: "10px 14px", fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-wrap", fontWeight: mm.role === "user" ? 600 : 400 }}>
+                        {mm.text}
+                        {mm.role === "assistant" && <button type="button" aria-label="Hear it" onClick={() => speak(mm.text)} style={{ display: "inline-flex", verticalAlign: "middle", marginLeft: 8, background: "transparent", border: "none", color: A, cursor: "pointer", padding: 0 }}><Icon name="volume" size={14} /></button>}
+                      </div>
+                    </div>
+                  ))}
+                  {rpBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>…</div>}
+                  {rpError && <div style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{rpError}</div>}
+                  {rpVerdict && (
+                    <div style={{ alignSelf: "stretch", background: `${vColor}10`, border: `1px solid ${vColor}55`, borderRadius: 16, padding: "16px", marginTop: 6 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 10 }}>
+                        <IconBadge name={/keep/i.test(rpVerdict.verdict) ? "refresh" : "check"} size={36} color={vColor} bg={`${vColor}18`} />
+                        <div>
+                          <div style={{ fontSize: 9.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase" }}>Verdict</div>
+                          <div style={{ fontFamily: FN, fontSize: 18, fontWeight: 800, color: vColor }}>{rpVerdict.verdict}</div>
+                        </div>
+                      </div>
+                      {rpVerdict.well && <div style={{ fontSize: 13, color: T, lineHeight: 1.5, marginBottom: 6 }}><b style={{ color: G }}>Went well:</b> {rpVerdict.well}</div>}
+                      {rpVerdict.improve && <div style={{ fontSize: 13, color: T, lineHeight: 1.5 }}><b style={{ color: A }}>To improve:</b> {rpVerdict.improve}</div>}
+                      <div style={{ display: "flex", gap: 9, marginTop: 14 }}>
+                        <Btn bg={A} color="#0A0A0A" onClick={goBack} style={{ fontFamily: FN, fontWeight: 800 }}>Back to mission</Btn>
+                        <Btn bg="#141414" color={T} onClick={() => launchRoleplay(m)} style={{ border: `1px solid ${B}` }}>Try again</Btn>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {!rpVerdict && (
+                  <div style={{ paddingTop: 8, borderTop: `1px solid ${B}` }}>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <input value={rpInput} onChange={e => setRpInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && rpInput.trim()) sendRoleplay(); }}
+                        placeholder="Antworte auf Deutsch…" autoCapitalize="sentences" className="ad-input"
+                        style={{ flex: 1, padding: "13px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
+                      <Btn bg={A} color="#0A0A0A" ariaLabel="Send" onClick={() => sendRoleplay()} style={{ width: "auto", padding: "13px 18px", opacity: rpBusy ? 0.5 : 1 }}>→</Btn>
+                    </div>
+                    <button type="button" onClick={finishRoleplay} disabled={rpBusy} style={{ width: "100%", marginTop: 8, background: "transparent", border: `1px solid ${G}55`, borderRadius: 12, color: G, fontSize: 13, fontWeight: 800, cursor: "pointer", padding: "11px", opacity: rpBusy ? 0.5 : 1, fontFamily: "inherit" }}>Finish &amp; see how I did →</button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        );
+      })()}
+
       {/* ── WORD BROWSER ── */}
       {screen === "browse" && (() => {
         const q = normalize(browseQuery);
@@ -5990,6 +6207,21 @@ function App() {
               })}
             </div>
             <div style={{ fontSize: 11, color: TD, textAlign: "center", marginTop: 16, lineHeight: 1.5 }}>Finish all three to complete the mission. The words you practise here count toward your normal progress too.</div>
+            {/* J4 — the climax: do the scenario for real against the AI playing the other party. */}
+            {(() => {
+              const rpDone = missionStepDone(m.id, "roleplayed");
+              return (
+                <button onClick={() => launchRoleplay(m)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", marginTop: 18, background: rpDone ? "linear-gradient(135deg, #10261A 0%, #0E0E0E 70%)" : "linear-gradient(135deg, #1A170B 0%, #0E0E0E 64%)", border: `1px solid ${rpDone ? `${G}55` : `${A}66`}`, borderRadius: 16, padding: "15px 15px", cursor: "pointer", fontFamily: "inherit", boxShadow: rpDone ? "none" : `0 12px 30px -14px ${A}55` }}>
+                  <IconBadge name={rpDone ? "check" : "message"} size={40} color={rpDone ? G : A} bg={rpDone ? `${G}14` : `${A}14`} />
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, textTransform: "uppercase", color: rpDone ? G : A, marginBottom: 2 }}>{rpDone ? "Roleplay passed" : "The real thing · bonus"}</span>
+                    <span style={{ display: "block", fontFamily: FN, fontSize: 15.5, fontWeight: 800, color: T }}>Do it for real</span>
+                    <span style={{ display: "block", fontSize: 11, color: TD, lineHeight: 1.4 }}>Live roleplay — the tutor plays the other person and tells you how you did.</span>
+                  </span>
+                  <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
+                </button>
+              );
+            })()}
           </div>
         );
       })()}

@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.25`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.26`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,13 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.26** J4 (mission roleplay climax): every mission ends with **"Do it for real"** — a live roleplay
+  where the **Tutor becomes the other party** (café server, clerk…), stays in German/in character,
+  then on Finish returns a **verdict** (Passed/Almost/Keep practising + went-well/to-improve). Credits a
+  bonus `roleplayed` step (doesn't gate the 3-step completion). **No-key fallback** = scripted self-check
+  (real phrases to rehearse + self-rate). Own chat state (`rpMsgs`/`rpVerdict`), own roleplay system
+  prompt (`buildRoleplaySystem`), reuses the BYOK Anthropic path. Harness: `roleplay`, `roleplaychat`
+  (mocked endpoint). (J1/J3/J2/J4 done; **J5 next** = unify progression + daily-maintains-journey.)
 - **v.25** J2 (journey as a felt path): the **Scenarios** screen is now a **map you walk** — an overview
   header (role + {done}/58 + progress bar), arcs as **foldable chapters** (only the active arc open by
   default; completed/future collapse to a summary row), the active arc tagged **"YOU ARE HERE"**, and

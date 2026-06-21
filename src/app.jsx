@@ -705,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.23";
+const APP_VERSION = "2026.06.20.24";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1317,6 +1317,7 @@ function App() {
   // { color, icon, tag, big, sub, subIcon } | null
   const [celebration, setCelebration] = useState(null);
   const [rankUp, setRankUp] = useState(null); // {from, to} — a full CEFR level was just completed
+  const [arcCeleb, setArcCeleb] = useState(null); // {arcId, nextArcId} — a whole journey arc was just completed
   const prevLevelRef = useRef(null);
   const prevChaptersRef = useRef(null);
   const celebrateTimerRef = useRef(null);
@@ -1860,18 +1861,19 @@ function App() {
   // Esc key closes any open modal/overlay — matches hardware-keyboard expectations (e.g. iPad
   // users). Includes the full-screen rank-up celebration (a blocking overlay) and onboarding.
   useEffect(() => {
-    if (!showSetup && !showSettings && !showOnboarding && !rankUp) return;
+    if (!showSetup && !showSettings && !showOnboarding && !rankUp && !arcCeleb) return;
     const onKey = e => {
       if (e.key === "Escape") {
         if (showSettings) setShowSettings(false);
         else if (showSetup) setShowSetup(false);
         else if (rankUp) setRankUp(null);
+        else if (arcCeleb) setArcCeleb(null);
         else if (showOnboarding) setShowOnboarding(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [showSetup, showSettings, showOnboarding, rankUp]);
+  }, [showSetup, showSettings, showOnboarding, rankUp, arcCeleb]);
 
   // A11y: when a dialog opens, move keyboard focus into it and trap Tab inside (so focus can't
   // wander to the page behind). One shared ref — only one of these modals is open at a time.
@@ -2555,17 +2557,18 @@ function App() {
   // Flush queued celebrations once back on home, one at a time (toast auto-dismisses → next;
   // rank-up waits for the user to tap through → next). Nothing plays during a session.
   useEffect(() => {
-    if (screen !== "home" || celebration || rankUp || !celebQueueRef.current.length) return;
+    if (screen !== "home" || celebration || rankUp || arcCeleb || !celebQueueRef.current.length) return;
     const t = setTimeout(() => {
       if (screenRef.current !== "home" || !celebQueueRef.current.length) return;
       const item = celebQueueRef.current.shift();
       playSfx("win");
-      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate(item.kind === "rankup" ? [40, 60, 40, 60, 90] : [35, 55, 35]); } catch (e) {}
+      try { const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; if (!reduce && navigator.vibrate) navigator.vibrate(item.kind === "rankup" || item.kind === "arc" ? [40, 60, 40, 60, 90] : [35, 55, 35]); } catch (e) {}
       if (item.kind === "rankup") { setRankUp(item.payload); }
+      else if (item.kind === "arc") { setArcCeleb(item.payload); }
       else { setCelebration(item.payload); if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current); celebrateTimerRef.current = setTimeout(() => setCelebration(null), 2300); }
     }, 480);
     return () => clearTimeout(t);
-  }, [screen, celebration, rankUp]);
+  }, [screen, celebration, rankUp, arcCeleb]);
 
   const openSetup = (cat, dm) => {
     setSetupCat(cat);
@@ -2679,6 +2682,13 @@ function App() {
               big: "You can now " + m.cando.charAt(0).toLowerCase() + m.cando.slice(1),
               sub: arc ? `${arc.title} · real-world German` : "real-world German", subIcon: null,
             } });
+            // Arc-complete (J3): does this completion finish the whole arc? Every mission in the arc
+            // is either the one just done (id) or already done in prev. → full-screen chapter payoff.
+            const arcDoneNow = MISSIONS.filter(x => x.arc === m.arc).every(x => x.id === id || (prev[x.id] && prev[x.id].doneAt));
+            if (arcDoneNow && arc) {
+              const nextArc = MISSION_ARCS[MISSION_ARCS.indexOf(arc) + 1];
+              celebQueueRef.current.push({ kind: "arc", payload: { arcId: arc.id, nextArcId: nextArc ? nextArc.id : null } });
+            }
           }
         }
       }
@@ -3930,6 +3940,32 @@ function App() {
           <button type="button" onClick={() => setRankUp(null)} style={{ marginTop: 38, background: lc, color: "#0A0A0A", border: "none", borderRadius: 14, padding: "15px 46px", fontFamily: FN, fontSize: 16, fontWeight: 800, cursor: "pointer" }}>Weiter →</button>
         </div>
       ); })()}
+
+      {/* Arc complete (J3) — a full-screen chapter payoff that hands off to the next arc. */}
+      {arcCeleb && (() => {
+        const arc = MISSION_ARCS.find(a => a.id === arcCeleb.arcId);
+        const nextArc = arcCeleb.nextArcId ? MISSION_ARCS.find(a => a.id === arcCeleb.nextArcId) : null;
+        if (!arc) return null;
+        return (
+          <div role="dialog" aria-modal="true" aria-label={`${arc.title} complete`} onClick={() => setArcCeleb(null)}
+            style={{ position: "fixed", inset: 0, zIndex: 132, background: "rgba(0,0,0,0.93)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 30, textAlign: "center" }}>
+            <Confetti count={56} top="15%" />
+            <div className="ad-screen-in" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ fontSize: 11, color: G, fontWeight: 900, letterSpacing: 4, textTransform: "uppercase", marginBottom: 20 }}>Chapter complete</div>
+              <div style={{ position: "relative", marginBottom: 24, width: 116, height: 116, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div className="ad-goal-ring" style={{ position: "absolute", inset: 0, borderRadius: 30, border: `2px solid ${G}` }} />
+                <div style={{ width: 116, height: 116, borderRadius: 30, background: `${G}1A`, border: `2px solid ${G}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 56px -8px ${G}` }}>
+                  <Icon name={arc.icon} size={52} style={{ color: G }} />
+                </div>
+              </div>
+              <div style={{ fontFamily: FN, fontSize: 26, fontWeight: 800, color: T, lineHeight: 1.14, maxWidth: 320 }}>{arc.title} complete</div>
+              <div style={{ fontSize: 14, color: G, fontWeight: 700, marginTop: 10, maxWidth: 320, lineHeight: 1.45 }}>{arc.payoff}</div>
+              {nextArc && <div style={{ fontSize: 12.5, color: TD, marginTop: 14, maxWidth: 300, lineHeight: 1.5 }}>Next chapter: <span style={{ color: A, fontWeight: 800 }}>{nextArc.title}</span> — {nextArc.sub.toLowerCase()}.</div>}
+            </div>
+            <button type="button" onClick={() => { setArcCeleb(null); setScreen("scenarios"); }} style={{ marginTop: 36, background: G, color: "#0A0A0A", border: "none", borderRadius: 14, padding: "15px 40px", fontFamily: FN, fontSize: 16, fontWeight: 800, cursor: "pointer" }}>{nextArc ? "Start the next chapter →" : "See your journey →"}</button>
+          </div>
+        );
+      })()}
 
       {/* ── MASTERY TOAST — slides down when a word is mastered (5 production in a row).
           Lighter than the centre celebrations because it can fire several times a session. ── */}
@@ -5840,15 +5876,17 @@ function App() {
         {MISSION_ARCS.map(arc => {
           const ms = MISSIONS.filter(m => m.arc === arc.id);
           const done = arcDone(arc.id), total = arcTotal(arc.id);
+          const arcComplete = total > 0 && done === total;
           return (
             <div key={arc.id} style={{ marginBottom: 22 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 10 }}>
-                <IconBadge name={arc.icon} size={34} color={A} bg={`${A}12`} />
+                <IconBadge name={arc.icon} size={34} color={arcComplete ? G : A} bg={arcComplete ? `${G}14` : `${A}12`} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800 }}>{arc.title}</div>
-                  <div style={{ fontSize: 11, color: TD }}>{arc.sub}</div>
+                  {/* Complete arcs show their payoff ("you've landed…"); in-progress show the theme. */}
+                  <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400 }}>{arcComplete ? arc.payoff : arc.sub}</div>
                 </div>
-                <div style={{ fontSize: 11, color: done === total && total ? G : TD, fontWeight: 800 }}>{done}/{total}</div>
+                <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: 800, flexShrink: 0 }}>{arcComplete ? "✓ Complete" : `${done}/${total}`}</div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 8 }}>
                 {ms.map(m => {

@@ -8027,13 +8027,13 @@ const IMPERATIVES = [
 // "can-do" outcome. Dialogues are referenced by title (their stable key). Vocab `cats` must be
 // V categories. The build validator resolves every reference. See docs/P0-scenarios-spec.md.
 const MISSION_ARCS = [
-  {id:"touchdown", title:"Touchdown",     sub:"Your first days",          icon:"plane"},
-  {id:"paperwork", title:"The Paperwork", sub:"Anmeldung & the offices",   icon:"file"},
-  {id:"roof",      title:"A Roof",        sub:"Finding & keeping a flat",  icon:"home"},
-  {id:"money",     title:"Money & Connectivity", sub:"Bank, SIM, contracts", icon:"card"},
-  {id:"health",    title:"Staying Well",  sub:"Doctor, pharmacy, sick notes", icon:"heart"},
-  {id:"job",       title:"The Job",       sub:"Working in German",         icon:"briefcase"},
-  {id:"belonging", title:"Belonging",     sub:"Small talk & social life",  icon:"users"},
+  {id:"touchdown", title:"Touchdown",     sub:"Your first days",          icon:"plane",     payoff:"You've landed and found your feet."},
+  {id:"paperwork", title:"The Paperwork", sub:"Anmeldung & the offices",   icon:"file",      payoff:"You're official — registered and on the grid."},
+  {id:"roof",      title:"A Roof",        sub:"Finding & keeping a flat",  icon:"home",      payoff:"You've got a place to call home."},
+  {id:"money",     title:"Money & Connectivity", sub:"Bank, SIM, contracts", icon:"card",    payoff:"You're banked, connected and set up."},
+  {id:"health",    title:"Staying Well",  sub:"Doctor, pharmacy, sick notes", icon:"heart",  payoff:"You can look after your health here."},
+  {id:"job",       title:"The Job",       sub:"Working in German",         icon:"briefcase", payoff:"You can hold your own at work in German."},
+  {id:"belonging", title:"Belonging",     sub:"Small talk & social life",  icon:"users",     payoff:"You belong — you can connect and make friends."},
 ];
 
 const MISSIONS = [

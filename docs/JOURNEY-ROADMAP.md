@@ -73,11 +73,20 @@ missions as ordered stops (done ✓ / current ● / upcoming ○), your position
 collapsed/peeked. Add a lightweight **journey map** (arcs as a route, you as a pin). Keep everything
 reachable (soft sequencing, not hard locks). *Effort: Med-High · app.jsx. Risk: Low-Med.*
 
-### J3 — Arc as a chapter: intro, payoff, transition
+### J3 — Arc as a chapter: intro, payoff, transition — ✅ DONE (v.24)
 Give each arc a short **intro** ("The Paperwork — make yourself official") and, on completion, a
 **real celebration + reward** (an arc badge / status moment) that hands off to the next arc ("You're
 registered. Next: find a flat."). Wire arc-complete into the existing celebration queue. *Effort: Med
 · app.jsx + a little arc copy in data. Risk: Low.*
+
+**Shipped:** completing the last mission of an arc fires a **full-screen "CHAPTER COMPLETE"**
+celebration — green arc badge, "{Arc} complete", a one-line **payoff** (new `payoff` field on all 7
+`MISSION_ARCS`), and a "Next chapter: {next arc} — {sub}" hand-off → "Start the next chapter →".
+Detected in `markMissionStep` (only on the finishing step), queued via `celebQueueRef` (kind `"arc"`
+→ `arcCeleb` state), flush + Escape wiring alongside toast/rank-up. Scenarios arc header now shows
+green badge + payoff line + "✓ Complete" when the arc is done. Harness path: `arccomplete`. *(Arc
+**intro** copy is a small remaining follow-on — the payoff/transition half is the felt motivation
+loop and is live.)*
 
 ### J4 — The "do it" climax: mission roleplay  *(biggest pedagogical upgrade)*
 Add a final **roleplay** step to each mission: the context-aware Tutor plays the other party ("I'm the

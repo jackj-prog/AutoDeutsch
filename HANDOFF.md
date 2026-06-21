@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.x`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.24`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,12 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.24** J3 (arc-as-chapter): finishing an arc's last mission fires a **full-screen "CHAPTER
+  COMPLETE"** celebration — green arc badge, "{Arc} complete", a one-line **payoff** (new field on
+  all 7 `MISSION_ARCS`), and a "Next chapter →" hint. New `arcCeleb` state + arc-complete detection
+  in `markMissionStep`, queued through `celebQueueRef` (lands on Home behind any rank-up). Scenarios
+  arc header now shows green + payoff + "✓ Complete" when the arc is done. Harness: `arccomplete`.
+  (J1 and J3 done; J2/J4/J5/J6 next per `docs/JOURNEY-ROADMAP.md`.)
 - **v.23** J1 (journey build-out): Home is now **journey-first** — the gold "Continue your journey →
   {mission}" hero leads Home; SRS review + custom-session CTAs demoted to calm cards. Full journey
   plan in `docs/JOURNEY-ROADMAP.md` (J1 done; J2–J6 next: arc-as-chapter, felt path + map, roleplay

@@ -59,7 +59,7 @@ async function buildHarness() {
 // Deterministic learner state per persona, so screens render as a real user would see
 // them. "onboarding" leaves storage fresh (modal shows); "first" is onboarded but has no
 // data (empty states); "daily"/"advanced" scale up streak, goal progress and mastery.
-function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat, tutorChatEmpty }) {
+function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, correctFast, eszett, level, training, missionReady, tutorChat, tutorChatEmpty, arcReady }) {
   localStorage.clear();
   if (persona === "onboarding") return;
   localStorage.setItem("ad-onboarding-v1", "done");
@@ -170,6 +170,15 @@ function seedState({ persona, mode, near, streakReady, freezeMiss, mastery, corr
       hotel: { learned: true, listened: true, spoke: true, doneAt: Date.now() - 86400000 },
       cafe: { learned: true, spoke: true },
     }));
+  }
+  if (arcReady) {
+    // Whole Touchdown arc done except café at 2/3 → crediting café's "listened" step completes
+    // the café AND the arc, firing the full-screen "Chapter complete" celebration (J3).
+    const D = 86400000, done = { learned: true, listened: true, spoke: true, doneAt: Date.now() - D };
+    const prog = {};
+    ["restaurant", "supermarket", "directions", "hotel", "transit", "meeting", "smalltalk", "phone", "clothes"].forEach(id => { prog[id] = done; });
+    prog.cafe = { learned: true, spoke: true };
+    localStorage.setItem("ad-mission-progress-v1", JSON.stringify(prog));
   }
 }
 
@@ -413,10 +422,11 @@ async function gotoScreen(page, screen) {
     await new Promise(r => setTimeout(r, +(process.env.SHOOT_RANKWAIT || 1400)));
     return;
   }
-  if (screen === "skillunlock" || screen === "statusup") {
+  if (screen === "skillunlock" || screen === "statusup" || screen === "arccomplete") {
     // Open the café mission (seeded 2/3) and credit its final "listened" step by opening the
     // scene → the mission completes and queues the green "Skill unlocked" toast (+ the
-    // Newcomer→Settling-in status toast for `statusup`). Back out to home so the queue flushes.
+    // Newcomer→Settling-in status toast for `statusup`; + the full-screen "Chapter complete"
+    // celebration for `arccomplete`, where the whole arc finishes). Back out to home to flush.
     await clickText(page, "All scenarios →");
     await new Promise(r => setTimeout(r, 350));
     await clickText(page, "Order at a café or bakery");
@@ -437,8 +447,9 @@ async function gotoScreen(page, screen) {
       if (!moved) break;
       await new Promise(r => setTimeout(r, 500));
     }
-    // Flush plays one toast at a time (2.3s each); statusup is second in the queue.
-    await new Promise(r => setTimeout(r, screen === "statusup" ? 2900 : 900));
+    // Flush plays one item at a time (toasts ~2.3s each); statusup is 2nd, the arc celebration
+    // is last (full-screen, waits for a tap) → wait through the preceding toasts.
+    await new Promise(r => setTimeout(r, screen === "arccomplete" ? 5200 : screen === "statusup" ? 2900 : 900));
     return;
   }
   if (screen === "confusionanswered") {
@@ -659,7 +670,7 @@ async function run() {
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax" && screen !== "longword" && screen !== "longprompt")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

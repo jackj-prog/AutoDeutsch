@@ -118,9 +118,14 @@ Found already-solid foundations: file **export/import** of progress exists, a **
 - **C4 ✅ (v.41) — graceful offline handling for the AI features.** Tutor + roleplay now detect offline and
   show a clear, reassuring message (pointing at what works offline) instead of "Failed to fetch". Confirmed
   the rest of the empty/error coverage is solid. Harness: `tutoroffline`.
+- **C5 ✅ (v.42) — shareable: Open Graph / Twitter cards + accurate meta.** Shared URLs now preview with a
+  title/blurb/icon; replaced the stale pre-journey meta description; descriptive `<title>`. (`index.html`;
+  survives the SRI-patching build.)
 - **C-backlog (candidate next, highest-value first):** micro-polish/visual-consistency sweep; Library→"Learn"
   rename (user-facing label — confirm first); a11y recheck of the new screens (mic/voice toggles, welcome
   step). Plus the modularization/mic-unify internal items.
+  *(Note: `og:url`/`og:image` assume the GitHub Pages URL `jackj-prog.github.io/autodeutsch/` — update if a
+  custom domain is added; a dedicated 1200×630 share image would beat the square icon for `summary_large_image`.)*
 
 ## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
 - **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,

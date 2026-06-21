@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.41`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.42`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,9 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.42** C5 (commercial-grade): **Open Graph / Twitter share cards** + accurate meta in `index.html` —
+  shared URLs now preview with title/blurb/icon; replaced the stale pre-journey meta description; descriptive
+  `<title>`. (Tags survive the SRI-patching build. `og:url`/`og:image` assume the GH Pages URL.)
 - **v.41** C4 (commercial-grade): **graceful offline handling** for the AI Tutor + roleplay — detect
   `navigator.onLine===false` and show a clear, reassuring message (not "Failed to fetch"), pointing at what
   works offline. Harness: `tutoroffline`. (Existing empty/error coverage confirmed solid.)

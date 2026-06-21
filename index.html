@@ -8,7 +8,9 @@
   <meta name="apple-mobile-web-app-title" content="AutoDeutsch" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0A0A0A" />
-  <meta name="description" content="AutoDeutsch — 1000+ German cards with spaced repetition, 9 study modes, hands-free audio" />
+  <meta name="description" content="Learn the German you'll actually use — a guided journey through the real situations of settling into life in a German-speaking country, with spoken AI roleplay. Free, private, works offline." />
+  <meta name="application-name" content="AutoDeutsch" />
+  <link rel="canonical" href="https://jackj-prog.github.io/autodeutsch/" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png" />
@@ -18,7 +20,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" />
-  <title>AutoDeutsch</title>
+  <title>AutoDeutsch — German for settling in</title>
+  <!-- Social share cards (Open Graph + Twitter), so the URL renders with a title, blurb and icon
+       wherever it's shared. Absolute URLs point at the GitHub Pages deployment. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AutoDeutsch" />
+  <meta property="og:title" content="AutoDeutsch — learn the German you'll actually use" />
+  <meta property="og:description" content="A guided journey through the real situations of settling into life in a German-speaking country — learn the words, hear the scene, then do it for real out loud with an AI. Free, private, works offline." />
+  <meta property="og:url" content="https://jackj-prog.github.io/autodeutsch/" />
+  <meta property="og:image" content="https://jackj-prog.github.io/autodeutsch/icons/icon-512x512.png" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AutoDeutsch — learn the German you'll actually use" />
+  <meta name="twitter:description" content="A guided journey through settling into German-speaking life — learn the words, hear the scene, then do it for real out loud with an AI. Free, private, offline." />
+  <meta name="twitter:image" content="https://jackj-prog.github.io/autodeutsch/icons/icon-512x512.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body, #root { height: 100%; }
@@ -93,7 +108,7 @@
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="data.js" integrity="sha512-ZJcCS+noNM0Tl3mZCVIu7Dn2v3GpcLfpPAIJvZcyFic6MMHj+9wKh7atRMOjCaVbK2yp59M3x5uTxL2HQEsBxA=="></script>
-  <script src="app.js" integrity="sha512-gvYyzJcY3LG382/W7YFkefvthVoZHus3Fsojp94FiO3oJjYQXa/j1VdBuvUOLDNtCqBgWr4SeTbZ+GAF5Ukqhg=="></script>
+  <script src="app.js" integrity="sha512-vI0WlbprBMjTeyvf/ht/uwTf+sJgkv1An6wxPjj7eSR5Sp/Qa5d48P3nYJ2HV9tzIcP7fTMYbT6ou2wi6rhGAA=="></script>
 
   <!-- Boot-failure self-heal: if the app didn't mount (e.g. a cached data.js/app.js was
        blocked by an SRI mismatch after a deploy), purge CacheStorage once and reload so

@@ -124,6 +124,9 @@ Found already-solid foundations: file **export/import** of progress exists, a **
 - **C6 ✅ (v.43) — a11y recheck.** Dynamic status/error messages now announced (`role="alert"` / `role="status"`
   aria-live; WCAG 4.1.3) incl. the offline notices + roleplay verdict; `aria-pressed` on the roleplay mic. New
   surfaces already had aria-labels; AA tokens reused.
+- **C7 ✅ (v.44) — PWA install prompt.** Captures `beforeinstallprompt` → a dismissible "Install AutoDeutsch"
+  Home banner with an Install button; hidden once installed/dismissed. Drives home-screen installs. Reusable
+  `x` icon added. Harness: `install`.
 - **C-backlog (candidate next, highest-value first):** micro-polish/visual-consistency sweep; Library→"Learn"
   rename (user-facing label — confirm first). Plus the modularization/mic-unify internal items.
   *(Note: `og:url`/`og:image` assume the GitHub Pages URL `jackj-prog.github.io/autodeutsch/` — update if a

@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.43";
+const APP_VERSION = "2026.06.20.44";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1265,6 +1265,10 @@ function App() {
   const [saveStatus, setSaveStatus] = useState("Saved locally");
   // New version of the app is installed and waiting
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  // C7 — PWA install: capture the browser's install event so we can offer a contextual "Install"
+  // CTA (instead of relying on the easily-missed mini-infobar). Hidden once installed / dismissed.
+  const [installEvt, setInstallEvt] = useState(null);
+  const [installDismissed, setInstallDismissed] = useState(() => { try { return localStorage.getItem("ad-install-dismissed") === "1"; } catch (e) { return false; } });
 
   const inputRef = useRef(null);
   // Per-session snapshot of prior lastSeen values, keyed by storage key. Lets CardStats
@@ -1825,6 +1829,20 @@ function App() {
     window.addEventListener("sw-update-available", onUpdate);
     return () => window.removeEventListener("sw-update-available", onUpdate);
   }, []);
+  // C7 — stash the install prompt; clear it once the app is installed.
+  useEffect(() => {
+    const onPrompt = (e) => { e.preventDefault(); setInstallEvt(e); };
+    const onInstalled = () => { setInstallEvt(null); try { localStorage.setItem("ad-install-dismissed", "1"); } catch (err) {} };
+    window.addEventListener("beforeinstallprompt", onPrompt);
+    window.addEventListener("appinstalled", onInstalled);
+    return () => { window.removeEventListener("beforeinstallprompt", onPrompt); window.removeEventListener("appinstalled", onInstalled); };
+  }, []);
+  const promptInstall = async () => {
+    if (!installEvt) return;
+    try { installEvt.prompt(); await installEvt.userChoice; } catch (e) {}
+    setInstallEvt(null);
+  };
+  const dismissInstall = () => { setInstallEvt(null); setInstallDismissed(true); try { localStorage.setItem("ad-install-dismissed", "1"); } catch (e) {} };
 
   // Audio mode driver — runs whenever audioPlaying flips true.
   // Plays current card, on completion increments dailyGoal + advances to next.
@@ -4569,6 +4587,19 @@ function App() {
             <span style={{ flex: 1 }}><strong style={{ color: BL }}>Streak Freeze used</strong><br /><span style={{ fontWeight: 500, fontSize: 11, color: TD }}>A missed day was absorbed — your {freezeNotice.streak}-day streak is safe.</span></span>
             <Icon name="check" size={16} style={{ color: BL }} />
           </button>
+        )}
+        {/* C7 — Install prompt: only when the browser offered one and the user hasn't dismissed/installed.
+            Calm, dismissible — install is an offer, not a nag. */}
+        {installEvt && !installDismissed && (
+          <div style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", background: "linear-gradient(135deg, #1A170B 0%, #0F0F0F 65%)", border: `1px solid ${A}44`, borderRadius: 12, padding: "11px 13px", marginBottom: 14 }}>
+            <IconBadge name="download" size={32} color={A} bg={`${A}14`} />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: "block", fontSize: 12.5, fontWeight: 800, color: T }}>Install AutoDeutsch</span>
+              <span style={{ display: "block", fontSize: 10.5, color: TD, lineHeight: 1.35 }}>Add it to your home screen — full-screen, offline, one tap away.</span>
+            </span>
+            <button type="button" onClick={promptInstall} style={{ flexShrink: 0, background: A, color: "#0A0A0A", border: "none", borderRadius: 9, padding: "8px 13px", fontSize: 12, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>Install</button>
+            <button type="button" onClick={dismissInstall} aria-label="Dismiss install prompt" style={{ flexShrink: 0, background: "transparent", border: "none", color: TD, cursor: "pointer", padding: 4, display: "inline-flex" }}><Icon name="x" size={15} /></button>
+          </div>
         )}
         {/* Update available — appears when a new SW version is installed and waiting */}
         {updateAvailable && (

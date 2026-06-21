@@ -214,6 +214,17 @@ async function clickText(page, txt) {
 
 async function gotoScreen(page, screen) {
   if (screen === "home" || screen === "freezeused") return;
+  if (screen === "install") {
+    // C7: dispatch a synthetic beforeinstallprompt (browsers don't fire it headless) so the
+    // home install banner renders.
+    await page.evaluate(() => {
+      const e = new Event("beforeinstallprompt");
+      e.prompt = () => {}; e.userChoice = Promise.resolve({ outcome: "dismissed" });
+      window.dispatchEvent(e);
+    });
+    await new Promise(r => setTimeout(r, 350));
+    return;
+  }
   if (screen === "onboarding") {
     // C3: the modal opens on the welcome/value step. SHOOT_OBSTEP=intake clicks through to the form.
     if (process.env.SHOOT_OBSTEP === "intake") { await clickText(page, "Get started"); await new Promise(r => setTimeout(r, 350)); }

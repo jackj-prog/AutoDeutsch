@@ -705,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.22";
+const APP_VERSION = "2026.06.20.23";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4458,6 +4458,45 @@ function App() {
           <p style={{ color: TD, fontSize: 13, margin: "0" }}>{totalW.toLocaleString()} words · <span style={{ color: G, fontWeight: 700 }}>{deepStats.journeyStrong.toLocaleString()} learned</span>{totalL > 0 && <span style={{ color: TD }}> · {totalL.toLocaleString()} ★</span>}</p>
         </div>
 
+        {/* ── JOURNEY HERO (J1) — the flagship action: continue the next mission. The single gold
+            focal point on Home; SRS review demotes to a supporting card below. ── */}
+        {currentMission && (() => {
+          const m = currentMission;
+          const arc = MISSION_ARCS.find(a => a.id === m.arc);
+          const allDone = MISSIONS.every(x => missionStatus(x.id) === "done");
+          const STEP_LABELS = { learned: "Learn the words", listened: "Listen to the scene", spoke: "Say it out loud" };
+          const nextStep = ["learned", "listened", "spoke"].find(s => !missionStepDone(m.id, s)) || "learned";
+          const goldHero = { width: "100%", textAlign: "left", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 16, padding: "15px 16px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 13, boxShadow: "0 14px 32px -10px rgba(255,204,0,0.5)" };
+          return (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 2px 9px" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, fontWeight: 800, color: A, letterSpacing: 0.6, textTransform: "uppercase" }}><Icon name={capability.role.icon} size={12} style={{ color: A }} /> {capability.role.name}</span>
+                <button type="button" onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: "none", color: A, fontSize: 11, fontWeight: 800, cursor: "pointer", padding: 0 }}>All scenarios →</button>
+              </div>
+              {allDone ? (
+                <button type="button" onClick={() => setScreen("scenarios")} style={goldHero}>
+                  <IconBadge name="check" size={40} color="#0A0A0A" bg="#0A0A0A18" />
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase" }}>Journey complete</span>
+                    <span style={{ display: "block", fontFamily: FN, fontSize: 17, marginTop: 2, fontWeight: 800 }}>Every scenario done — keep it sharp</span>
+                  </span>
+                  <Icon name="arrowRight" size={20} />
+                </button>
+              ) : (
+                <button type="button" onClick={() => openMission(m.id)} style={goldHero}>
+                  <IconBadge name={arc ? arc.icon : "map"} size={40} color="#0A0A0A" bg="#0A0A0A18" />
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase" }}>Continue your journey</span>
+                    <span style={{ display: "block", fontFamily: FN, fontSize: 17, marginTop: 2, fontWeight: 800, lineHeight: 1.18, overflowWrap: "anywhere" }}>{m.cando}</span>
+                    <span style={{ display: "block", fontSize: 10.5, opacity: 0.72, fontWeight: 700, marginTop: 3 }}>{arc ? arc.title : "Your mission"} · {m.level} · Next: {STEP_LABELS[nextStep]}</span>
+                  </span>
+                  <Icon name="arrowRight" size={20} />
+                </button>
+              )}
+            </div>
+          );
+        })()}
+
         {/* Journey rank — your current CEFR level + progress toward the next, surfaced as a
             tappable identity (matches the Stats roadmap). Novice sees a clear rank + climb. */}
         {(() => {
@@ -4496,30 +4535,6 @@ function App() {
                 </div>
               )}
             </button>
-          );
-        })()}
-
-        {currentMission && (() => {
-          const m = currentMission;
-          const arc = MISSION_ARCS.find(a => a.id === m.arc);
-          const STEP_LABELS = { learned: "Learn the words", listened: "Listen to the scene", spoke: "Say it out loud" };
-          const nextStep = ["learned", "listened", "spoke"].find(s => !missionStepDone(m.id, s)) || "learned";
-          return (
-            <>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "2px 2px 10px" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, fontWeight: 800, color: A, letterSpacing: 0.6, textTransform: "uppercase" }}><Icon name={capability.role.icon} size={12} style={{ color: A }} /> {capability.role.name}</span>
-                <button type="button" onClick={() => setScreen("scenarios")} style={{ background: "transparent", border: "none", color: A, fontSize: 11, fontWeight: 800, cursor: "pointer", padding: 0 }}>All scenarios →</button>
-              </div>
-              <button type="button" onClick={() => openMission(m.id)} style={{ width: "100%", textAlign: "left", marginBottom: 20, background: "linear-gradient(100deg, #15140D 0%, #0E0E0E 70%)", border: `1px solid ${A}3D`, borderRadius: 16, padding: "14px 15px", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 13 }}>
-                <IconBadge name={arc ? arc.icon : "map"} size={40} color={A} bg={`${A}12`} />
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase" }}>{arc ? arc.title : "Your mission"} · {m.level}</span>
-                  <span style={{ display: "block", fontSize: 15, fontWeight: 800, color: T, lineHeight: 1.2 }}>{m.cando}</span>
-                  <span style={{ display: "block", fontSize: 11, color: A, fontWeight: 700, marginTop: 3 }}>Next: {STEP_LABELS[nextStep]} →</span>
-                </span>
-                <Icon name="chevron" size={16} style={{ color: TD, transform: "rotate(-90deg)" }} />
-              </button>
-            </>
           );
         })()}
 
@@ -4596,14 +4611,14 @@ function App() {
               </div>
               {dueItem && (
                 <button type="button" onClick={dueItem.onClick} title={dueItem.detail}
-                  style={{ width: "100%", background: "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: "#0A0A0A", border: "none", borderRadius: 15, padding: "14px 16px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: "0 12px 30px -10px rgba(255,204,0,0.5)", marginBottom: otherItems.length ? 8 : 0 }}>
-                  <IconBadge name="calendarCheck" size={36} color="#0A0A0A" bg="#0A0A0A18" />
+                  style={{ width: "100%", background: `linear-gradient(180deg, ${A}14 0%, #0D0D0D 75%)`, color: T, border: `1px solid ${A}2E`, borderRadius: 14, padding: "13px 14px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, fontFamily: "inherit", fontWeight: 800, marginBottom: otherItems.length ? 8 : 0 }}>
+                  <IconBadge name="calendarCheck" size={34} color={A} bg="#0A0A0A66" />
                   <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ display: "block", fontSize: 11, opacity: 0.74, fontWeight: 800 }}>Reviews due · lock them in before they slip</span>
-                    <span style={{ display: "block", fontFamily: FN, fontSize: 17, marginTop: 2 }}>Review {dueItem.count} word{dueItem.count === 1 ? "" : "s"}</span>
-                    {dueItem.next && <span style={{ display: "block", fontSize: 10.5, opacity: 0.7, fontWeight: 700, marginTop: 2 }}>{dueItem.next}</span>}
+                    <span style={{ display: "block", fontSize: 10.5, color: TD, fontWeight: 800 }}>Reviews due · lock them in before they slip</span>
+                    <span style={{ display: "block", fontFamily: FN, fontSize: 16, marginTop: 2, color: T }}>Review {dueItem.count} word{dueItem.count === 1 ? "" : "s"}</span>
+                    {dueItem.next && <span style={{ display: "block", fontSize: 10, color: TD, fontWeight: 700, marginTop: 2 }}>{dueItem.next}</span>}
                   </span>
-                  <Icon name="arrowRight" size={20} />
+                  <Icon name="arrowRight" size={18} style={{ color: A }} />
                 </button>
               )}
               {otherItems.length > 0 && (
@@ -4691,10 +4706,9 @@ function App() {
           </div>
           {(() => {
             const hm = HERO_MODES[setupMode] || HERO_MODES.production; const heroMode = HERO_MODES[setupMode] ? setupMode : "production";
-            // When reviews are due, the gold Due hero above owns the spotlight — so this
-            // "new session" launch steps back to a calm outline. With nothing due, it's the
-            // primary gold action again.
-            const demoted = resolvedDue.total > 0;
+            // The Journey hero at the top of Home owns the single gold spotlight now (J1), so this
+            // "new session" launch is always a calm outline — never a competing gold focal point.
+            const demoted = true;
             return (
             <button type="button" onClick={() => { const n = Math.max(5, Math.min(totalW, lastSession?.count || 15)); startSession("__all__", heroMode, n); }}
               style={{ width: "100%", background: demoted ? "#0F0F0F" : "linear-gradient(135deg, #FFD93B 0%, #F2B400 100%)", color: demoted ? T : "#0A0A0A", border: demoted ? `1px solid ${A}44` : "none", borderRadius: demoted ? 14 : 16, padding: demoted ? "13px 16px" : "17px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontFamily: "inherit", fontWeight: 800, boxShadow: demoted ? "none" : "0 12px 30px -8px rgba(255,204,0,0.45)" }}>

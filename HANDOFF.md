@@ -35,6 +35,10 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.23** J1 (journey build-out): Home is now **journey-first** — the gold "Continue your journey →
+  {mission}" hero leads Home; SRS review + custom-session CTAs demoted to calm cards. Full journey
+  plan in `docs/JOURNEY-ROADMAP.md` (J1 done; J2–J6 next: arc-as-chapter, felt path + map, roleplay
+  climax, unify progression, personalization/content depth).
 - **v.22** Seamless journey playthrough: finishing a mission step returns to the mission ("Continue
   mission →"), not Home. Results screen is mission-aware via `missionReturnRef` + `returnToMission`
   (which trims dead session/results frames from the back-stack).

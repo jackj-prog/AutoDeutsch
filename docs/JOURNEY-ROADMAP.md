@@ -60,11 +60,12 @@ plan to make the journey *the* product. (Status doc; updated as phases land. Pai
 Sequenced for value-first: make it the flagship surface, then a felt path, then make you *do* it,
 then unify + deepen. Each phase is shippable on its own.
 
-### J1 — Home becomes journey-first  *(highest visibility; the "flagship" ask)*
-Make the journey the first thing you see and do. The primary Home hero becomes **"Continue your
-journey → {current mission} · next: {step}"** (gold, top). SRS "Review N words" demotes to the daily
-habit slot beneath it. Add a one-line "where you are" (arc · role · mission N of M). *Effort: Med ·
-app.jsx. Risk: Low (currentMission/step already exist).* **→ recommended first.**
+### J1 — Home becomes journey-first  *(highest visibility; the "flagship" ask)* — ✅ DONE (v.23)
+Make the journey the first thing you see and do. Shipped: the **gold "Continue your journey →
+{mission}"** hero now leads Home (right under the greeting, with role eyebrow + "All scenarios →" +
+"Next: {step}"), and the SRS "Review N words" + the custom-session CTA are demoted to calm dark
+secondary cards — so the journey is the single gold focal point. `allDone` shows a "Journey complete"
+hero. *Possible follow-up: the hero could one-tap into the next step (currently opens the mission hub).*
 
 ### J2 — A felt path: arc focus, sequencing & a map
 Replace the flat Scenarios list with a **focused current-arc view**: the active arc up top with its

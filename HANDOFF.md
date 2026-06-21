@@ -95,6 +95,10 @@ opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" 
   (If you pause mid-task, record it HERE with the file + line + what's left.)
 
 ## Open hand-offs & next candidates (pick from here)
+- **▶ THE PLAN — `docs/NEXT-HORIZON.md`** (set by the steering agent after J1–J6): **H1** stabilize &
+  sharpen (regression sweep + begin modularization + perf) → **H2** voice-first (speak the J4 roleplay /
+  production; unify mic UX) → **H3** retention (re-engagement/notifications within PWA limits, streak
+  safety, P3b) → **H4** depth & correctness. Start at H1 unless told otherwise.
 - **★ Journey content depth (content lane, no app change) — the main remaining journey item:** finish
   **multi-scene coverage** for the ~24 single-scene missions (each gets a 2nd dialogue so the "Listen"
   step is 2 scenes — same pattern as the 6 already added; append the title to the mission's `dialogues`

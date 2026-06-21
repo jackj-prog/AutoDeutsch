@@ -62,7 +62,7 @@ Settling-in German is a **spoken** skill. The engine exists; it's just not where
   into one `useSpeechInput` hook — fits the **modularization** lane (H1), not a user-facing item. TTS already
   has voice-pick + rate. *Net: you can now hold the café/clerk conversation entirely out loud.*
 
-### H3 — The return loop: retention & re-engagement *(turn a one-time journey into a daily habit)* — IN PROGRESS (v.33)
+### H3 — The return loop: retention & re-engagement *(turn a one-time journey into a daily habit)* — ✅ DONE (v.33–34)
 A settling-in app is used over months; today there's no reason to come back tomorrow.
 - **PRE-EXISTING (found, not built):** the **machinery was already here and is solid** — opt-in **local
   reminders via Notification Triggers** (`showTrigger`/`TimestampTrigger`, server-less, schedules a week,
@@ -74,10 +74,12 @@ A settling-in app is used over months; today there's no reason to come back tomo
   is kept fresh from live journey state and read at schedule time: **"{N} earned scenarios slipping — a few
   minutes keeps them sharp"** (the J5 maintenance nudge), else **"Continue your journey: {current mission}"**,
   else the generic line. Re-engagement now pulls you back to *the journey*, by name.
-- **REMAINING H3:** **P3b — daily-goal reframe** (make the home "Today" ring read as *journey upkeep*, not
-  raw "cards per day"; fold the generic Due/Weak cards into the J5 maintenance frame). Optional: a
-  streak-at-risk in-app banner late in the day. *These are home/Progress framing changes — medium risk.*
-- *Risk: Low for what shipped (copy from existing state). Deliver: the daily nudge is about the journey.*
+- **DONE (v.34) — P3b daily-goal reframe:** the home "Today" panel now reads as *journey upkeep* — a
+  subtitle under the ring ("Keep your journey sharp — {N} scenarios need a refresh" / "A few minutes keeps
+  your earned scenarios sharp") and the goal-reached caption flips to "✓ Journey kept sharp" when nothing's
+  slipping. The card-count mechanic is untouched; only the framing now ties the daily loop to the journey.
+- *Shipped. (Optional future: a streak-at-risk in-app banner late in the day; fold Due/Weak into the
+  maintenance frame.) Deliver: the daily habit reads as keeping your journey alive, and the nudge names it.*
 
 ### H4 — Depth & correctness *(make every mission rich and right)*
 The journey frame is done; now fill it out. Mostly content lane — but I own correctness.

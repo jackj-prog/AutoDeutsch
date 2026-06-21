@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.33`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.34`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,11 +35,14 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.34** H3 step 2 / **P3b — H3 COMPLETE**: home "Today" panel reframed as **journey upkeep** (subtitle
+  "Keep your journey sharp — {N} scenarios need a refresh" / "A few minutes keeps your earned scenarios
+  sharp"; goal-reached caption → "✓ Journey kept sharp"). Card-count mechanic untouched. Retention horizon
+  done (journey-aware reminders v.33 + daily-goal reframe v.34; reminders + streak-freeze pre-existed).
 - **v.33** H3 step 1 (retention): **journey-aware reminders** — the daily-reminder body now names the slipping
   earned scenarios ("{N} scenarios slipping…") / current mission, via `reminderBodyRef`. The retention
   *machinery* (Notification-Triggers reminders + streak-freeze) already existed; this connects it to the
-  journey. No backend → no true background push beyond Notification Triggers (Chromium). Remaining H3: P3b
-  daily-goal reframe.
+  journey. No backend → no true background push beyond Notification Triggers (Chromium).
 - **v.32** H2 step 2 (voice): **two-way spoken roleplay** — a persisted "Voice" toggle (default on) auto-plays
   the other person's German lines (opener + replies); mic cancels TTS so it isn't recorded; TTS stops on leave.
   **H2 essentially complete** (you can hold the scenario out loud). Skipped Production-voice (= the existing

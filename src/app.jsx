@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.33";
+const APP_VERSION = "2026.06.20.34";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4660,7 +4660,10 @@ function App() {
           );
         })()}
 
-        {SectionHead({ title: "Today", style: { margin: "2px 0 10px" } })}
+        {SectionHead({ title: "Today", style: { margin: "2px 0 4px" } })}
+        {/* P3b — frame the daily ring as journey upkeep, not raw card-count: the everyday loop keeps
+            your earned scenarios from decaying. */}
+        <div style={{ fontSize: 11, color: TD, margin: "0 2px 10px", lineHeight: 1.4 }}>{journeyMaintenance.list.length > 0 ? <>Keep your journey sharp — <span style={{ color: A, fontWeight: 700 }}>{journeyMaintenance.list.length} scenario{journeyMaintenance.list.length === 1 ? "" : "s"}</span> need a refresh.</> : "A few minutes keeps your earned scenarios sharp."}</div>
         {/* Today panel: goal ring + streak + last-7-days activity */}
         <div style={{ background: PANEL_GRAD, border: `1px solid ${HAIR}`, borderRadius: 18, padding: "16px 18px 13px", marginBottom: 20, position: "relative", overflow: "hidden", boxShadow: ELEV }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: FLAG, opacity: 0.85 }} />
@@ -4708,7 +4711,7 @@ function App() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
                     <span style={{ fontSize: 9, color: TD, letterSpacing: 0.4 }}>last 7 days</span>
-                    {dailyStats.count >= dailyGoal && <span style={{ fontSize: 9, color: G, fontWeight: 800 }}>✓ Goal reached</span>}
+                    {dailyStats.count >= dailyGoal && <span style={{ fontSize: 9, color: G, fontWeight: 800 }}>✓ {journeyMaintenance.list.length === 0 ? "Journey kept sharp" : "Goal reached"}</span>}
                   </div>
                 </>
               )}

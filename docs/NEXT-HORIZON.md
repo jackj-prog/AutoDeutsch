@@ -109,9 +109,13 @@ The journey frame is done; now fill it out. Mostly content lane — but I own co
   streak-freeze machinery pre-existed.)
 - **H4** ✅ depth — all 58 missions multi-scene; early missions to 3 build-sentences; correctness pass.
 
-**Open follow-ons for the returning agent** (none blocking): finish `src/lib/constants.js` + Phase-2 screen
-modularization; unify the mic surfaces into one hook; build-sentences for the remaining B1/B2 missions; a
-native-level German proofread; the small "anytime" list below (Library→Learn rename, P7-deeper, a11y recheck).
+**Open follow-ons for the returning agent** (none blocking; working through them post-horizon):
+- ✅ **P7-deeper (v.37):** the Tutor now bridges chat → a drill on your weak words — a persistent
+  "Practise my N weak words → {preview}" bar above the chat input launches the existing SRS weak-review,
+  and the Tutor system prompt knows it can suggest tapping it.
+- ⬜ finish `src/lib/constants.js` + Phase-2 screen modularization; unify the mic surfaces into one hook;
+  build-sentences for the remaining B1/B2 missions; a native-level German proofread; Library→"Learn" rename;
+  a11y recheck of the new screens.
 
 ---
 

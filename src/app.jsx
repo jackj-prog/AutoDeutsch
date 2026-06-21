@@ -160,7 +160,7 @@ function buildTutorSystem(ctx) {
     `- ${goalLine}${ctx.role ? ` Current stage: ${ctx.role}.` : ""}`,
   ];
   if (ctx.mission) lines.push(`- They're currently working on the real-life scenario: "${ctx.mission}". Offer to role-play it or help build the phrases they'd need.`);
-  if (ctx.weak && ctx.weak.length) lines.push(`- Words they keep getting wrong (weave these in naturally when it fits, don't force them): ${ctx.weak.join(", ")}.`);
+  if (ctx.weak && ctx.weak.length) lines.push(`- Words they keep getting wrong (weave these in naturally when it fits, don't force them): ${ctx.weak.join(", ")}. If they struggle with these, you can suggest they tap the "Practise my weak words" button below the chat to drill them.`);
   lines.push(
     ``,
     `Guidelines:`,
@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.36";
+const APP_VERSION = "2026.06.20.37";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -5159,6 +5159,16 @@ function App() {
                 {tutorBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>Tutor denkt nach…</div>}
                 {tutorError && <div style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{tutorError}</div>}
               </div>
+              {/* P7-deeper: turn the chat into action — jump straight from the Tutor into a drill on the
+                  learner's actual weak words (the same SRS weak-review used on Home). */}
+              {resolvedWeak.total > 0 && (
+                <button type="button" onClick={startWeakReview} aria-label={`Practise my ${resolvedWeak.total} weak words`}
+                  style={{ display: "flex", alignItems: "center", gap: 9, width: "100%", textAlign: "left", background: `${R}12`, border: `1px solid ${R}3D`, borderRadius: 12, padding: "9px 12px", marginBottom: 8, cursor: "pointer", fontFamily: "inherit" }}>
+                  <Icon name="alert" size={15} style={{ color: RT, flexShrink: 0 }} />
+                  <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, fontWeight: 700, color: T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Practise my <span style={{ color: RT }}>{resolvedWeak.total}</span> weak word{resolvedWeak.total === 1 ? "" : "s"}{weakPreview.length ? ` · ${weakPreview.slice(0, 2).join(", ")}…` : ""}</span>
+                  <Icon name="arrowRight" size={15} style={{ color: RT, flexShrink: 0 }} />
+                </button>
+              )}
               <div style={{ display: "flex", gap: 8, paddingTop: 8, borderTop: `1px solid ${B}` }}>
                 <input value={tutorInput} onChange={e => setTutorInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && tutorInput.trim()) sendTutor(); }}
                   placeholder="Schreib auf Deutsch…" autoCapitalize="sentences" className="ad-input"

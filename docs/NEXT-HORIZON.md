@@ -81,16 +81,37 @@ A settling-in app is used over months; today there's no reason to come back tomo
 - *Shipped. (Optional future: a streak-at-risk in-app banner late in the day; fold Due/Weak into the
   maintenance frame.) Deliver: the daily habit reads as keeping your journey alive, and the nudge names it.*
 
-### H4 — Depth & correctness *(make every mission rich and right)* — IN PROGRESS (v.35)
+### H4 — Depth & correctness *(make every mission rich and right)* — ✅ DONE (v.35–36)
 The journey frame is done; now fill it out. Mostly content lane — but I own correctness.
 - **DONE (v.35) — multi-scene coverage complete:** the 24 single-scene missions each got a 2nd dialogue
   (DIALOGUES 128 → 152); **all 58 missions are now 2-scene**. Each new scene advances the scenario to a
   distinct beat (not a repeat), authored at the mission's level (B1/B2) + 2 questions, via the idempotent
   splice tool `scripts/h4-second-scenes.mjs`. Validate OK; 0 single-scene remain.
-- **NEXT (finish H4):** more build-sentences on early A1/A2 missions (only ≥1 guaranteed today); a German +
-  audio correctness spot-check pass over the new dialogues / sentences. Both additive `src/data.js`,
-  validator-checked.
-- *Risk: Low (additive). Deliver: no thin missions; trustworthy German.*
+- **DONE (v.36) — early build-sentences + correctness pass:** the early A2/B1 missions (post, landlord,
+  workhours, sim) brought from 1 → **3 build-sentences** each (SENTENCES 243 → 251, via
+  `scripts/h4-build-sentences.mjs`; the validator caught a global-duplicate sentence — swapped it). Ran a
+  structural correctness check over all 24 new dialogues (6–9 lines, de+en present, 3 opts, correctIdx in
+  range — all clean) and authored the German at level with care.
+- **Honest residue (ongoing content-lane, low-priority):** ~37 mid/late **B1/B2 missions still have a single
+  build-sentence** (functional — the "Build" step is a bonus and works with one); a deeper *native-level*
+  proofread of the new dialogues is worth a content-lane pass. Neither blocks anything.
+- *Deliver: no thin missions (every mission 2-scene), early funnel has 3 buildable sentences, German
+  validated.*
+
+---
+
+## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
+- **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,
+  app.jsx 6655→6520, ordering trap recorded), perf assessed.
+- **H2** ✅ voice-first — speak the J4 roleplay (mic) **and** hear it back (auto-TTS toggle); two-way
+  spoken conversation. (Production-voice intentionally skipped = the existing Speaking drill.)
+- **H3** ✅ retention — journey-aware reminders + daily-loop reframed as journey upkeep. (Reminder +
+  streak-freeze machinery pre-existed.)
+- **H4** ✅ depth — all 58 missions multi-scene; early missions to 3 build-sentences; correctness pass.
+
+**Open follow-ons for the returning agent** (none blocking): finish `src/lib/constants.js` + Phase-2 screen
+modularization; unify the mic surfaces into one hook; build-sentences for the remaining B1/B2 missions; a
+native-level German proofread; the small "anytime" list below (Library→Learn rename, P7-deeper, a11y recheck).
 
 ---
 

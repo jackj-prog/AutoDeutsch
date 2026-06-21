@@ -6203,6 +6203,14 @@ const VERBS = [
 
 // ── SENTENCE DATA ──
 const SENTENCES = [
+  {correct:["Ich","möchte","einen","Prepaid-Tarif"], en:"I'd like a prepaid plan.", rule:"möchte + accusative", level:"B1", mission:"sim"},
+  {correct:["Wie","lange","läuft","der","Vertrag"], en:"How long does the contract run?", rule:"W-question, verb 2nd", level:"B1", mission:"sim"},
+  {correct:["Wann","habe","ich","Feierabend"], en:"When do I finish work?", rule:"W-question, verb 2nd", level:"A2", mission:"workhours"},
+  {correct:["Ich","arbeite","von","neun","bis","fünf"], en:"I work from nine to five.", rule:"von … bis", level:"A2", mission:"workhours"},
+  {correct:["Können","Sie","das","bitte","reparieren"], en:"Can you please repair that?", rule:"modal verb question", level:"A2", mission:"landlord"},
+  {correct:["Der","Aufzug","ist","kaputt"], en:"The lift is broken.", rule:"sein + adjective", level:"A2", mission:"landlord"},
+  {correct:["Wie","viel","kostet","das","Porto"], en:"How much is the postage?", rule:"wie viel + verb", level:"A2", mission:"post"},
+  {correct:["Haben","Sie","einen","Brief","für","mich"], en:"Do you have a letter for me?", rule:"yes/no question, verb first", level:"A2", mission:"post"},
   {correct:["Ich","gehe","morgen","ins","Kino"],en:"I'm going to the cinema tomorrow",rule:"V2: verb in 2nd position",level:"A2"},
   {correct:["Morgen","gehe","ich","ins","Kino"],en:"Tomorrow I'm going to the cinema",rule:"V2: time adverb first → verb stays 2nd, subject moves",level:"A2"},
   {correct:["Er","hat","gestern","viel","gelernt"],en:"He learned a lot yesterday",rule:"Perfekt: auxiliary 2nd, participle at end",level:"A2"},

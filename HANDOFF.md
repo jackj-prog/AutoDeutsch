@@ -17,12 +17,12 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.35`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.36`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
   SRI hashes, and bumps the service-worker cache. **Never hand-edit app.js / built data.js / SRI / cache.**
-- Content totals (last validate): 5,782 vocab · 229 cloze · 92 verbs · 243 sentences · **152 dialogues** ·
+- Content totals (last validate): 5,782 vocab · 229 cloze · 92 verbs · 251 sentences · **152 dialogues** ·
   87 imperatives · 58 missions · 40 confusion-pairs · 24 exam-sets · 40 placement-items · 58 mission-vocab. (All 58 missions are now multi-scene.)
 
 ## What the app is (one paragraph)
@@ -35,10 +35,14 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.36** H4 (finish) — **HORIZON H1–H4 COMPLETE**: early A2/B1 missions (post/landlord/workhours/sim) → 3
+  build-sentences each (SENTENCES 243→251); validator caught + I fixed a global-duplicate sentence; structural
+  correctness check over all 24 new dialogues = clean. See `docs/NEXT-HORIZON.md` "Horizon status" for the
+  full H1–H4 summary + non-blocking follow-ons (constants.js + screen modularization, mic-unify, remaining
+  B1/B2 build-sentences, native German proofread, Library→Learn, P7-deeper, a11y recheck).
 - **v.35** H4 (content depth): **every mission is now multi-scene** — the 24 single-scene missions each got a
   2nd dialogue (DIALOGUES 128→152), each advancing the scenario to a new beat, authored at B1/B2 + 2 questions.
-  Idempotent splice tool `scripts/h4-second-scenes.mjs`. Validate OK; all 58 missions multi-scene. (H4's main
-  remaining items: a few more early-mission build-sentences + a German correctness audit.)
+  Idempotent splice tool `scripts/h4-second-scenes.mjs`. Validate OK; all 58 missions multi-scene.
 - **v.34** H3 step 2 / **P3b — H3 COMPLETE**: home "Today" panel reframed as **journey upkeep** (subtitle
   "Keep your journey sharp — {N} scenarios need a refresh" / "A few minutes keeps your earned scenarios
   sharp"; goal-reached caption → "✓ Journey kept sharp"). Card-count mechanic untouched. Retention horizon

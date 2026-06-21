@@ -35,6 +35,9 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.22** Seamless journey playthrough: finishing a mission step returns to the mission ("Continue
+  mission →"), not Home. Results screen is mission-aware via `missionReturnRef` + `returnToMission`
+  (which trims dead session/results frames from the back-stack).
 - **v.21** Back-navigation now follows history (a real back-stack), instead of every Back button
   hard-coding Home/scenarios — being "three clicks deep" and pressing Back returns to the previous
   screen, not Home. (`goBack`/`goRoot` near the `screen` state in app.jsx.)

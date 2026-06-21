@@ -705,7 +705,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.21";
+const APP_VERSION = "2026.06.20.22";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1123,6 +1123,17 @@ function App() {
     navInternalRef.current = true;
     navHistRef.current = [];
     setScreen(id);
+  }, []);
+  // Return to a mission from a finished step's results — seamless journey playthrough (don't dump
+  // to Home). Trims the dead session/results frames so Back from the mission still goes to where
+  // the mission was opened from (scenarios / Library).
+  const returnToMission = useCallback((id) => {
+    navInternalRef.current = true;
+    const h = navHistRef.current;
+    const mi = h.lastIndexOf("mission");
+    navHistRef.current = mi >= 0 ? h.slice(0, mi) : h;
+    setActiveMission(id);
+    setScreen("mission");
   }, []);
   // Milestone celebrations (streak / goal / chapter / rank-up) are held in this queue while
   // the player is in a session and only played once they're back on the calm home screen, so
@@ -6180,7 +6191,12 @@ function App() {
             </div>}
 
             <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 10, paddingTop: 10 }}>
-              {failed.length > 0 ? <>
+              {missionReturnRef.current ? <>
+                {/* Session launched from a mission step → keep the journey playthrough seamless:
+                    return to the mission (step now ✓, next step ready), don't bounce to Home. */}
+                <Btn bg={A} color="#0A0A0A" onClick={() => returnToMission(missionReturnRef.current.id)} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Continue mission →</Btn>
+                {failed.length > 0 && <Btn bg={SH} border={`1px solid ${B}`} onClick={startRepeat} style={{ fontWeight: 600, fontSize: 13 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>}
+              </> : failed.length > 0 ? <>
                 <Btn bg={R} color="#FFF" onClick={startRepeat} style={{ fontFamily: FN, fontSize: 15, fontWeight: 800 }}>Repeat {failed.length} Failed Card{failed.length !== 1 ? "s" : ""}</Btn>
                 <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setScreen("home")} style={{ fontWeight: 600 }}>Back to home</Btn>
               </> : <>

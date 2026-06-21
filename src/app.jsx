@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.31";
+const APP_VERSION = "2026.06.20.32";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1089,6 +1089,8 @@ function App() {
   // H2 — voice for the roleplay: its own mic (the Speaking-mode mic auto-stops on the cards screen).
   const [rpListening, setRpListening] = useState(false);
   const rpRecogRef = useRef(null);
+  // H2 — two-way voice: when on, the other person's German lines auto-play (TTS). Persisted.
+  const [rpVoice, setRpVoice] = useState(() => { try { return localStorage.getItem("ad-rp-voice") !== "0"; } catch (e) { return true; } });
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -2019,6 +2021,7 @@ function App() {
     try {
       const opener = await callRoleplay([{ role: "user", text: "__BEGIN__" }], m, false);
       setRpMsgs([{ role: "assistant", text: opener || "Hallo!" }]);
+      if (rpVoice && opener) speak(opener); // H2: the other person greets you out loud
     } catch (e) {
       setRpError(e.message || "Couldn't start the roleplay. Check your connection.");
     } finally { setRpBusy(false); }
@@ -2032,6 +2035,7 @@ function App() {
     try {
       const reply = await callRoleplay(next, rpMission, false);
       setRpMsgs([...next, { role: "assistant", text: reply || "…" }]);
+      if (rpVoice && reply) speak(reply); // H2: hear the other person's reply
     } catch (e) {
       setRpError(e.message || "Request failed. Check your connection.");
     } finally { setRpBusy(false); }
@@ -2068,6 +2072,7 @@ function App() {
   };
   const rpStartListening = () => {
     if (rpBusy || rpVerdict || !SPEECH_REC_CTOR || rpRecogRef.current) return;
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} // don't record the TTS reply
     setRpError("");
     let rec;
     try { rec = new SPEECH_REC_CTOR(); } catch (e) { setRpError("Mic unavailable"); return; }
@@ -2083,7 +2088,7 @@ function App() {
     try { rec.start(); setRpListening(true); } catch (e) { rpRecogRef.current = null; setRpError("Couldn't start mic"); }
   };
   // Stop the roleplay mic whenever we leave the roleplay screen (and on unmount).
-  useEffect(() => { if (screen !== "roleplay" && rpRecogRef.current) rpStopListening(); }, [screen]);
+  useEffect(() => { if (screen !== "roleplay") { if (rpRecogRef.current) rpStopListening(); try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} } }, [screen]);
 
   // "Why?" bridge: jump from an answered card into the Tutor with a prepared question,
   // and remember where to return so Back resumes the session.
@@ -5162,7 +5167,12 @@ function App() {
             <div style={{ paddingTop: "max(12px, env(safe-area-inset-top))", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
               <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={14} /> Mission</button>
               <div style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T }}>Do it for real</div>
-              <span style={{ width: 76 }} />
+              {aiKey ? (
+                <button type="button" aria-pressed={rpVoice} aria-label={rpVoice ? "Voice replies on" : "Voice replies off"} onClick={() => { const v = !rpVoice; setRpVoice(v); try { localStorage.setItem("ad-rp-voice", v ? "1" : "0"); } catch (e) {} }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 5, background: rpVoice ? `${A}14` : "transparent", border: `1px solid ${rpVoice ? `${A}55` : B}`, borderRadius: 999, color: rpVoice ? A : TD, fontSize: 10.5, fontWeight: 800, cursor: "pointer", padding: "6px 11px" }}>
+                  <Icon name="volume" size={13} /> {rpVoice ? "Voice" : "Muted"}
+                </button>
+              ) : <span style={{ width: 76 }} />}
             </div>
             <div style={{ background: "linear-gradient(135deg, #1A170B 0%, #0E0E0E 70%)", border: `1px solid ${A}44`, borderRadius: 14, padding: "12px 14px", marginBottom: 12 }}>
               <div style={{ fontSize: 9.5, color: A, fontWeight: 900, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3 }}>{arc ? arc.title : "Roleplay"} · {m.level}</div>

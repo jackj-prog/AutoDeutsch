@@ -52,11 +52,15 @@ Settling-in German is a **spoken** skill. The engine exists; it's just not where
   while listening; mic stops on send + on leaving the screen. iOS / no-ASR → mic hidden, placeholder reverts
   to type-only (graceful, same as Speaking mode). Verified via harness `roleplayvoice` (stubs
   `window.SpeechRecognition`); verdict path unaffected; 320px clean.
-- **NEXT (continue H2):** spoken answers in **Production** (mic toggle, reuse the recogniser); **unify** the
-  mic UX + iOS shadowing fallback into one component so Speaking / roleplay / production behave identically;
-  tidy TTS output (voice pick, rate).
-- *Risk: Med (browser ASR is inconsistent; iOS Safari has no SpeechRecognition). Every path needs the
-  graceful type/shadow fallback. Deliver: you can hold the café/clerk conversation out loud.*
+- **DONE (v.32) — two-way voice (hear the other person back):** a persisted **"Voice"** toggle in the
+  roleplay header (default on) auto-plays the other person's German lines via TTS — opener + every reply —
+  so it's a real spoken back-and-forth, not just spoken input. Starting the mic cancels any playing TTS (so
+  it isn't recorded); TTS also stops on leaving the screen. Verified via `roleplayvoice`; 320px clean.
+- **H2 essentially complete.** Deliberately **skipped "spoken Production answers"** — that already exists as
+  the dedicated **Speaking** drill mode (English prompt → say the German, ASR-graded); adding it to Production
+  would just duplicate it. **Deferred (small, low-value):** unify the three mic surfaces (Speaking / roleplay)
+  into one `useSpeechInput` hook — fits the **modularization** lane (H1), not a user-facing item. TTS already
+  has voice-pick + rate. *Net: you can now hold the café/clerk conversation entirely out loud.*
 
 ### H3 — The return loop: retention & re-engagement *(turn a one-time journey into a daily habit)*
 A settling-in app is used over months; today there's no reason to come back tomorrow.

@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.31`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.32`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,10 +35,13 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.32** H2 step 2 (voice): **two-way spoken roleplay** — a persisted "Voice" toggle (default on) auto-plays
+  the other person's German lines (opener + replies); mic cancels TTS so it isn't recorded; TTS stops on leave.
+  **H2 essentially complete** (you can hold the scenario out loud). Skipped Production-voice (= the existing
+  Speaking drill); mic-unify deferred to the modularization lane.
 - **v.31** H2 step 1 (voice): the **J4 roleplay can now be spoken** — a mic button in the input row wires the
   existing `SpeechRecognition` (de-DE) into the chat (own recogniser `rpListening`/`rpRecogRef`; interim
   transcript → input → review → send; mic stops on send/leave). iOS/no-ASR → mic hidden, type-only (graceful).
-  Harness `roleplayvoice`. Next H2: spoken Production + a unified mic component.
 - **v.30** H1 step 2 (modularization): icon system (~135 lines) → `src/components/icons.jsx`; app.jsx
   6655→6520. Recorded the **alphabetical-sort ordering trap** for `src/lib/` files (`MODULARIZATION-PLAN.md`
   §0c). Next: `src/lib/constants.js` with PAL-independent constants only.

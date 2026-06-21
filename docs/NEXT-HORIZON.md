@@ -44,14 +44,17 @@ Six features shipped fast onto a 6.65k-line monolith. Pay it down before buildin
 - *Risk: Low-Med (refactor). Mitigated by the byte-identical build + the audit harness. Deliver: a clean,
   audited, faster, navigable base — also a gift to the agent who inherits the file.*
 
-### H2 — Voice-first: speak the journey *(the biggest user-value leap; extends J4)*
+### H2 — Voice-first: speak the journey *(the biggest user-value leap; extends J4)* — IN PROGRESS (v.31)
 Settling-in German is a **spoken** skill. The engine exists; it's just not where it matters most.
-- **Speak your roleplay turn (J4):** wire the existing `SpeechRecognition` into the "Do it for real"
-  chat — tap-to-talk, transcribe into the input, send. The roleplay becomes a real *spoken* conversation,
-  not typing. iOS → keep the type fallback (already the no-ASR path elsewhere).
-- **Spoken answers in Production** (optional, behind a mic toggle), reusing the Speaking-mode recogniser.
-- **Unify the mic UX + iOS shadowing fallback** into one component so Speaking / roleplay / production
-  behave identically; tidy TTS output (voice pick, rate) while there.
+- **DONE (v.31) — speak your roleplay turn (J4):** wired the existing `SpeechRecognition` into the "Do it
+  for real" chat. A gold **mic button** in the input row (its own recogniser — `rpListening`/`rpRecogRef`,
+  de-DE, interim results stream live into the input so the learner reviews/edits before sending); red halo
+  while listening; mic stops on send + on leaving the screen. iOS / no-ASR → mic hidden, placeholder reverts
+  to type-only (graceful, same as Speaking mode). Verified via harness `roleplayvoice` (stubs
+  `window.SpeechRecognition`); verdict path unaffected; 320px clean.
+- **NEXT (continue H2):** spoken answers in **Production** (mic toggle, reuse the recogniser); **unify** the
+  mic UX + iOS shadowing fallback into one component so Speaking / roleplay / production behave identically;
+  tidy TTS output (voice pick, rate).
 - *Risk: Med (browser ASR is inconsistent; iOS Safari has no SpeechRecognition). Every path needs the
   graceful type/shadow fallback. Deliver: you can hold the café/clerk conversation out loud.*
 

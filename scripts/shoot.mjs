@@ -249,15 +249,17 @@ async function gotoScreen(page, screen) {
     await clickText(page, "Do it for real"); await new Promise(r => setTimeout(r, 450));
     return;
   }
-  if (screen === "roleplaychat") {
+  if (screen === "roleplaychat" || screen === "roleplayvoice") {
     // J4 live path: fake key + mocked Anthropic endpoint (see run()). Open the roleplay (opener
-    // bubble arrives), say a line, then Finish to render the graded verdict.
+    // bubble arrives), say a line, send. `roleplaychat` then Finishes (verdict); `roleplayvoice`
+    // (H2) stays on the chat so the input row shows the mic button (SpeechRecognition is stubbed
+    // in run() so the voice affordance renders headless).
     await clickText(page, "All scenarios →"); await new Promise(r => setTimeout(r, 350));
     await clickText(page, "Order at a café or bakery"); await new Promise(r => setTimeout(r, 350));
     await clickText(page, "Do it for real"); await new Promise(r => setTimeout(r, 700));
     await page.type(".ad-input", "Ich möchte bitte einen Kaffee und ein Stück Kuchen.");
     await clickText(page, "→"); await new Promise(r => setTimeout(r, 700));
-    await clickText(page, "Finish"); await new Promise(r => setTimeout(r, 800));
+    if (screen === "roleplaychat") { await clickText(page, "Finish"); await new Promise(r => setTimeout(r, 800)); }
     return;
   }
   if (screen === "longword" || screen === "longprompt") {
@@ -728,7 +730,7 @@ async function run() {
       await page.setViewport({ width: +(process.env.SHOOT_WIDTH || 390), height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
       // J4: mock the Anthropic endpoint so the live roleplay renders without a real key/network.
       // Returns an in-character German line, or a formatted VERDICT when the scene is graded.
-      if (screen === "roleplaychat") {
+      if (screen === "roleplaychat" || screen === "roleplayvoice") {
         await page.setRequestInterception(true);
         page.on("request", req => {
           if (req.url().includes("api.anthropic.com")) {
@@ -749,7 +751,10 @@ async function run() {
       // "rankup" seeds itself post-load (it needs the vocab list V, unavailable pre-load) and
       // reloads — so it must NOT register the seedState clobber, which would wipe it on reload.
       if (screen !== "rankup" && screen !== "progmax" && screen !== "maintenance" && screen !== "longword" && screen !== "longprompt")
-        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
+        await page.evaluateOnNewDocument(seedState, { persona: screen === "onboarding" ? "onboarding" : PERSONA, mode: process.env.SHOOT_MODE || "", near: screen === "goal", streakReady: screen === "streak", freezeMiss: screen === "freezeused", mastery: screen === "mastery" || screen === "masteryresult", correctFast: screen === "correct" || screen === "capital", eszett: screen === "eszett", level: process.env.SHOOT_LEVEL || "", training: process.env.SHOOT_TRAINING === "1", missionReady: screen === "skillunlock" || screen === "statusup", arcReady: screen === "arccomplete", journeyMid: screen === "journeypath", roleplayKey: screen === "roleplaychat" || screen === "roleplayvoice", tutorChat: screen === "tutorchat" || screen === "tutorstart", tutorChatEmpty: screen === "tutorstart" });
+      // H2: stub Web Speech recognition (absent in headless) so the roleplay mic button renders.
+      if (screen === "roleplayvoice")
+        await page.evaluateOnNewDocument(() => { window.SpeechRecognition = class { start() {} stop() {} }; });
       if (process.env.SHOOT_AUTOADV === "0") await page.evaluateOnNewDocument(() => { try { localStorage.setItem("gfc-autoadv-v1", "0"); } catch (e) {} });
       await page.goto("file://" + HARNESS, { waitUntil: "load" });
       await page.waitForFunction(() => document.getElementById("root")?.childElementCount > 0, { timeout: 15000 });

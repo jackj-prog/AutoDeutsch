@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.30";
+const APP_VERSION = "2026.06.20.31";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -1086,6 +1086,9 @@ function App() {
   const [rpBusy, setRpBusy] = useState(false);
   const [rpError, setRpError] = useState("");
   const [rpVerdict, setRpVerdict] = useState(null);  // {verdict, well, improve} once graded
+  // H2 — voice for the roleplay: its own mic (the Speaking-mode mic auto-stops on the cards screen).
+  const [rpListening, setRpListening] = useState(false);
+  const rpRecogRef = useRef(null);
   const [showEx, setShowEx] = useState(false);
   const [showHint, setShowHint] = useState(false); // NEW: mnemonic hint toggle
   const [vis, setVis] = useState(true);
@@ -2023,6 +2026,7 @@ function App() {
   const sendRoleplay = async (text) => {
     const body = (text || rpInput).trim();
     if (!body || rpBusy || rpVerdict || !aiKey || !rpMission) return;
+    if (rpRecogRef.current) rpStopListening();
     const next = [...rpMsgs, { role: "user", text: body }];
     setRpMsgs(next); setRpInput(""); setRpBusy(true); setRpError("");
     try {
@@ -2054,6 +2058,32 @@ function App() {
     if (ok) { markMissionStep(rpMission.id, "roleplayed"); setRpVerdict({ verdict: "Self-checked", well: "", improve: "", self: true }); }
     else { goBack(); }
   };
+  // H2 — speak your roleplay turn. Reuses the Web Speech recogniser (de-DE); the final transcript
+  // lands in the input so the learner can glance/fix before sending (ASR isn't perfect). iOS Safari
+  // has no SpeechRecognition → the mic button is hidden and they type, exactly as elsewhere.
+  const rpStopListening = () => {
+    const r = rpRecogRef.current; rpRecogRef.current = null;
+    if (r) { try { r.onresult = r.onerror = r.onend = null; r.stop(); } catch (e) {} }
+    setRpListening(false);
+  };
+  const rpStartListening = () => {
+    if (rpBusy || rpVerdict || !SPEECH_REC_CTOR || rpRecogRef.current) return;
+    setRpError("");
+    let rec;
+    try { rec = new SPEECH_REC_CTOR(); } catch (e) { setRpError("Mic unavailable"); return; }
+    rec.lang = "de-DE"; rec.interimResults = true; rec.maxAlternatives = 1; rec.continuous = false;
+    rec.onresult = (ev) => {
+      let txt = "";
+      for (let i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+      setRpInput(txt.trim()); // live interim + final; learner reviews, then taps send
+    };
+    rec.onerror = (ev) => { setRpError(ev.error === "not-allowed" ? "Mic blocked — allow access" : "Didn't catch that"); rpStopListening(); };
+    rec.onend = () => { if (rpRecogRef.current) setRpListening(false); };
+    rpRecogRef.current = rec;
+    try { rec.start(); setRpListening(true); } catch (e) { rpRecogRef.current = null; setRpError("Couldn't start mic"); }
+  };
+  // Stop the roleplay mic whenever we leave the roleplay screen (and on unmount).
+  useEffect(() => { if (screen !== "roleplay" && rpRecogRef.current) rpStopListening(); }, [screen]);
 
   // "Why?" bridge: jump from an answered card into the Tutor with a prepared question,
   // and remember where to return so Back resumes the session.
@@ -5213,9 +5243,15 @@ function App() {
                 {!rpVerdict && (
                   <div style={{ paddingTop: 8, borderTop: `1px solid ${B}` }}>
                     <div style={{ display: "flex", gap: 8 }}>
+                      {SPEECH_REC_CTOR && (
+                        <button type="button" onClick={rpListening ? rpStopListening : rpStartListening} aria-label={rpListening ? "Stop speaking" : "Speak your answer"}
+                          style={{ flexShrink: 0, width: 48, borderRadius: 12, border: `1px solid ${rpListening ? R : `${A}55`}`, background: rpListening ? `${R}1A` : `${A}10`, color: rpListening ? R : A, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: rpListening ? `0 0 0 4px ${R}14` : "none", transition: "box-shadow .2s" }}>
+                          <Icon name="mic" size={18} />
+                        </button>
+                      )}
                       <input value={rpInput} onChange={e => setRpInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && rpInput.trim()) sendRoleplay(); }}
-                        placeholder="Antworte auf Deutsch…" autoCapitalize="sentences" className="ad-input"
-                        style={{ flex: 1, padding: "13px 16px", borderRadius: 12, border: `1px solid ${B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
+                        placeholder={rpListening ? "Sprich…" : SPEECH_REC_CTOR ? "Sprich oder tippe…" : "Antworte auf Deutsch…"} autoCapitalize="sentences" className="ad-input"
+                        style={{ flex: 1, minWidth: 0, padding: "13px 16px", borderRadius: 12, border: `1px solid ${rpListening ? R : B}`, background: SH, color: T, fontSize: 16, fontFamily: BD, outline: "none" }} />
                       <Btn bg={A} color="#0A0A0A" ariaLabel="Send" onClick={() => sendRoleplay()} style={{ width: "auto", padding: "13px 18px", opacity: rpBusy ? 0.5 : 1 }}>→</Btn>
                     </div>
                     <button type="button" onClick={finishRoleplay} disabled={rpBusy} style={{ width: "100%", marginTop: 8, background: "transparent", border: `1px solid ${G}55`, borderRadius: 12, color: G, fontSize: 13, fontWeight: 800, cursor: "pointer", padding: "11px", opacity: rpBusy ? 0.5 : 1, fontFamily: "inherit" }}>Finish &amp; see how I did →</button>

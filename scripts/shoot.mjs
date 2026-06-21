@@ -776,6 +776,16 @@ async function run() {
         console.log(`OVERFLOW @${report.vw}px (docScrollWidth=${report.docScroll}):`);
         report.items.forEach(i => console.log("  " + i));
       }
+      // SHOOT_SCROLL=bottom scrolls the tallest internal scroll container to its end before the
+      // shot — for tall overlays (e.g. the Settings modal) whose content sits below the fold.
+      if (process.env.SHOOT_SCROLL === "bottom") {
+        await page.evaluate(() => {
+          const els = [...document.querySelectorAll("*")].filter(e => e.scrollHeight > e.clientHeight + 20 && getComputedStyle(e).overflowY !== "visible");
+          els.sort((a, b) => b.scrollHeight - a.scrollHeight);
+          if (els[0]) els[0].scrollTop = els[0].scrollHeight;
+        });
+        await new Promise(r => setTimeout(r, 350));
+      }
       const file = path.join(OUT, `${screen}.png`);
       // SHOOT_FULL=0 captures just the viewport (shows fixed elements — e.g. bottom nav —
       // in their real pinned position, which fullPage screenshots misplace).

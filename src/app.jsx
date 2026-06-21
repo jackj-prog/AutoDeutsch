@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.37";
+const APP_VERSION = "2026.06.20.38";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -4504,6 +4504,27 @@ function App() {
           <div style={{ marginTop: 18, padding: "10px 12px", background: "#0A0A0A66", borderRadius: 8, fontSize: 11, color: TD, lineHeight: 1.5, borderLeft: `3px solid ${BL}` }}>
             <strong style={{ color: T }}>Current state</strong><br />
             {Object.keys(prog).length} entries · {totalL} mastered · {dailyStats.streak}-day streak
+          </div>
+
+          {/* Commercial-grade trust signalling: the app's local-first, no-tracking, BYO-key architecture
+              is a genuine selling point — surface it plainly so users know exactly where their data lives. */}
+          <h3 style={{ fontFamily: FN, fontSize: 16, margin: "22px 0 10px", fontWeight: 700 }}>About &amp; Privacy</h3>
+          <div style={{ fontSize: 11.5, color: TD, lineHeight: 1.6, marginBottom: 14 }}>
+            <p style={{ margin: "0 0 12px" }}>AutoDeutsch is a guided journey for people <strong style={{ color: T }}>settling into life in a German-speaking country</strong> — real-world scenarios, spaced-repetition practice, and a roleplay you can speak out loud.</p>
+            <div style={{ padding: "11px 13px", background: "#0A0A0A66", borderRadius: 10, borderLeft: `3px solid ${G}` }}>
+              <div style={{ color: T, fontWeight: 800, fontSize: 12, marginBottom: 7, display: "flex", alignItems: "center", gap: 6 }}><Icon name="check" size={14} style={{ color: G }} /> Your data stays yours</div>
+              {[
+                "Your progress, streak and settings live only in this browser — no account, no sign-up.",
+                "No tracking, no ads, no analytics. We run no servers; nothing you do is sent to us.",
+                "The optional AI Tutor uses your own Anthropic key (kept on this device); those messages go straight to Anthropic and nowhere else.",
+                "Back up any time with Export above — clearing your browser data erases everything.",
+              ].map((t, i) => (
+                <div key={i} style={{ display: "flex", gap: 7, marginBottom: i < 3 ? 6 : 0 }}>
+                  <span style={{ color: G, flexShrink: 0 }}>·</span><span>{t}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 12, fontSize: 10.5, color: TD, opacity: 0.85 }}>Build <span style={{ fontFamily: "monospace", color: A }}>{APP_VERSION}</span> · works offline once loaded · installable to your home screen.</div>
           </div>
 
           <Btn bg={SH} border={`1px solid ${B}`} onClick={() => setShowSettings(false)} style={{ marginTop: 18, fontSize: 14 }}>Close</Btn>

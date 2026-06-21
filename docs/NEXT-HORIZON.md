@@ -100,6 +100,21 @@ The journey frame is done; now fill it out. Mostly content lane — but I own co
 
 ---
 
+## Commercial-grade track (C-series) — IN PROGRESS
+New steering mandate (post-horizon): *iteratively make the app commercial-grade.* Working the gaps that
+separate "impressive project" from "shippable product" — trust, robustness, polish, correctness, first-run.
+Found already-solid foundations: file **export/import** of progress exists, a **daily localStorage backup**
++ corruption-restore exists, **RootErrorBoundary**, SW update flow, storage-unavailable warning, a11y pass
+(v.14), PWA install. So C-work is filling real gaps, not rebuilding.
+- **C1 ✅ (v.38) — trust: About & Privacy.** Added an **About & Privacy** section to Settings that states
+  plainly what the app is and that **data stays on-device** (no account, no tracking/ads/analytics, no
+  servers; the AI key is local and talks only to Anthropic; back up via Export). Surfaces the local-first
+  architecture as the selling point it is. Harness: `SHOOT_SCROLL=bottom` (new) to capture tall modals.
+- **C-backlog (candidate next, highest-value first):** first-run value-prop polish (does a new visitor
+  instantly get it?); a friendly **error-state/empty-state** sweep; **native German proofread** of content
+  (a language app's credibility); micro-polish consistency; Library→"Learn" rename; remaining a11y on new
+  screens. Plus the modularization/mic-unify internal items.
+
 ## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
 - **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,
   app.jsx 6655→6520, ordering trap recorded), perf assessed.

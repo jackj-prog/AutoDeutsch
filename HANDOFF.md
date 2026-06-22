@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.49`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.50`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,10 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.50** VJ6 (journey path resolved): the path is now a **premium centered timeline** — a glowing central
+  spine of glossy stones with each scenario named in cards alternating left/right (every scenario visible, no
+  text/trail overlap). Current card accent-bordered; spine draws to your position on open. (Settles the
+  names-vs-clean question from VJ3.)
 - **v.49** VJ5 (journey consistency): the **Library** no longer re-lists 7 flat arc cards — a single
   "Your journey map · {done}/58 · {role}" entry routes to the real Scenarios map. Journey rendered premium
   in ONE place; Library cleanly splits journey (continue + map link) from dictionary.

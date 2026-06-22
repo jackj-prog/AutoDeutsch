@@ -8,13 +8,17 @@ commit. It should never be more than one session stale.
 
 ---
 
-## Operating mode (read this)
-- **2026-06-20 → ~2026-06-27: single agent (Claude, app.jsx owner) is driving BOTH lanes** (app +
-  content/tooling/docs). The second agent is away this week, then **takes over full operation**.
-- Because it returns to drive everything, the bar for recording is: *anyone could resume from these
-  docs alone.* No silent changes. Every ship = a CHANGELOG entry; every state change = a HANDOFF edit.
-- The parallel-work protocol in `AGENTS.md` still stands for when two agents overlap again. While solo,
-  the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
+## Operating mode (read this) — ⇨ HANDOFF IN EFFECT (you are now driving)
+- **You are now driving full operation.** The previous agent drove both lanes (app + content/tooling/docs)
+  2026-06-20 → 06-22 and handed off here. **This file is the single source of truth — resume from these docs;
+  assume zero memory of the work.**
+- **Repo state at handoff: clean & green.** Working tree empty · `HEAD` = `origin/main` · `npm run validate`
+  → "OK — no errors" · `npm test` → 26/26 · `node build-static.mjs` reproduces the committed build (a rebuild
+  leaves the tree clean). Live build **`2026.06.20.50`**.
+- **Recording discipline still applies** (`AGENTS.md`): every ship → a `CHANGELOG.md` entry; every state
+  change → a `HANDOFF.md` edit, in the **same commit**. No silent changes. Deploy steps in "Quick reference".
+- The two-agent parallel protocol in `AGENTS.md` only matters if a second agent rejoins; while solo it's a
+  formality, but keep logging as if handing off.
 
 ## Current deployed state
 - **Live build: `2026.06.20.50`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
@@ -27,12 +31,29 @@ commit. It should never be more than one session stale.
 
 ## What the app is (one paragraph)
 A German trainer for people **settling in a German-speaking country**. The spine is a **journey**: 7
-mission arcs (Touchdown → … → Belonging) × 58 missions, each a real-life scenario. A mission teaches its
-**exact words** (MISSION_VOCAB) → plays them in a **scene** (dialogues) → tests them in **questions** →
-produces them as **sentences** (build-the-sentence bonus). Around that: SRS recall/production/typed
-drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **placement test** (P5), a
-**capability/CEFR** Progress screen, an **AI Tutor** (BYO-key, now context-aware), and a **Library** that
-opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
+mission arcs (Touchdown → … → Belonging) × 58 missions, each a real-life scenario, shown as a **premium
+"map" — a centered timeline of glossy stepping-stones** (see "Journey map architecture" below). A mission
+teaches its **exact words** (MISSION_VOCAB) → plays them in a **scene** (dialogues, now 2 per mission) →
+tests them in **questions** → produces them as **sentences** (build) → **"Do it for real"** roleplay where
+the AI plays the other party (speak it out loud). Around that: SRS recall/production/typed drills
+(article/plural/cloze/verb/imperative/listening/confusion/exam), a **placement test** (P5), a
+**capability/CEFR** Progress screen, an **AI Tutor** (BYO-key, context-aware, can launch weak-word drills),
+and a **Library** that links to the journey map + a 36-category "Dictionary" reference. PWA: offline,
+installable, local-only (no account/tracking/servers).
+
+## Journey map architecture (recent heavy churn — orient here before touching the journey)
+- The journey's premium UI lives in **one place**: the `screen === "scenarios"` block in `src/app.jsx`
+  (search `Your journey`). It renders: an **overview** (progress `Ring` + a 7-arc **route strip**), foldable
+  **chapters** (per-arc accent from module-scope **`ARC_ACCENT`** + a progress `Ring`; only the active arc
+  open by default via `arcOpen`), and the open chapter's **centered timeline** — a central spine of glossy
+  stepping-stones (current enlarged + pulsing; done = green ✓; upcoming numbered) with each scenario named in
+  a **card alternating left/right of the spine** (every scenario visible, nothing crosses the spine).
+- Animations: **`ad-spine-fill`** (green spine draws to your position), **`ad-node-in`** (stones stagger in) —
+  both in the `prefers-reduced-motion` disable list. Accent wash behind the open path.
+- **Mission detail** (`screen === "mission"`) wears the same chapter accent chip. **Library** links to the map
+  (no duplicate arc list). Harness: `scenarios` (fresh) / `journeypath` (mid-journey, `journeyMid` seed).
+- Design history is **VJ1→VJ6** in CHANGELOG; **v.50 / VJ6 is the settled version** — the names-vs-clean
+  question was resolved (named timeline). Don't re-litigate it without a user steer.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
 - **v.50** VJ6 (journey path resolved): the path is now a **premium centered timeline** — a glowing central
@@ -162,26 +183,37 @@ opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" 
   verb cap 30→92, empty-pool guard).
 - **v.13** Articles/Plural tiles drill the right mode; 320px typed-drill submit-button overflow.
 
-## In flight / partially done
-- **Nothing half-built right now.** The repo is clean at the latest commit. The **J1–J6 journey
-  build-out is complete on the app side** (v.23–28; full plan + status in `docs/JOURNEY-ROADMAP.md`).
-  (If you pause mid-task, record it HERE with the file + line + what's left.)
+## What's DONE (so you don't redo it) — the big arcs are all shipped
+- **J1–J6 journey build-out** ✅ (v.23–28): journey-first Home, arc-as-chapter celebration, felt path,
+  roleplay climax, unified progression, personalization. (`docs/JOURNEY-ROADMAP.md`.)
+- **H1–H4 "Next Horizon"** ✅ (v.29–36): H1 stabilize & sharpen (regression sweep, modularization started,
+  perf), H2 voice-first (speak + hear the roleplay), H3 retention (journey-aware reminders + daily reframe),
+  H4 depth (all 58 missions multi-scene; early build-sentences). (`docs/NEXT-HORIZON.md`.)
+- **P7-deeper** ✅ (v.37): the Tutor launches a drill on your weak words.
+- **C1–C7 commercial-grade** ✅ (v.38–44): About&Privacy (trust) · German proofread (2 real fixes) ·
+  first-run value pitch · graceful offline AI · Open Graph/share cards · a11y status announcements ·
+  PWA install prompt. (`docs/NEXT-HORIZON.md` C-series.)
+- **VJ1–VJ6 journey visual redesign** ✅ (v.45–50): the Scenarios map (centered timeline) — see "Journey
+  map architecture" above. This was the last thing shipped (user-steered: "make it premium").
 
-## Open hand-offs & next candidates (pick from here)
-- **▶ THE PLAN — `docs/NEXT-HORIZON.md`** (set by the steering agent after J1–J6): **H1** stabilize &
-  sharpen (regression sweep + begin modularization + perf) → **H2** voice-first (speak the J4 roleplay /
-  production; unify mic UX) → **H3** retention (re-engagement/notifications within PWA limits, streak
-  safety, P3b) → **H4** depth & correctness. Start at H1 unless told otherwise.
-- **★ Journey content depth (content lane, no app change) — the main remaining journey item:** finish
-  **multi-scene coverage** for the ~24 single-scene missions (each gets a 2nd dialogue so the "Listen"
-  step is 2 scenes — same pattern as the 6 already added; append the title to the mission's `dialogues`
-  array or it won't wire). Plus 2–3 build-sentences on early A1/A2 missions (only ≥1 guaranteed today).
-  All additive `src/data.js` + validator-checked. The app already renders whatever's there.
-- **ROADMAP open items:** P3b (daily-goal reframe). P7 deeper (Tutor launches a drill on your weak words
-  from chat) — spec in `docs/P7-tutor-context-spec.md` §out-of-scope. Library tab rename ("Library"→"Learn")
-  noted in `docs/P6-curriculum-spec.md`.
-- **Maintainability:** `src/app.jsx` is large; `docs/MODULARIZATION-PLAN.md` has a verified, byte-identical
-  split path (build already concatenates `src/lib/`,`src/components/`,`src/screens/`).
+## In flight / partially done
+- **Nothing half-built.** Working tree clean at v.50.
+- **One deliberately-paused partial — the `src/app.jsx` modularization** (`docs/MODULARIZATION-PLAN.md`):
+  done so far = `PAL` → `src/lib/palette.js` and the icon system → `src/components/icons.jsx`. The next step
+  is mechanical and the pattern is proven: `src/lib/constants.js` with **PAL-independent constants only**
+  (mind the alphabetical-sort ordering trap, §0c), then Phase 2 (Context + per-screen files) as its own
+  session. Low urgency; `app.jsx` is ~6.5k lines and works fine.
+
+## Open hand-offs & next candidates (none blocking — pick by value)
+- **Content (additive `src/data.js`, validator-checked):** more **build-sentences** for the ~37 mid/late
+  B1/B2 missions still at 1 (the "Build" step is a bonus and works with 1, so low priority). A **native-level
+  German proofread** of the broader content (the 24 H4 dialogues were proofed; the rest of `data.js` wasn't).
+- **App polish / features:** unify the 3 mic surfaces (Speaking / roleplay) into one hook; an **arc-complete
+  fanfare on the map** (trail floods green + route dot → ✓); a themed crest per chapter. P3b is done (v.34).
+- **Needs a user steer (don't do unilaterally):** **Library → "Learn"** tab rename (user-facing label;
+  noted in `docs/P6-curriculum-spec.md`).
+- **The menu lives in `docs/NEXT-HORIZON.md`** (H-series + C-series done; "C-backlog" + follow-ons are the
+  current list). Continue the modularization from `docs/MODULARIZATION-PLAN.md`.
 
 ## Gotchas / lessons (don't relearn these the hard way)
 - **Audit blind spot, now fixed:** the visual audit only ever drove *short* words, so a fixed-font
@@ -195,6 +227,13 @@ opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" 
   (app.js/data.js/index.html/service-worker.js), then **re-run `npm run build`** and push. Keep both
   CHANGELOG entries on a log conflict.
 - **`auto` level default**, never flat `all`; deck spans A1–B2 (~37% B2) — a flat pool swamps beginners.
+- **`scripts/h4-second-scenes.mjs` + `scripts/h4-build-sentences.mjs` are already-applied, idempotent
+  one-shots** (they skip any entry already in `src/data.js`). They're the *record* of how v.35/v.36 content
+  was spliced in — re-running them is a no-op; don't be confused into thinking content is unapplied.
+- **Build is deploy-from-`main` (GitHub Pages).** `node build-static.mjs` regenerates `app.js`/`data.js`/SRI/
+  SW-cache deterministically — a clean rebuild leaves `git status` empty (proof the committed build matches src).
+- **`src/lib/palette.js` (`PAL`) + `src/components/icons.jsx` are concatenated *before* `src/app.jsx`** by the
+  build (one shared IIFE scope, no import/export). Don't "fix" them with ES imports.
 
 ## Quick reference
 ```

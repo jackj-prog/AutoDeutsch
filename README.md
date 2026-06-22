@@ -1,10 +1,20 @@
 # AutoDeutsch
 
-Offline-first German learning PWA. ~1,200 vocabulary cards across 25 categories plus
-grammar cloze, verb conjugation, sentence building, imperatives, listening dialogues,
-and a hands-free audio mode — with Leitner spaced repetition, streaks, daily goals,
-and 30-day trends. No backend: progress lives in `localStorage` (with JSON
-export/import and a daily on-device backup snapshot).
+**Learn the German you'll actually use** — an offline-first PWA for people **settling into life in a
+German-speaking country**. The spine is a **journey**: 7 chapters × **58 real-life scenarios** (Anmeldung,
+the doctor, your first day at work…) shown as a premium **map** (a centered timeline of stepping-stones).
+Each mission teaches its exact words → plays them in a **scene** → tests them → has you **build the
+sentences** → and finishes with **"Do it for real"**, a live AI **roleplay** where the tutor plays the
+other party and you can *speak* your part.
+
+Around that journey: SRS drills (recall/production/typed: article, plural, cloze, verb, imperative,
+listening, confusion, exam), a **placement test**, a capability/CEFR **Progress** screen, an **AI Tutor**
+(bring-your-own Anthropic key, context-aware), and a **Dictionary** of 5,782 words across 36 topics.
+Spaced repetition, streaks (with freezes), daily goals, journey-aware reminders, 30-day trends.
+
+**No backend, no account, no tracking** — everything lives in `localStorage` (with JSON export/import and a
+daily on-device backup snapshot); the only network calls are the optional AI Tutor/roleplay, made directly
+to Anthropic with your key. Installable to the home screen; works offline after first load.
 
 ## How it's put together
 

@@ -127,10 +127,24 @@ Found already-solid foundations: file **export/import** of progress exists, a **
 - **C7 ✅ (v.44) — PWA install prompt.** Captures `beforeinstallprompt` → a dismissible "Install AutoDeutsch"
   Home banner with an Install button; hidden once installed/dismissed. Drives home-screen installs. Reusable
   `x` icon added. Harness: `install`.
-- **C-backlog (candidate next, highest-value first):** micro-polish/visual-consistency sweep; Library→"Learn"
-  rename (user-facing label — confirm first). Plus the modularization/mic-unify internal items.
+- **C-backlog (candidate next, highest-value first):** Library→"Learn" rename (user-facing label — confirm
+  first). Plus the modularization/mic-unify internal items.
   *(Note: `og:url`/`og:image` assume the GitHub Pages URL `jackj-prog.github.io/autodeutsch/` — update if a
   custom domain is added; a dedicated 1200×630 share image would beat the square icon for `summary_large_image`.)*
+
+## Journey visual redesign (VJ-series) — ✅ DONE (v.45–50; user-steered "make the journey premium")
+After the C-series, the user steered: the journey should be visually delightful and premium, not "a long list
+and a bar." Rebuilt the **Scenarios** screen into a **map** over six iterations (full detail in CHANGELOG;
+architecture summary in `HANDOFF.md` → "Journey map architecture"):
+- **VJ1** map foundation (progress ring + 7-arc route overview; per-chapter accent colours + rings; a winding
+  stepping-stone path). **VJ2** motion (trail draws in, stones stagger, accent wash; reduced-motion safe).
+- **VJ3** premium fix — killed the **text/trail overlap** (the user's "cheap" call) by going to clean stones.
+  **VJ4** chapter accent carried into the mission detail (`ARC_ACCENT` hoisted to module scope).
+- **VJ5** de-dup — Library links to the one map instead of re-listing arc cards.
+- **VJ6 (settled)** — the path is a **centered timeline**: a central spine of glossy stones with each scenario
+  **named** in cards alternating L/R (every scenario visible, zero overlap). This resolved the names-vs-clean
+  tension; **don't re-litigate it without a user steer.**
+*Possible follow-ons (nice-to-have, not needed): arc-complete fanfare on the map; a themed crest per chapter.*
 
 ## Horizon status — ✅ COMPLETE (H1–H4, v.29–36)
 - **H1** ✅ stabilize & sharpen — regression sweep, modularization started (`palette.js` + `icons.jsx`,

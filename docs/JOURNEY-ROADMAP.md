@@ -8,7 +8,7 @@ plan to make the journey *the* product. (Status doc; updated as phases land. Pai
 - **58 missions across 7 arcs** — Touchdown (10, A1-heavy) → Paperwork → A Roof → Money → Health →
   Job → Belonging (8). Spread A1→B2; Touchdown is the A1 on-ramp, later arcs lean B1/B2.
 - **Per-mission syllabus→test loop** (the strongest part): **Learn the exact scene words**
-  (`MISSION_VOCAB`, ~10, 58/58 covered) → **Listen** to the scene(s) (`dialogues`; 34/58 multi-scene)
+  (`MISSION_VOCAB`, ~10, 58/58 covered) → **Listen** to the scene(s) (`dialogues`; **58/58 multi-scene** as of v.35)
   → comprehension **questions** → **Build the sentence** (mission-tagged `SENTENCES`, 58/58, bonus
   step). One coherent word set end to end, all flowing through the real SRS engine.
 - **Capability framing** — each mission is a can-do ("Order at a café or bakery"); completing it fires

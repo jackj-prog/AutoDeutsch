@@ -6,14 +6,21 @@
 >
 > **Status key:** ✅ done · 🟡 in progress · ⬜ planned
 
-## ▶ Active focus: fleshing out the Journey
-The journey (mission/scenario spine) is being fully built out as the flagship. **Full review +
-phased plan (J1–J6) in `docs/JOURNEY-ROADMAP.md`.** Recommended order J1→J3→J2→J4→J5→J6:
-J1 Home-becomes-journey-first · J2 felt path (arc focus + map) · J3 arc-as-chapter (intro/payoff) ·
-J4 mission roleplay climax (Tutor-as-other-party) · J5 unify progression + daily-practice-maintains-
-journey · J6 personalization + content depth.
+## ▶ Current status (2026-06-22) — read `HANDOFF.md` first, then `docs/NEXT-HORIZON.md`
+The big programs are **all shipped** (live build `2026.06.20.50`); this is a map — full detail in `CHANGELOG.md`:
+- ✅ **Journey build-out J1–J6** (v.23–28) — `docs/JOURNEY-ROADMAP.md`.
+- ✅ **"Next Horizon" H1–H4** (v.29–36) — stabilize/modularization · voice-first roleplay · retention ·
+  content depth (all 58 missions multi-scene). `docs/NEXT-HORIZON.md`.
+- ✅ **AI Tutor** — fully built: context-aware, the **"Do it for real" roleplay** (Tutor plays the other
+  party, spoken in/out), and it can launch weak-word drills. *(The "Strategic note" below is obsolete.)*
+- ✅ **Commercial-grade C1–C7** (v.38–44) — About&Privacy · German proofread · first-run pitch · offline AI ·
+  share cards · a11y · install prompt.
+- ✅ **Journey visual redesign VJ1–VJ6** (v.45–50) — Scenarios is now a premium centered-timeline **map**
+  (HANDOFF → "Journey map architecture").
 
-## Strategic note
+**What's left:** nothing blocking. Pick from `HANDOFF.md` → "Open hand-offs".
+
+## Strategic note (HISTORICAL — superseded; the AI Tutor is now built)
 
 AI Tutor moved out of the immediate roadmap. It remains a strong future premium feature once AutoDeutsch launches publicly. Current priority should be progression, Home experience, session composition, guided learning, and production skills. Productizing the tutor makes more sense after the core product experience is polished and user demand is validated.
 

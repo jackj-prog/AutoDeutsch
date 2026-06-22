@@ -730,7 +730,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.48";
+const APP_VERSION = "2026.06.20.49";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -5102,30 +5102,17 @@ function App() {
           );
         })()}
 
-        <div style={{ fontSize: 11, color: TD, fontWeight: 800, letterSpacing: 0.8, textTransform: "uppercase", margin: "0 2px 9px" }}>Your journey</div>
-        <div style={{ display: "grid", gap: 8, marginBottom: 8 }}>
-          {MISSION_ARCS.map(arc => {
-            const done = arcDone(arc.id), total = arcTotal(arc.id);
-            const pct = total ? (done / total) * 100 : 0;
-            const complete = done === total && total > 0;
-            return (
-              <button key={arc.id} type="button" onClick={() => setScreen("scenarios")} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", minWidth: 0, textAlign: "left", background: "linear-gradient(180deg, #161616 0%, #0F0F0F 100%)", border: `1px solid ${complete ? `${G}55` : HAIR}`, borderRadius: 13, padding: "12px 14px", cursor: "pointer", fontFamily: "inherit" }}>
-                <IconBadge name={arc.icon} size={32} color={complete ? G : A} bg={complete ? `${G}12` : `${A}10`} />
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: T, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{arc.title}</span>
-                  </span>
-                  <span style={{ display: "block", fontSize: 11, color: TD, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 7 }}>{arc.sub}</span>
-                  <span style={{ display: "block", height: 3, background: "#0A0A0A", borderRadius: 2, overflow: "hidden", position: "relative" }}>
-                    <span style={{ position: "absolute", inset: 0, width: `${pct}%`, background: complete ? G : `${A}CC`, borderRadius: 2, transition: "width .5s" }} />
-                  </span>
-                </span>
-                <span style={{ fontSize: 11, color: complete ? G : TD, fontWeight: 800, flexShrink: 0 }}>{done}/{total}</span>
-                <Icon name="chevron" size={15} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
-              </button>
-            );
-          })}
-        </div>
+        {/* The journey lives in full on the Scenarios MAP now; here it's one compact entry to it —
+            re-listing all 7 arcs would just duplicate (and visually lag) the map. */}
+        <button type="button" onClick={() => setScreen("scenarios")} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: "linear-gradient(180deg, #161616 0%, #0F0F0F 100%)", border: `1px solid ${HAIR}`, borderRadius: 14, padding: "13px 14px", cursor: "pointer", fontFamily: "inherit", marginBottom: 8 }}>
+          <IconBadge name="map" size={36} color={A} bg={`${A}12`} />
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <span style={{ display: "block", fontFamily: FN, fontSize: 15, fontWeight: 800, color: T }}>Your journey map</span>
+            <span style={{ display: "block", fontSize: 11, color: TD, margin: "1px 0 7px" }}>{capability.earnedCount} of {MISSIONS.length} scenarios · {capability.role.name}</span>
+            <ProgBar pct={MISSIONS.length ? (capability.earnedCount / MISSIONS.length) * 100 : 0} color={A} />
+          </span>
+          <Icon name="chevron" size={15} style={{ color: TD, transform: "rotate(-90deg)", flexShrink: 0 }} />
+        </button>
 
         {/* ── DICTIONARY — the 36-category taxonomy + Browse, explicitly demoted to reference. ── */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10, margin: "22px 0 4px" }}>

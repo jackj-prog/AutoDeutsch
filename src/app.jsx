@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.46";
+const APP_VERSION = "2026.06.20.47";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -6246,7 +6246,7 @@ function App() {
             // Winding stepping-stone path geometry (built only when open). x in 0–100 (% of width),
             // y in px; the connector SVG uses the same coordinate space (preserveAspectRatio none).
             const cols = [0.5, 0.76, 0.5, 0.24];
-            const rowH = 92;
+            const rowH = 76;
             const nodes = ms.map((m, i) => ({ m, i, x: cols[i % cols.length] * 100, y: i * rowH + rowH / 2 }));
             const H = rowH * ms.length;
             const curIdx = ms.findIndex(m => currentMission && currentMission.id === m.id);
@@ -6274,32 +6274,42 @@ function App() {
                 </button>
                 {open && (
                   <div style={{ paddingTop: 8 }}>
-                    {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 4px 4px" }}>{arc.intro}</div>}
-                    {/* The walked path: large stepping-stone nodes on a flowing trail. */}
-                    <div style={{ position: "relative", height: H }}>
-                      {/* Faint chapter-accent wash, so each open chapter feels like its own place. */}
-                      <div aria-hidden="true" style={{ position: "absolute", inset: "-8px -12px", background: `radial-gradient(120% 55% at 50% 0%, ${accent}12 0%, transparent 68%)`, pointerEvents: "none" }} />
+                    {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 4px 10px" }}>{arc.intro}</div>}
+                    {/* The one actionable scenario, named + with a CTA — keeps the path itself clean. */}
+                    {(() => {
+                      const nextInArc = ms.find(m => missionStatus(m.id) !== "done");
+                      if (!nextInArc) return null;
+                      const started = missionStatus(nextInArc.id) === "started";
+                      return (
+                        <button type="button" onClick={() => openMission(nextInArc.id)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: `linear-gradient(135deg, ${accent}24 0%, #0E0E0E 72%)`, border: `1px solid ${accent}66`, borderRadius: 14, padding: "13px 14px", marginBottom: 8, cursor: "pointer", fontFamily: "inherit", boxShadow: `0 12px 28px -16px ${accent}` }}>
+                          <IconBadge name={arc.icon} size={40} color={accent} bg={`${accent}1F`} />
+                          <span style={{ flex: 1, minWidth: 0 }}>
+                            <span style={{ display: "block", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, textTransform: "uppercase", color: accent, marginBottom: 2 }}>{started ? "Continue here" : "Your next step"}</span>
+                            <span style={{ display: "block", fontFamily: FN, fontSize: 15, fontWeight: 800, color: T, lineHeight: 1.25 }}>{nextInArc.cando}</span>
+                          </span>
+                          <Icon name="arrowRight" size={18} style={{ color: accent, flexShrink: 0 }} />
+                        </button>
+                      );
+                    })()}
+                    {/* The path: clean glossy stepping-stones (tap any to open). No inline labels — they'd
+                        collide with the weaving trail; the actionable scenario is named in the card above. */}
+                    <div style={{ position: "relative", height: H, marginTop: 4 }}>
+                      <div aria-hidden="true" style={{ position: "absolute", inset: "-6px -12px", background: `radial-gradient(120% 50% at 50% 0%, ${accent}10 0%, transparent 70%)`, pointerEvents: "none" }} />
                       <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-                        <path d={pathD(0, ms.length - 1)} fill="none" stroke={B} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
-                        {reachedIdx >= 1 && <path className="ad-trail-draw" pathLength={1} d={pathD(0, reachedIdx)} fill="none" stroke={G} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />}
+                        <path d={pathD(0, ms.length - 1)} fill="none" stroke={B} strokeWidth={4} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+                        {reachedIdx >= 1 && <path className="ad-trail-draw" pathLength={1} d={pathD(0, reachedIdx)} fill="none" stroke={G} strokeWidth={4} vectorEffect="non-scaling-stroke" strokeLinecap="round" />}
                       </svg>
                       {nodes.map(({ m, i, x, y }) => {
                         const st = missionStatus(m.id);
                         const isCur = curIdx === i;
                         const isDone = st === "done";
-                        const dia = isCur ? 56 : 46;
-                        const ncol = isDone ? G : (isCur || st === "started") ? A : B;
+                        const dia = isCur ? 58 : 46;
+                        const grad = isDone ? `radial-gradient(circle at 35% 28%, #7DEBAB, ${G})` : isCur ? `radial-gradient(circle at 35% 28%, #FFE588, ${A})` : "radial-gradient(circle at 35% 28%, #1C1C1C, #0B0B0B)";
                         return (
-                          <button key={m.id} type="button" onClick={() => openMission(m.id)} aria-label={m.cando} className="ad-node-in"
-                            style={{ position: "absolute", left: `${x}%`, top: y, transform: "translate(-50%, -50%)", animationDelay: `${i * 45}ms`, width: 134, display: "flex", flexDirection: "column", alignItems: "center", gap: 5, background: "transparent", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
-                            <span style={{ position: "relative", width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? G : isCur ? `${A}22` : "#0C0C0C", border: `2.5px solid ${ncol}`, boxShadow: isDone ? `0 5px 16px -5px ${G}aa` : isCur ? `0 0 0 5px ${A}1F, 0 7px 20px -5px ${A}99` : "none" }}>
-                              {isCur && <span className="ad-pulse" style={{ position: "absolute", inset: -6, borderRadius: 999, border: `2px solid ${A}` }} />}
-                              {isDone ? <Icon name="check" size={isCur ? 22 : 19} style={{ color: "#0A0A0A" }} /> : isCur ? <Icon name={arc.icon} size={22} style={{ color: A }} /> : <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: TD }}>{i + 1}</span>}
-                            </span>
-                            <span style={{ maxWidth: "100%", textAlign: "center" }}>
-                              {isCur && st !== "done" && <span style={{ display: "block", fontSize: 9, fontWeight: 900, color: A, letterSpacing: 0.5, marginBottom: 1 }}>{st === "started" ? "CONTINUE" : "START HERE"}</span>}
-                              <span style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 10.5, lineHeight: 1.25, fontWeight: isCur ? 800 : 600, color: isDone ? TD : isCur ? T : TD }}>{m.cando}</span>
-                            </span>
+                          <button key={m.id} type="button" onClick={() => openMission(m.id)} aria-label={m.cando} title={m.cando} className="ad-node-in"
+                            style={{ position: "absolute", left: `${x}%`, top: y, transform: "translate(-50%, -50%)", animationDelay: `${i * 45}ms`, width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: grad, border: `2.5px solid ${isDone ? "#3AB36A" : isCur ? "#D9A400" : B}`, cursor: "pointer", padding: 0, boxShadow: isDone ? `0 5px 16px -6px ${G}, inset 0 1.5px 1px #ffffff55` : isCur ? `0 0 0 5px ${A}1F, 0 9px 24px -6px ${A}, inset 0 1.5px 1px #ffffff77` : "inset 0 1.5px 1px #ffffff10, 0 3px 9px -5px #000" }}>
+                            {isCur && <span className="ad-pulse" style={{ position: "absolute", inset: -7, borderRadius: 999, border: `2px solid ${A}` }} />}
+                            {isDone ? <Icon name="check" size={isCur ? 24 : 20} style={{ color: "#06340F" }} /> : isCur ? <Icon name={arc.icon} size={24} style={{ color: "#3A2A00" }} /> : <span style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: TD }}>{i + 1}</span>}
                           </button>
                         );
                       })}

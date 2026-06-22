@@ -17,7 +17,7 @@ commit. It should never be more than one session stale.
   the deploy-lock/claims dance is a formality, but **keep logging** as if handing off — because you are.
 
 ## Current deployed state
-- **Live build: `2026.06.20.46`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.20.47`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html
@@ -35,6 +35,9 @@ drills (article/plural/cloze/verb/imperative/listening/confusion/exam), a **plac
 opens on the curriculum with the 36-category taxonomy demoted to a "Dictionary" reference.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v.47** VJ3 (journey premium fix, user steer): killed the **text/trail overlap** that made the path look
+  cheap — stepping-stones are now clean glossy nodes (no inline labels), and the actionable scenario is named
+  in an accent-matched **"Your next step → {can-do}"** card above the path. Tap any stone to open it.
 - **v.46** VJ2 (journey delight): the map **comes alive** — opening a chapter draws the green trail in +
   staggers the nodes popping in (`ad-trail-draw` / `ad-node-in`), with a faint chapter-accent wash behind
   the path. All added to the reduced-motion disable list.

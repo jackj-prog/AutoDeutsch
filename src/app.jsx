@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.44";
+const APP_VERSION = "2026.06.20.45";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -6190,6 +6190,9 @@ function App() {
         // distinctive goals map to a specific arc; "everyday survival"/"exam" default to touchdown).
         const goalArcId = (intakeAns.goal === "Working in German" || intakeAns.goal === "Settling in & making friends") ? goalArc(intakeAns.goal) : null;
         const goalArcObj = goalArcId ? MISSION_ARCS.find(a => a.id === goalArcId) : null;
+        // VJ — per-chapter accent colours + a reusable progress ring, for the journey *map* look.
+        const ARC_ACCENT = { touchdown: A, paperwork: "#60A5FA", roof: "#A78BFA", money: "#F472B6", health: "#FB7185", job: "#FB923C", belonging: "#34D399" };
+        const Ring = ({ pct, size = 30, sw = 4, color = A }) => { const r = (size - sw) / 2, c = 2 * Math.PI * r; return (<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ flexShrink: 0 }}><circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#1D1D1D" strokeWidth={sw} /><circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - pct)} transform={`rotate(-90 ${size / 2} ${size / 2})`} /></svg>); };
         return (
         <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
@@ -6197,14 +6200,35 @@ function App() {
           </div>
           <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, margin: "10px 0 2px" }}>Your journey</div>
           <div style={{ fontSize: 13, color: TD, marginBottom: 14 }}>Real situations on the way to living and working in Germany.</div>
-          {/* Map-at-a-glance overview: where you are across the whole journey. */}
-          <div style={{ background: "linear-gradient(135deg, #161616 0%, #0E0E0E 100%)", border: `1px solid ${HAIR}`, borderRadius: 14, padding: "13px 15px", marginBottom: 22 }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
-              <div style={{ fontSize: 11.5, color: TD, fontWeight: 700 }}><span style={{ color: A, fontWeight: 900 }}>{capability.role.name}</span> · {totalDone}/{totalAll} scenarios</div>
-              {capability.nextRole && <div style={{ fontSize: 10.5, color: TD }}>Next: {capability.nextRole.name} at {capability.nextRole.min}</div>}
+          {/* Overview: a progress ring + the whole 7-arc route at a glance — the map, not a bar. */}
+          <div style={{ background: "linear-gradient(135deg, #17150C 0%, #0E0E0E 70%)", border: `1px solid ${A}26`, borderRadius: 16, padding: "15px 16px", marginBottom: 20, boxShadow: "0 12px 30px -16px rgba(0,0,0,0.8)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              <div style={{ position: "relative", width: 60, height: 60, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Ring pct={totalAll ? totalDone / totalAll : 0} size={60} sw={5} color={A} />
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FN, fontSize: 15, fontWeight: 900, color: A }}>{Math.round(totalAll ? (totalDone / totalAll) * 100 : 0)}%</div>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: FN, fontSize: 17, fontWeight: 800, color: T }}><Icon name={capability.role.icon} size={15} style={{ color: A }} /> {capability.role.name}</div>
+                <div style={{ fontSize: 11.5, color: TD, marginTop: 2 }}>{totalDone} of {totalAll} scenarios{capability.nextRole ? ` · next: ${capability.nextRole.name}` : ""}</div>
+              </div>
             </div>
-            <ProgBar pct={totalAll ? (totalDone / totalAll) * 100 : 0} color={A} />
-            {goalArcObj && <div style={{ fontSize: 10.5, color: TD, marginTop: 9, display: "flex", alignItems: "center", gap: 6 }}><Icon name="target" size={12} style={{ color: A, flexShrink: 0 }} /><span style={{ minWidth: 0 }}>Your goal points at <span style={{ color: A, fontWeight: 800 }}>{goalArcObj.title}</span> — but the path builds up to it.</span></div>}
+            {/* The route — every chapter a stop on one line: done ✓, you-are-here (pulsing), ahead. */}
+            <div style={{ display: "flex", alignItems: "center", marginTop: 15 }}>
+              {MISSION_ARCS.map((a, ai) => {
+                const d = arcDone(a.id), t = arcTotal(a.id), comp = t > 0 && d === t, act = a.id === activeArcId;
+                return (
+                  <React.Fragment key={a.id}>
+                    <button type="button" onClick={() => setArcOpen(p => ({ ...p, [a.id]: true }))} aria-label={a.title} title={a.title}
+                      style={{ position: "relative", flexShrink: 0, width: 28, height: 28, borderRadius: 999, background: comp ? G : act ? `${A}22` : "#0C0C0C", border: `2px solid ${comp ? G : act ? A : B}`, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0 }}>
+                      {comp ? <Icon name="check" size={13} style={{ color: "#0A0A0A" }} /> : <Icon name={a.icon} size={12} style={{ color: act ? A : TD }} />}
+                      {act && <span className="ad-pulse" style={{ position: "absolute", inset: -4, borderRadius: 999, border: `2px solid ${A}` }} />}
+                    </button>
+                    {ai < MISSION_ARCS.length - 1 && <span style={{ flex: 1, height: 3, borderRadius: 2, background: comp ? G : B }} />}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+            {goalArcObj && <div style={{ fontSize: 10.5, color: TD, marginTop: 12, display: "flex", alignItems: "center", gap: 6 }}><Icon name="target" size={12} style={{ color: A, flexShrink: 0 }} /><span style={{ minWidth: 0 }}>Your goal: <span style={{ color: A, fontWeight: 800 }}>{goalArcObj.title}</span> — the path builds up to it.</span></div>}
           </div>
           {MISSION_ARCS.map(arc => {
             const ms = MISSIONS.filter(m => m.arc === arc.id);
@@ -6212,55 +6236,66 @@ function App() {
             const arcComplete = total > 0 && done === total;
             const isActive = arc.id === activeArcId;
             const open = isArcOpen(arc, arcComplete);
+            const accent = ARC_ACCENT[arc.id] || A;
+            // Winding stepping-stone path geometry (built only when open). x in 0–100 (% of width),
+            // y in px; the connector SVG uses the same coordinate space (preserveAspectRatio none).
+            const cols = [0.5, 0.76, 0.5, 0.24];
+            const rowH = 92;
+            const nodes = ms.map((m, i) => ({ m, i, x: cols[i % cols.length] * 100, y: i * rowH + rowH / 2 }));
+            const H = rowH * ms.length;
+            const curIdx = ms.findIndex(m => currentMission && currentMission.id === m.id);
+            let reachedIdx = -1; ms.forEach((m, i) => { if (missionStatus(m.id) === "done") reachedIdx = i; });
+            if (curIdx >= 0) reachedIdx = Math.max(reachedIdx, curIdx);
+            const pathD = (from, to) => { if (to <= from) return ""; let d = `M ${nodes[from].x} ${nodes[from].y}`; for (let i = from + 1; i <= to; i++) { const p0 = nodes[i - 1], p1 = nodes[i], my = (p0.y + p1.y) / 2; d += ` C ${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${p1.y}`; } return d; };
             return (
-              <div key={arc.id} style={{ marginBottom: 14 }}>
-                {/* Arc header doubles as a fold toggle. The active chapter is highlighted gold. */}
-                <button type="button" onClick={() => setArcOpen(p => ({ ...p, [arc.id]: !open }))} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", minWidth: 0, textAlign: "left", background: isActive ? `${A}0D` : "transparent", border: `1px solid ${isActive ? `${A}55` : arcComplete ? `${G}33` : "transparent"}`, borderRadius: 12, padding: "8px 9px", cursor: "pointer", fontFamily: "inherit" }}>
-                  <IconBadge name={arc.icon} size={34} color={arcComplete ? G : isActive ? A : TD} bg={arcComplete ? `${G}14` : isActive ? `${A}12` : `${TD}14`} />
+              <div key={arc.id} style={{ marginBottom: 16 }}>
+                {/* Chapter banner (fold toggle): accent badge + a progress ring instead of bare text. */}
+                <button type="button" onClick={() => setArcOpen(p => ({ ...p, [arc.id]: !open }))} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", minWidth: 0, textAlign: "left", background: isActive ? `${accent}12` : arcComplete ? `${G}0D` : "#0F0F0F", border: `1px solid ${isActive ? `${accent}66` : arcComplete ? `${G}33` : HAIR}`, borderRadius: 14, padding: "11px 12px", cursor: "pointer", fontFamily: "inherit" }}>
+                  <IconBadge name={arc.icon} size={38} color={arcComplete ? G : accent} bg={arcComplete ? `${G}14` : `${accent}16`} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <span style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: arcComplete || isActive ? T : TD }}>{arc.title}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
+                      <span style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: T }}>{arc.title}</span>
                       {isActive && <span style={{ fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.6, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px" }}>YOU ARE HERE</span>}
-                      {arc.id === goalArcId && !isActive && <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.4, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px 1px 4px", flexShrink: 0 }}><Icon name="target" size={9} /> YOUR GOAL</span>}
+                      {arc.id === goalArcId && !isActive && <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 8.5, fontWeight: 900, color: A, letterSpacing: 0.4, border: `1px solid ${A}55`, borderRadius: 5, padding: "1px 5px 1px 4px" }}><Icon name="target" size={9} /> YOUR GOAL</span>}
                     </div>
-                    {/* Complete arcs show their payoff ("you've landed…"); in-progress show the theme. */}
-                    <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{arcComplete ? arc.payoff : arc.sub}</div>
+                    <div style={{ fontSize: 11, color: arcComplete ? G : TD, fontWeight: arcComplete ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: 1 }}>{arcComplete ? arc.payoff : arc.sub}</div>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    <span style={{ fontSize: 11, color: arcComplete ? G : isActive ? A : TD, fontWeight: 800 }}>{arcComplete ? "✓" : `${done}/${total}`}</span>
-                    <Icon name="chevron" size={14} style={{ color: TD, transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.15s" }} />
+                  <div style={{ position: "relative", width: 34, height: 34, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Ring pct={total ? done / total : 0} size={34} sw={4} color={arcComplete ? G : accent} />
+                    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 900, color: arcComplete ? G : TD }}>{arcComplete ? "✓" : `${done}/${total}`}</div>
                   </div>
+                  <Icon name="chevron" size={14} style={{ color: TD, transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform .15s", flexShrink: 0 }} />
                 </button>
                 {open && (
-                  <div style={{ marginTop: 6, paddingLeft: 8 }}>
-                    {/* J6 — the chapter's narrative opener, so an arc reads as a story beat, not a folder. */}
-                    {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 6px 12px 0" }}>{arc.intro}</div>}
-                    {ms.map((m, i) => {
-                      const st = missionStatus(m.id);
-                      const isCur = currentMission && currentMission.id === m.id;
-                      const isDone = st === "done";
-                      const prevDone = i > 0 && missionStatus(ms[i - 1].id) === "done";
-                      const nodeColor = isDone ? G : (isCur || st === "started") ? A : B;
-                      return (
-                        <div key={m.id} style={{ display: "flex", alignItems: "stretch", gap: 11, minWidth: 0 }}>
-                          {/* Trail rail: a spine line through the node dot. The line fills green where the path is walked. */}
-                          <div style={{ position: "relative", width: 24, flexShrink: 0, display: "flex", justifyContent: "center" }}>
-                            {i > 0 && <span style={{ position: "absolute", top: 0, height: "50%", width: 2, background: prevDone ? G : B }} />}
-                            {i < ms.length - 1 && <span style={{ position: "absolute", bottom: 0, height: "50%", width: 2, background: isDone ? G : B }} />}
-                            <span style={{ position: "relative", marginTop: 13, alignSelf: "flex-start", width: 22, height: 22, borderRadius: 999, flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? G : isCur ? `${A}22` : "#0C0C0C", border: `2px solid ${nodeColor}`, boxShadow: isCur ? `0 0 0 4px ${A}1F` : "none" }}>
-                              {isDone ? <Icon name="check" size={12} style={{ color: "#0A0A0A" }} /> : isCur ? <span style={{ width: 7, height: 7, borderRadius: 999, background: A }} /> : null}
+                  <div style={{ paddingTop: 8 }}>
+                    {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 4px 4px" }}>{arc.intro}</div>}
+                    {/* The walked path: large stepping-stone nodes on a flowing trail. */}
+                    <div style={{ position: "relative", height: H }}>
+                      <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+                        <path d={pathD(0, ms.length - 1)} fill="none" stroke={B} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+                        {reachedIdx >= 1 && <path d={pathD(0, reachedIdx)} fill="none" stroke={G} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />}
+                      </svg>
+                      {nodes.map(({ m, i, x, y }) => {
+                        const st = missionStatus(m.id);
+                        const isCur = curIdx === i;
+                        const isDone = st === "done";
+                        const dia = isCur ? 56 : 46;
+                        const ncol = isDone ? G : (isCur || st === "started") ? A : B;
+                        return (
+                          <button key={m.id} type="button" onClick={() => openMission(m.id)} aria-label={m.cando}
+                            style={{ position: "absolute", left: `${x}%`, top: y, transform: "translate(-50%, -50%)", width: 134, display: "flex", flexDirection: "column", alignItems: "center", gap: 5, background: "transparent", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
+                            <span style={{ position: "relative", width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? G : isCur ? `${A}22` : "#0C0C0C", border: `2.5px solid ${ncol}`, boxShadow: isDone ? `0 5px 16px -5px ${G}aa` : isCur ? `0 0 0 5px ${A}1F, 0 7px 20px -5px ${A}99` : "none" }}>
+                              {isCur && <span className="ad-pulse" style={{ position: "absolute", inset: -6, borderRadius: 999, border: `2px solid ${A}` }} />}
+                              {isDone ? <Icon name="check" size={isCur ? 22 : 19} style={{ color: "#0A0A0A" }} /> : isCur ? <Icon name={arc.icon} size={22} style={{ color: A }} /> : <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: TD }}>{i + 1}</span>}
                             </span>
-                          </div>
-                          <button onClick={() => openMission(m.id)} style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", flex: 1, minWidth: 0, margin: "6px 0", background: isCur ? `${A}10` : "#0F0F0F", border: `1px solid ${isCur ? A : HAIR}`, borderRadius: 12, padding: "11px 13px", cursor: "pointer", fontFamily: "inherit" }}>
-                            <span style={{ flex: 1, minWidth: 0 }}>
-                              <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: isDone ? TD : T, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.cando}</span>
-                              {isCur && st !== "done" && <span style={{ fontSize: 10.5, color: A, fontWeight: 800, letterSpacing: 0.3 }}>{st === "started" ? "CONTINUE →" : "START HERE"}</span>}
+                            <span style={{ maxWidth: "100%", textAlign: "center" }}>
+                              {isCur && st !== "done" && <span style={{ display: "block", fontSize: 9, fontWeight: 900, color: A, letterSpacing: 0.5, marginBottom: 1 }}>{st === "started" ? "CONTINUE" : "START HERE"}</span>}
+                              <span style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 10.5, lineHeight: 1.25, fontWeight: isCur ? 800 : 600, color: isDone ? TD : isCur ? T : TD }}>{m.cando}</span>
                             </span>
-                            <span style={{ fontSize: 9, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 6, padding: "2px 6px", flexShrink: 0 }}>{m.level}</span>
                           </button>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>

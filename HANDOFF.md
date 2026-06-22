@@ -6,6 +6,10 @@ then `ROADMAP.md` (what's planned/done) → `CHANGELOG.md` (what shipped, newest
 feature/fix, start or pause something, hand work off), update the relevant section below in the same
 commit. It should never be more than one session stale.
 
+> **New to the repo? Read `docs/APP-ANALYSIS-2026-06-22.md`** — a measured, plain-language map of the
+> codebase as it actually is (monolith structure, the `gfc-*`/`ad-*` storage trap, content balance,
+> what to do next). It's the fastest way to understand what you're inheriting.
+
 ---
 
 ## Operating mode (read this) — ⇨ HANDOFF IN EFFECT (you are now driving)

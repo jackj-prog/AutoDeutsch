@@ -727,7 +727,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.45";
+const APP_VERSION = "2026.06.20.46";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3968,8 +3968,14 @@ function App() {
         .ad-pulse { animation: ad-pulse 2.1s ease-out infinite; }
         @keyframes ad-bar-rise { from { transform:scaleY(0); opacity:.4 } to { transform:scaleY(1); opacity:1 } }
         .ad-bar-rise { animation: ad-bar-rise .5s cubic-bezier(.2,.8,.3,1) both; }
+        @keyframes ad-node-in { from { transform:translate(-50%,-50%) scale(.4); opacity:0 } to { transform:translate(-50%,-50%) scale(1); opacity:1 } }
+        .ad-node-in { animation: ad-node-in .42s cubic-bezier(.2,.9,.3,1.25) both; }
+        @keyframes ad-trail-draw { from { stroke-dashoffset:1 } to { stroke-dashoffset:0 } }
+        .ad-trail-draw { stroke-dasharray:1; animation: ad-trail-draw .9s ease-out both; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise, .ad-node-in, .ad-trail-draw { animation: none; }
+          .ad-node-in { transform: translate(-50%,-50%); opacity: 1; }
+          .ad-trail-draw { stroke-dasharray: none; stroke-dashoffset: 0; }
           .ad-card-enter { transition: opacity .12s ease; }
           .ad-card-enter.is-out, .ad-card-enter.is-fly { transform: none; }
           .ad-spark { stroke-dashoffset: 0; }
@@ -6271,9 +6277,11 @@ function App() {
                     {arc.intro && !arcComplete && <div style={{ fontSize: 12, color: TD, lineHeight: 1.55, padding: "0 4px 4px" }}>{arc.intro}</div>}
                     {/* The walked path: large stepping-stone nodes on a flowing trail. */}
                     <div style={{ position: "relative", height: H }}>
+                      {/* Faint chapter-accent wash, so each open chapter feels like its own place. */}
+                      <div aria-hidden="true" style={{ position: "absolute", inset: "-8px -12px", background: `radial-gradient(120% 55% at 50% 0%, ${accent}12 0%, transparent 68%)`, pointerEvents: "none" }} />
                       <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
                         <path d={pathD(0, ms.length - 1)} fill="none" stroke={B} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
-                        {reachedIdx >= 1 && <path d={pathD(0, reachedIdx)} fill="none" stroke={G} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />}
+                        {reachedIdx >= 1 && <path className="ad-trail-draw" pathLength={1} d={pathD(0, reachedIdx)} fill="none" stroke={G} strokeWidth={3} vectorEffect="non-scaling-stroke" strokeLinecap="round" />}
                       </svg>
                       {nodes.map(({ m, i, x, y }) => {
                         const st = missionStatus(m.id);
@@ -6282,8 +6290,8 @@ function App() {
                         const dia = isCur ? 56 : 46;
                         const ncol = isDone ? G : (isCur || st === "started") ? A : B;
                         return (
-                          <button key={m.id} type="button" onClick={() => openMission(m.id)} aria-label={m.cando}
-                            style={{ position: "absolute", left: `${x}%`, top: y, transform: "translate(-50%, -50%)", width: 134, display: "flex", flexDirection: "column", alignItems: "center", gap: 5, background: "transparent", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
+                          <button key={m.id} type="button" onClick={() => openMission(m.id)} aria-label={m.cando} className="ad-node-in"
+                            style={{ position: "absolute", left: `${x}%`, top: y, transform: "translate(-50%, -50%)", animationDelay: `${i * 45}ms`, width: 134, display: "flex", flexDirection: "column", alignItems: "center", gap: 5, background: "transparent", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
                             <span style={{ position: "relative", width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? G : isCur ? `${A}22` : "#0C0C0C", border: `2.5px solid ${ncol}`, boxShadow: isDone ? `0 5px 16px -5px ${G}aa` : isCur ? `0 0 0 5px ${A}1F, 0 7px 20px -5px ${A}99` : "none" }}>
                               {isCur && <span className="ad-pulse" style={{ position: "absolute", inset: -6, borderRadius: 999, border: `2px solid ${A}` }} />}
                               {isDone ? <Icon name="check" size={isCur ? 22 : 19} style={{ color: "#0A0A0A" }} /> : isCur ? <Icon name={arc.icon} size={22} style={{ color: A }} /> : <span style={{ fontFamily: FN, fontSize: 15, fontWeight: 800, color: TD }}>{i + 1}</span>}

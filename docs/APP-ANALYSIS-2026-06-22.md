@@ -7,6 +7,37 @@
 
 ---
 
+## Deep audit results (2026-06-22) — what was actually exercised
+
+This isn't just a metrics pass. The following were run/inspected at runtime and data level; **no bugs
+were found.** Recorded so you don't have to repeat it:
+
+- **Data referential integrity (cross-dataset):** wrote a probe against the real datasets —
+  **all clean.** 58 mission ids unique · every `mission.arc` ∈ `MISSION_ARCS` · all 58 missions have a
+  `MISSION_VOCAB` entry and no orphan keys · **153/153 `mission.dialogues` refs resolve** by title ·
+  **576/576 `MISSION_VOCAB` words exist in the dictionary `V`** (so the "learn the exact words" step
+  always has cards) · all 94 mission-tagged `SENTENCES` point at real missions. The validator covers
+  schema; this covered the *links between* datasets.
+- **25 dialogues intentionally have no `questions`** (simple A1 listen-only scenes). Handled correctly —
+  the comprehension mode filters to `d.questions && d.questions.length` (app.jsx:2971), so they're
+  silently excluded, never an empty quiz. *(Nit: the user-facing count at app.jsx:4367 uses truthy
+  `d.questions`; equal today since none are `[]`, but it'd over-count if someone ever adds an empty
+  array. Cosmetic — not worth an app.jsx edit on its own.)*
+- **Visual audit:** rendered the built bundle headless and reviewed home, the journey map, mission
+  detail, and roleplay. The VJ6 centered timeline renders premium (central spine, alternating named
+  cards, chapter accents, no text/trail overlap); mission detail carries the accent chapter chip;
+  roleplay shows speech bubbles + the Passed/▲improve verdict. Nothing broken.
+- **Crash-safety / persistence:** every `localStorage` read is individually try/catch-guarded; the
+  main progress blob has a **backup-restore fallback** (`gfc-v7` → `gfc-v7-backup`), and the new-day
+  streak logic spends Streak Freezes for missed days without double-spending (app.jsx:1327–1401). Solid.
+- **AI failure posture:** both Anthropic `fetch` calls are offline-guarded and translate 401/429 +
+  network errors into plain-English messages, with `finally` cleanup (app.jsx:1970–2009, 2013+). Solid.
+
+**Bottom line: the green status is real, not superficial.** The risk in this repo is *structural*
+(the monolith, §2A) and *operational* (the `gfc-*` storage trap, §2B) — not latent bugs.
+
+---
+
 ## TL;DR (60 seconds)
 
 - **It's healthy.** Tree clean, `validate` OK, **26/26 tests**, build reproduces byte-for-byte.

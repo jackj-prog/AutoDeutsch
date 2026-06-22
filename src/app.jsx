@@ -604,6 +604,9 @@ async function clearScheduledReminders(reg) {
 // and the rank-up celebration so the progression reads as one system.
 const LEVEL_TITLES = { A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate" };
 const LEVEL_COLOR = { A1: PAL.G, A2: PAL.BL, B1: PAL.A, B2: PAL.R };
+// Per-chapter accent colours — the journey map's chapter identities, shared by the Scenarios map
+// and the mission detail so the workflow reads as one coloured thread.
+const ARC_ACCENT = { touchdown: "#FFCC00", paperwork: "#60A5FA", roof: "#A78BFA", money: "#F472B6", health: "#FB7185", job: "#FB923C", belonging: "#34D399" };
 const CHAPTERS = 5; // each CEFR level is divided into this many chapters (checkpoint milestones)
 // ── German gender patterns ───────────────────────────────────────────────────
 // Turns the article drill (and any noun reveal) from rote guessing into learning the
@@ -727,7 +730,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.20.47";
+const APP_VERSION = "2026.06.20.48";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -6196,8 +6199,7 @@ function App() {
         // distinctive goals map to a specific arc; "everyday survival"/"exam" default to touchdown).
         const goalArcId = (intakeAns.goal === "Working in German" || intakeAns.goal === "Settling in & making friends") ? goalArc(intakeAns.goal) : null;
         const goalArcObj = goalArcId ? MISSION_ARCS.find(a => a.id === goalArcId) : null;
-        // VJ — per-chapter accent colours + a reusable progress ring, for the journey *map* look.
-        const ARC_ACCENT = { touchdown: A, paperwork: "#60A5FA", roof: "#A78BFA", money: "#F472B6", health: "#FB7185", job: "#FB923C", belonging: "#34D399" };
+        // Per-chapter accent map is module-scope (ARC_ACCENT); a small reusable progress ring here.
         const Ring = ({ pct, size = 30, sw = 4, color = A }) => { const r = (size - sw) / 2, c = 2 * Math.PI * r; return (<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ flexShrink: 0 }}><circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#1D1D1D" strokeWidth={sw} /><circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - pct)} transform={`rotate(-90 ${size / 2} ${size / 2})`} /></svg>); };
         return (
         <div style={{ padding: "max(16px, env(safe-area-inset-top)) 18px 24px", minHeight: DVH, overflowY: "auto" }}>
@@ -6326,6 +6328,7 @@ function App() {
       {screen === "mission" && (() => {
         const m = missionById(activeMission); if (!m) return null;
         const arc = MISSION_ARCS.find(a => a.id === m.arc);
+        const arcAccent = ARC_ACCENT[m.arc] || A;
         const done = missionStatus(m.id) === "done";
         const missionWords = MISSION_VOCAB[m.id];
         const missionSentences = SENTENCES.filter(s => s.mission === m.id);
@@ -6339,9 +6342,13 @@ function App() {
         return (
           <div style={{ padding: "max(16px, env(safe-area-inset-top)) 20px 24px", minHeight: DVH, overflowY: "auto" }}>
             <button onClick={goBack} style={{ background: "transparent", border: `1px solid ${A}33`, borderRadius: 10, color: A, fontSize: 13, cursor: "pointer", padding: "8px 14px", fontWeight: 600 }}>← Back</button>
-            <div style={{ fontSize: 10.5, color: TD, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", margin: "16px 0 6px" }}>{arc ? arc.title : ""} · {m.level}</div>
-            <div style={{ fontSize: 12, color: TD, marginBottom: 2 }}>After this you'll be able to</div>
-            <div style={{ fontFamily: FN, fontSize: 23, fontWeight: 800, lineHeight: 1.2, marginBottom: 18 }}>{m.cando}.</div>
+            {/* Chapter chip in the chapter's accent — ties the mission back to its place on the map. */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "16px 0 10px" }}>
+              {arc && <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: `${arcAccent}16`, border: `1px solid ${arcAccent}44`, borderRadius: 999, padding: "4px 11px 4px 8px" }}><Icon name={arc.icon} size={13} style={{ color: arcAccent }} /><span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 0.5, color: arcAccent, textTransform: "uppercase" }}>{arc.title}</span></span>}
+              <span style={{ fontSize: 9, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 6, padding: "3px 7px" }}>{m.level}</span>
+            </div>
+            <div style={{ fontSize: 12, color: TD, marginBottom: 3 }}>After this you'll be able to</div>
+            <div style={{ fontFamily: FN, fontSize: 24, fontWeight: 800, lineHeight: 1.2, marginBottom: 18 }}>{m.cando}.</div>
             {done && <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 14px", background: `${G}14`, border: `1px solid ${G}55`, borderRadius: 12, marginBottom: 16, color: G, fontWeight: 800, fontSize: 13 }}><Icon name="check" size={16} /> You can now {m.cando.charAt(0).toLowerCase() + m.cando.slice(1)}.</div>}
             <div style={{ display: "grid", gap: 10 }}>
               {steps.map(s => {

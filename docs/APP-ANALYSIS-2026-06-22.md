@@ -20,9 +20,9 @@ were found.** Recorded so you don't have to repeat it:
   schema; this covered the *links between* datasets.
 - **25 dialogues intentionally have no `questions`** (simple A1 listen-only scenes). Handled correctly —
   the comprehension mode filters to `d.questions && d.questions.length` (app.jsx:2971), so they're
-  silently excluded, never an empty quiz. *(Nit: the user-facing count at app.jsx:4367 uses truthy
-  `d.questions`; equal today since none are `[]`, but it'd over-count if someone ever adds an empty
-  array. Cosmetic — not worth an app.jsx edit on its own.)*
+  silently excluded, never an empty quiz. *(The one nit this audit surfaced — the user-facing count at
+  app.jsx:4367 filtered on truthy `d.questions` while the runtime uses `d.questions && d.questions.length`
+  — was hardened in build `2026.06.23.01` so the two can never diverge.)*
 - **Visual audit:** rendered the built bundle headless and reviewed home, the journey map, mission
   detail, and roleplay. The VJ6 centered timeline renders premium (central spine, alternating named
   cards, chapter accents, no text/trail overlap); mission detail carries the accent chapter chip;

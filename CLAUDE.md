@@ -41,4 +41,4 @@ A clean rebuild leaves `git status` empty — that's how you know the build matc
 Assume the next agent has zero memory. Every ship → a `CHANGELOG.md` entry (newest at top); every
 state change → a `HANDOFF.md` edit, **in the same commit**. No silent changes.
 
-Current live build: **`2026.06.20.50`** · tree clean · validate OK · 26/26. You're driving now.
+Current live build: **`2026.06.23.01`** · tree clean · validate OK · 26/26. You're driving now.

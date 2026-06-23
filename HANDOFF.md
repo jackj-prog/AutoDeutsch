@@ -18,14 +18,14 @@ commit. It should never be more than one session stale.
   assume zero memory of the work.**
 - **Repo state at handoff: clean & green.** Working tree empty · `HEAD` = `origin/main` · `npm run validate`
   → "OK — no errors" · `npm test` → 26/26 · `node build-static.mjs` reproduces the committed build (a rebuild
-  leaves the tree clean). Live build **`2026.06.20.50`**.
+  leaves the tree clean). Live build **`2026.06.23.01`**.
 - **Recording discipline still applies** (`AGENTS.md`): every ship → a `CHANGELOG.md` entry; every state
   change → a `HANDOFF.md` edit, in the **same commit**. No silent changes. Deploy steps in "Quick reference".
 - The two-agent parallel protocol in `AGENTS.md` only matters if a second agent rejoins; while solo it's a
   formality, but keep logging as if handing off.
 
 ## Current deployed state
-- **Live build: `2026.06.20.50`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
+- **Live build: `2026.06.23.01`** (see `APP_VERSION` in `src/app.jsx` and the top of `CHANGELOG.md` for
   the exact number; bump it every app deploy). Deploys to GitHub Pages from `main`.
 - The app is a single React file `src/app.jsx` (~6k lines, Babel-standalone, no JSX build step) + content
   in `src/data.js`. `node build-static.mjs` compiles app.jsx→app.js, copies data.js, refreshes index.html

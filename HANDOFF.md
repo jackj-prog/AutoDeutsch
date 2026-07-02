@@ -60,6 +60,10 @@ installable, local-only (no account/tracking/servers).
   question was resolved (named timeline). Don't re-litigate it without a user steer.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v2026.07.02.02 W2 (journey map finish):** timeline card names clamp at **3 lines** (was 2 — long
+  can-dos like "Register your address at the Bürgeramt" now read in full) and upcoming stones/cards wear a
+  **faint chapter-accent tint** (ring/numeral/border) so the road ahead is lit in the chapter's colour.
+  Zero overflow at 320px. Same branch note as W1 below.
 - **v2026.07.02.01 W1 (roleplay casting; on branch `claude/app-review-audit-xqhavb`, not yet merged to
   `main`):** every mission's roleplay partner is now a named character — new `partner:{name,en,emoji}` on
   all 58 `MISSIONS` (validator-checked when present), shown in the scene header ("You're talking to **Die

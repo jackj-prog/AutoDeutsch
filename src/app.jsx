@@ -734,7 +734,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.07.02.01";
+const APP_VERSION = "2026.07.02.02";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -6301,14 +6301,14 @@ function App() {
                             <React.Fragment key={m.id}>
                               {/* the stone on the spine (pointer affordance; the card carries the label/role) */}
                               <button type="button" aria-hidden="true" tabIndex={-1} onClick={() => openMission(m.id)} className="ad-node-in"
-                                style={{ position: "absolute", left: "50%", top: y, transform: "translate(-50%, -50%)", animationDelay: `${i * 40}ms`, width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: grad, border: `2.5px solid ${isDone ? "#3AB36A" : isCur ? "#D9A400" : B}`, cursor: "pointer", padding: 0, zIndex: 2, boxShadow: isDone ? `0 4px 14px -6px ${G}, inset 0 1.5px 1px #ffffff55` : isCur ? `0 0 0 5px ${A}1F, 0 8px 22px -6px ${A}, inset 0 1.5px 1px #ffffff77` : "inset 0 1.5px 1px #ffffff10, 0 3px 9px -5px #000" }}>
+                                style={{ position: "absolute", left: "50%", top: y, transform: "translate(-50%, -50%)", animationDelay: `${i * 40}ms`, width: dia, height: dia, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", background: grad, border: `2.5px solid ${isDone ? "#3AB36A" : isCur ? "#D9A400" : `${accent}40`}`, cursor: "pointer", padding: 0, zIndex: 2, boxShadow: isDone ? `0 4px 14px -6px ${G}, inset 0 1.5px 1px #ffffff55` : isCur ? `0 0 0 5px ${A}1F, 0 8px 22px -6px ${A}, inset 0 1.5px 1px #ffffff77` : "inset 0 1.5px 1px #ffffff10, 0 3px 9px -5px #000" }}>
                                 {isCur && <span className="ad-pulse" style={{ position: "absolute", inset: -6, borderRadius: 999, border: `2px solid ${A}` }} />}
-                                {isDone ? <Icon name="check" size={isCur ? 22 : 18} style={{ color: "#06340F" }} /> : isCur ? <Icon name={arc.icon} size={21} style={{ color: "#3A2A00" }} /> : <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: TD }}>{i + 1}</span>}
+                                {isDone ? <Icon name="check" size={isCur ? 22 : 18} style={{ color: "#06340F" }} /> : isCur ? <Icon name={arc.icon} size={21} style={{ color: "#3A2A00" }} /> : <span style={{ fontFamily: FN, fontSize: 14, fontWeight: 800, color: `${accent}CC` }}>{i + 1}</span>}
                               </button>
                               {/* scenario card, alternating side */}
                               <button type="button" onClick={() => openMission(m.id)} aria-label={m.cando}
-                                style={{ position: "absolute", top: y, transform: "translateY(-50%)", [leftSide ? "right" : "left"]: `calc(50% + ${cardOff}px)`, width: `calc(50% - ${cardOff + 10}px)`, textAlign: "left", background: isCur ? `linear-gradient(135deg, ${accent}1F, #0E0E0E 80%)` : "#121212", border: `1px solid ${isCur ? accent : HAIR}`, borderRadius: 12, padding: "9px 11px", cursor: "pointer", fontFamily: "inherit", boxShadow: isCur ? `0 8px 22px -12px ${accent}` : "none" }}>
-                                <span style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 12, lineHeight: 1.25, fontWeight: isCur ? 800 : 700, color: isDone ? TD : T }}>{m.cando}</span>
+                                style={{ position: "absolute", top: y, transform: "translateY(-50%)", [leftSide ? "right" : "left"]: `calc(50% + ${cardOff}px)`, width: `calc(50% - ${cardOff + 10}px)`, textAlign: "left", background: isCur ? `linear-gradient(135deg, ${accent}1F, #0E0E0E 80%)` : "#121212", border: `1px solid ${isCur ? accent : isDone ? HAIR : `${accent}24`}`, borderRadius: 12, padding: "9px 11px", cursor: "pointer", fontFamily: "inherit", boxShadow: isCur ? `0 8px 22px -12px ${accent}` : "none" }}>
+                                <span style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 12, lineHeight: 1.25, fontWeight: isCur ? 800 : 700, color: isDone ? TD : T }}>{m.cando}</span>
                                 <span style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 5 }}>
                                   <span style={{ fontSize: 8.5, fontWeight: 900, color: TD, border: `1px solid ${B}`, borderRadius: 5, padding: "1px 5px" }}>{m.level}</span>
                                   {isCur ? <span style={{ fontSize: 9.5, fontWeight: 900, color: accent, letterSpacing: 0.3 }}>{st === "started" ? "CONTINUE →" : "START →"}</span> : isDone ? <span style={{ fontSize: 9.5, fontWeight: 800, color: G }}>✓ Done</span> : null}

@@ -60,6 +60,13 @@ installable, local-only (no account/tracking/servers).
   question was resolved (named timeline). Don't re-litigate it without a user steer.
 
 ## Recently shipped this solo stretch (newest first — full detail in CHANGELOG)
+- **v2026.07.02.01 W1 (roleplay casting; on branch `claude/app-review-audit-xqhavb`, not yet merged to
+  `main`):** every mission's roleplay partner is now a named character — new `partner:{name,en,emoji}` on
+  all 58 `MISSIONS` (validator-checked when present), shown in the scene header ("You're talking to **Die
+  Bedienung** — the counter server" + avatar chip), on every assistant bubble, in a new typing indicator
+  (`ad-typing`, reduced-motion safe), and cast into `buildRoleplaySystem` so the AI plays that exact person.
+  From the 2026-07-02 design review (top wow-per-effort item). **Merge note: this branch's W-series commits
+  deploy only when merged to `main`.**
 - **v.50** VJ6 (journey path resolved): the path is now a **premium centered timeline** — a glowing central
   spine of glossy stones with each scenario named in cards alternating left/right (every scenario visible, no
   text/trail overlap). Current card accent-bordered; spine draws to your position on open. (Settles the

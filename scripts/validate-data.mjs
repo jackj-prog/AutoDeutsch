@@ -133,6 +133,11 @@ export function validateData({ V, CLOZE, VERBS, SENTENCES, DIALOGUES, IMPERATIVE
       (m.dialogues || []).forEach(t => { if (!dlgTitles.has(t)) err(`MISSIONS "${m.id}": dialogue "${t}" not found`); else dialogueRefsCovered++; });
       (m.cats || []).forEach(c => { if (!catNames.has(c)) err(`MISSIONS "${m.id}": category "${c}" not found`); });
       if (!(m.dialogues || []).length) warn(`MISSIONS "${m.id}": no dialogues`);
+      // Roleplay persona (optional): if present it must be complete — the roleplay UI and
+      // system prompt render all three fields.
+      if (m.partner !== undefined && (!isStr(m.partner.name) || !isStr(m.partner.en) || !isStr(m.partner.emoji))) {
+        err(`MISSIONS "${m.id}": partner must be {name, en, emoji} (all non-empty strings)`);
+      }
       // Journey integrity: a mission promising a CEFR level should have an entry-point
       // dialogue at/below that level — otherwise a learner at the mission's level is thrown
       // into harder content (the "upside-down journey" P1 fixed). Warn, don't block.

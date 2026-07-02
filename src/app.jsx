@@ -176,11 +176,15 @@ function buildTutorSystem(ctx) {
 // scenario (barista, clerk, landlord…), staying in German + in character, then — on the __GRADE__
 // token — drops character and returns a short structured English verdict on whether the learner
 // pulled the scenario off. ctx = learner context; mission = the MISSION; words = its key vocab.
+// The cast member the learner talks to in a mission's roleplay. Missions carry an authored
+// `partner` in data.js; the fallback keeps old/partial content working unchanged.
+const missionPartner = (m) => (m && m.partner) || { name: "The other person", en: "", emoji: "💬" };
 function buildRoleplaySystem(ctx, mission, words) {
+  const partner = mission.partner;
   return [
     `You are role-playing a real-life situation so a German learner can practise doing it for real. Stay fully in character as the OTHER person in the scene — never break character until you are told the scene is over.`,
     ``,
-    `The scenario: "${mission.cando}". You play the other party — whoever the learner would actually talk to here (e.g. the café server, the clerk at the office, the landlord, the doctor, the neighbour). The learner is the customer / applicant / patient / visitor.`,
+    `The scenario: "${mission.cando}". You play ${partner ? `${partner.name} (${partner.en})` : `the other party — whoever the learner would actually talk to here (e.g. the café server, the clerk at the office, the landlord, the doctor, the neighbour)`}. The learner is the customer / applicant / patient / visitor.`,
     `The learner is about ${ctx.level} (CEFR). Speak natural but ${ctx.level}-appropriate German. Keep each of your turns short — 1–2 sentences. React like the real person would to whatever they say.`,
     words && words.length ? `Words the learner has studied for this scene (use some naturally): ${words.join(", ")}.` : ``,
     ``,
@@ -730,7 +734,7 @@ const CARD_ACCENT = `linear-gradient(90deg, #1A1A1A 33%, ${PAL.R} 33% 66%, ${PAL
 
 // Visible in Settings → App Updates. Bump whenever you deploy a meaningful change
 // so you can confirm at a glance which build is running on the device.
-const APP_VERSION = "2026.06.23.01";
+const APP_VERSION = "2026.07.02.01";
 
 // ── Sound cues ───────────────────────────────────────────────────────────────
 // Synthesized with Web Audio — no asset files, so it stays fully offline with zero
@@ -3977,8 +3981,10 @@ function App() {
         .ad-trail-draw { stroke-dasharray:1; animation: ad-trail-draw .9s ease-out both; }
         @keyframes ad-spine-fill { from { transform:translateX(-50%) scaleY(0) } to { transform:translateX(-50%) scaleY(1) } }
         .ad-spine-fill { transform-origin:top; animation: ad-spine-fill .8s cubic-bezier(.4,.8,.3,1) both; }
+        @keyframes ad-typing { 0%, 60%, 100% { opacity:.25; transform:translateY(0) } 30% { opacity:1; transform:translateY(-3px) } }
+        .ad-typing-dot { animation: ad-typing 1.1s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise, .ad-node-in, .ad-trail-draw, .ad-spine-fill { animation: none; }
+          .ad-mastery-pop, .ad-mastery-burst, .ad-category-mastered, .ad-shake, .ad-pop, .ad-spark, .ad-screen, .ad-ringin, .ad-goal, .ad-goal-ring, .ad-toast, .ad-flame-flicker, .ad-flame-roar, .ad-bloom, .ad-answer-pop, .ad-screen-in, .ad-tab-pop, .ad-pulse, .ad-bar-rise, .ad-node-in, .ad-trail-draw, .ad-spine-fill, .ad-typing-dot { animation: none; }
           .ad-node-in { transform: translate(-50%,-50%); opacity: 1; }
           .ad-trail-draw { stroke-dasharray: none; stroke-dashoffset: 0; }
           .ad-spine-fill { transform: translateX(-50%); }
@@ -5263,6 +5269,7 @@ function App() {
       {screen === "roleplay" && (() => {
         const m = rpMission; if (!m) return null;
         const arc = MISSION_ARCS.find(a => a.id === m.arc);
+        const partner = missionPartner(m);
         // Scripted self-check fallback (no API key): show the real phrases to rehearse out loud.
         const phrases = SENTENCES.filter(s => s.mission === m.id).map(s => (s.correct || []).join(" ")).filter(Boolean).slice(0, 5);
         const fallbackWords = (MISSION_VOCAB[m.id] || []).slice(0, 8);
@@ -5282,6 +5289,10 @@ function App() {
             <div style={{ background: "linear-gradient(135deg, #1A170B 0%, #0E0E0E 70%)", border: `1px solid ${A}44`, borderRadius: 14, padding: "12px 14px", marginBottom: 12 }}>
               <div style={{ fontSize: 9.5, color: A, fontWeight: 900, letterSpacing: 1, textTransform: "uppercase", marginBottom: 3 }}>{arc ? arc.title : "Roleplay"} · {m.level}</div>
               <div style={{ fontFamily: FN, fontSize: 16, fontWeight: 800, color: T, lineHeight: 1.25 }}>{m.cando}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 9 }}>
+                <span aria-hidden="true" style={{ width: 28, height: 28, borderRadius: 999, background: `${A}14`, border: `1px solid ${A}33`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0 }}>{partner.emoji}</span>
+                <span style={{ fontSize: 11.5, color: TD, minWidth: 0 }}>You're talking to <b style={{ color: T }}>{partner.name}</b>{partner.en ? <span> — {partner.en}</span> : null}</span>
+              </div>
             </div>
 
             {!aiKey ? (
@@ -5289,7 +5300,7 @@ function App() {
               <div style={{ flex: 1, overflowY: "auto" }}>
                 {!rpVerdict ? (
                   <>
-                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, marginBottom: 14 }}>No API key yet — so here's a self-check. Imagine you're in the scene and <b style={{ color: T }}>say each line out loud</b>. When you can get through it without stalling, you've got it. <span style={{ color: TD }}>Add a key in Settings for a live, graded roleplay with the tutor playing the other person.</span></div>
+                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, marginBottom: 14 }}>No API key yet — so here's a self-check. Imagine you're in the scene and <b style={{ color: T }}>say each line out loud</b>. When you can get through it without stalling, you've got it. <span style={{ color: TD }}>Add a key in Settings for a live, graded roleplay with the tutor playing {partner.en ? `${partner.name} — ${partner.en}` : "the other person"}.</span></div>
                     {phrases.length > 0 ? (
                       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
                         {phrases.map((p, i) => (
@@ -5314,7 +5325,7 @@ function App() {
                   <div style={{ textAlign: "center", padding: "20px 8px" }}>
                     <IconBadge name="check" size={48} color={G} bg={`${G}14`} />
                     <div style={{ fontFamily: FN, fontSize: 19, fontWeight: 800, color: T, margin: "14px 0 6px" }}>Nice — you've got this one.</div>
-                    <div style={{ fontSize: 13, color: TD, lineHeight: 1.5, maxWidth: 320, margin: "0 auto 20px" }}>Roleplay marked done. Add an API key in Settings to do a live, graded version with the tutor playing the other person.</div>
+                    <div style={{ fontSize: 13, color: TD, lineHeight: 1.5, maxWidth: 320, margin: "0 auto 20px" }}>Roleplay marked done. Add an API key in Settings to do a live, graded version with the tutor playing {partner.en ? `${partner.name} (${partner.en})` : "the other person"}.</div>
                     <Btn bg={A} color="#0A0A0A" onClick={goBack} style={{ fontFamily: FN, width: "auto", padding: "13px 24px" }}>Back to mission</Btn>
                   </div>
                 )}
@@ -5324,18 +5335,25 @@ function App() {
               <>
                 <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, paddingBottom: 10 }}>
                   {rpMsgs.length === 0 && !rpBusy && !rpError && (
-                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, textAlign: "center", marginTop: 12 }}>The other person will start in German. Reply in character — order, ask, explain — like you really would. Tap <b style={{ color: T }}>Finish</b> when you're done and I'll tell you how you did.</div>
+                    <div style={{ fontSize: 12.5, color: TD, lineHeight: 1.55, textAlign: "center", marginTop: 12 }}>{partner.name}{partner.en ? ` (${partner.en})` : ""} will start in German. Reply in character — order, ask, explain — like you really would. Tap <b style={{ color: T }}>Finish</b> when you're done and I'll tell you how you did.</div>
                   )}
                   {rpMsgs.map((mm, i) => (
                     <div key={i} style={{ alignSelf: mm.role === "user" ? "flex-end" : "flex-start", maxWidth: "88%" }}>
-                      {mm.role === "assistant" && <div style={{ fontSize: 9.5, color: A, fontWeight: 800, letterSpacing: 0.5, margin: "0 0 3px 6px", textTransform: "uppercase" }}>The other person</div>}
+                      {mm.role === "assistant" && <div style={{ fontSize: 9.5, color: A, fontWeight: 800, letterSpacing: 0.5, margin: "0 0 3px 6px", textTransform: "uppercase" }}>{partner.emoji} {partner.name}</div>}
                       <div style={{ background: mm.role === "user" ? A : "#161616", color: mm.role === "user" ? "#0A0A0A" : T, border: mm.role === "user" ? "none" : `1px solid ${B}`, borderRadius: 16, borderBottomRightRadius: mm.role === "user" ? 4 : 16, borderBottomLeftRadius: mm.role === "user" ? 16 : 4, padding: "10px 14px", fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-wrap", fontWeight: mm.role === "user" ? 600 : 400 }}>
                         {mm.text}
                         {mm.role === "assistant" && <button type="button" aria-label="Hear it" onClick={() => speak(mm.text)} style={{ display: "inline-flex", verticalAlign: "middle", marginLeft: 8, background: "transparent", border: "none", color: A, cursor: "pointer", padding: 0 }}><Icon name="volume" size={14} /></button>}
                       </div>
                     </div>
                   ))}
-                  {rpBusy && <div style={{ alignSelf: "flex-start", color: TD, fontSize: 13, fontStyle: "italic", padding: "4px 6px" }}>…</div>}
+                  {rpBusy && (
+                    <div style={{ alignSelf: "flex-start", maxWidth: "88%" }}>
+                      <div style={{ fontSize: 9.5, color: A, fontWeight: 800, letterSpacing: 0.5, margin: "0 0 3px 6px", textTransform: "uppercase" }}>{partner.emoji} {partner.name}</div>
+                      <div aria-label={`${partner.name} is replying`} style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#161616", border: `1px solid ${B}`, borderRadius: 16, borderBottomLeftRadius: 4, padding: "13px 15px" }}>
+                        {[0, 1, 2].map(d => <span key={d} className="ad-typing-dot" style={{ width: 7, height: 7, borderRadius: 999, background: TD, display: "inline-block", animationDelay: `${d * 0.18}s` }} />)}
+                      </div>
+                    </div>
+                  )}
                   {rpError && <div role="alert" style={{ alignSelf: "stretch", background: "#1A0000", border: `1px solid ${R}55`, color: "#F87171", borderRadius: 12, padding: "10px 14px", fontSize: 12 }}>{rpError}</div>}
                   {rpVerdict && (
                     <div role="status" aria-live="polite" style={{ alignSelf: "stretch", background: `${vColor}10`, border: `1px solid ${vColor}55`, borderRadius: 16, padding: "16px", marginTop: 6 }}>
